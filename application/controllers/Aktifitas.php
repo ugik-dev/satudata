@@ -127,9 +127,9 @@ class Aktifitas extends CI_Controller
                 '11' => 'November',
                 '12' => 'Desember'
             );
-            // $filter['my_skp'] = true;
             // $filter['id_skp'] = $id;
             $filter = $this->input->get();
+            $filter['id_user'] = $this->session->userdata('id');
             $data =
                 $this->AktifitasModel->printLaporanAktifitasHarian($filter);
             // $users = $this->GeneralModel->getAllUser(array('id' => $data['id_user']));

@@ -94,7 +94,12 @@ class SKP extends CI_Controller
             $filter['my_skp'] = true;
             $filter['id_skp'] = $id;
             $res_data['return_data'] = $this->SKPModel->getDetail($filter)[$id];
-
+            if ($res_data['return_data']['status'] == 2) {
+                // echo 'has approv';
+                $this->load->view('error_page2', array('message' => 'Data Sudah di approv'));
+                return;
+                // die();
+            }
             $data = array(
                 'page' => 'my/skp_form',
                 'title' => 'Form SKP',
@@ -165,7 +170,7 @@ class SKP extends CI_Controller
                 $users = $this->GeneralModel->getAllUser(array('id' => $data['id_user']))[$data['id_user']];
                 $penilai = $this->GeneralModel->getAllUser(array('id' => $data['id_penilai']))[$data['id_penilai']];
             }
-            // echo json_encode($users);
+            // echo json_encode($data);
             // die();
             // require('assets/fpdf/fpdf.php');
             // $pdf = new FPDF('p', 'mm', 'Legal');
@@ -222,7 +227,6 @@ class SKP extends CI_Controller
                 $pdf->row_skp_head('Jabatan', $data_approv['pengaju_jabatan'], 'Jabatan', $data_approv['penilai_jabatan']);
                 $pdf->row_skp_head('Unit Kerja', $data_approv['pengaju_satuan'], 'Unit Kerja', $data_approv['penilai_satuan']);
             }
-
 
             $pdf->Cell(10, 19, 'NO', 1, 0, 'C', 1);
             $current_y = $pdf->GetY();
@@ -287,6 +291,7 @@ class SKP extends CI_Controller
                     $i++;
                 }
             }
+            // die();
 
             if ($data['status'] == 0) {
                 $pdf->CheckPageBreak(60);
@@ -339,11 +344,15 @@ class SKP extends CI_Controller
                     $pdf->Cell(96.5, 5, 'NIP. ' . $data_approv['pengaju_nip'], 0, 0, 'C',);
                     $pdf->Cell(96.5, 5, 'NIP. ' . $data_approv['penilai_nip'], 0, 1, 'C',);
                     $pdf->SetXY($x, $y);
-                    $sign1 = base_url('uploads/signature/' . $data_approv['pengaju_signature']);
-                    $sign2 = base_url('uploads/signature/' . $data_approv['penilai_signature']);
+                    if (!empty($data_approv['pengaju_signature'])) {
+                        $sign1 = base_url('uploads/signature/' . $data_approv['pengaju_signature']);
+                        $pdf->Image($sign1, $x + 15, $y - 5, 55);
+                    }
+                    if (!empty($data_approv['penilai_signature'])) {
+                        $sign2 = base_url('uploads/signature/' . $data_approv['penilai_signature']);
+                        $pdf->Image($sign2, $x + 110, $y - 5, 55);
+                    }
                     // $pdf->Image($sign2, 5, $pdf->GetY(), 33.78);
-                    $pdf->Image($sign1, $x + 15, $y - 5, 55);
-                    $pdf->Image($sign2, $x + 110, $y - 5, 55);
                 }
                 // $pdf->Cell(96.5, 40, $pdf->Image($sign2, $x + 15, $y - 5, 60), 1, 0, 'L', false);
                 // $pdf->Cell(96.5, 5, 'NIP. ' . $data_approv['penilai_nip'], 1, 1, 'C',);
@@ -400,6 +409,7 @@ class SKP extends CI_Controller
         try {
             $this->SecurityModel->multiRole('SPPD', 'Entri SPPD');
             $data = $this->input->post();
+            $data['status'] = 0;
             $id =  $this->SKPModel->edit($data);
             echo json_encode(array('error' => false, 'data' => $id));
             // $this->load->view('page', $data);

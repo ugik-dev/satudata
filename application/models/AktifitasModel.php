@@ -63,11 +63,9 @@ class AktifitasModel extends CI_Model
             $this->db->where('MONTH(u.date)', $filter['bulan']);
 
         if (!empty($filter['id_aktifitas'])) $this->db->where('u.id_aktifitas', $filter['id_aktifitas']);
-        if (!empty($filter['my_aktifitas'])) $this->db->where('u.id_user', $this->session->userdata()['id']);
+        if (!empty($filter['id_user']))
+            $this->db->where('u.id_user', $filter['id_user']);
         $res = $this->db->get();
-        // echo json_encode($res->result_array());
-        // die();
-        // 
         return DataStructure::printLaporanHarian($res->result_array());
     }
 

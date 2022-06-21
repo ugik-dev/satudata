@@ -94,6 +94,29 @@ class User extends CI_Controller
         }
     }
 
+    public function deleteMySKP()
+    {
+        try {
+            $this->SecurityModel->userOnlyGuard(true);
+            $this->load->model('SKPModel');
+            $data['id_skp'] = $this->input->get()['id_skp'];
+            $data['my_skp'] = true;
+            $cek = $this->SKPModel->getAll($data);
+            if (!empty($cek[$data['id_skp']])) {
+                if ($cek[$data['id_skp']]['status'] == 2) {
+                    throw new UserException('Data sudah di aprrov tidak dapat dihapus!!', UNAUTHORIZED_CODE);
+                } else {
+                    $this->SKPModel->deleteMySKP($data);
+                }
+            } else
+                throw new UserException('Kamu tidak memiliki hak ini!!', UNAUTHORIZED_CODE);
+
+            echo json_encode(array('error' => false, 'data' => $cek));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
     public function update_my_profil()
     {
         $data =  $this->input->post();

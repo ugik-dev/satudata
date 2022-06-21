@@ -72,12 +72,12 @@
                 <!-- <h7>Masukkan username & password untuk login</h7> -->
                 <div class="form-group">
                   <label class="col-form-label">Username</label>
-                  <input style="background-color: white !important" class="form-control" type="text" required="" name="username" placeholder="Username">
+                  <input style="background-color: white !important" class="form-control" type="text" required="required" name="username" placeholder="Username">
                 </div>
                 <div class="form-group">
                   <label class="col-form-label">Password</label>
                   <div class="form-input position-relative">
-                    <input style="background-color: white !important" class="form-control" type="password" name="password" required="" placeholder="*********">
+                    <input style="background-color: white !important" class="form-control" type="password" name="password" id="password" required="required" placeholder="*********">
                     <div class="show-hide"><span class="show"> </span></div>
                   </div>
                 </div>
@@ -103,7 +103,18 @@
     <script src="<?= base_url() ?>assets/js/jquery-3.5.1.min.js"></script>
     <script>
       $(document).ready(function() {
-
+        cur_sh = 'hide';
+        $('.show-hide').on('click', function() {
+          if (cur_sh == 'hide') {
+            console.log('go show')
+            cur_sh = 'show';
+            $('#password').prop('type', 'text')
+          } else {
+            // console.log('go show')
+            cur_sh = 'hide';
+            $('#password').prop('type', 'password')
+          }
+        })
         var loginForm = $('#loginForm');
         // var submitBtn = loginForm.find('#loginBtn');
         <?php

@@ -193,6 +193,18 @@ class Master extends CI_Controller
         }
     }
 
+    public function deleteUser()
+    {
+        try {
+            $this->SecurityModel->multiRole('Master', 'Pegawai');
+            $data = $this->input->get();
+
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
 
 
     public function addUser()

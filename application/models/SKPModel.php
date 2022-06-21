@@ -88,6 +88,21 @@ class SKPModel extends CI_Model
         $this->db->where('id_skp', $data['id_skp']);
         $this->db->delete('skp_approv');
     }
+
+    public function deleteMySKP($data)
+    {
+        // $this->db->set('status', $st);
+        // echo $data['id_skp'];
+        $this->db->where('id_skp', $data['id_skp']);
+        $this->db->delete('skp');
+
+        $this->db->where('id_skp', $data['id_skp']);
+        $this->db->delete('skp_child');
+
+        $this->db->where('id_skp', $data['id_skp']);
+        $this->db->delete('skp_approv');
+    }
+
     public function add($data)
     {
         $id_user = $this->session->userdata()['id'];
@@ -144,7 +159,7 @@ class SKPModel extends CI_Model
         $res_data['id_penilai'] = $data['id_penilai'];
         $res_data['id_user'] = $id_user;
         $this->db->set(DataStructure::slice($data, [
-            'date', 'id_user', 'id_penilai', 'periode_start', 'periode_end', 'tgl_pengajuan'
+            'date', 'id_user', 'id_penilai', 'periode_start', 'periode_end', 'tgl_pengajuan', 'status'
         ], FALSE));
 
         $this->db->where('id_skp', $data['id_skp']);

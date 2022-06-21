@@ -524,13 +524,26 @@
         FDataTable.on('click', '.delete', function() {
             event.preventDefault();
             var id = $(this).data('id');
-            swal(swalDeleteConfigure).then((result) => {
-                if (!result.value) {
+            swal({
+                title: "Apakah anda Yakin?",
+                text: "Hapus data!",
+                icon: "warning",
+                allowOutsideClick: false,
+                showCancelButton: true,
+                buttons: {
+                    cancel: 'Batal !!',
+                    catch: {
+                        text: "Ya, Saya Hapus !!",
+                        value: true,
+                    },
+                },
+            }).then((result) => {
+                if (!result) {
                     return;
                 }
                 $.ajax({
-                    url: "<?= site_url('UserController/deleteUser') ?>",
-                    'type': 'POST',
+                    url: "<?= site_url('Master/deleteUser') ?>",
+                    'type': 'get',
                     data: {
                         'id': id
                     },

@@ -113,13 +113,13 @@
                         return;
                     }
                     dataSKP = json['data'];
-                    renderSppd(dataSKP);
+                    renderSKP(dataSKP);
                 },
                 error: function(e) {}
             });
         }
 
-        function renderSppd(data) {
+        function renderSKP(data) {
             console.log(data)
             if (data == null || typeof data != "object") {
                 console.log("Sppd::UNKNOWN DATA");
@@ -132,9 +132,6 @@
                 var editButton = `
                     <a class="dropdown-item"  href='<?= base_url() ?>skp/edit/${skp['id_skp']}'><i class='fa fa-pencil'></i> Edit</a>
                   `;
-                var lihatButton = `
-                    <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Lihat </a>
-                `;
                 var deleteButton = `
                     <a class="delete dropdown-item" data-id='${skp['id_skp']}'><i class='fa fa-trash'></i> Hapus</a>
                   `;
@@ -142,7 +139,22 @@
                   <a class="dropdown-item ajukan_approv" style="width: 110px" data-id='${skp['id_skp']}'><i class='fa fa-eye'></i> Ajukan Approv </a>
                      `;
                 console.log(skp['status']);
-                if (skp['status'] == 0) {}
+                if (skp['status'] == 2) {
+                    var deleteButton = '';
+                    var editButton = '';
+                    var aksiBtn = '';
+                    var lihatButton = `
+                    <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Cetak </a>
+                    <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}/barcode'><i class='fa fa-eye'></i> Cetak + Barcode </a>
+                `;
+                } else {
+                    //     var aksiBtn = `
+                    //   <a class="dropdown-item ajukan_approv" style="width: 110px" data-id='${skp['id_skp']}'><i class='fa fa-eye'></i> Ajukan Approv </a>
+                    //      `;
+                    //     var lihatButton = `
+                    //     <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Lihat </a>
+                    // `;
+                }
                 var button = `
                            <div class="dropdown-basic">
                             <div class="dropdown">
@@ -209,12 +221,53 @@
                         var user = json['data']
                         dataSKP[user['id_skp']] = user;
                         swal("Simpan Berhasil", "", "success");
-                        renderSppd(dataSKP);
+                        renderSKP(dataSKP);
                         // UserModal.self.modal('hide');
                     },
                     error: function(e) {}
                 });
             });
         })
+
+        FDataTable.on('click', '.delete', function() {
+            event.preventDefault();
+            var id = $(this).data('id');
+            swal({
+                title: "Apakah anda Yakin?",
+                text: "Hapus data!",
+                icon: "warning",
+                allowOutsideClick: false,
+                showCancelButton: true,
+                buttons: {
+                    cancel: 'Batal !!',
+                    catch: {
+                        text: "Ya, Saya Hapus !!",
+                        value: true,
+                    },
+                },
+            }).then((result) => {
+                if (!result) {
+                    return;
+                }
+                $.ajax({
+                    url: "<?= site_url('User/deleteMySKP') ?>",
+                    'type': 'get',
+                    data: {
+                        'id_skp': id
+                    },
+                    success: function(data) {
+                        var json = JSON.parse(data);
+                        if (json['error']) {
+                            swal("Delete Gagal", json['message'], "error");
+                            return;
+                        }
+                        delete dataSKP[id];
+                        swal("Delete Berhasil", "", "success");
+                        renderSKP(dataSKP);
+                    },
+                    error: function(e) {}
+                });
+            });
+        });
     });
 </script>

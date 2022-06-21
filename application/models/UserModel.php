@@ -177,7 +177,7 @@ class UserModel extends CI_Model
 
     public function deleteUser($data)
     {
-        $this->db->where('id_user', $data['id_user']);
+        $this->db->where('id', $data['id']);
         $this->db->delete('users');
 
         ExceptionHandler::handleDBError($this->db->error(), "Hapus User", "User");

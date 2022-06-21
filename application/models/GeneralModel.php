@@ -105,19 +105,24 @@ class GeneralModel extends CI_Model
         $level = $this->session->userdata('level');
         if ($level == 1)
             return [];
-        $this->db->select('sc.id_skp_child as id, sc.kegiatan as text');
+        $this->db->select('sc.id_skp_child as id, CONCAT(u.nama , " | ", sc.kegiatan) as text');
         // $this->db->select('u.*');
         $this->db->from('skp_child sc ');
         $this->db->join('skp s', 'sc.id_skp = s.id_skp');
         $this->db->join('users u', 's.id_user = u.id');
         $this->db->join('roles r', 'r.id_role = u.id_role');
-        if ($level == 2 or $level == 4)
+        if ($level == 2 or $level == 4) {
+            // $this->db->where('s.status' == '');
             $this->db->where('r.level', 1);
-        if ($level == 3)
+        } else if ($level == 3) {
+            $this->db->where('s.status' == '2');
             $this->db->where('r.level', 2);
-        if ($level == 5)
+        } else
+        if ($level == 5) {
+            $this->db->where('s.status' == '2');
             $this->db->where('r.level', 4);
-        // if (!empty($filter['searchTerm'])) $this->db->where('sc.kegiatan like "%' . $filter['searchTerm'] . '%"');
+        }
+        if (!empty($filter['searchTerm'])) $this->db->where('sc.kegiatan like "%' . $filter['searchTerm'] . '%"');
         // searchTerm
         $this->db->limit('20');
         // $this->db->join('roles r', 'u.id_role = r.id_role');

@@ -87,19 +87,19 @@
             'form': $('#user_form'),
             'addBtn': $('#add_btn'),
             'saveEditBtn': $('#save_edit_btn'),
-            'add_dasar': $('#add_dasar'),
+            // 'add_dasar': $('#add_dasar'),
             'add_ku': $('#add_ku'),
             'add_kt': $('#add_kt'),
-            'idUser': $('#id_user'),
-            'username': $('#username'),
-            'nama': $('#nama'),
-            'nip': $('#nip'),
-            'email': $('#email'),
-            'no_hp': $('#no_hp'),
-            'status': $('#status'),
-            'password': $('#password'),
-            'id_role': $('#id_role'),
-            'transport': $('#transport'),
+            // 'idUser': $('#id_user'),
+            'periode_start': $('#periode_start'),
+            'periode_end': $('#periode_end'),
+            // 'nip': $('#nip'),
+            // 'email': $('#email'),
+            // 'no_hp': $('#no_hp'),
+            // 'status': $('#status'),
+            // 'password': $('#password'),
+            // 'id_role': $('#id_role'),
+            // 'transport': $('#transport'),
         }
         var swalSaveConfigure = {
             title: "Konfirmasi simpan",
@@ -117,7 +117,7 @@
             showCancelButton: true,
         };
 
-        $.when(getAllTransport()).then((e) => {}).fail((e) => {
+        $.when().then((e) => {}).fail((e) => {
             // console.log(e)
         });
         last_dasar = 2;
@@ -256,44 +256,6 @@
             addKU('KT');
         })
 
-        function getAllTransport() {
-            Swal.fire({
-                title: 'Loading',
-                allowOutsideClick: false,
-            });
-            Swal.showLoading()
-            return $.ajax({
-                url: `<?php echo site_url('Search/transport') ?>`,
-                'type': 'get',
-                data: {},
-                success: function(data) {
-                    Swal.close();
-                    var json = JSON.parse(data);
-                    if (json['error']) {
-                        return;
-                    }
-                    dataTransport = json['data'];
-                    renderTransport(dataTransport);
-                },
-                error: function(e) {}
-            });
-        }
-
-        function renderTransport(data) {
-            UserModal.transport.empty();
-            UserModal.transport.append($('<option>', {
-                value: "",
-                text: "--"
-            }));
-            Object.values(data).forEach((d) => {
-                console.log(d)
-                UserModal.transport.append($('<option>', {
-                    value: d['transport'],
-                    text: d['nama_tr'],
-                }));
-            });
-
-        }
 
         UserModal.form.submit(function(event) {
             event.preventDefault();
@@ -350,7 +312,7 @@
                             },
                         }).then((result) => {
 
-                            // location.href = "<?= base_url('skp/detail/') ?>" + json['data'];
+                            location.href = "<?= base_url('skp') ?>";
                         });
                     }
                 });
@@ -387,7 +349,10 @@
                     delay: 250,
                     data: function(params) {
                         return {
-                            searchTerm: params.term // search term
+                            searchTerm: params.term,
+                            // asd: '2'
+                            periode_start: UserModal.periode_start.val(),
+                            periode_end: UserModal.periode_end.val()
                         };
                     },
                     processResults: function(response) {

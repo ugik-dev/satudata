@@ -40,7 +40,7 @@
                                 <tr>
                                     <th style="width: 2%; text-align:center!important">ID</th>
                                     <th style="width: 10%; text-align:center!important">TANGGAL</th>
-                                    <th style="width: 10%; text-align:center!important">PENILAI</th>
+                                    <th style="width: 10%; text-align:center!important">PENGAJU</th>
                                     <th style="width: 10%; text-align:center!important">JUMLAH KEGIATAN</th>
                                     <th style="width: 5%; text-align:center!important">STATUS</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
@@ -60,7 +60,7 @@
 
 <script>
     $(document).ready(function() {
-        $('#sidebar_skp').addClass('active_c');
+        $('#sidebar_permohonan').addClass('active_c');
 
         var toolbar = {
             'form': $('#toolbar_form'),
@@ -145,22 +145,34 @@
             Object.values(data).forEach((skp) => {
                 var aksiBtn = '';
                 if (skp['status'] == 1) {
+                    var lihatButton = `
+                    <a class="dropdown-item" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Lihat </a>
+                `;
                     var aksiBtn = `
                     <a class="approv dropdown-item"  data-id='${skp['id_skp']}' ><i class='fa fa-check'></i> Approv</a>
                     <a class="deapprov dropdown-item "  data-id='${skp['id_skp']}' ><i class='fa fa-times'></i> Tolak Approv</a>
                     `;
-                } else if (skp['status'] == 2 || skp['status'] == 3) {
+                } else if (skp['status'] == 2) {
+                    // var aksiBtn = `
+                    // <a class="batal_aksi dropdown-item"  data-id='${skp['id_skp']}' ><i class='fa fa-check'></i> Batal Aksi</a>
+                    // `;
+                    var lihatButton = `
+                    <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Lihat </a>
+                      <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}/barcode'><i class='fa fa-eye'></i> Cetak + Barcode </a>
+              `;
+                } else if (skp['status'] == 3) {
                     var aksiBtn = `
                     <a class="batal_aksi dropdown-item"  data-id='${skp['id_skp']}' ><i class='fa fa-check'></i> Batal Aksi</a>
                     `;
+                    var lihatButton = ``;
                 }
                 var aprvButton = `
-                  `;
+                                `;
                 var deaprvButton = `
-                  `;
-                var lihatButton = `
-                    <a class="dropdown-item" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Lihat </a>
-                `;
+                                `;
+                // var lihatButton = `
+                //     <a class="dropdown-item" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Lihat </a>
+                // `;
 
                 var button = `
                            <div class="dropdown-basic">

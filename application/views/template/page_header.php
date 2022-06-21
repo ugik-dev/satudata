@@ -17,7 +17,9 @@
         </form>
         <div class="header-logo-wrapper col-auto p-0">
             <div class="logo-wrapper">
-                <a href="index.html"><img class="img-fluid" src="<?= base_url() ?>assets/img/logo-kab.bangka.png" alt="" /></a>
+                <a href="index.html">
+                    <!-- <img class="img-fluid" src="<?= base_url() ?>assets/img/logo-kab.bangka.png" alt="" /> -->
+                </a>
             </div>
             <div class="toggle-sidebar">
                 <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>

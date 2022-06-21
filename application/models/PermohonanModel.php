@@ -12,7 +12,7 @@ class PermohonanModel extends CI_Model
         $this->db->join('users p', 'p.id = u.id_user');
         $this->db->join('users pen', 'pen.id = u.id_penilai');
         $this->db->group_by('id_skp');
-
+        $this->db->where('u.status <> 0');
         if (!empty($filter['id_skp'])) $this->db->where('u.id_skp', $filter['id_skp']);
         if (!empty($filter['id_penilai'])) $this->db->where('u.id_penilai', $filter['id_penilai']);
         $res = $this->db->get();
