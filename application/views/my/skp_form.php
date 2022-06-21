@@ -23,12 +23,20 @@
                                 s.d.
                             </div>
                             <div class="col">
-                                <input name="periode_start" type="date" id="periode_start" class="form-control" value="<?= !empty($dataContent['return_data']['periode_start']) ? $dataContent['return_data']['periode_start'] : date("Y-m-d") ?>">
+                                <input name="periode_end" type="date" id="periode_end" class="form-control" value="<?= !empty($dataContent['return_data']['periode_end']) ? $dataContent['return_data']['periode_end'] : date("Y-m-d") ?>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="col-form-label">Tgl Pengajuan</div>
+                        <div class="row">
+                            <div class="col">
+                                <input name="tgl_pengajuan" type="date" id="tgl_pengajuan" class="form-control" value="<?= !empty($dataContent['return_data']['tgl_pengajuan']) ? $dataContent['return_data']['tgl_pengajuan'] : date("Y-m-d") ?>">
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-3">
                         <div class="col-form-label">Penilai</div>
                         <select class="select2 col-sm-12" id="id_penilai" name="id_penilai">
                             <?php

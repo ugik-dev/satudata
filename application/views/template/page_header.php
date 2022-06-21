@@ -17,7 +17,7 @@
         </form>
         <div class="header-logo-wrapper col-auto p-0">
             <div class="logo-wrapper">
-                <a href="index.html"><img class="img-fluid" src="<?= base_url() ?>assets/images/logo/logo.png" alt="" /></a>
+                <a href="index.html"><img class="img-fluid" src="<?= base_url() ?>assets/img/logo-kab.bangka.png" alt="" /></a>
             </div>
             <div class="toggle-sidebar">
                 <i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i>
@@ -459,7 +459,7 @@
                     </div>
                     <ul class="profile-dropdown onhover-show-div">
                         <li>
-                            <a href="#"><i data-feather="user"></i><span>Account </span></a>
+                            <a href="<?= base_url('profil') ?>"><i data-feather="user"></i><span>Account </span></a>
                         </li>
                         <li>
                             <a href="#"><i data-feather="mail"></i><span>Inbox</span></a>

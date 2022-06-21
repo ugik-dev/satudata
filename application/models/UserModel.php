@@ -160,7 +160,11 @@ class UserModel extends CI_Model
     public function editUser($data)
     {
         if (!empty($data['password'])) $this->db->set('password', md5($data['password']));
-        $this->db->set(DataStructure::slice($data, ['username', 'nama', 'email', 'nip', 'alamat', 'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_bidang', 'pangkat_gol', 'jabatan']));
+        $this->db->set(DataStructure::slice($data, [
+            'username', 'nama', 'email', 'nip', 'alamat',
+            'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_bidang', 'pangkat_gol', 'jabatan', 'signature', 'photo',
+            'pend_jenjang',  'pend_jurusan', 'j_k', 'tempat_lahir', 'tanggal_lahir', 'tmt_kerja', 'jenis_pegawai'
+        ]));
         $this->db->where('id', $data['id']);
         $this->db->update('users');
 
@@ -168,6 +172,8 @@ class UserModel extends CI_Model
 
         return $data['id'];
     }
+
+
 
     public function deleteUser($data)
     {

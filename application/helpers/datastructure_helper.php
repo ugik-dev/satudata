@@ -259,6 +259,8 @@ class DataStructure
           'id_user' => $a['id_user'],
           // 'id_user' => $a['id_user'],
           'periode_start' => $a['periode_start'],
+          'periode_end' => $a['periode_end'],
+          'tgl_pengajuan' => $a['tgl_pengajuan'],
           'nama_penilai' => $a['nama_penilai'],
           'status' => $a['status'],
         );
@@ -289,7 +291,51 @@ class DataStructure
     }
     return $ret;
   }
+  public static function SKPStyleApprov($arr)
+  {
 
+    $ret = array();
+    foreach ($arr as $a) {
+      $groupKey = $a['id_skp'];
+      if (empty($ret[$a['id_skp']]))
+        $ret[$a['id_skp']] = array(
+          'id_skp' => $a['id_skp'],
+          'id_penilai' => $a['id_penilai'],
+          'id_user' => $a['id_user'],
+          // 'id_user' => $a['id_user'],
+          'periode_start' => $a['periode_start'],
+          'periode_end' => $a['periode_end'],
+          'tgl_pengajuan' => $a['tgl_pengajuan'],
+          // 'nama_penilai' => $a['nama_penilai'],
+          'status' => $a['status'],
+        );
+
+      $ret[$a['id_skp']]['child'][] =  array(
+        'id_skp_child' => $a['id_skp_child'],
+        'kegiatan' => $a['kegiatan'],
+        'id_skp_atasan' => $a['id_skp_atasan'],
+        'jenis_keg' => $a['jenis_keg'],
+        'kegiatan_atasan' => $a['kegiatan_atasan'],
+
+        'iki_kuantitas' => $a['iki_kuantitas'],
+        'min_kuantitas' => $a['min_kuantitas'],
+        'max_kuantitas' => $a['max_kuantitas'],
+        'ket_kuantitas' => $a['ket_kuantitas'],
+
+        'iki_kualitas' => $a['iki_kualitas'],
+        'min_kualitas' => $a['min_kualitas'],
+        'max_kualitas' => $a['max_kualitas'],
+        'ket_kualitas' => $a['ket_kualitas'],
+
+        'iki_waktu' => $a['iki_waktu'],
+        'min_waktu' => $a['min_waktu'],
+        'max_waktu' => $a['max_waktu'],
+        'ket_waktu' => $a['ket_waktu'],
+
+      );
+    }
+    return $ret;
+  }
   public static function SPPDStyle($arr)
   {
 

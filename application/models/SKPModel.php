@@ -40,17 +40,66 @@ class SKPModel extends CI_Model
         return DataStructure::SKPStyle($res->result_array());
     }
 
+    public function getSKP_key($filter = [])
+    {
+        $this->db->select("r.*, u.*, skp_a.kegiatan as kegiatan_atasan");
+        $this->db->from('skp as u');
+        $this->db->join('skp_child r', 'u.id_skp = r.id_skp');
+        $this->db->join('skp_child skp_a', 'skp_a.id_skp_child = r.id_skp_atasan', 'LEFT');
+        // $this->db->join('skp_child p', 'p.id = u.id_user');
+        $this->db->join('skp_approv apr', 'apr.id_skp = u.id_skp');
+        $this->db->where('apr.key', $filter['key']);
+        if (!empty($filter['id_skp'])) $this->db->where('u.id_skp', $filter['id_skp']);
+        if (!empty($filter['my_skp'])) $this->db->where('u.id_user', $this->session->userdata()['id']);
+        $res = $this->db->get();
+        // echo json_encode($res->result_array());
+        // die();
+        // 
+        return DataStructure::SKPStyleApprov($res->result_array());
+    }
+
+    public function ajukan_approv($data)
+    {
+        // $this->db->insert('skp_approv', $data);
+        $this->db->set('status', 1);
+        $this->db->where('id_skp', $data);
+        $this->db->update('skp');
+    }
+
+    public function approv($data)
+    {
+        $this->db->insert('skp_approv', $data);
+        $this->db->set('status', 2);
+        $this->db->where('id_skp', $data['id_skp']);
+        $this->db->update('skp');
+    }
+
+    public function edit_approv($data, $st)
+    {
+        $this->db->set('status', $st);
+        $this->db->where('id_skp', $data['id_skp']);
+        $this->db->update('skp');
+    }
+
+    public function delete_approv($data)
+    {
+        // $this->db->set('status', $st);
+        // echo $data['id_skp'];
+        $this->db->where('id_skp', $data['id_skp']);
+        $this->db->delete('skp_approv');
+    }
     public function add($data)
     {
-
         $id_user = $this->session->userdata()['id'];
         // $data['data'] = $ses['id_satuan'];
         // $data['id_bidang'] = $ses['id_bidang'];
         $res_data['periode_start'] = $data['periode_start'];
+        $res_data['periode_end'] = $data['periode_end'];
+        $res_data['tgl_pengajuan'] = $data['tgl_pengajuan'];
         $res_data['id_penilai'] = $data['id_penilai'];
         $res_data['id_user'] = $id_user;
         $this->db->insert('skp', DataStructure::slice($res_data, [
-            'date', 'id_user', 'id_penilai', 'periode_start'
+            'date', 'id_user', 'id_penilai', 'periode_start', 'periode_end', 'tgl_pengajuan'
         ], FALSE));
 
         $id_skp = $this->db->insert_id();
@@ -90,10 +139,12 @@ class SKPModel extends CI_Model
 
         $id_user = $this->session->userdata()['id'];
         $res_data['periode_start'] = $data['periode_start'];
+        $res_data['periode_end'] = $data['periode_end'];
+        $res_data['tgl_pengajuan'] = $data['tgl_pengajuan'];
         $res_data['id_penilai'] = $data['id_penilai'];
         $res_data['id_user'] = $id_user;
         $this->db->set(DataStructure::slice($data, [
-            'date', 'id_user', 'id_penilai', 'periode_start'
+            'date', 'id_user', 'id_penilai', 'periode_start', 'periode_end', 'tgl_pengajuan'
         ], FALSE));
 
         $this->db->where('id_skp', $data['id_skp']);

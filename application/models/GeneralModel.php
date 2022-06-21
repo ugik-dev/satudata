@@ -57,6 +57,16 @@ class GeneralModel extends CI_Model
         return DataStructure::keyValue($res->result_array(), 'id_satuan');
     }
 
+    public function getSKPApprov($filter = [])
+    {
+        $this->db->select('*');
+        $this->db->from('skp_approv u ');
+        if (!empty($filter['id_skp'])) $this->db->where('id_skp', $filter['id_skp']);
+        $res = $this->db->get();
+        return $res->result_array();
+        // return DataStructure::keyValue($res->result_array(), 'id_satuan');
+    }
+
     public function getAllPosition($filter = [])
     {
         $this->db->select('*');
@@ -195,6 +205,8 @@ class GeneralModel extends CI_Model
         $res = $this->db->get();
         return $res->result_array();
     }
+
+
 
     function getRomawi($bln)
     {

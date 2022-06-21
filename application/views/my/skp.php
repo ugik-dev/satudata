@@ -28,6 +28,7 @@
                                     <th style="width: 10%; text-align:center!important">TANGGAL</th>
                                     <th style="width: 10%; text-align:center!important">PENILAI</th>
                                     <th style="width: 10%; text-align:center!important">JUMLAH KEGIATAN</th>
+                                    <th style="width: 10%; text-align:center!important">STATUS</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
                                 </tr>
                             </thead>
@@ -63,7 +64,7 @@
         });
 
         var dataRole = {}
-        var dataSppd = {}
+        var dataSKP = {}
 
         var swalSaveConfigure = {
             title: "Konfirmasi simpan",
@@ -111,8 +112,8 @@
                     if (json['error']) {
                         return;
                     }
-                    dataSppd = json['data'];
-                    renderSppd(dataSppd);
+                    dataSKP = json['data'];
+                    renderSppd(dataSKP);
                 },
                 error: function(e) {}
             });
@@ -132,12 +133,16 @@
                     <a class="dropdown-item"  href='<?= base_url() ?>skp/edit/${skp['id_skp']}'><i class='fa fa-pencil'></i> Edit</a>
                   `;
                 var lihatButton = `
-                    <a class="dropdown-item" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Lihat </a>
+                    <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Lihat </a>
                 `;
-
                 var deleteButton = `
-                    <a class="delete dropdown-item" data-id='${skp['id']}'><i class='fa fa-trash'></i> Hapus</a>
+                    <a class="delete dropdown-item" data-id='${skp['id_skp']}'><i class='fa fa-trash'></i> Hapus</a>
                   `;
+                var aksiBtn = `
+                  <a class="dropdown-item ajukan_approv" style="width: 110px" data-id='${skp['id_skp']}'><i class='fa fa-eye'></i> Ajukan Approv </a>
+                     `;
+                console.log(skp['status']);
+                if (skp['status'] == 0) {}
                 var button = `
                            <div class="dropdown-basic">
                             <div class="dropdown">
@@ -148,6 +153,7 @@
                                     </button>
                                     <div class="dropdown-content">
                                     ${editButton}
+                                    ${aksiBtn}
                                     ${deleteButton}
                                     ${lihatButton}
                                     </div>
@@ -156,19 +162,59 @@
                         </div>`;
                 tujuan = '';
                 i = 1;
-                // Object.values(skp['tujuan']).forEach((tj) => {
-                //     if (i == 1)
-                //         tujuan += '1. ' + tj['tempat_tujuan'] + ' (' + tj['date_berangkat'] + ')';
-                //     else
-                //         tujuan += '<br>' + i + '. ' + tj['tempat_tujuan'] + ' (' + tj['date_berangkat'] + ')';
-                //     i++;
 
-                // })
-                renderData.push([skp['id_skp'], skp['periode_start'], skp['nama_penilai'], skp['skp'], button]);
+                renderData.push([skp['id_skp'], skp['periode_start'], skp['nama_penilai'], skp['skp'], statusSKP(skp['status']), button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }
 
-
+        FDataTable.on('click', '.ajukan_approv', function() {
+            var currentData = dataSKP[$(this).data('id')];
+            swal({
+                title: "Konfrirmasi",
+                text: "Akan mengajukan approval data ini ?",
+                icon: "warning",
+                allowOutsideClick: false,
+                showCancelButton: true,
+                buttons: {
+                    cancel: 'Batal !!',
+                    catch: {
+                        text: "Ya, Ajukan !!",
+                        value: true,
+                    },
+                },
+            }).then((result) => {
+                if (!result) {
+                    return;
+                }
+                $.ajax({
+                    url: '<?= base_url('skp/ajukan_approv') ?>',
+                    'type': 'get',
+                    data: {
+                        id: $(this).data('id')
+                    },
+                    success: function(data) {
+                        Swal.fire({
+                            title: 'Loading Approv!',
+                            allowOutsideClick: false,
+                        });
+                        Swal.showLoading()
+                        // buttonIdle(button);
+                        Swal.close();
+                        var json = JSON.parse(data);
+                        if (json['error']) {
+                            swal("Simpan Gagal", json['message'], "error");
+                            return;
+                        }
+                        var user = json['data']
+                        dataSKP[user['id_skp']] = user;
+                        swal("Simpan Berhasil", "", "success");
+                        renderSppd(dataSKP);
+                        // UserModal.self.modal('hide');
+                    },
+                    error: function(e) {}
+                });
+            });
+        })
     });
 </script>

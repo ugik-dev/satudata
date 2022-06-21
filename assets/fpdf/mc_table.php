@@ -133,6 +133,45 @@ class PDF_MC_Table extends FPDF
 		// $this->Cell($w, 4, 'xxxxxxxx', 0, 'C');
 	}
 
+	function row_skp_head($label, $str_1, $label_2, $str_2)
+	{
+		$r = [60, 40, 51, 42];
+		$nb = 1;
+		$nb = max($nb, $this->NbLines($r[1], $str_1));
+		$nb = max($nb, $this->NbLines($r[3], $str_2));
+		$h = 5 * $nb;
+		$this->CheckPageBreak($h);
+
+
+
+		$w = $r[0];
+		$x = $this->GetX();
+		$y = $this->GetY();
+		$this->Rect($x, $y, $w, $h, 'DF');
+		$this->MultiCell($w, 5, $label, 0, 'L');
+		$this->SetXY($x + $w, $y);
+
+		$w = $r[1];
+		$x = $this->GetX();
+		$y = $this->GetY();
+		$this->Rect($x, $y, $w, $h);
+		$this->MultiCell($w, 5, $str_1, 0, 'L');
+		$this->SetXY($x + $w, $y);
+
+		$w = $r[2];
+		$x = $this->GetX();
+		$y = $this->GetY();
+		$this->Rect($x, $y, $w, $h, 'DF');
+		$this->MultiCell($w, 5, $label_2, 0, 'L');
+		$this->SetXY($x + $w, $y);
+		$w = $r[3];
+		$x = $this->GetX();
+		$y = $this->GetY();
+		$this->Rect($x, $y, $w, $h);
+		$this->MultiCell($w, 5, $str_2, 0, 'L');
+		$this->SetXY($x + $w, $y);
+		$this->Ln($h);
+	}
 	function Row($no, $data)
 	{
 		$x_origin = $this->GetX();
@@ -141,8 +180,8 @@ class PDF_MC_Table extends FPDF
 		//Calculate the height of the row
 		$nb = 0;
 		// for ($i = 0; $i < count($dt_width); $i++)
-		$nb = max($nb, $this->NbLines(30, $data['kegiatan']));
-		$nb = max($nb, $this->NbLines(60, $data['kegiatan_atasan']));
+		$nb = max($nb, $this->NbLines(40, $data['kegiatan']));
+		$nb = max($nb, $this->NbLines(50, $data['kegiatan_atasan']));
 		$nb_iki = $this->NbLines(35, $data['iki_kuantitas']);
 		$nb_iki2 = $this->NbLines(35, $data['iki_kualitas']);
 		$nb_iki3 = $this->NbLines(35, $data['iki_waktu']);
@@ -179,7 +218,7 @@ class PDF_MC_Table extends FPDF
 			$this->SetXY($x + $w, $y);
 
 			// kg atasan
-			$w = 60;
+			$w = 50;
 			$a = isset($this->aligns[0]) ? $this->aligns[0] : 'L';
 			$x = $this->GetX();
 			$y = $this->GetY();
@@ -188,7 +227,7 @@ class PDF_MC_Table extends FPDF
 			$this->SetXY($x + $w, $y);
 
 			// keg
-			$w = 30;
+			$w = 40;
 			$a = isset($this->aligns[0]) ? $this->aligns[0] : 'L';
 			$x = $this->GetX();
 			$y = $this->GetY();

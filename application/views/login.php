@@ -47,19 +47,37 @@
       <div class="col-12 p-0">
         <div class="login-card">
           <div>
-            <div><a class="logo" href="index.html"><img class="img-fluid for-light" src="<?= base_url() ?>assets/img/logo_kab.bangka.png" alt="looginpage"><img class="img-fluid for-dark" src="<?= base_url() ?>assets/images/logo/logo_dark.png" alt="looginpage"></a></div>
-            <div class="login-main">
+            <div>
+              <div class="row">
+
+                <div class="col-lg-2">
+                  <a class="logo" href="">
+
+                    <img style="max-width: 100%; !important" class="img-fluid for-light" src="<?= base_url() ?>assets/img/logo_kab.bangka.png" alt="looginpage">
+                    <img style="max-width: 40%;" class="img-fluid for-dark" src="<?= base_url() ?>assets/img/logo_kab.bangka.png" alt="looginpage">
+                  </a>
+                </div>
+                <div class="col-lg-10">
+                  <center>
+                    <h4 style="margin-bottom : 0 ; margin-top: 1rem">SISTEM INFORMASI ADMINISTRASI DAN UMUM</h4>
+                    <h2 style="margin-bottom : 0">DINAS KESEHATAN</h2>
+                    <h2 style="margin-bottom : 0">KABUPATEN BANGKA</h2>
+                  </center>
+
+                </div>
+              </div>
+            </div>
+            <div class="login-main" style="">
               <form class="theme-form" id="loginForm">
-                <!-- <h4>DINAS KESEHATAN </h4> -->
-                <p>Masukkan username & password untuk login</p>
+                <!-- <h7>Masukkan username & password untuk login</h7> -->
                 <div class="form-group">
                   <label class="col-form-label">Username</label>
-                  <input class="form-control" type="text" required="" name="username" placeholder="Username">
+                  <input style="background-color: white !important" class="form-control" type="text" required="" name="username" placeholder="Username">
                 </div>
                 <div class="form-group">
                   <label class="col-form-label">Password</label>
                   <div class="form-input position-relative">
-                    <input class="form-control" type="password" name="password" required="" placeholder="*********">
+                    <input style="background-color: white !important" class="form-control" type="password" name="password" required="" placeholder="*********">
                     <div class="show-hide"><span class="show"> </span></div>
                   </div>
                 </div>
@@ -68,7 +86,7 @@
                     <input id="checkbox1" type="checkbox">
                   </div><a class="link" href="forget-password.html">Lupa password?</a>
                   <div class="text-end mt-3">
-                    <button class="btn btn-primary btn-block w-100" type="submit">MASUK</button>
+                    <button style="background-color: white !important" class="btn btn-light w-100" type="submit">MASUK</button>
                   </div>
                   <!-- </div>
                 <h6 class="text-muted mt-4 or">Or Sign in with</h6>

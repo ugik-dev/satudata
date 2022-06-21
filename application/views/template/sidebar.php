@@ -1,9 +1,9 @@
 <div id='sidebar_wrapper_func' class="sidebar-wrapper">
     <div>
         <div class="logo-wrapper">
-            <a href="index.html">
-                <h3>DINKES</h3>
-                <!-- <img class="img-fluid for-light" src="<?= base_url() ?>assets/images/logo/logo.png" alt="" /> -->
+            <a href="<?= base_url() ?>">
+                <!-- <h3>DINKES</h3> -->
+                <img class="img-fluid for-light" src="<?= base_url() ?>assets/images/logo/logo.png" alt="" />
                 <img class="img-fluid for-dark" src="<?= base_url() ?>assets/images/logo/logo_dark.png" alt="" />
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="logo-icon-wrapper">
-            <a href="index.html"><img class="img-fluid" src="<?= base_url() ?>assets/images/logo/logo-icon.png" alt="" /></a>
+            <a href="<?= base_url() ?>"><img class="img-fluid" src="<?= base_url() ?>assets/images/logo/logo-icon.png" alt="" /></a>
         </div>
         <nav class="sidebar-main">
             <div class="left-arrow" id="left-arrow">
@@ -34,8 +34,11 @@
                     <li class="sidebar-list">
                         <a style="" class="sidebar-link sidebar-title link-nav" id="sidebar_aktifitas" href="<?= base_url() ?>aktifitas"><i data-feather="box"> </i><span>Aktifitas Harian</span></a>
                     </li>
-                    <li class="sidebar-list active">
+                    <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title link-nav" id="sidebar_skp" href="<?= base_url() ?>skp"><i data-feather="box"> </i><span>Sasaran Kerja</span></a>
+                    </li>
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title link-nav" id="sidebar_permohonan" href="<?= base_url() ?>permohonan"><i data-feather="box"> </i><span>Permohonan Approval</span></a>
                     </li>
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>perjalanan-dinas"><i data-feather="box"> </i><span>Perjalanan Dinas Saya</span></a>
