@@ -1,7 +1,7 @@
 if (localStorage.getItem("color"))
   $("#color").attr(
     "href",
-    "../assets/css/" + localStorage.getItem("color") + ".css"
+    "./assets/css/" + localStorage.getItem("color") + ".css"
   );
 if (localStorage.getItem("dark")) $("body").attr("class", "dark-only");
 $(
@@ -365,7 +365,7 @@ $(
             <div class="layout-img">
               <a href="javascript:void(0)"
                 ><img
-                  src="../assets/images/landing/layout-images/dubai.jpg"
+                  src="./assets/images/landing/layout-images/dubai.jpg"
                   class="img-fluid"
                   alt=""
               /></a>
@@ -376,7 +376,7 @@ $(
             <div class="layout-img">
               <a href="javascript:void(0)"
                 ><img
-                  src="../assets/images/landing/layout-images/los.jpg"
+                  src="./assets/images/landing/layout-images/los.jpg"
                   class="img-fluid"
                   alt=""
               /></a>
@@ -387,7 +387,7 @@ $(
             <div class="layout-img">
               <a href="javascript:void(0)"
                 ><img
-                  src="../assets/images/landing/layout-images/paris.jpg"
+                  src="./assets/images/landing/layout-images/paris.jpg"
                   class="img-fluid"
                   alt=""
               /></a>
@@ -398,7 +398,7 @@ $(
             <div class="layout-img">
               <a href="javascript:void(0)"
                 ><img
-                  src="../assets/images/landing/layout-images/tokyo.jpg"
+                  src="./assets/images/landing/layout-images/tokyo.jpg"
                   class="img-fluid"
                   alt=""
               /></a>
@@ -409,7 +409,7 @@ $(
             <div class="layout-img">
               <a href="javascript:void(0)"
                 ><img
-                  src="../assets/images/landing/layout-images/moscow.jpg"
+                  src="./assets/images/landing/layout-images/moscow.jpg"
                   class="img-fluid"
                   alt=""
               /></a>
@@ -420,7 +420,7 @@ $(
             <div class="layout-img">
               <a href="javascript:void(0)"
                 ><img
-                  src="../assets/images/landing/layout-images/singapore.jpg"
+                  src="./assets/images/landing/layout-images/singapore.jpg"
                   class="img-fluid"
                   alt=""
               /></a>
@@ -431,7 +431,7 @@ $(
             <div class="layout-img">
               <a href="javascript:void(0)"
                 ><img
-                  src="../assets/images/landing/layout-images/newyork.jpg"
+                  src="./assets/images/landing/layout-images/newyork.jpg"
                   class="img-fluid"
                   alt=""
               /></a>
@@ -442,7 +442,7 @@ $(
             <div class="layout-img">
               <a href="javascript:void(0)"
                 ><img
-                  src="../assets/images/landing/layout-images/barc.jpg"
+                  src="./assets/images/landing/layout-images/barc.jpg"
                   class="img-fluid"
                   alt=""
               /></a>
@@ -453,7 +453,7 @@ $(
             <div class="layout-img">
               <a href="javascript:void(0)"
                 ><img
-                  src="../assets/images/landing/layout-images/madrid.jpg"
+                  src="./assets/images/landing/layout-images/madrid.jpg"
                   class="img-fluid"
                   alt=""
               /></a>
@@ -464,7 +464,7 @@ $(
             <div class="layout-img">
               <a href="javascript:void(0)"
                 ><img
-                  src="../assets/images/landing/layout-images/romo.jpg"
+                  src="./assets/images/landing/layout-images/romo.jpg"
                   class="img-fluid"
                   alt=""
               /></a>
@@ -475,7 +475,7 @@ $(
             <div class="layout-img">
               <a href="javascript:void(0)"
                 ><img
-                  src="../assets/images/landing/layout-images/seoul.jpg"
+                  src="./assets/images/landing/layout-images/seoul.jpg"
                   class="img-fluid"
                   alt=""
               /></a>
@@ -486,7 +486,7 @@ $(
             <div class="layout-img">
               <a href="javascript:void(0)"
                 ><img
-                  src="../assets/images/landing/layout-images/london.jpg"
+                  src="./assets/images/landing/layout-images/london.jpg"
                   class="img-fluid"
                   alt=""
               /></a>
@@ -512,7 +512,7 @@ $(document).ready(function () {
     localStorage.setItem("primary", primary);
     localStorage.setItem("secondary", secondary);
     localStorage.removeItem("dark");
-    $("#color").attr("href", "../assets/css/" + color + ".css");
+    $("#color").attr("href", "./assets/css/" + color + ".css");
     $(".dark-only").removeClass("dark-only");
     location.reload(true);
   });
@@ -624,7 +624,7 @@ $(document).ready(function () {
         );
         $(".logo-wrapper")
           .find("img")
-          .attr("src", "../assets/images/logo/logo.png");
+          .attr("src", "./assets/images/logo/logo.png");
         localStorage.setItem("page-wrapper", "horizontal-wrapper");
         break;
       }
