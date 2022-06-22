@@ -17,7 +17,7 @@
   <script src="<?= base_url() ?>assets/js/icons/feather-icon/feather-icon.js"></script>
   <!-- <script>
       feather.replace()
-  </script> -->
+    </script> -->
   <!-- scrollbar js-->
   <script src="<?= base_url() ?>assets/js/scrollbar/simplebar.js"></script>
   <script src="<?= base_url() ?>assets/js/scrollbar/custom.js"></script>
@@ -38,7 +38,7 @@
   <script src="<?= base_url() ?>assets/js/datepicker/date-picker/datepicker.js"></script>
   <script src="<?= base_url() ?>assets/js/datepicker/date-picker/datepicker.en.js"></script>
   <script src="<?= base_url() ?>assets/js/datepicker/date-picker/datepicker.custom.js"></script>
-  <script src="<?= base_url() ?>assets/js/sweet-alert/sweetalert.min.js"></script>
+  <!-- <script src="<?= base_url() ?>assets/js/sweet-alert/sweetalert.min.js"></script> -->
 
   <script src="<?= base_url() ?>assets/js/typeahead/handlebars.js"></script>
   <script src="<?= base_url() ?>assets/js/typeahead/typeahead.bundle.js"></script>

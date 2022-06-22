@@ -203,11 +203,11 @@
                             </div>
                             <div class="card-footer text-end">
                                 <button class="btn btn-primary" id="btn_update">
-                                    Update Profile
+                                    Simpan Profile
                                 </button>
-                                <button class="btn btn-primary" id='ttd_btn' type="">
+                                <!-- <button class="btn btn-primary" id='ttd_btn' type="">
                                     Ganti Tanda Tangan
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                     </div>
@@ -361,7 +361,7 @@
         formProfile.form.submit(function(event) {
             event.preventDefault();
             var url = "<?= base_url('user/update_my_profil') ?>";
-            swal({
+            Swal.fire({
                 title: "Apakah anda Yakin?",
                 text: "Data Disimpan!",
                 icon: "warning",
@@ -375,7 +375,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 $.ajax({
@@ -390,14 +390,15 @@
                         // buttonIdle(button);
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Simpan Gagal", json['message'], "error");
+                            Swal.fire("Simpan Gagal", json['message'], "error");
                             return;
                         }
-                        var user = json['data']
-                        dataUser[user['id']] = user;
-                        swal("Simpan Berhasil", "", "success");
-                        renderUser(dataUser);
-                        formProfile.self.modal('hide');
+                        // var user = json['data']
+                        // dataUser[user['id']] = user;
+                        Swal.fire("Simpan Berhasil", "", "success");
+                        location.reload();
+                        // renderUser(dataUser);
+                        // formProfile.self.modal('hide');
                     },
                     error: function(e) {}
                 });

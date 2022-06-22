@@ -261,21 +261,21 @@
             event.preventDefault();
             var url = "<?= base_url() . $dataContent['form_url'] ?>";
 
-            swal({
-                title: "Apakah anda Yakin?",
-                text: "Data Role akan dirubah dan hak aksess user terkait akan berubah juga!",
+            Swal.fire({
+                title: "Konfirmasi",
+                text: "Data akan disimpan!",
                 icon: "warning",
                 allowOutsideClick: false,
                 showCancelButton: true,
                 buttons: {
                     cancel: 'Batal !!',
                     catch: {
-                        text: "Ya, Saya Yakin !!",
+                        text: "Ya, Saya Simpan !!",
                         value: true,
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 // Swal.fire({
@@ -295,11 +295,11 @@
                         // buttonIdle(button);
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Simpan Gagal", json['message'], "error");
+                            Swal.fire("Simpan Gagal", json['message'], "error");
                             return;
                         }
                         Swal.close();
-                        swal({
+                        Swal.fire({
                             title: "Berhasil !!",
                             text: "Hak Aksess Berhasil Diperbaharui",
                             icon: "success",

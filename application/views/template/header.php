@@ -22,7 +22,7 @@
     <!-- Flag icon-->
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/flag-icon.css" />
     <!-- Feather icon-->
-    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/feather-icon.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/feather-icon.css" /> -->
     <!-- <script src="https://unpkg.com/feather-icons"></script> -->
     <!-- Plugins css start-->
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/scrollbar.css" />
@@ -46,6 +46,7 @@
     <script src="<?= base_url('assets/') ?>js/FileUploader.js"></script>
     <script src="<?= base_url('assets/') ?>js/custom.js?v=0.0.4"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
 </head>
 
 <body>

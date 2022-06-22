@@ -151,9 +151,9 @@
                     //     var aksiBtn = `
                     //   <a class="dropdown-item ajukan_approv" style="width: 110px" data-id='${skp['id_skp']}'><i class='fa fa-eye'></i> Ajukan Approv </a>
                     //      `;
-                    //     var lihatButton = `
-                    //     <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Lihat </a>
-                    // `;
+                    var lihatButton = `
+                        <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Lihat </a>
+                    `;
                 }
                 var button = `
                            <div class="dropdown-basic">
@@ -182,7 +182,7 @@
 
         FDataTable.on('click', '.ajukan_approv', function() {
             var currentData = dataSKP[$(this).data('id')];
-            swal({
+            Swal.fire({
                 title: "Konfrirmasi",
                 text: "Akan mengajukan approval data ini ?",
                 icon: "warning",
@@ -196,7 +196,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 $.ajax({
@@ -215,12 +215,12 @@
                         Swal.close();
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Simpan Gagal", json['message'], "error");
+                            Swal.fire("Simpan Gagal", json['message'], "error");
                             return;
                         }
                         var user = json['data']
                         dataSKP[user['id_skp']] = user;
-                        swal("Simpan Berhasil", "", "success");
+                        Swal.fire("Simpan Berhasil", "", "success");
                         renderSKP(dataSKP);
                         // UserModal.self.modal('hide');
                     },
@@ -232,7 +232,7 @@
         FDataTable.on('click', '.delete', function() {
             event.preventDefault();
             var id = $(this).data('id');
-            swal({
+            Swal.fire({
                 title: "Apakah anda Yakin?",
                 text: "Hapus data!",
                 icon: "warning",
@@ -246,7 +246,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 $.ajax({
@@ -258,11 +258,11 @@
                     success: function(data) {
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Delete Gagal", json['message'], "error");
+                            Swal.fire("Delete Gagal", json['message'], "error");
                             return;
                         }
                         delete dataSKP[id];
-                        swal("Delete Berhasil", "", "success");
+                        Swal.fire("Delete Berhasil", "", "success");
                         renderSKP(dataSKP);
                     },
                     error: function(e) {}

@@ -157,7 +157,7 @@
                     // <a class="batal_aksi dropdown-item"  data-id='${skp['id_skp']}' ><i class='fa fa-check'></i> Batal Aksi</a>
                     // `;
                     var lihatButton = `
-                    <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Lihat </a>
+                     <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}'><i class='fa fa-eye'></i> Cetak </a>
                       <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>skp/print/${skp['id_skp']}/barcode'><i class='fa fa-eye'></i> Cetak + Barcode </a>
               `;
                 } else if (skp['status'] == 3) {
@@ -189,7 +189,7 @@
                                 </div>
                             </div>
                         </div>`;
-                console.log(button)
+                // console.log(button)
                 i = 1;
                 renderData.push([skp['id_skp'], skp['periode_start'] + ' s.d ' + skp['periode_end'], skp['nama_pengaju'], skp['skp'], statusSKP(skp['status']), button]);
             });
@@ -198,7 +198,7 @@
 
         FDataTable.on('click', '.approv', function() {
             var currentData = dataSKP[$(this).data('id')];
-            swal({
+            Swal.fire({
                 title: "Konfrirmasi Approv SKP ?",
                 text: currentData['nama_pengaju'],
                 icon: "warning",
@@ -212,7 +212,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 Swal.fire({
@@ -233,12 +233,12 @@
                         // buttonIdle(button);
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Simpan Gagal", json['message'], "error");
+                            Swal.fire("Simpan Gagal", json['message'], "error");
                             return;
                         }
                         var d = json['data']
                         dataSKP[d['id_skp']] = d;
-                        swal("Approv Berhasil", "", "success");
+                        Swal.fire("Approv Berhasil", "", "success");
                         renderSKP(dataSKP);
                     },
                     error: function(e) {}
@@ -248,7 +248,7 @@
 
         FDataTable.on('click', '.deapprov', function() {
             var currentData = dataSKP[$(this).data('id')];
-            swal({
+            Swal.fire({
                 title: "Konfrirmasi Tolak Approv SKP ?",
                 text: currentData['nama_pengaju'],
                 icon: "warning",
@@ -262,7 +262,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 Swal.fire({
@@ -284,12 +284,12 @@
                         // buttonIdle(button);
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Tolak Gagal", json['message'], "error");
+                            Swal.fire("Tolak Gagal", json['message'], "error");
                             return;
                         }
                         var d = json['data']
                         dataSKP[d['id_skp']] = d;
-                        swal("SKP Berhasil ditolak", "", "success");
+                        Swal.fire("SKP Berhasil ditolak", "", "success");
                         renderSKP(dataSKP);
                     },
                     error: function(e) {}
@@ -299,7 +299,7 @@
 
         FDataTable.on('click', '.batal_aksi', function() {
             var currentData = dataSKP[$(this).data('id')];
-            swal({
+            Swal.fire({
                 title: "Konfrirmasi Pembatalan ?",
                 text: currentData['nama_pengaju'],
                 icon: "warning",
@@ -313,7 +313,8 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                console.log(result)
+                if (!result.isConfirmed) {
                     return;
                 }
                 Swal.fire({
@@ -335,12 +336,12 @@
                         // buttonIdle(button);
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Pembatalan Gagal", json['message'], "error");
+                            Swal.fire("Pembatalan Gagal", json['message'], "error");
                             return;
                         }
                         var d = json['data']
                         dataSKP[d['id_skp']] = d;
-                        swal("Pembatalan Berhasil", "", "success");
+                        Swal.fire("Pembatalan Berhasil", "", "success");
                         renderSKP(dataSKP);
                     },
                     error: function(e) {}

@@ -137,6 +137,7 @@ class User extends CI_Controller
         }
         $data['id'] = $this->session->userdata()['id'];
         $this->UserModel->editUser($data);
+        echo json_encode(array('error' => false));
         // var_dump($data);
         // if (!empty($_FILES['signature'])) {
         //     echo 'ada signature';
