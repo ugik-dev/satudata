@@ -16,7 +16,7 @@
                     <!-- <div class="col-form-label">Periode Penilaian</div> -->
                     <!-- </div> -->
                     <div id="log" style="width: 600px; height: 10px;"></div>
-                    <div id="map" style="width: 600px; height: 10px;"></div>
+                    <div id="map" style="width: 600px; height: 400px;"></div>
 
                     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.1/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
                     <script src="https://unpkg.com/leaflet@1.9.1/dist/leaflet.js" integrity="sha256-NDI0K41gVbWqfkkaHj15IzU7PtMoelkzyKp8TOaFQ3s=" crossorigin=""></script>
