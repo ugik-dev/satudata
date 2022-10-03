@@ -6,10 +6,11 @@ class SPPDModel extends CI_Model
 
     public function getAllSPPD($filter = [])
     {
-        $this->db->select("un.approval_id_user as id_unapproval , r.*,t.nama_tr as nama_transport, s.nama as nama_pegawai, s.jabatan jabatan_pegawai, s.pangkat_gol as pangkat_gol_pegawai,s.id_bidang as id_bidang_pegawai, s.id_bagian as id_bagian_pegawai, s.nip nip_pegawai ,p.nama as nama_ppk, p.jabatan jabatan_ppk, p.pangkat_gol as pangkat_gol_ppk, p.nip nip_ppk , u.*, d.nama_dasar");
+        $this->db->select("un.approval_id_user as id_unapproval ,p2.nama as nama_input, r.*,t.nama_tr as nama_transport, s.nama as nama_pegawai, s.jabatan jabatan_pegawai, s.pangkat_gol as pangkat_gol_pegawai,s.id_bidang as id_bidang_pegawai, s.id_bagian as id_bagian_pegawai, s.nip nip_pegawai ,p.nama as nama_ppk, p.jabatan jabatan_ppk, p.pangkat_gol as pangkat_gol_ppk, p.nip nip_ppk , u.*, d.nama_dasar");
         $this->db->from('sppd as u');
         $this->db->join('tujuan r', 'u.id_spd = r.id_sppd');
         $this->db->join('users p', 'p.id = u.id_ppk', 'LEFT');
+        $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
         $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
         $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
         $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
@@ -56,9 +57,10 @@ class SPPDModel extends CI_Model
         $data['id_satuan'] = $ses['id_satuan'];
         $data['id_bidang'] = $ses['id_bidang'];
         $data['id_bagian'] = $ses['id_bagian'];
+        $data['user_input'] = $ses['id'];
         $this->db->insert('sppd', DataStructure::slice($data, [
             'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas',
-            'id_satuan', 'id_bagian', 'id_bidang', 'id_dasar'
+            'id_satuan', 'id_bagian', 'id_bidang', 'id_dasar', 'user_input'
 
         ], FALSE));
 
@@ -110,9 +112,10 @@ class SPPDModel extends CI_Model
         $data['id_satuan'] = $ses['id_satuan'];
         $data['id_bidang'] = $ses['id_bidang'];
         $data['id_bagian'] = $ses['id_bagian'];
+        $data['user_input'] = $ses['id'];
         $this->db->set(DataStructure::slice($data, [
             'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas',
-            'id_satuan', 'id_bagian', 'id_bidang', 'id_dasar'
+            'id_satuan', 'id_bagian', 'id_bidang', 'id_dasar', 'user_input'
 
         ], FALSE));
 
@@ -185,6 +188,15 @@ class SPPDModel extends CI_Model
         return $id_sppd;
     }
 
+
+    public function draft_to_diajukan($data)
+    {
+        $this->db->set('status', '1');
+        $this->db->set('tgl_pengajuan', date('Y-m-d h:i:s'));
+        $this->db->where('id_spd', $data['id_spd']);
+        $this->db->update('sppd',);
+        ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
+    }
     public function approv($data)
     {
 
@@ -204,7 +216,7 @@ class SPPDModel extends CI_Model
         $id = $this->db->insert_id();
         if ($ses['level'] == 2) {
             $this->db->set('approve_kasi', $id);
-            $this->db->set('status', '1');
+            $this->db->set('status', '2');
         }
 
         $this->db->where('id_spd', $data['id_spd']);
@@ -232,7 +244,7 @@ class SPPDModel extends CI_Model
         $id = $this->db->insert_id();
         if ($ses['level'] == 2) {
             $this->db->set('unapprove_oleh', $id);
-            $this->db->set('status', '1');
+            $this->db->set('status', '3');
         }
 
         $this->db->where('id_spd', $data['id_spd']);

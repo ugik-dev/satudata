@@ -106,15 +106,22 @@ class Sppd extends CI_Controller
             $cur_user = $this->session->userdata();
             // echo $dataContent['return_data']['id_bagian'];
             // var_dump($cur_user);
-            if ($cur_user['level'] == 2 && $dataContent['return_data']['id_bagian_pegawai'] == $cur_user['id_bagian']) {
+            if ($dataContent['return_data']['user_input'] == $cur_user['id']) {
                 if ($dataContent['return_data']['status'] == 0) {
+                    if ($action == 'approv') {
+                        $this->SPPDModel->draft_to_diajukan($dataContent['return_data']);
+                    }
+                }
+            } else
+            if ($cur_user['level'] == 2 && $dataContent['return_data']['id_bagian_pegawai'] == $cur_user['id_bagian']) {
+                if ($dataContent['return_data']['status'] == 1) {
                     if ($action == 'approv') {
                         $this->SPPDModel->approv($dataContent['return_data']);
                     }
                     if ($action == 'unapprov') {
                         $this->SPPDModel->unapprov($dataContent['return_data']);
                     }
-                } else if ($dataContent['return_data']['status'] == 1 && $dataContent['return_data']['id_unapproval'] == $cur_user['id']) {
+                } else if ($dataContent['return_data']['status'] == 2 && $dataContent['return_data']['id_unapproval'] == $cur_user['id']) {
                     if ($action == 'undo') {
                         $this->SPPDModel->undo($dataContent['return_data']);
                     }

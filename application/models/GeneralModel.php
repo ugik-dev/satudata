@@ -4,6 +4,20 @@
 */
 class GeneralModel extends CI_Model
 {
+    public function deteksi_atasan($filter = [])
+    {
+        $this->db->select('*');
+        $this->db->from('users as u ');
+        if (!empty($filter['id_user']))
+            $this->db->where('u.id', $filter['id_user']);
+        $res = $this->db->get();
+        $user = $res->result_array()[0];
+
+        // $this->db->select('*');
+        // $this->db->from('role as x');
+        echo json_encode($user['id_bagian']);
+    }
+
     public function getAllRole($filter = [])
     {
         $this->db->select('*');
@@ -17,6 +31,7 @@ class GeneralModel extends CI_Model
         else
             return $res->result_array();
     }
+
 
     public function getAllMySKP($filter = [], $jk)
     {

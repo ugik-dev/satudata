@@ -336,6 +336,7 @@ class DataStructure
     }
     return $ret;
   }
+
   public static function SPPDStyle($arr)
   {
 
@@ -383,6 +384,9 @@ class DataStructure
           'approve_sekdin' => $a['approve_sekdin'],
           'approve_kadin' => $a['approve_kadin'],
           'approve_nomor' => $a['approve_nomor'],
+          'user_input' => $a['user_input'],
+          'nama_input' => $a['nama_input'],
+          'tgl_pengajuan' => $a['tgl_pengajuan'],
         );
 
       $ret[$a['id_spd']]['tujuan'][$a['ke']] = array(

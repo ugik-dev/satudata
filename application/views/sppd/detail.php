@@ -19,6 +19,11 @@
                                 $cur_user = $this->session->userdata();
                                 // echo $dataContent['return_data']['id_bagian'];
                                 // var_dump($cur_user);
+                                if ($cur_user['id'] == $dataContent['return_data']['user_input'] && $dataContent['return_data']['status'] == 0) {
+                                    echo ' <a class="btn btn-info" id="approv_btn"><i class="fa fa-check"></i><strong>Ajukan Approv </strong></a>';
+                                }
+
+                                // NEW
                                 if ($cur_user['level'] == 2 && $dataContent['return_data']['id_bagian_pegawai'] == $cur_user['id_bagian']) {
                                     if ($dataContent['return_data']['status'] == 0) {
                                         echo ' <a class="btn btn-info" id="approv_btn"><i class="fa fa-check"></i><strong>Approv </strong></a>';
@@ -243,7 +248,24 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <!-- <th></th> -->
+                                <th>Aksi</th>
+                                <th>Nama</th>
+                                <th>Tanggal</th>
+                                <!-- <th>Pangkat / Gol</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mengajukan</td>
+                                <td><?= $dataContent['return_data']['nama_input'] ?></td>
+                                <td><?= $dataContent['return_data']['tgl_pengajuan'] ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="tab-pane fade" id="top-contact" role="tabpanel" aria-labelledby="contact-top-tab">
                     <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
@@ -260,8 +282,8 @@
         $('#submenu_5').addClass('active');
         $('#approv_btn').on('click', (ev) => {
             event.preventDefault();
-            swal({
-                title: "Data ini akan di approv?",
+            Swal.fire({
+                title: "Data ini akan di  <?= ($cur_user['id'] == $dataContent['return_data']['user_input'] && $dataContent['return_data']['status'] == 0) ? ' diajukan' : 'diapprov' ?>?",
                 // text: "Data Role akan dirubah dan hak aksess user terkait akan berubah juga!",
                 icon: "warning",
                 allowOutsideClick: false,
@@ -274,7 +296,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 Swal.fire({
@@ -296,13 +318,13 @@
                     success: function(data) {
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Approval Gagal", json['message'], "error");
+                            Swal.fire(" <?= ($cur_user['id'] == $dataContent['return_data']['user_input'] && $dataContent['return_data']['status'] == 0) ? ' Pengajuan' : 'Approv' ?> Gagal", json['message'], "error");
                             return;
                         }
                         Swal.close();
-                        swal({
+                        Swal.fire({
                             title: "Berhasil !!",
-                            text: "Data telah diapprov.",
+                            text: "Data telah <?= ($cur_user['id'] == $dataContent['return_data']['user_input'] && $dataContent['return_data']['status'] == 0) ? ' diajukan' : 'diapprov' ?>",
                             icon: "success",
                             allowOutsideClick: true,
                             buttons: {
@@ -323,7 +345,7 @@
         $('#deapprov_btn').on('click', (ev) => {
             console.log('de')
             event.preventDefault();
-            swal({
+            Swal.fire({
                 title: "Data ini akan di tolak?",
                 // text: "Data Role akan dirubah dan hak aksess user terkait akan berubah juga!",
                 icon: "danger",
@@ -337,7 +359,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 Swal.fire({
@@ -359,11 +381,11 @@
                     success: function(data) {
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Gagal", json['message'], "error");
+                            Swal.fire("Gagal", json['message'], "error");
                             return;
                         }
                         Swal.close();
-                        swal({
+                        Swal.fire({
                             title: "Berhasil !!",
                             text: "Data telah ditolak.",
                             icon: "success",
@@ -385,7 +407,7 @@
 
         $('#batal_aksi').on('click', (ev) => {
             event.preventDefault();
-            swal({
+            Swal.fire({
                 title: "Batalkan Approval data?",
                 // text: "Data Role akan dirubah dan hak aksess user terkait akan berubah juga!",
                 icon: "warning",
@@ -399,7 +421,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 Swal.fire({
@@ -421,11 +443,11 @@
                     success: function(data) {
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Gagal", json['message'], "error");
+                            Swal.fire("Gagal", json['message'], "error");
                             return;
                         }
                         Swal.close();
-                        swal({
+                        Swal.fire({
                             title: "Berhasil !!",
                             text: "Aksi telah dibatalkan.",
                             icon: "success",

@@ -12,6 +12,18 @@ class General extends CI_Controller
         // $this->load->helper(array('DataStructure'));
         $this->db->db_debug = TRUE;
     }
+    public function deteksi_atasan()
+    {
+        try {
+            // $filter = $this->input->get();
+            // // $filter['nature'] = 'Assets';
+            $data = $this->GeneralModel->deteksi_atasan(array('id_user' => 1));
+
+            // echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
 
     public function getAllRole()
     {

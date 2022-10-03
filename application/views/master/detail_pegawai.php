@@ -404,7 +404,7 @@
             url += isAdd ? "addPosition" : "editPosition";
             var button = isAdd ? UserModal.addBtn : UserModal.saveEditBtn;
             console.log('sub')
-            swal({
+            Swal.fire({
                 title: "Apakah anda Yakin?",
                 text: "Data Disimpan!",
                 icon: "warning",
@@ -418,7 +418,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 $.ajax({
@@ -429,12 +429,12 @@
                         // buttonIdle(button);
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Simpan Gagal", json['message'], "error");
+                            Swal.fire("Simpan Gagal", json['message'], "error");
                             return;
                         }
                         var user = json['data']
                         dataUser[user['id']] = user;
-                        swal("Simpan Berhasil", "", "success");
+                        Swal.fire("Simpan Berhasil", "", "success");
                         renderUser(dataUser);
                         UserModal.self.modal('hide');
                     },

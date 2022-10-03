@@ -241,7 +241,7 @@
 
             $('.delete_dasar_tambahan').on('click', function(event) {
                 event.preventDefault();
-                swal({
+                Swal.fire({
                     title: "Hapus Dasar Tambahan?",
                     // text: "Data Role akan dirubah dan hak aksess user terkait akan berubah juga!",
                     icon: "warning",
@@ -255,7 +255,7 @@
                         },
                     },
                 }).then((result) => {
-                    if (!result) {
+                    if (!result.isConfirmed) {
                         return;
                     }
                     Swal.fire({
@@ -280,11 +280,11 @@
                             success: function(data) {
                                 var json = JSON.parse(data);
                                 if (json['error']) {
-                                    swal("Hapus Gagal", json['message'], "error");
+                                    Swal.fire("Hapus Gagal", json['message'], "error");
                                     return;
                                 }
                                 Swal.close();
-                                swal({
+                                Swal.fire({
                                     title: "Berhasil !!",
                                     text: "Dasar telah dihapus.",
                                     icon: "success",
@@ -302,7 +302,7 @@
                         });
                     } else {
                         Swal.close();
-                        swal({
+                        Swal.fire({
                             title: "Berhasil !!",
                             text: "Dasar telah dihapus.",
                             icon: "success",
@@ -324,7 +324,7 @@
 
         $('.delete_dasar_tambahan_lama').on('click', function(event) {
             event.preventDefault();
-            swal({
+            Swal.fire({
                 title: "Hapus Dasar Tambahan?",
                 text: "Dasar ini sebelumnya sudah disimpan, selanjutkan akan dihapus ?",
                 icon: "warning",
@@ -338,7 +338,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 Swal.fire({
@@ -360,11 +360,11 @@
                     success: function(data) {
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Hapus Gagal", json['message'], "error");
+                            Swal.fire("Hapus Gagal", json['message'], "error");
                             return;
                         }
                         Swal.close();
-                        swal({
+                        Swal.fire({
                             title: "Berhasil !!",
                             text: "Dasar telah dihapus.",
                             icon: "success",
@@ -475,9 +475,9 @@
             event.preventDefault();
             var url = "<?= base_url() . $dataContent['form_url'] ?>";
 
-            swal({
+            Swal.fire({
                 title: "Apakah anda Yakin?",
-                text: "Data Role akan dirubah dan hak aksess user terkait akan berubah juga!",
+                text: "Data akan disimpan !",
                 icon: "warning",
                 allowOutsideClick: false,
                 showCancelButton: true,
@@ -489,7 +489,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 Swal.fire({
@@ -509,13 +509,13 @@
                         // buttonIdle(button);
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Simpan Gagal", json['message'], "error");
+                            Swal.fire("Simpan Gagal", json['message'], "error");
                             return;
                         }
                         Swal.close();
-                        swal({
+                        Swal.fire({
                             title: "Berhasil !!",
-                            text: "Hak Aksess Berhasil Diperbaharui",
+                            text: "",
                             icon: "success",
                             allowOutsideClick: true,
                             buttons: {
@@ -534,7 +534,7 @@
         });
 
 
- 
+
         $("#id_ppk").select2({
             ajax: {
                 url: '<?= base_url() ?>Search/ppk',

@@ -482,7 +482,7 @@
             url += isAdd ? "addUser" : "editUser";
             var button = isAdd ? UserModal.addBtn : UserModal.saveEditBtn;
             console.log('sub')
-            swal({
+            Swal.fire({
                 title: "Apakah anda Yakin?",
                 text: "Data Disimpan!",
                 icon: "warning",
@@ -496,7 +496,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 $.ajax({
@@ -507,12 +507,12 @@
                         // buttonIdle(button);
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Simpan Gagal", json['message'], "error");
+                            Swal.fire("Simpan Gagal", json['message'], "error");
                             return;
                         }
                         var user = json['data']
                         dataUser[user['id']] = user;
-                        swal("Simpan Berhasil", "", "success");
+                        Swal.fire("Simpan Berhasil", "", "success");
                         renderUser(dataUser);
                         UserModal.self.modal('hide');
                     },
@@ -524,7 +524,7 @@
         FDataTable.on('click', '.delete', function() {
             event.preventDefault();
             var id = $(this).data('id');
-            swal({
+            Swal.fire({
                 title: "Apakah anda Yakin?",
                 text: "Hapus data!",
                 icon: "warning",
@@ -538,7 +538,7 @@
                     },
                 },
             }).then((result) => {
-                if (!result) {
+                if (!result.isConfirmed) {
                     return;
                 }
                 $.ajax({
@@ -550,11 +550,11 @@
                     success: function(data) {
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Delete Gagal", json['message'], "error");
+                            Swal.fire("Delete Gagal", json['message'], "error");
                             return;
                         }
                         delete dataUser[id];
-                        swal("Delete Berhasil", "", "success");
+                        Swal.fire("Delete Berhasil", "", "success");
                         renderUser(dataUser);
                     },
                     error: function(e) {}

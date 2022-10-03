@@ -296,7 +296,7 @@
             url += isAdd ? "addSatuan" : "editSatuan";
             var button = isAdd ? SatuanModal.addBtn : SatuanModal.saveEditBtn;
 
-            swal(swalSaveConfigure).then((result) => {
+            Swal.fire(swalSaveConfigure).then((result) => {
                 if (!result.value) {
                     return;
                 }
@@ -309,12 +309,12 @@
                         buttonIdle(button);
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Simpan Gagal", json['message'], "error");
+                            Swal.fire("Simpan Gagal", json['message'], "error");
                             return;
                         }
                         var satuan = json['data']
                         dataSatuan[satuan['id_satuan']] = satuan;
-                        swal("Simpan Berhasil", "", "success");
+                        Swal.fire("Simpan Berhasil", "", "success");
                         renderSatuan(dataSatuan);
                         SatuanModal.self.modal('hide');
                     },
@@ -326,7 +326,7 @@
         FDataTable.on('click', '.delete', function() {
             event.preventDefault();
             var id = $(this).data('id');
-            swal(swalDeleteConfigure).then((result) => {
+            Swal.fire(swalDeleteConfigure).then((result) => {
                 if (!result.value) {
                     return;
                 }
@@ -339,11 +339,11 @@
                     success: function(data) {
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Delete Gagal", json['message'], "error");
+                            Swal.fire("Delete Gagal", json['message'], "error");
                             return;
                         }
                         delete dataSatuan[id];
-                        swal("Delete Berhasil", "", "success");
+                        Swal.fire("Delete Berhasil", "", "success");
                         renderSatuan(dataSatuan);
                     },
                     error: function(e) {}
