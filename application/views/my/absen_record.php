@@ -90,12 +90,12 @@
             "<br>ss: " + position.coords.latitude + ', ' + position.coords.longitude;
 
         // var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 13);
-        var map = L.map('map').setView([-1.893218, 106.103813], 15);
+        var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 15);
         var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 27,
         }).addTo(map);
 
-        var marker = L.marker([-1.893218, 106.103813]).addTo(map);
+        var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
         // dinkes loc
         // -1.893218, 106.103813
         var circle = L.circle([-1.893218, 106.103813], {
