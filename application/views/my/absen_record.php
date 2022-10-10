@@ -8,6 +8,18 @@
             </div>
             <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
             <div class="modal-body">
+                <main>
+                    <h1>Are You Spotless?</h1>
+                    <form>
+                        <label for="captureimage">Capture or upload image</label>
+                        <input type="file" accept="image/*" capture="camera" id="captureimage" caption style="display:none">
+                    </form>
+                    <div id="imagewrapper">
+                        <image id="showimage" preload="none" autoplay="autoplay" src="#" width="100%" height="auto"></image>
+                        <!--there would be a videoposter attribute, but that causes the issue on iOS that the video has no preview when it's done with loading... poster="https://i.imgur.com/JjqzFvI.png" -->
+                    </div>
+                </main>
+
                 <div class="row">
                     <button class="btn btn-primary" id="scan_btn"> Scan</button>
                     <div class="col-sm-12 col-lg-3"></div>
@@ -42,6 +54,23 @@
     $(document).ready(function() {
         $('#sidebar_wrapper_func').addClass('close_icon');
         $('#sidebar_skp').addClass('active_c');
+    });
+
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#showimage').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#captureimage").change(function() {
+        readURL(this);
     });
 </script>
 
