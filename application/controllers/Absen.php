@@ -7,7 +7,7 @@ class Absen extends CI_Controller
         parent::__construct();
         $this->load->model(array('SecurityModel', 'GeneralModel', 'CutiModel'));
         // $this->load->helper(array('DataStructure'));
-        $this->SecurityModel->userOnlyGuard();
+        // $this->SecurityModel->userOnlyGuard();
 
         $this->db->db_debug = TRUE;
     }
