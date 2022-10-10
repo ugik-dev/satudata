@@ -47,8 +47,8 @@
             <div class="modal-footer">
                 <button class="btn btn-primary" type="submit" id="save_edit_btn" data-loading-text="Loading..."><strong>Simpan</strong></button>
             </div>
+        </form>
     </div>
-    </form>
 </div>
 
 <script>
