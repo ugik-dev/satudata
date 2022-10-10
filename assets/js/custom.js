@@ -157,7 +157,13 @@ SWALDELETE = {
   confirmButtonColor: "#DD6B55",
   confirmButtonText: "Ya, Hapus!",
 };
-
+function swalLoading() {
+  Swal.fire({
+    title: "Loading!..",
+    // allowOutsideClick: false,
+  });
+  Swal.showLoading();
+}
 function coloriseRealisasi(realisasi) {
   var realisasi = parseFloat(realisasi);
   if (realisasi <= 25)

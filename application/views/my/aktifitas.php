@@ -32,11 +32,11 @@
                         </div>
                         <div class=" col-md-6 col-lg-8">
                             <button type="button" class="btn btn-primary btn-md" name="btn_cari" id="btn_cari"><i class="fa fa-search"></i> Cari </button>
+                            <a type="button" class="btn btn-success btn-md" href="<?= base_url('aktifitas/add') ?>" id="new_btn" disabled="disabled"><i class="fa fa-plus"></i> Tambah </a>
+                            <a href="<?= base_url('absen/record') ?>" class="btn btn-warning btn-md"><i class="fa fa-calendar"></i> Absen </a>
                             <button type="button" class="btn btn-light btn-md float-end" name="btn_print" id="btn_print"><i class="fa fa-print"></i> Print </button>
-                            <a href="<?= base_url('absen/record') ?>" class="btn btn-light btn-md float-end"><i class="fa fa-print"></i> Print </a>
                             <!-- <button type="button" class="btn btn-primary btn-sm" name="btn_cari" id="btn_cari"><i class="fa fa-search"></i> Cari </button> -->
                             <!-- <a type="button" class="btn btn-primary btn-sm mr-10 ml-10" href="<?= base_url('aktifitas/print/1') ?>" id="" disabled="disabled"><i class="fa fa-print"></i> Print </a> -->
-                            <a type="button" class="btn btn-success btn-md" href="<?= base_url('aktifitas/add') ?>" id="new_btn" disabled="disabled"><i class="fa fa-plus"></i> Tambah </a>
                         </div>
                     </form>
                 </div>
@@ -154,7 +154,7 @@
 
         function getAllSppd() {
             Swal.fire({
-                title: 'Loading SPPD!',
+                title: 'Loading!',
                 allowOutsideClick: false,
             });
             Swal.showLoading()
@@ -174,6 +174,7 @@
                 error: function(e) {}
             });
         }
+
 
         function print() {
             toolbar.tahun.val()
@@ -207,14 +208,15 @@
             var renderData = [];
             Object.values(data).forEach((aktifitas) => {
                 var editButton = `
-                    <a class="dropdown-item"  href='<?= base_url() ?>aktifitas/edit/${aktifitas['id_aktifitas']}'><i class='fa fa-pencil'></i> Edit Sppd</a>
+                    <a class="dropdown-item"  href='<?= base_url() ?>aktifitas/edit/${aktifitas['id_aktifitas']}'><i class='fa fa-pencil'></i> Edit</a>
                   `;
+
                 var lihatButton = `
                     <a class="dropdown-item" style="width: 110px" href='<?= base_url() ?>user/detail_perjadin/${aktifitas['id_aktifitas']}'><i class='fa fa-eye'></i> Buka</a>
                 `;
 
                 var deleteButton = `
-                    <a class="delete dropdown-item" data-id='${aktifitas['id']}'><i class='fa fa-trash'></i> Hapus Sppd</a>
+                    <a class="delete dropdown-item" data-id='${aktifitas['id']}'><i class='fa fa-trash'></i> Hapus </a>
                   `;
                 var button = `
                            <div class="dropdown-basic">

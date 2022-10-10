@@ -5,7 +5,7 @@ class Absen extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model(array('SecurityModel', 'GeneralModel', 'CutiModel'));
+        $this->load->model(array('SecurityModel', 'GeneralModel', 'AbsenModel'));
         // $this->load->helper(array('DataStructure'));
         // $this->SecurityModel->userOnlyGuard();
 
@@ -35,11 +35,11 @@ class Absen extends CI_Controller
     {
         try {
             // $res_data['form_url'] = 'absen/record';
-            // $res_data['jenis_cuti'] = $this->CutiModel->getJenisCuti();
+            $res_data['location'] = $this->AbsenModel->getLocation();
             $data = array(
                 'page' => 'my/absen_record',
                 'title' => 'Record Absen',
-                // 'dataContent' => $res_data
+                'dataContent' => $res_data
 
             );
             $this->load->view('page', $data);
