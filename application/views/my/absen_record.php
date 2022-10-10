@@ -8,31 +8,27 @@
             </div>
             <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
             <div class="modal-body">
-                <main>
-                    <h1>Are You Spotless?</h1>
-                    <form>
-                        <label for="captureimage">Capture or upload image</label>
-                        <input type="file" accept="image/*" capture="camera" id="captureimage" caption style="display:none">
-                    </form>
-                    <div id="imagewrapper">
-                        <image id="showimage" preload="none" autoplay="autoplay" src="#" width="100%" height="auto"></image>
-                        <!--there would be a videoposter attribute, but that causes the issue on iOS that the video has no preview when it's done with loading... poster="https://i.imgur.com/JjqzFvI.png" -->
-                    </div>
-                </main>
+
 
                 <div class="row">
-                    <button class="btn btn-primary" id="scan_btn"> Scan</button>
-                    <div class="col-sm-12 col-lg-3"></div>
-                    <input type="file" accept="image/*;capture=camera">
-                    <input id="form_long" name="long">
-                    <input id="form_lat" name="lat">
-                    <!-- <div class="hr-line-dashed"></div> -->
-                    <!-- <div class="col-lg-6"> -->
-                    <!-- <div class="col-form-label">Periode Penilaian</div> -->
-                    <!-- </div> -->
-                    <div id="log" style="width: 600px; height: 10px;"></div>
-                    <div id="map" style="width: 600px; height: 400px;"></div>
+                    <div class="col-lg-6">
+                        <button class="btn btn-primary" id="scan_btn"><i class="fa fa-map-marker"></i> Scan</button>
+                        <input id="form_long" name="long">
+                        <input id="form_lat" name="lat">
+                        <div id="log" style="width: 600px; height: 10px;"></div>
+                        <div id="map" style="width: 100%; height: 400px;"></div>
 
+                    </div>
+                    <div class="col-sm-12 col-lg-6">
+                        <a class="btn btn-primary">
+
+                            <label for="captureimage"><i class="fa fa-camera"></i>Ambil Gambar</label>
+                        </a>
+                        <input type="file" accept="image/*" capture="camera" id="captureimage" class="btn btn-info" caption style="display:none">
+                        <!-- <div id="imagewrapper"> -->
+                        <image id="showimage" preload="none" autoplay="autoplay" src="" width="100%" height="auto"></image>
+                        <!-- </div> -->
+                    </div>
                     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.1/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
                     <script src="https://unpkg.com/leaflet@1.9.1/dist/leaflet.js" integrity="sha256-NDI0K41gVbWqfkkaHj15IzU7PtMoelkzyKp8TOaFQ3s=" crossorigin=""></script>
 
