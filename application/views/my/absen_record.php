@@ -51,12 +51,25 @@
     var form_long = $('#form_long')
     var form_lat = $('#form_lat')
     var scan_btn = $('#scan_btn')
+    var st_marker = false;
+    var i = 0;
 
+    var map = L.map('map').setView([-1.893218, 106.103813], 8);
+    var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 27,
+    }).addTo(map);
     scan_btn.on('click', function() {
         getLocation();
     })
+    var circle = L.circle([-1.893218, 106.103813], {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.5,
+        radius: 50
+    }).addTo(map);
 
     function getLocation() {
+
         if (navigator.geolocation) {
             x.innerHTML = "Geolocation is suport.";
             navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -83,31 +96,36 @@
     }
 
     function showPosition(position) {
+        if (st_marker) {
+            i = i + 1
+            // console.log(marker);
+            map.removeLayer(marker)
+            // map.removeLayer(marker[0])
+        }
+
         form_lat.val(position.coords.latitude);
         form_long.val(position.coords.longitude);
         x.innerHTML = "Latitude: " + position.coords.latitude +
             "<br>Longitude: " + position.coords.longitude +
             "<br>ss: " + position.coords.latitude + ', ' + position.coords.longitude;
+        st_marker = true;
 
         // var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 13);
-        var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 15);
-        var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 27,
-        }).addTo(map);
+        // var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //     maxZoom: 27,
+        // }).addTo(map);
 
-        var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+
+
+        marker = L.marker([position.coords.latitude, position.coords.longitude + i]).addTo(map);
+        map.flyTo([position.coords.latitude, position.coords.longitude + i], 15)
         // dinkes loc
         // -1.893218, 106.103813
-        var circle = L.circle([-1.893218, 106.103813], {
-            color: 'red',
-            fillColor: '#f03',
-            fillOpacity: 0.5,
-            radius: 50
-        }).addTo(map);
-        var polygon = L.polygon([
-            [51.509, -0.08],
-            [51.503, -0.06],
-            [51.51, -0.047]
-        ]).addTo(map);
+
+        // var polygon = L.polygon([
+        //     [51.509, -0.08],
+        //     [51.503, -0.06],
+        //     [51.51, -0.047]
+        // ]).addTo(map);
     }
 </script>
