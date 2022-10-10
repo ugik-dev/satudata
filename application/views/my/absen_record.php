@@ -10,6 +10,8 @@
             <div class="modal-body">
                 <div class="row">
                     <button class="btn btn-primary" id="scan_btn"> Scan</button>
+                    <div class="col-sm-12 col-lg-3"></div>
+                    <input type="file" accept="image/*;capture=camera">
                     <input id="form_long" name="long">
                     <input id="form_lat" name="lat">
                     <!-- <div class="hr-line-dashed"></div> -->
@@ -97,7 +99,7 @@
 
     function showPosition(position) {
         if (st_marker) {
-            i = i + 1
+            // i = i + 1
             // console.log(marker);
             map.removeLayer(marker)
             // map.removeLayer(marker[0])
@@ -117,8 +119,8 @@
 
 
 
-        marker = L.marker([position.coords.latitude, position.coords.longitude + i]).addTo(map);
-        map.flyTo([position.coords.latitude, position.coords.longitude + i], 15)
+        marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+        map.flyTo([position.coords.latitude, position.coords.longitude], 15)
         // dinkes loc
         // -1.893218, 106.103813
 
