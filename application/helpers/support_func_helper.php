@@ -1,32 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 
-
-if (!function_exists('fetch_single_qty_item')) {
-	//USED TO FETCH AND COUNT THE NUMBER OF OCCURANCE IN STOCK
-	function fetch_single_qty_item($item_id)
-	{
-		$CI	= &get_instance();
-		$CI->load->database();
-		$CI->db->select("qty");
-		$CI->db->from('mp_sales');
-		$CI->db->where(['mp_sales.product_id' => $item_id]);
-
-		$query = $CI->db->get();
-		$result = NULL;
-		if ($query->num_rows() > 0) {
-			$obj_res =  $query->result();
-			if ($obj_res != NULL) {
-				foreach ($obj_res as $single_qty) {
-					$result = $result + $single_qty->qty;
-				}
-			}
-		}
-
-		return $result;
-	}
-}
-
 if (!function_exists('tanggal_indonesia')) {
 	function tanggal_indonesia($tanggal)
 	{

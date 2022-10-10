@@ -5,13 +5,10 @@
                 <div class="card-header">
 
                     <form class="form-inline" id="toolbar_form" onsubmit="return false;">
-                        <!-- <div class="col-lg-2"> -->
-                        <input type="hidden" id="is_not_self" name="is_not_self" value="1">
-                        <!-- </div> -->
                         <div class="col-lg-2">
-                            <select class="form-control mr-sm-2" name="tool_id_role" id="tool_id_role"></select>
+                            <select class="form-control mr-sm-2" name="id_jenis_bank_data" id="id_jenis_bank_data"></select>
                         </div>
-                        <button type="button" class="btn btn-success my-1 mr-sm-2" id="new_btn" disabled="disabled"><i class="fal fa-plus"></i> Tambah User Baru</button>
+                        <button type="button" class="btn btn-success my-1 mr-sm-2" id="new_btn" disabled="disabled"><i class="fa fa-plus"></i> Tambah Data</button>
                     </form>
                 </div>
 

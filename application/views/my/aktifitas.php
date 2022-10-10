@@ -33,6 +33,7 @@
                         <div class=" col-md-6 col-lg-8">
                             <button type="button" class="btn btn-primary btn-md" name="btn_cari" id="btn_cari"><i class="fa fa-search"></i> Cari </button>
                             <button type="button" class="btn btn-light btn-md float-end" name="btn_print" id="btn_print"><i class="fa fa-print"></i> Print </button>
+                            <a href="<?= base_url('absen/record') ?>" class="btn btn-light btn-md float-end"><i class="fa fa-print"></i> Print </a>
                             <!-- <button type="button" class="btn btn-primary btn-sm" name="btn_cari" id="btn_cari"><i class="fa fa-search"></i> Cari </button> -->
                             <!-- <a type="button" class="btn btn-primary btn-sm mr-10 ml-10" href="<?= base_url('aktifitas/print/1') ?>" id="" disabled="disabled"><i class="fa fa-print"></i> Print </a> -->
                             <a type="button" class="btn btn-success btn-md" href="<?= base_url('aktifitas/add') ?>" id="new_btn" disabled="disabled"><i class="fa fa-plus"></i> Tambah </a>

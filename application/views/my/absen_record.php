@@ -5,12 +5,13 @@
                 <h5 class="modal-title" id="modal_title">
                     Form Saran Kerja Pegawai
                 </h5>
-                <!-- <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
             <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
             <div class="modal-body">
                 <div class="row">
-
+                    <button class="btn btn-primary" id="scan_btn"> Scan</button>
+                    <input id="form_long" name="long">
+                    <input id="form_lat" name="lat">
                     <!-- <div class="hr-line-dashed"></div> -->
                     <!-- <div class="col-lg-6"> -->
                     <!-- <div class="col-form-label">Periode Penilaian</div> -->
@@ -46,21 +47,14 @@
 <script>
     var x = document.getElementById("demo");
     var xx = document.getElementById("log");
-    // window.navigator.geolocation
-    //     .getCurrentPosition();
 
-    // const successCallback = (position) => {
-    //     console.log(position);
-    //     xx.innerHTML = "G.";
-    // };
+    var form_long = $('#form_long')
+    var form_lat = $('#form_lat')
+    var scan_btn = $('#scan_btn')
 
-    // const errorCallback = (error) => {
-    //     console.log(error);
-    //     xx.innerHTML = error;
-    // };
-
-
-    getLocation()
+    scan_btn.on('click', function() {
+        getLocation();
+    })
 
     function getLocation() {
         if (navigator.geolocation) {
@@ -89,31 +83,31 @@
     }
 
     function showPosition(position) {
+        form_lat.val(position.coords.latitude);
+        form_long.val(position.coords.longitude);
         x.innerHTML = "Latitude: " + position.coords.latitude +
             "<br>Longitude: " + position.coords.longitude +
             "<br>ss: " + position.coords.latitude + ', ' + position.coords.longitude;
 
-        var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 13);
-
+        // var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 13);
+        var map = L.map('map').setView([-1.893218, 106.103813], 15);
         var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
+            maxZoom: 27,
         }).addTo(map);
 
-        var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-
-        var circle = L.circle([51.508, -0.11], {
+        var marker = L.marker([-1.893218, 106.103813]).addTo(map);
+        // dinkes loc
+        // -1.893218, 106.103813
+        var circle = L.circle([-1.893218, 106.103813], {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5,
-            radius: 500
+            radius: 50
         }).addTo(map);
-
-
         var polygon = L.polygon([
             [51.509, -0.08],
             [51.503, -0.06],
             [51.51, -0.047]
         ]).addTo(map);
-
     }
 </script>
