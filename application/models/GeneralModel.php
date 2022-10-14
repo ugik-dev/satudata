@@ -33,7 +33,7 @@ class GeneralModel extends CI_Model
     }
 
 
-    public function getAllMySKP($filter = [], $jk)
+    public function getAllMySKP($filter, $jk)
     {
         $this->db->select('sc.id_skp_child as id, sc.kegiatan as text');
         $this->db->from('skp_child as sc');
