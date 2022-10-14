@@ -104,7 +104,7 @@ class FileIO
     FileIO::delete($field, $oldFilename);
   }
 
-  public static function genericUpload($field, $allowedType, $oldData = NULL, $data)
+  public static function genericUpload($field, $allowedType, $oldData, $data)
   {
     $filename = NULL;
     $filename = !empty($_FILES[$field]['name']) ? FileIO::upload($field, $field, NULL, $allowedType)['filename'] : (!empty($oldData[$field]) ? $oldData[$field] : NULL);
@@ -112,7 +112,7 @@ class FileIO
     return $filename;
   }
 
-  public static function genericReUpload($field , $allowedType, $oldData = NULL, $data)
+  public static function genericReUpload($field, $allowedType, $oldData, $data)
   {
     $field = 're_upload_dokumen';
     // var_dump($data);
