@@ -79,7 +79,7 @@ class User extends CI_Controller
     {
         try {
             $this->SecurityModel->multiRole('SPPD', 'Entri SPPD');
-            $res_data['return_data'] = $this->SPPDModel->getAllSPPD(array('id_spd' => $id))[$id];
+            $res_data['return_data'] = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
             $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
             $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
 

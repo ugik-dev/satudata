@@ -184,6 +184,14 @@ class DataStructure
     return $ret;
   }
 
+  public static function groupingByParent($arr, $parentForeign)
+  {
+    $ret = array();
+    foreach ($arr as $a) {
+      $ret[$a[$parentForeign]][] = $a;
+    }
+    return $ret;
+  }
 
   public static function printLaporanHarian($arr)
   {
@@ -337,15 +345,40 @@ class DataStructure
     return $ret;
   }
 
+  public static function SPPDStyle2($arr, $tujuan, $pengikut)
+  {
+
+    $ret = array();
+    foreach ($arr as $a) {
+      $groupKey = $a['id_spt'];
+      // if (empty($ret[$a['id_spt']]))
+      $ret[$a['id_spt']] = $a;
+      $ret[$a['id_spt']]['tujuan'] = [];
+      $ret[$a['id_spt']]['pengikut'] = [];
+      // echo json_encode($ret);
+      // die();
+    }
+    foreach ($tujuan as $key => $b) {
+      $ret[$key]['tujuan'] = $b;
+    }
+    foreach ($pengikut as $key => $c) {
+      $ret[$key]['pengikut'] = $c;
+    }
+    // echo json_encode($ret);
+    // die();
+    return $ret;
+  }
   public static function SPPDStyle($arr)
   {
 
     $ret = array();
     foreach ($arr as $a) {
-      $groupKey = $a['id_spd'];
-      if (empty($ret[$a['id_spd']]))
-        $ret[$a['id_spd']] = array(
-          'id_spd' => $a['id_spd'],
+      $groupKey = $a['id_spt'];
+      if (empty($ret[$a['id_spt']]))
+        $ret[$a['id_spt']] = array(
+          'id_spt' => $a['id_spt'],
+          'jenis' => $a['jenis'],
+          'nama_ref_jen_spt' => $a['nama_ref_jen_spt'],
           'nama_pegawai' => $a['nama_pegawai'],
           'jabatan_pegawai' => $a['jabatan_pegawai'],
           'pangkat_gol_pegawai' => $a['pangkat_gol_pegawai'],
@@ -358,7 +391,7 @@ class DataStructure
           'no_spt' => $a['no_spt'],
           'no_sppd' => $a['no_sppd'],
           'id_kad' => $a['id_kad'],
-          'id_bidang_pegawai' => $a['id_bidang_pegawai'],
+          'id_seksi_pegawai' => $a['id_seksi_pegawai'],
           'id_bagian_pegawai' => $a['id_bagian_pegawai'],
           'id_unapproval' => $a['id_unapproval'],
 
@@ -376,7 +409,7 @@ class DataStructure
           'unapprove_oleh' => $a['unapprove_oleh'],
           'approve_oleh' => $a['approve_oleh'],
           'id_seksi' => $a['id_seksi'],
-          'id_bidang' => $a['id_bidang'],
+          'id_seksi' => $a['id_seksi'],
           'keterangan' => $a['keterangan'],
           'tahun' => $a['tahun'],
           'approve_kasi' => $a['approve_kasi'],
@@ -389,7 +422,7 @@ class DataStructure
           'tgl_pengajuan' => $a['tgl_pengajuan'],
         );
 
-      $ret[$a['id_spd']]['tujuan'][$a['ke']] = array(
+      $ret[$a['id_spt']]['tujuan'][$a['ke']] = array(
         'id_tujuan' => $a['id_tujuan'],
         'tempat_tujuan' => $a['tempat_tujuan'],
         'tempat_kembali' => $a['tempat_kembali'],

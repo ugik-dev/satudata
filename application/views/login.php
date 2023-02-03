@@ -8,8 +8,8 @@
   <meta name="description" content="Cuba admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
   <meta name="keywords" content="admin template, Cuba admin template, dashboard template, flat admin template, responsive admin template, web app">
   <meta name="author" content="pixelstrap">
-  <link rel="icon" href="<?= base_url() ?>assets/img/logo_kab.bangka.png" type="image/x-icon">
-  <link rel="shortcut icon" href="<?= base_url() ?>assets/img/logo_kab.bangka.png" type="image/x-icon">
+  <link rel="icon" href="<?= base_url() ?>assets/img/kab_bangka.png" type="image/x-icon">
+  <link rel="shortcut icon" href="<?= base_url() ?>assets/img/kab_bangka.png" type="image/x-icon">
   <title>DINKES KAB.BANGKA | Login</title>
   <!-- Google font-->
   <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap" rel="stylesheet">
@@ -53,8 +53,8 @@
                 <div class="col-lg-2">
                   <a class="logo" href="">
 
-                    <img style="max-width: 100%; !important" class="img-fluid for-light" src="<?= base_url() ?>assets/img/logo_kab.bangka.png" alt="looginpage">
-                    <img style="max-width: 40%;" class="img-fluid for-dark" src="<?= base_url() ?>assets/img/logo_kab.bangka.png" alt="looginpage">
+                    <img style="max-width: 100%; !important" class="img-fluid for-light" src="<?= base_url() ?>assets/img/kab_bangka.png" alt="looginpage">
+                    <img style="max-width: 40%;" class="img-fluid for-dark" src="<?= base_url() ?>assets/img/kab_bangka.png" alt="looginpage">
                   </a>
                 </div>
                 <div class="col-lg-10">

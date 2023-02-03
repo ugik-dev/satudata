@@ -39,7 +39,10 @@ class SecurityModel extends CI_Model
     $this->db->join('menu', 'menu.id_menu = menulist.id_menu');
     $this->db->where('hak_aksess.id_role', $this->session->userdata()['id_role']);
     $this->db->where('menu.label_menu', $m);
-    $this->db->where('menulist.label_menulist', $ms);
+    if (is_array($ms))
+      $this->db->where_in('menulist.label_menulist', $ms);
+    else
+      $this->db->where('menulist.label_menulist', $ms);
     $res = $this->db->get();
     $res = $res->result_array();
 

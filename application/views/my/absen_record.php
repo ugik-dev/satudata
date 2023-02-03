@@ -1,47 +1,40 @@
 <div class="container-fluid">
     <div class="card">
-        <form id="user_form" onsubmit="return false;" type="multipart" autocomplete="off">
+        <form id="absen_form" onsubmit="return false;" type="multipart" autocomplete="off">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal_title">
                     Form Saran Kerja Pegawai
                 </h5>
             </div>
-            <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
             <div class="modal-body">
-
-
                 <div class="row">
                     <div class="col-lg-12">
                         <p>Waktu Sekarang : <span id="jam"></span> : <span id="menit"></span> : <span id="detik"></span>
                         </p>
                     </div>
                     <div class="col-lg-6">
-                        <button class="btn btn-primary" id="scan_btn"><i class="fa fa-map-marker"></i> Scan</button>
-                        <input id="form_long" name="long">
-                        <input id="form_lat" name="lat">
+                        <a class="btn btn-primary" id="scan_btn"><i class="fa fa-map-marker"></i> Scan</a>
+                        <input id="form_long" name="longitude">
+                        <input id="form_lat" name="latitude">
                         <input id="waktu_absen" name="waktu_absen">
+                        <input id="lokasi" name="lokasi">
                         <div id="info"></div>
                         <div id="log" style="width: 600px; height: 10px;"></div>
                         <div id="map" style="width: 100%; height: 400px;"></div>
-
                     </div>
                     <div class="col-sm-12 col-lg-6">
                         <a class="btn btn-primary">
 
                             <label for="captureimage"><i class="fa fa-camera"></i>Ambil Gambar</label>
                         </a>
-                        <input type="file" accept="image/*" capture="camera" id="captureimage" class="btn btn-info" caption style="display:none">
-                        <!-- <div id="imagewrapper"> -->
+                        <input type="file" accept="image/*" capture="camera" name="captureimage" id="captureimage" class="btn btn-info" caption style="display:none">
+                        <!-- -->
+
                         <image id="showimage" preload="none" autoplay="autoplay" src="" width="100%" height="auto"></image>
-                        <!-- </div> -->
                     </div>
                     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.1/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
                     <script src="https://unpkg.com/leaflet@1.9.1/dist/leaflet.js" integrity="sha256-NDI0K41gVbWqfkkaHj15IzU7PtMoelkzyKp8TOaFQ3s=" crossorigin=""></script>
 
-                    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.1/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
-                    <script src="https://unpkg.com/leaflet@1.9.1/dist/leaflet.js" integrity="sha256-NDI0K41gVbWqfkkaHj15IzU7PtMoelkzyKp8TOaFQ3s=" crossorigin=""></script>
-                    <div class="col-lg-6"> -->
-                    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly" defer></script> -->
                 </div>
             </div>
             <div class="modal-footer">
@@ -52,44 +45,6 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-        $('#sidebar_wrapper_func').addClass('close_icon');
-        $('#sidebar_skp').addClass('active_c');
-    });
-
-    function readURL(input) {
-
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
-                $('#showimage').attr('src', e.target.result);
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $("#captureimage").change(function() {
-        readURL(this);
-    });
-</script>
-
-
-<script>
-    swalLoading();
-    // swal.close();
-    var info = document.getElementById("info");
-    var absen_time = false;
-    var form_long = $('#form_long')
-    var form_lat = $('#form_lat')
-    var scan_btn = $('#scan_btn')
-    var waktu_absen = $('#waktu_absen')
-    var st_marker = false;
-    var circle = [];
-    var dataLocation = JSON.parse('<?= json_encode($dataContent['location']) ?>');
-
-    // var waktu = new Date();
     window.setTimeout("waktu()", 1000);
 
     function waktu() {
@@ -111,15 +66,91 @@
             console.log('waktu sore')
 
         }
+    };
+
+    $(document).ready(function() {
+        // $('#sidebar_wrapper_func').addClass('close_icon');
+        $('#sidebar_absensi').addClass('active_c');
+
+        $('#sidebar_absensi').addClass('active_c');
+
+        absenForm = $('#absen_form');
+        absenForm.submit(function(event) {
+            event.preventDefault();
+            var url = "<?= base_url('absensi/absensi_process') ?>";
+            Swal.fire({
+                title: "Apakah anda Yakinss?",
+                text: "Data Disimpan!",
+                icon: "warning",
+                allowOutsideClick: false,
+                showCancelButton: true,
+                buttons: {
+                    cancel: 'Batal !!',
+                    catch: {
+                        text: "Ya, Saya Simpan !!",
+                        value: true,
+                    },
+                },
+            }).then((result) => {
+                if (!result.isConfirmed) {
+                    return;
+                }
+                $.ajax({
+                    url: url,
+                    'type': 'POST',
+                    data:
+                        // formProfile.form.serialize(),
+                        new FormData(absenForm[0]),
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        // buttonIdle(button);
+                        var json = JSON.parse(data);
+                        if (json['error']) {
+                            Swal.fire("Simpan Gagal", json['message'], "error");
+                            return;
+                        }
+                        // var user = json['data']
+                        // dataUser[user['id']] = user;
+                        Swal.fire("Simpan Berhasil", "", "success");
+                        // location.reload();
+                        // renderUser(dataUser);
+                        // formProfile.self.modal('hide');
+                    },
+                    error: function(e) {}
+                });
+            });
+        });
+    });
+
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#showimage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 
+    $("#captureimage").change(function() {
+        readURL(this);
+    });
 
+    swalLoading();
+    var info = document.getElementById("info");
+    var absen_time = false;
+    var form_long = $('#form_long')
+    var form_lat = $('#form_lat')
+    var scan_btn = $('#scan_btn')
+    var waktu_absen = $('#waktu_absen')
+    var lokasi = $('#lokasi')
+    var st_marker = false;
+    var circle = [];
+    var dataLocation = JSON.parse('<?= json_encode($dataContent['location']) ?>');
 
-    // }
-
-
-    // console.log(dataLocation);
-    var map = L.map('map').setView([-1.893218, 106.103813], 8);
+    var map = L.map('map').setView([-1.893218, 106.103813], 14);
     var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 27,
     }).addTo(map);
@@ -140,12 +171,16 @@
                 radius: 50
             }).addTo(map);
             i++;
-
         })
+
+        swal.close();
+
     }
 
     function resetLocation(lat, long) {
         i = 1;
+        var cur_loc = 0;
+        lokasi.val('0')
         Object.values(dataLocation).forEach((l) => {
             circle[i].setStyle({
                 color: 'green',
@@ -153,6 +188,8 @@
             });
             distance = calcCrow(lat, long, l['lat_location'], l['long_location'])
             if (distance < 50) {
+                console.log(l);
+                lokasi.val(l.id_location);
                 circle[i].setStyle({
                     color: 'green',
                     fillColor: '#bcf7c1'
@@ -222,27 +259,9 @@
 
         form_lat.val(position.coords.latitude);
         form_long.val(position.coords.longitude);
-        // x.innerHTML = "Latitude: " + position.coords.latitude +
-        //     "<br>Longitude: " + position.coords.longitude +
-        //     "<br>ss: " + position.coords.latitude + ', ' + position.coords.longitude;
         st_marker = true;
-
-        // var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 13);
-        // var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //     maxZoom: 27,
-        // }).addTo(map);
-
-
-
         map.flyTo([position.coords.latitude, position.coords.longitude], 17)
         marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-        // dinkes loc
-        // -1.893218, 106.103813
 
-        // var polygon = L.polygon([
-        //     [51.509, -0.08],
-        //     [51.503, -0.06],
-        //     [51.51, -0.047]
-        // ]).addTo(map);
     }
 </script>

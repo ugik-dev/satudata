@@ -158,7 +158,7 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="col-form-label">Bidang</div>
-                            <select class="select2 col-sm-12" id="id_bidang" name="id_bidang"></select>
+                            <select class="select2 col-sm-12" id="id_seksi" name="id_seksi"></select>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
@@ -344,10 +344,10 @@
 
         });
 
-        $("#id_bidang").select2({
+        $("#id_seksi").select2({
             dropdownParent: $('#riwaat_modal .modal-content'),
             ajax: {
-                url: '<?= base_url() ?>Search/bidang',
+                url: '<?= base_url() ?>search/seksi',
                 type: "get",
                 dataType: 'json',
                 delay: 250,
@@ -494,7 +494,7 @@
                             </div>
                         </div>`;
 
-                renderData.push([user['id_user_position'], user['nama_satuan2'], user['nama_bidang'], user['nama_bag'], user['jabatan'], user['pangkat_gol'], user['status'], button]);
+                renderData.push([user['id_user_position'], user['nama_satuan2'], user['nama_seksi'], user['nama_bag'], user['jabatan'], user['pangkat_gol'], user['status'], button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }

@@ -20,22 +20,14 @@ class AbsenModel extends CI_Model
 
 
 
-    // public function add($data)
-    // {
-    //     $id_user = $this->session->userdata()['id'];
-    //     // $data['data'] = $ses['id_satuan'];
-    //     // $data['id_bidang'] = $ses['id_bidang'];
-    //     $res_data['periode_start'] = $data['periode_start'];
-    //     $res_data['periode_end'] = $data['periode_end'];
-    //     $res_data['tgl_pengajuan'] = $data['tgl_pengajuan'];
-    //     $res_data['id_penilai'] = $data['id_penilai'];
-    //     $res_data['id_user'] = $id_user;
-    //     $this->db->insert('skp', DataStructure::slice($res_data, [
-    //         'date', 'id_user', 'id_penilai', 'periode_start', 'periode_end', 'tgl_pengajuan'
-    //     ], FALSE));
+    public function record($data)
+    {
+        $this->db->insert('absensi', DataStructure::slice($data, [
+            'id_pegawai', 'file_foto', 'lokasi', 'longitude', 'latitude'
+        ], FALSE));
 
-    //     return $this->db->insert_id();
-    // }
+        return $this->db->insert_id();
+    }
 
     // public function edit($data)
     // {
@@ -55,6 +47,6 @@ class AbsenModel extends CI_Model
 
 
 
-    //     return $id_sppd;
+    //     return $id_spt;
     // }
 }

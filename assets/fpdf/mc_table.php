@@ -133,6 +133,55 @@ class PDF_MC_Table extends FPDF
 		// $this->Cell($w, 4, 'xxxxxxxx', 0, 'C');
 	}
 
+	function RowSPPD($no, $text1, $text2, $text3 = null)
+	{
+		// $i = 0;
+		$total_hight = 0;
+		$nb = 0;
+		$nb = max($nb, $this->NbLines(76, $text1));
+		if (!empty($text3)) {
+			$nb = max($nb, $this->NbLines(50, $text2));
+			$nb = max($nb, $this->NbLines(57, $text3));
+		} else {
+			$nb = max($nb, $this->NbLines(107, $text2));
+		}
+
+		// if (!empty($text3));
+		// echo $nb;
+		// die();
+		$h_font = 7;
+		$h = $h_font * $nb;
+		$total_hight = $total_hight + $nb;
+		$this->CheckPageBreak($h);
+		$cur_x = $this->GetX() + 4;
+		$cur_y = $this->GetY();
+
+		$this->Rect($cur_x, $cur_y, 8, $h);
+		$this->Rect($cur_x + 8, $cur_y, 76, $h);
+		if (!empty($text3)) {
+			$this->Rect($cur_x + 8 + 76, $cur_y, 50, $h);
+			$this->Rect($cur_x + 8 + 76 + 50, $cur_y, 57, $h);
+		} else {
+			$this->Rect($cur_x + 8 + 76, $cur_y, 107, $h);
+		}
+
+		$this->SetX($cur_x);
+		$this->MultiCell(8, $h_font, $no, 0, 'L');
+		$this->SetXY($cur_x + 8, $cur_y);
+		$this->MultiCell(76, $h_font, $text1, 0, 'L');
+		$this->SetXY($cur_x + 8 + 76, $cur_y);
+		if (!empty($text3)) {
+			$this->MultiCell(50, $h_font, $text2, 1, 'L');
+			$this->SetY($cur_y + $h);
+			$this->SetXY($cur_x + 8 + 76 + 50, $cur_y);
+			$this->MultiCell(57, $h_font, $text3, 0, 'L');
+			$this->SetY($cur_y + $h);
+		} else {
+			$this->MultiCell(107, $h_font, $text2, 0, 'L');
+			$this->SetY($cur_y + $h);
+		}
+	}
+
 	function row_skp_head($label, $str_1, $label_2, $str_2)
 	{
 		$r = [60, 40, 51, 42];
@@ -478,10 +527,16 @@ class PDF_MC_Table extends FPDF
 		);
 		$pecahkan = explode('-', $tanggal);
 
-		// variabel pecahkan 0 = tanggal
-		// variabel pecahkan 1 = bulan
-		// variabel pecahkan 2 = tahun
 
 		return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
+	}
+
+	function SetDash($black = null, $white = null)
+	{
+		if ($black !== null)
+			$s = sprintf('[%.3F %.3F] 0 d', $black * $this->k, $white * $this->k);
+		else
+			$s = '[] 0 d';
+		$this->_out($s);
 	}
 }

@@ -82,7 +82,7 @@
             'pangkat_gol': $('#sppd_modal').find('#pangkat_gol'),
             'id_role': $('#sppd_modal').find('#id_role'),
             'id_bagian': $('#sppd_modal').find('#id_bagian'),
-            'id_bidang': $('#sppd_modal').find('#id_bidang'),
+            'id_seksi': $('#sppd_modal').find('#id_seksi'),
             'id_satuan': $('#sppd_modal').find('#id_satuan'),
         }
 
@@ -152,10 +152,10 @@
             var renderData = [];
             Object.values(data).forEach((sppd) => {
                 //             var editButton = `
-                //     <a class="dropdown-item"  href='<?= base_url() ?>sppd/edit/${sppd['id_spd']}'><i class='fa fa-pencil'></i> Edit Sppd</a>
+                //     <a class="dropdown-item"  href='<?= base_url() ?>sppd/edit/${sppd['id_spt']}'><i class='fa fa-pencil'></i> Edit Sppd</a>
                 //   `;
                 var lihatButton = `
-        <a class="btn btn-primary btn-sm" style="width: 110px" href='<?= base_url() ?>user/detail_perjadin/${sppd['id_spd']}'><i class='fa fa-eye'></i> Buka</a>
+        <a class="btn btn-primary btn-sm" style="width: 110px" href='<?= base_url() ?>user/detail_perjadin/${sppd['id_spt']}'><i class='fa fa-eye'></i> Buka</a>
       `;
                 //             var deleteButton = `
                 //     <a class="delete dropdown-item" data-id='${sppd['id']}'><i class='fa fa-trash'></i> Hapus Sppd</a>
@@ -184,7 +184,7 @@
                     i++;
 
                 })
-                renderData.push([sppd['id_spd'], sppd['no_sppd'], sppd['no_spt'], sppd['nama_pegawai'], tujuan, lihatButton]);
+                renderData.push([sppd['id_spt'], sppd['no_sppd'], sppd['no_spt'], sppd['nama_pegawai'], tujuan, lihatButton]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }

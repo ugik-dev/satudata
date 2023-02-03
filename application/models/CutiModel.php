@@ -105,7 +105,7 @@ class CutiModel extends CI_Model
     {
         $id_user = $this->session->userdata()['id'];
         // $data['data'] = $ses['id_satuan'];
-        // $data['id_bidang'] = $ses['id_bidang'];
+        // $data['id_seksi'] = $ses['id_seksi'];
         $res_data['periode_start'] = $data['periode_start'];
         $res_data['periode_end'] = $data['periode_end'];
         $res_data['tgl_pengajuan'] = $data['tgl_pengajuan'];

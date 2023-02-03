@@ -52,7 +52,7 @@
                 <div class="modal-body">
                     <input type="hidden" id="id" name="id">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 <label for="nama">Nama</label>
                                 <input type="text" placeholder="ex. Abdul Rahmad, A.Md" class="form-control" id="nama" name="nama" required="required">
@@ -64,8 +64,8 @@
                                 <input type="text" placeholder="ex. 1986XX XXXXXX X XXX" class="form-control" id="nip" name="nip">
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                        <!-- </div>
+                    <div class="row"> -->
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="nama">Jabatan</label>
@@ -78,31 +78,96 @@
                                 <input type="text" placeholder="" class="form-control" id="pangkat_gol" name="pangkat_gol">
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-
                         <div class="col-lg-6">
-                            <div class="col-form-label">OPD</div>
+                            <div class="form-group">
+                                <label for="pend_jenjang">Pendidikan Jenjang</label>
+                                <select class="col-sm-12 form-control" id="pend_jenjang" name="pend_jenjang">
+                                    <option value="">--</option>
+                                    <option value="S3">S 3</option>
+                                    <option value="S2">S 2</option>
+                                    <option value="S1">S 1</option>
+                                    <option value="D4">D 4</option>
+                                    <option value="D3">D 3</option>
+                                    <option value="D2">D 2</option>
+                                    <option value="D1">D 1</option>
+                                    <option value="SMA">SMA Sederajat</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="pend_jurusan">Pendidikan Jurusan</label>
+                                <input type="text" placeholder="" class="form-control" id="pend_jurusan" name="pend_jurusan">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="tmt_kerja">TMT Kerja</label>
+                                <input type="date" placeholder="" class="form-control" id="tmt_kerja" name="tmt_kerja">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="tempat_lahir">Tempat Lahir</label>
+                                <input type="text" placeholder="" class="form-control" id="tempat_lahir" name="tempat_lahir">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="tanggal_lahir">Tanggal Lahir</label>
+                                <input type="date" placeholder="" class="form-control" id="tanggal_lahir" name="tanggal_lahir">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="col-form-label">Jenis Kelamin</div>
+                            <select class="col-sm-12 form-control" id="j_k" name="j_k">
+                                <option value="">--</option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr style="height:5px;border:none;color:#000000;background-color:#000000;">
+                    <div class="row">
+                        <h6>Hak Aksess</h6>
+                        <div class="col-lg-4">
+                            <div class="col-form-label">Instansi</div>
                             <select class="select2 col-sm-12" id="id_satuan" name="id_satuan">
                             </select>
-                            <!-- </div> -->
                         </div>
-                        <div class="col-lg-6">
-                            <div class="col-form-label">Bidang</div>
-                            <select class="select2 col-sm-12" id="id_bidang" name="id_bidang"></select>
-                        </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <div class="col-form-label"> Bagian
                             </div>
                             <select class="select2 col-sm-12" id="id_bagian" name="id_bagian"></select>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
+                            <div class="col-form-label">Seksi</div>
+                            <select class="select2 col-sm-12" id="id_seksi" name="id_seksi"></select>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="col-form-label">PPK</div>
+                            <select class="col-sm-12 form-control" id="ppk" name="ppk">
+                                <option value="">--</option>
+                                <option value="1">Ya</option>
+                                <option value="2">Tidak</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="col-form-label">PENOMORAN</div>
+                            <select class="col-sm-12 form-control" id="penomoran" name="penomoran">
+                                <option value="">--</option>
+                                <option value="1">Ya</option>
+                                <option value="2">Tidak</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4">
                             <div class="col-form-label"> Role </div>
                             <select class="select2 col-sm-12" id="id_role" name="id_role"></select>
                         </div>
                     </div>
 
                     <hr style="height:5px;border:none;color:#000000;background-color:#000000;">
+                    <h6>Data Login</h6>
                     <!-- <hr style="height:10px;border:none;color:#333;background-color:#333;"> -->
                     <div class="row">
                         <div class="col-lg-6">
@@ -192,8 +257,16 @@
             'pangkat_gol': $('#user_modal').find('#pangkat_gol'),
             'id_role': $('#user_modal').find('#id_role'),
             'id_bagian': $('#user_modal').find('#id_bagian'),
-            'id_bidang': $('#user_modal').find('#id_bidang'),
+            'id_seksi': $('#user_modal').find('#id_seksi'),
             'id_satuan': $('#user_modal').find('#id_satuan'),
+            'ppk': $('#user_modal').find('#ppk'),
+            'penomoran': $('#user_modal').find('#penomoran'),
+            'pend_jenjang': $('#user_modal').find('#pend_jenjang'),
+            'pend_jurusan': $('#user_modal').find('#pend_jurusan'),
+            'tanggal_lahir': $('#user_modal').find('#tanggal_lahir'),
+            'tempat_lahir': $('#user_modal').find('#tempat_lahir'),
+            'tmt_kerja': $('#user_modal').find('#tmt_kerja'),
+            'j_k': $('#user_modal').find('#j_k'),
         }
 
         var dataRole = {}
@@ -321,10 +394,10 @@
 
         });
 
-        $("#id_bidang").select2({
+        $("#id_seksi").select2({
             dropdownParent: $('#user_modal .modal-content'),
             ajax: {
-                url: '<?= base_url() ?>Search/bidang',
+                url: '<?= base_url() ?>search/seksi',
                 type: "get",
                 dataType: 'json',
                 delay: 250,
@@ -341,21 +414,6 @@
                 cache: true
             }
         });
-
-
-        // function renderRoleSelectionAdd(data) {
-        //     UserModal.id_role.empty();
-        //     UserModal.id_role.append($('<option>', {
-        //         value: "",
-        //         text: "-- Pilih Role --"
-        //     }));
-        //     Object.values(data).forEach((d) => {
-        //         UserModal.id_role.append($('<option>', {
-        //             value: d['id_role'],
-        //             text: d['id_role'] + ' :: ' + d['nama_role'],
-        //         }));
-        //     });
-        // }
 
         toolbar.id_role.on('change', (e) => {
             getAllUser();
@@ -449,6 +507,7 @@
             UserModal.password.prop('required', false);
 
             var currentData = dataUser[$(this).data('id')];
+            console.log(currentData);
             UserModal.idUser.val(currentData['id']);
             UserModal.jabatan.val(currentData['jabatan']);
             UserModal.pangkat_gol.val(currentData['pangkat_gol']);
@@ -456,14 +515,22 @@
             UserModal.no_hp.val(currentData['no_hp']);
             UserModal.nip.val(currentData['nip']);
             UserModal.username.val(currentData['username']);
+            UserModal.ppk.val(currentData['ppk']);
+            UserModal.penomoran.val(currentData['penomoran']);
+            UserModal.pend_jenjang.val(currentData['pend_jenjang']);
+            UserModal.pend_jurusan.val(currentData['pend_jurusan']);
+            UserModal.tanggal_lahir.val(currentData['tanggal_lahir']);
+            UserModal.tempat_lahir.val(currentData['tempat_lahir']);
+            UserModal.tmt_kerja.val(currentData['tmt_kerja']);
             UserModal.nama.val(currentData['nama']);
+            UserModal.j_k.val(currentData['j_k']);
             UserModal.id_satuan.val(1);
 
             var $newOption = $("<option selected='selected'></option>").val(currentData['id_satuan']).text(currentData['nama_satuan']);
             UserModal.id_satuan.append($newOption).trigger('change');
 
-            var $newOption2 = $("<option selected='selected'></option>").val(currentData['id_bidang']).text(currentData['nama_bidang']);
-            UserModal.id_bidang.append($newOption2).trigger('change');
+            var $newOption2 = $("<option selected='selected'></option>").val(currentData['id_seksi']).text(currentData['nama_seksi']);
+            UserModal.id_seksi.append($newOption2).trigger('change');
 
             var $newOption3 = $("<option selected='selected'></option>").val(currentData['id_bagian']).text(currentData['nama_bag']);
             UserModal.id_bagian.append($newOption3).trigger('change');

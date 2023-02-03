@@ -19,3 +19,16 @@
 # !/uploads/purchase/default.jpg
 /uploads/qrcode/*
 !/uploads/qrcode/default.png
+
+/uploads/bukti_absensi/*
+!/uploads/bukti_absensi/default.png
+/uploads/foto_profil/*
+!/uploads/foto_profil/default.png
+/uploads/foto_sppd/*
+!/uploads/foto_sppd/default.png
+/uploads/signature/*
+!/uploads/signature/default.png
+/uploads/bukti_absensi/*
+!/uploads/bukti_absensi/default.png
+/uploads/bukti_absensi/*
+!/uploads/bukti_absensi/default.png

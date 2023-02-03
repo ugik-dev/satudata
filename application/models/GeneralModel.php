@@ -17,7 +17,14 @@ class GeneralModel extends CI_Model
         // $this->db->from('role as x');
         echo json_encode($user['id_bagian']);
     }
-
+    public function getSingnature($id)
+    {
+        $this->db->select('id,signature,nama, nip');
+        $this->db->from('users');
+        $this->db->where('id', $id);
+        $res = $this->db->get();
+        return DataStructure::keyValue($res->result_array(), 'id');
+    }
     public function getAllRole($filter = [])
     {
         $this->db->select('*');
@@ -51,11 +58,11 @@ class GeneralModel extends CI_Model
 
     public function getAllUser($filter = [])
     {
-        $this->db->select("u.*,r.*, nama_bag, nama_bidang, nama_satuan, approv_lv_1, approv_lv_2, approv_lv_3, approv_lv_4, ppk, jabatan, pangkat_gol");
+        $this->db->select("u.*,r.*, nama_bag, nama_seksi, nama_satuan, approv_lv_1, approv_lv_2, approv_lv_3, approv_lv_4, ppk, jabatan, pangkat_gol");
         $this->db->from('users as u');
         $this->db->join('roles r', 'u.id_role = r.id_role', 'LEFT');
         $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
-        $this->db->join('bidang bd', 'u.id_bidang = bd.id_bidang', 'LEFT');
+        $this->db->join('ref_seksi sk', 'u.id_seksi= sk.id_ref_seksi', 'LEFT');
         $this->db->join('bagian bg', 'u.id_bagian = bg.id_bagian', 'LEFT');
         if (!empty($filter['id'])) $this->db->where('u.id', $filter['id']);
         $res = $this->db->get();
@@ -67,11 +74,18 @@ class GeneralModel extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('satuan u ');
-        // $this->db->join('roles r', 'u.id_role = r.id_role');
         $res = $this->db->get();
         return DataStructure::keyValue($res->result_array(), 'id_satuan');
     }
-
+    public function getSign($filter = [])
+    {
+        $this->db->select('*');
+        $this->db->from('sign u ');
+        if (!empty($filter['id'])) $this->db->where('id_sign', $filter['id']);
+        $res = $this->db->get()->result_array();
+        return $res;
+        // return DataStructure::keyValue($res->result_array(), 'id_satuan');
+    }
     public function getSKPApprov($filter = [])
     {
         $this->db->select('*');
@@ -88,7 +102,7 @@ class GeneralModel extends CI_Model
         $this->db->from('user_position u ');
         $this->db->join('roles r', 'u.id_role = r.id_role');
         $this->db->join('satuan st', 'u.id_satuan = st.id_satuan');
-        $this->db->join('bidang bd', 'u.id_bidang = bd.id_bidang', 'LEFT');
+        $this->db->join('ref_seksi sk', 'u.id_seksi= sk.id_ref_seksi', 'LEFT');
         $this->db->join('bagian bg', 'u.id_bagian = bg.id_bagian', 'LEFT');
         if (!empty($filter['id_user']))
             $this->db->where('id_user', $filter['id_user']);
@@ -145,11 +159,11 @@ class GeneralModel extends CI_Model
         return $res->result_array();
     }
 
-    public function getAllBidang2($filter = [])
+    public function getAllSeksi2($filter = [])
     {
-        $this->db->select('id_bidang as id, nama_bidang as text');
-        $this->db->from('bidang u ');
-        if (!empty($filter['searchTerm'])) $this->db->where('nama_bidang like "%' . $filter['searchTerm'] . '%"');
+        $this->db->select('id_ref_seksi as id, nama_seksi as text');
+        $this->db->from('ref_seksi u ');
+        if (!empty($filter['searchTerm'])) $this->db->where('nama_seksi like "%' . $filter['searchTerm'] . '%"');
         // searchTerm
         $this->db->limit('20');
 
@@ -183,7 +197,18 @@ class GeneralModel extends CI_Model
         $res = $this->db->get();
         return $res->result_array();
     }
+    public function getSatuan($filter = [])
+    {
+        // $this->db->select('id_role as id, nama_role as text');
+        $this->db->from('satuan u ');
+        if (!empty($filter['id_satuan'])) $this->db->where('id_satuan', $filter['id_satuan']);
+        // searchTerm
+        // $this->db->limit('20');
 
+        // $this->db->join('roles r', 'u.id_role = r.id_role');
+        $res = $this->db->get();
+        return $res->result_array();
+    }
 
     public function getAllPPK2($filter = [])
     {

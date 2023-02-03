@@ -107,7 +107,7 @@ class SKPModel extends CI_Model
     {
         $id_user = $this->session->userdata()['id'];
         // $data['data'] = $ses['id_satuan'];
-        // $data['id_bidang'] = $ses['id_bidang'];
+        // $data['id_seksi'] = $ses['id_seksi'];
         $res_data['periode_start'] = $data['periode_start'];
         $res_data['periode_end'] = $data['periode_end'];
         $res_data['tgl_pengajuan'] = $data['tgl_pengajuan'];
@@ -165,11 +165,11 @@ class SKPModel extends CI_Model
         $this->db->where('id_skp', $data['id_skp']);
         $this->db->update('skp',);
 
-        $id_sppd = $data['id_skp'];
+        $id_spt = $data['id_skp'];
         $i = 0;
         foreach ($data['kegiatan'] as $p) {
             $d_tujuan = array(
-                'id_skp' => $id_sppd,
+                'id_skp' => $id_spt,
                 'kegiatan' => $data['kegiatan'][$i],
                 'jenis_keg' => $data['jenis_keg'][$i],
                 'id_skp_atasan' => $data['id_skp_atasan'][$i],
@@ -204,6 +204,6 @@ class SKPModel extends CI_Model
         }
         ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
 
-        return $id_sppd;
+        return $id_spt;
     }
 }

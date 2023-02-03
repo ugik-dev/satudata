@@ -6,11 +6,11 @@ class UserModel extends CI_Model
 
     public function getAllUser($filter = [])
     {
-        $this->db->select("u.*,r.*, nama_bag, nama_bidang, nama_satuan, approv_lv_1, approv_lv_2, approv_lv_3, approv_lv_4, ppk, jabatan, pangkat_gol");
+        $this->db->select("u.*,r.*, nama_bag, nama_seksi, nama_satuan, approv_lv_1, approv_lv_2, approv_lv_3, approv_lv_4, ppk, jabatan, pangkat_gol");
         $this->db->from('users as u');
         $this->db->join('roles r', 'u.id_role = r.id_role');
         $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
-        $this->db->join('bidang bd', 'u.id_bidang = bd.id_bidang', 'LEFT');
+        $this->db->join('ref_seksi sk', 'u.id_seksi= sk.id_ref_seksi', 'LEFT');
         $this->db->join('bagian bg', 'u.id_bagian = bg.id_bagian', 'LEFT');
         if (empty($filter['is_login'])) {
             $this->db->select("NULL as password", FALSE);
@@ -126,7 +126,7 @@ class UserModel extends CI_Model
     {
         $data['password'] = md5($data['password']);
 
-        $this->db->insert('users', DataStructure::slice($data, ['username', 'password', 'nama', 'email', 'nip', 'alamat', 'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_bidang', 'pangkat_gol', 'jabatan'], TRUE));
+        $this->db->insert('users', DataStructure::slice($data, ['username', 'password', 'nama', 'email', 'nip', 'alamat', 'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_seksi', 'pangkat_gol', 'jabatan'], TRUE));
 
         // $this->db->set(DataStructure::slice($data, ['username', 'nama', 'email', 'nip', 'alamat', 'no_hp', 'status', 'id_role']));
         ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
@@ -161,8 +161,8 @@ class UserModel extends CI_Model
     {
         if (!empty($data['password'])) $this->db->set('password', md5($data['password']));
         $this->db->set(DataStructure::slice($data, [
-            'username', 'nama', 'email', 'nip', 'alamat',
-            'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_bidang', 'pangkat_gol', 'jabatan', 'signature', 'photo',
+            'username', 'nama', 'email', 'nip', 'alamat', 'ppk', 'penomoran',
+            'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_seksi', 'pangkat_gol', 'jabatan', 'signature', 'photo',
             'pend_jenjang',  'pend_jurusan', 'j_k', 'tempat_lahir', 'tanggal_lahir', 'tmt_kerja', 'jenis_pegawai'
         ]));
         $this->db->where('id', $data['id']);
@@ -274,40 +274,5 @@ class UserModel extends CI_Model
             );
             $this->db->insert('hak_aksess', $tmp_hk);
         }
-    }
-
-
-
-    public function addPosition($data)
-    {
-
-        $this->db->insert('user_position', DataStructure::slice($data, [
-            'id_user', 'id_role', 'id_satuan', 'id_bidang', 'id_bagian', 'approv_lv_1', 'approv_lv_2', 'approv_lv_3', 'approv_lv_4', 'ppk', 'status', 'pangkat_gol', 'jabatan'
-        ], FALSE));
-        ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
-
-        $id_user = $this->db->insert_id();
-
-        return $id_user;
-    }
-
-    public function editPosition($data)
-    {
-        if (!empty($data['password'])) $this->db->set('password', md5($data['password']));
-        $this->db->set(DataStructure::slice($data, ['username', 'nama', 'email', 'nip', 'alamat', 'no_hp', 'status', 'id_role']));
-        $this->db->where('id', $data['id']);
-        $this->db->update('users');
-
-        ExceptionHandler::handleDBError($this->db->error(), "Ubah User", "User");
-
-        return $data['id'];
-    }
-
-    public function deletePosition($data)
-    {
-        $this->db->where('id_user', $data['id_user']);
-        $this->db->delete('users');
-
-        ExceptionHandler::handleDBError($this->db->error(), "Hapus User", "User");
     }
 }

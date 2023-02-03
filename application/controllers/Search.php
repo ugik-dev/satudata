@@ -26,11 +26,11 @@ class Search extends CI_Controller
         }
     }
 
-    public function bidang()
+    public function seksi()
     {
         try {
             $filter = $this->input->get();
-            $data = $this->GeneralModel->getAllBidang2($filter);
+            $data = $this->GeneralModel->getAllSeksi2($filter);
             array_unshift($data, array('id' => 'NULL', 'text' => '--'));
             echo json_encode($data);
         } catch (Exception $e) {

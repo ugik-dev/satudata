@@ -1,9 +1,9 @@
 <?php
 $this->load->view('template/header');
 $this->load->view('template/page_header');
-echo  '<div class="page-body-wrapper">';
+// echo  '<div class="page-body-wrapper">';
 $this->load->view('template/sidebar');
-echo '<div class="page-body">';
+// echo '<div class="page-body">';
 // echo '<div class="container-fluid">
 //     <div class="page-title">
 //       <div class="row">
@@ -23,7 +23,7 @@ echo '<div class="page-body">';
 //     </div>
 //   </div>
 //   ';
-echo '<br>';
+// echo '<br>';
 $this->load->view($page);
-echo  '</div></div>';
+// echo  '</div>';
 $this->load->view('template/footer');

@@ -27,6 +27,7 @@
                                         'Kepala Bidang',
                                         'Kepala Seksi',
                                         'Pegawai Receh',
+                                        'Admin',
                                     ];
                                     for ($i = 1; $i <= 6; $i++) {
                                         if (!empty($dataContent['users']['level'])) {

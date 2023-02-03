@@ -32,8 +32,11 @@
                         <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>dashboard"><i data-feather="home"> </i><span>DASHBOARD</span></a>
                     </li>
                     <li class="sidebar-list">
-                        <a style="" class="sidebar-link sidebar-title link-nav" id="sidebar_aktifitas" href="<?= base_url() ?>aktifitas"><i data-feather="box"> </i><span>Aktifitas Harian</span></a>
+                        <a style="" class="sidebar-link sidebar-title link-nav" id="sidebar_absensi" href="<?= base_url() ?>absensi"><i data-feather="box"> </i><span>Absensi</span></a>
                     </li>
+                    <!-- <li class="sidebar-list">
+                        <a style="" class="sidebar-link sidebar-title link-nav" id="sidebar_aktifitas" href="<?= base_url() ?>aktifitas"><i data-feather="box"> </i><span>Aktifitas Harian</span></a>
+                    </li> -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title link-nav" id="sidebar_skp" href="<?= base_url() ?>skp"><i data-feather="box"> </i><span>Sasaran Kerja</span></a>
                     </li>
@@ -67,3 +70,4 @@
         </nav>
     </div>
 </div>
+<div class="page-body">

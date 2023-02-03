@@ -3,25 +3,155 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class SPPDModel extends CI_Model
 {
+    public function getFoto($filter = [])
+    {
+        $this->db->from('spt_foto');
+        if (!empty($filter['id_spt'])) $this->db->where('id_spt', $filter['id_spt']);
+        if (!empty($filter['id_foto'])) $this->db->where('id_foto', $filter['id_foto']);
+        return DataStructure::keyValue($this->db->get()->result_array(), 'id_foto');;
+    }
+    public function getLaporan($filter = [])
+    {
+        $this->db->select('sl.*, u.nama as nama_bendahara');
+        $this->db->from('spt_laporan sl');
+        $this->db->join('users u', 'sl.id_bendahara = u.id', 'LEFT');
+        if (!empty($filter['id_spt'])) $this->db->where('sl.id_spt', $filter['id_spt']);
+        if (!empty($filter['id_laporan'])) $this->db->where('sl.id_laporan', $filter['id_laporan']);
+        return DataStructure::keyValue($this->db->get()->result_array(), 'id_spt');
+    }  // die();
 
     public function getAllSPPD($filter = [])
     {
-        $this->db->select("un.approval_id_user as id_unapproval ,p2.nama as nama_input, r.*,t.nama_tr as nama_transport, s.nama as nama_pegawai, s.jabatan jabatan_pegawai, s.pangkat_gol as pangkat_gol_pegawai,s.id_bidang as id_bidang_pegawai, s.id_bagian as id_bagian_pegawai, s.nip nip_pegawai ,p.nama as nama_ppk, p.jabatan jabatan_ppk, p.pangkat_gol as pangkat_gol_ppk, p.nip nip_ppk , u.*, d.nama_dasar");
-        $this->db->from('sppd as u');
-        $this->db->join('tujuan r', 'u.id_spd = r.id_sppd');
+        // echo json_encode($filter);
+        // die();
+        $this->db->select('rjs.nama_ref_jen_spt');
+        $this->db->select('p2.nama as nama_input');
+        $this->db->select('s.nama as nama_pegawai, 
+                            s.jabatan jabatan_pegawai, 
+                            s.pangkat_gol as pangkat_gol_pegawai,
+                            s.id_seksi as id_seksi_pegawai,
+                            s.id_bagian as id_bagian_pegawai, 
+                            s.nip nip_pegawai');
+        $this->db->select(' p.nama as nama_ppk, 
+                            p.jabatan jabatan_ppk, 
+                            p.pangkat_gol as pangkat_gol_ppk, 
+                            p.nip nip_ppk');
+
+        $this->db->select("un.approval_id_user as id_unapproval ,
+                            t.nama_tr as nama_transport, 
+                            u.*, 
+                            d.nama_dasar");
+        $this->db->from('spt as u');
+        // $this->db->join('tujuan r', 'u.id_spt = r.id_spt');
         $this->db->join('users p', 'p.id = u.id_ppk', 'LEFT');
+        $this->db->join('ref_jen_spt rjs', 'u.jenis = rjs.id_ref_jen_spt', 'LEFT');
         $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
         $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
         $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
         $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
         $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
-        if (!empty($filter['id_spd'])) $this->db->where('u.id_spd', $filter['id_spd']);
+        if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
         if (!empty($filter['my_perjadin'])) $this->db->where('u.id_pegawai', $this->session->userdata()['id']);
+        if (!empty($filter['search_approval']['data_penilai'])) {
+            $penilai =  $filter['search_approval']['data_penilai'];
+            if ($penilai['level'] == 2) {
+                // $this->db->where('s.id_bagian', $penilai['id_bagian']);
+                // die();
+                if (!empty($filter['status_permohonan'])) {
+                    if ($filter['status_permohonan'] == 'menunggu') {
+                        $this->db->where('u.status', 11);
+                    } else if ($filter['status_permohonan'] == 'approv') {
+                        $this->db->where('u.status > 11');
+                        $this->db->where('u.status <> 98');
+                    }
+                }
+            } else
+            if ($penilai['level'] == 3) {
+                $this->db->where('s.id_bagian', $penilai['id_bagian']);
+                // die();
+                if (!empty($filter['status_permohonan'])) {
+                    if ($filter['status_permohonan'] == 'menunggu') {
+                        $this->db->where('u.status', 1);
+                    } else if ($filter['status_permohonan'] == 'approv') {
+                        $this->db->where('u.status > 2');
+                        $this->db->where('u.status <> 98');
+                    }
+                }
+            }
 
-        // var_dump($this->session->userdata()['level']);
-        if ($this->session->userdata()['level'] == 2) {
-            $this->db->where('s.id_bagian', $this->session->userdata()['id_bagian']);
+            if ($filter['status_permohonan'] == 'ditolak') {
+                $this->db->where('u.status = 98');
+            } else if ($filter['status_permohonan'] == 'selesai') {
+                $this->db->where('u.status = 99');
+            }
         }
+
+        $res = $this->db->get()->result_array();
+        $res_id = [];
+        foreach ($res as $rid) {
+            array_push($res_id, $rid['id_spt']);
+        }
+        if (!empty($res_id)) {
+
+            $this->db->select('p.*, u.nama, u.nip, u.jabatan,u.pangkat_gol, tanggal_lahir');
+            $this->db->from('pengikut p ');
+            $this->db->join('users u', 'u.id = p.id_pegawai');
+            $this->db->where_in('id_spt', $res_id);
+            $pengikut = DataStructure::groupingByParent($this->db->get()->result_array(), 'id_spt');
+
+            $this->db->from('tujuan');
+            $this->db->order_by('ke', 'ASC');
+            $this->db->where_in('id_spt', $res_id);
+            $tujuan = DataStructure::groupingByParent($this->db->get()->result_array(), 'id_spt');
+        } else {
+            $tujuan = [];
+            $pengikut = [];
+        }
+        // echo json_encode($tujuan);
+
+        // die();
+        // var_dump($this->session->userdata()['level']);
+        // if ($this->session->userdata()['level'] == 2) {
+        //     $this->db->where('s.id_bagian', $this->session->userdata()['id_bagian']);
+        // }
+        // print($this->db->last_query());
+        // echo json_encode($res->result_array());
+        // die();
+
+        return DataStructure::SPPDStyle2($res, $tujuan, $pengikut);
+    }
+    public function getAllSPPD2($filter = [])
+    {
+        $this->db->select('rjs.nama_ref_jen_spt');
+        $this->db->select("un.approval_id_user as id_unapproval ,p2.nama as nama_input, r.*,t.nama_tr as nama_transport, s.nama as nama_pegawai, s.jabatan jabatan_pegawai, s.pangkat_gol as pangkat_gol_pegawai,s.id_seksi as id_seksi_pegawai, s.id_bagian as id_bagian_pegawai, s.nip nip_pegawai ,p.nama as nama_ppk, p.jabatan jabatan_ppk, p.pangkat_gol as pangkat_gol_ppk, p.nip nip_ppk , u.*, d.nama_dasar");
+        $this->db->from('spt as u');
+        $this->db->join('tujuan r', 'u.id_spt = r.id_spt');
+        $this->db->join('users p', 'p.id = u.id_ppk', 'LEFT');
+        $this->db->join('ref_jen_spt rjs', 'u.jenis = rjs.id_ref_jen_spt', 'LEFT');
+        $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
+        $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
+        $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
+        $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
+        $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
+        if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
+        if (!empty($filter['my_perjadin'])) $this->db->where('u.id_pegawai', $this->session->userdata()['id']);
+        if (!empty($filter['search_approval']['data_penilai'])) {
+            $penilai =  $filter['search_approval']['data_penilai'];
+            $this->db->where('s.id_bagian', $penilai['id_bagian']);
+            if ($penilai['level'] == 3) {
+                // die();
+                if (!empty($filter['status_permohonan'])) {
+                    if ($filter['status_permohonan'] == 'menunggu')
+                        $this->db->where('u.status', 1);
+                    if ($filter['status_permohonan'] == 'approv')
+                        $this->db->where('u.status', 2);
+                }
+            }
+        }
+        // var_dump($this->session->userdata()['level']);
+        // if ($this->session->userdata()['level'] == 2) {
+        //     $this->db->where('s.id_bagian', $this->session->userdata()['id_bagian']);
+        // }
         $res = $this->db->get();
         // print($this->db->last_query());
         // echo json_encode($res->result_array());
@@ -30,11 +160,49 @@ class SPPDModel extends CI_Model
         return DataStructure::SPPDStyle($res->result_array());
     }
 
+    public function CekJadwal($data = [])
+    {
+        $this->db->select('*');
+        // $this->db->select("un.approval_id_user as id_unapproval ,p2.nama as nama_input, r.*,t.nama_tr as nama_transport, s.nama as nama_pegawai, s.jabatan jabatan_pegawai, s.pangkat_gol as pangkat_gol_pegawai,s.id_seksi as id_seksi_pegawai, s.id_bagian as id_bagian_pegawai, s.nip nip_pegawai ,p.nama as nama_ppk, p.jabatan jabatan_ppk, p.pangkat_gol as pangkat_gol_ppk, p.nip nip_ppk , u.*, d.nama_dasar");
+        $this->db->from('spt as u');
+        $this->db->where('id_pegawai', $data['id_pegawai']);
+        // $this->db->join('tujuan r', 'u.id_spt = r.id_spt');
+        // $this->db->join('users p', 'p.id = u.id_ppk', 'LEFT');
+        // $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
+        // $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
+        // $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
+        // $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
+        // $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
+        // if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
+        // if (!empty($filter['my_perjadin'])) $this->db->where('u.id_pegawai', $this->session->userdata()['id']);
+
+        // // var_dump($this->session->userdata()['level']);
+        // if ($this->session->userdata()['level'] == 2) {
+        //     $this->db->where('s.id_bagian', $this->session->userdata()['id_bagian']);
+        // }
+        $res = $this->db->get();
+        // print($this->db->last_query());
+        // echo json_encode($res->result_array());
+        // die();
+
+        return DataStructure::SPPDStyle($res->result_array());
+    }
+
+    public function getDasarSppd($filter)
+    {
+        $this->db->select("*");
+        $this->db->from('dasar as u');
+        if (!empty($filter['id_dasar'])) $this->db->where('id_dasar', $filter['id_dasar']);
+        // $this->db->where('u.id_spt', $id);
+        $res = $this->db->get();
+        return DataStructure::keyValue($res->result_array(), 'id_dasar');
+    }
     public function getDasar($id)
     {
         $this->db->select("*");
         $this->db->from('dasar_tambahan as u');
-        $this->db->where('u.id_sppd', $id);
+        //    if(!empty('id_dasar')) $this->db->from('dasar_tambahan as u');
+        $this->db->where('u.id_spt', $id);
         $res = $this->db->get();
         return DataStructure::keyValue($res->result_array(), 'id_dasar_tambahan');
     }
@@ -44,7 +212,7 @@ class SPPDModel extends CI_Model
         $this->db->select("u.*, s.nama as nama_pengikut, jabatan jabatan_pengikut, pangkat_gol pangkat_gol_pengikut, nip nip_pengikut");
         $this->db->from('pengikut as u');
         $this->db->join('users as s', 'u.id_pegawai = s.id');
-        $this->db->where('u.id_sppd', $id);
+        $this->db->where('u.id_spt', $id);
         $res = $this->db->get();
         return DataStructure::keyValue($res->result_array(), 'id_pengikut');
     }
@@ -55,21 +223,21 @@ class SPPDModel extends CI_Model
 
         $ses = $this->session->userdata();
         $data['id_satuan'] = $ses['id_satuan'];
-        $data['id_bidang'] = $ses['id_bidang'];
+        $data['id_seksi'] = $ses['id_seksi'];
         $data['id_bagian'] = $ses['id_bagian'];
         $data['user_input'] = $ses['id'];
-        $this->db->insert('sppd', DataStructure::slice($data, [
-            'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas',
-            'id_satuan', 'id_bagian', 'id_bidang', 'id_dasar', 'user_input'
+        $this->db->insert('spt', DataStructure::slice($data, [
+            'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas', 'jenis',
+            'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk'
 
         ], FALSE));
 
-        $id_sppd = $this->db->insert_id();
+        $id_spt = $this->db->insert_id();
         $i = 0;
         foreach ($data['tempat_tujuan'] as $p) {
             if (!empty($data['tempat_tujuan'][$i]) or !empty($data['tempat_kembali'][$i]) or !empty($data['date_berangkat'][$i]) or !empty($data['date_kembali'][$i])) {
                 $d_tujuan = array(
-                    'id_sppd' => $id_sppd,
+                    'id_spt' => $id_spt,
                     'tempat_tujuan' => $data['tempat_tujuan'][$i],
                     'tempat_kembali' => $data['tempat_kembali'][$i],
                     'date_berangkat' => $data['date_berangkat'][$i],
@@ -84,7 +252,7 @@ class SPPDModel extends CI_Model
         if (!empty($data['pengikut']))
             foreach ($data['pengikut'] as $p) {
                 $d_pengikut = array(
-                    'id_sppd' => $id_sppd,
+                    'id_spt' => $id_spt,
                     'id_pegawai' => $p,
                 );
                 $this->db->insert('pengikut', $d_pengikut);
@@ -93,7 +261,7 @@ class SPPDModel extends CI_Model
         if (!empty($data['dasar_tambahan']))
             foreach ($data['dasar_tambahan'] as $p) {
                 $d_pengikut = array(
-                    'id_sppd' => $id_sppd,
+                    'id_spt' => $id_spt,
                     'dasar_tambahan' => $p,
                 );
                 $this->db->insert('dasar_tambahan', $d_pengikut);
@@ -101,7 +269,7 @@ class SPPDModel extends CI_Model
 
         ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
 
-        return $id_sppd;
+        return $id_spt;
     }
 
 
@@ -110,23 +278,23 @@ class SPPDModel extends CI_Model
 
         $ses = $this->session->userdata();
         $data['id_satuan'] = $ses['id_satuan'];
-        $data['id_bidang'] = $ses['id_bidang'];
+        $data['id_seksi'] = $ses['id_seksi'];
         $data['id_bagian'] = $ses['id_bagian'];
         $data['user_input'] = $ses['id'];
         $this->db->set(DataStructure::slice($data, [
             'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas',
-            'id_satuan', 'id_bagian', 'id_bidang', 'id_dasar', 'user_input'
+            'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk'
 
         ], FALSE));
 
-        $this->db->where('id_spd', $data['id_spd']);
-        $this->db->update('sppd',);
+        $this->db->where('id_spt', $data['id_spt']);
+        $this->db->update('spt',);
 
-        $id_sppd = $data['id_spd'];
+        $id_spt = $data['id_spt'];
         $i = 0;
         foreach ($data['tempat_tujuan'] as $p) {
             $d_tujuan = array(
-                'id_sppd' => $id_sppd,
+                'id_spt' => $id_spt,
                 'tempat_tujuan' => $data['tempat_tujuan'][$i],
                 'tempat_kembali' => $data['tempat_kembali'][$i],
                 'date_berangkat' => $data['date_berangkat'][$i],
@@ -147,12 +315,12 @@ class SPPDModel extends CI_Model
             }
             $i++;
         }
-        $this->db->where('id_sppd', $id_sppd);
+        $this->db->where('id_spt', $id_spt);
         $this->db->delete('pengikut');
         if (!empty($data['pengikut']))
             foreach ($data['pengikut'] as $p) {
                 $d_pengikut = array(
-                    'id_sppd' => $id_sppd,
+                    'id_spt' => $id_spt,
                     'id_pegawai' => $p,
                 );
                 $this->db->insert('pengikut', $d_pengikut);
@@ -162,7 +330,7 @@ class SPPDModel extends CI_Model
             foreach ($data['dasar_tambahan'] as $p) {
                 if (empty($data['id_dasar_tambahan'][$j]) and !empty($data['dasar_tambahan'][$j])) {
                     $d_pengikut = array(
-                        'id_sppd' => $id_sppd,
+                        'id_spt' => $id_spt,
                         'dasar_tambahan' => $p,
                     );
                     $this->db->insert('dasar_tambahan', $d_pengikut);
@@ -185,99 +353,233 @@ class SPPDModel extends CI_Model
 
         ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
 
-        return $id_sppd;
+        return $id_spt;
     }
 
 
     public function draft_to_diajukan($data)
     {
-        $this->db->set('status', '1');
+        if (!empty($data['id_seksi']))
+            $this->db->set('status', '1');
+        else
+            $this->db->set('status', '2');
         $this->db->set('tgl_pengajuan', date('Y-m-d h:i:s'));
-        $this->db->where('id_spd', $data['id_spd']);
-        $this->db->update('sppd',);
+        $this->db->where('id_spt', $data['id_spt']);
+        $this->db->update('spt',);
         ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
     }
-    public function approv($data)
-    {
 
+    function cek_nomor($data, $sppd = false)
+    {
+        $this->db->where('id_satuan', $data['id_satuan']);
+        $satuan = $this->db->get('satuan')->result_array()[0]['kode_surat'];
+        $s3 = $satuan . '/' . substr($data['tgl_pengajuan'], 0, 4);
+
+        $this->db->select('no_spt , SUBSTRING_INDEX(SUBSTRING_INDEX(no_spt,"/",2),"/",-1) as x, SUBSTRING_INDEX(no_spt,"/",1)');
+        $this->db->from('spt');
+        $this->db->where('no_spt <> ""');
+        $this->db->where('SUBSTRING_INDEX(no_spt,"/",-2)', $s3);
+        $this->db->where('SUBSTRING_INDEX(no_spt,"/",1)', '800');
+        $res = $this->db->get()->result_array();
+        if (!empty($res)) {
+            $num['spt'] = '800/' . ($res[0]['x'] + 1) . '/' . $s3;
+        } else {
+            $num['spt'] = '800/1/' . $s3;
+        }
+        if ($data['jenis'] == 2) {
+            $this->db->select('no_sppd , SUBSTRING_INDEX(SUBSTRING_INDEX(no_sppd,"/",2),"/",-1) as x, SUBSTRING_INDEX(no_sppd,"/",1)');
+            $this->db->from('spt');
+            $this->db->where('no_sppd <> ""');
+            $this->db->where('SUBSTRING_INDEX(no_sppd,"/",-2)', $s3);
+            $this->db->where('SUBSTRING_INDEX(no_sppd,"/",1)', '934');
+            $res = $this->db->get()->result_array();
+            if (!empty($res)) {
+                $num['sppd'] = '934/' . ($res[0]['x'] + 1) . '/' . $s3;
+            } else {
+                $num['sppd'] = '934/1/' . $s3;
+            }
+        }
+        return $num;
+        // echo json_encode($num);
+        // echo $num;
+    }
+
+    public function approv($data_spt)
+    {
         $ses = $this->session->userdata();
-        $data_approv = array(
-            'approval_title' => $ses['jabatan'],
-            'approval_name' => $ses['nama'],
-            'approval_nip' => $ses['nip'],
-            'approval_pangkat' => $ses['pangkat_gol'],
-            'approval_id_user' => $ses['id'],
-            'approval_signature	' => $ses['signature'],
-            'id_spd	' => $data['id_spd'],
-            'aksi	' => 'approv',
-        );
-        $this->db->set($data_approv);
-        $this->db->insert('approval');
-        $id = $this->db->insert_id();
-        if ($ses['level'] == 2) {
-            $this->db->set('approve_kasi', $id);
-            $this->db->set('status', '2');
+        // echo json_encode($data_spt);
+        // echo json_encode($ses);
+        // die();
+        // kasubag dan kabid
+        // if (($data_spt['status'] == '1' && $ses['level'] == 3) || ($ses['level'] == 4  && $data_spt['status'] == '2')) {
+        //    kasubag
+        if (($data_spt['status'] == '2' && ($ses['level'] == 3 || $ses['level'] == 4))) {
+            if ($data_spt['id_bagian'] == $ses['id_bagian']) {
+                if ($data_spt['jenis'] == '1') {
+                    $this->db->set('status', '11');
+                } else {
+                    $this->db->set('status', '10');
+                }
+                $this->db->set('approve_kabid', $ses['id']);
+            } else {
+                throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
+            }
+        }
+        // kasi
+        else if ($data_spt['status'] == '1' && $ses['level'] == 5) {
+            if ($data_spt['id_seksi'] == $ses['id_seksi'] && $data_spt['id_bagian'] == $ses['id_bagian']) {
+                $this->db->set('approve_kasi', $ses['id']);
+                $this->db->set('status', '2');
+            } else {
+                throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
+            }
+        }
+        // kabid
+        else if (($data_spt['status'] == '2' && $ses['level'] == 4)) {
+            if ($data_spt['id_bagian'] == $ses['id_bagian']) {
+                if ($data_spt['jenis'] == '1') {
+                    $this->db->set('status', '11');
+                } else {
+                    $this->db->set('status', '10');
+                }
+                $this->db->set('approve_kabid', $ses['id']);
+            } else {
+                throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
+            }
+        }
+        // sekdin
+        else if ($data_spt['status'] == '11' && $ses['level'] == 2) {
+            $this->db->set('approve_sekdin', $ses['id']);
+            $this->db->set('status', '12');
+        } else if ($data_spt['status'] == '12' && $ses['level'] == 1) {
+            $nomor = $this->cek_nomor($data_spt);
+            // die();
+            $data_approv = array(
+                'sign_title' => $ses['jabatan'],
+                'sign_name' => $ses['nama'],
+                'sign_nip' => $ses['nip'],
+                'sign_pangkat' => $ses['pangkat_gol'],
+                'sign_id_user' => $ses['id'],
+                'sign_signature	' => $ses['signature'],
+                'aksi	' => 'approv',
+            );
+            $this->db->set($data_approv);
+            $this->db->insert('sign');
+            $id_sign_kadin = $this->db->insert_id();
+            // if ($ses['level'] == 2) {
+            if (!empty($nomor['spt'])) {
+                $this->db->set('no_spt', $nomor['spt']);
+            }
+            if (!empty($nomor['sppd'])) {
+                $this->db->set('no_sppd', $nomor['sppd']);
+            }
+            $this->db->set('sign_kadin', $id_sign_kadin);
+            $this->db->set('approve_kadin', $ses['id']);
+            $this->db->set('status', '99');
+        } else if ($data_spt['status'] == '10' && $data_spt['id_ppk'] == $ses['id']) {
+            $data_approv = array(
+                'sign_title' => 'Pejabat Pembuat Komitmen',
+                'sign_name' => $ses['nama'],
+                'sign_nip' => $ses['nip'],
+                'sign_pangkat' => $ses['pangkat_gol'],
+                'sign_id_user' => $ses['id'],
+                'sign_signature	' => $ses['signature'],
+                'aksi	' => 'approv',
+            );
+
+            $this->db->set($data_approv);
+            $this->db->insert('sign');
+            $id_sign = $this->db->insert_id();
+            $this->db->set('sign_ppk', $id_sign);
+
+            if ($ses['level'] == '2') {
+                $this->db->set('approve_sekdin', $ses['id']);
+                $this->db->set('status', '12');
+            } else {
+                // $this->db->set('approve_sekdin', $ses['id']);
+                $this->db->set('status', '11');
+            }
+        } else {
+            throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
         }
 
-        $this->db->where('id_spd', $data['id_spd']);
-        $this->db->update('sppd',);
-        ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
+        $this->db->where('id_spt', $data_spt['id_spt']);
+        $this->db->update('spt',);
+        ExceptionHandler::handleDBError($this->db->error(), "Approv Gagal", "Approv");
     }
 
 
     public function unapprov($data)
     {
 
-        $ses = $this->session->userdata();
-        $data_approv = array(
-            'approval_title' => $ses['jabatan'],
-            'approval_name' => $ses['nama'],
-            'approval_nip' => $ses['nip'],
-            'approval_pangkat' => $ses['pangkat_gol'],
-            'approval_id_user' => $ses['id'],
-            'approval_signature	' => $ses['signature'],
-            'id_spd	' => $data['id_spd'],
-            'aksi	' => 'unapprov',
-        );
-        $this->db->set($data_approv);
-        $this->db->insert('approval');
-        $id = $this->db->insert_id();
-        if ($ses['level'] == 2) {
-            $this->db->set('unapprove_oleh', $id);
-            $this->db->set('status', '3');
-        }
 
-        $this->db->where('id_spd', $data['id_spd']);
-        $this->db->update('sppd',);
-        ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
+        $this->db->where('id_spt', $data['id_spt']);
+        $this->db->update('spt', $data);
+        ExceptionHandler::handleDBError($this->db->error(), "Batalkan Aksi", "Batal");
     }
 
 
     public function undo($data)
     {
 
+        // echo json_encode($data);
+        // die();
         $ses = $this->session->userdata();
-        $data_approv = array(
-            'approval_title' => $ses['jabatan'],
-            'approval_name' => $ses['nama'],
-            'approval_nip' => $ses['nip'],
-            'approval_pangkat' => $ses['pangkat_gol'],
-            'approval_id_user' => $ses['id'],
-            'approval_signature	' => $ses['signature'],
-            'id_spd	' => $data['id_spd'],
-            'aksi	' => 'cancel',
-        );
-        $this->db->set($data_approv);
-        $this->db->insert('approval');
+        // $data_approv = array(
+        //     'approval_title' => $ses['jabatan'],
+        //     'approval_name' => $ses['nama'],
+        //     'approval_nip' => $ses['nip'],
+        //     'approval_pangkat' => $ses['pangkat_gol'],
+        //     'approval_id_user' => $ses['id'],
+        //     'approval_signature	' => $ses['signature'],
+        //     'id_spt	' => $data['id_spt'],
+        //     'aksi	' => 'Pembatalan Approval',
+        // );
+        // $this->db->set($data_approv);
+        // $this->db->insert('approval');
         $id = $this->db->insert_id();
-        if ($ses['level'] == 2) {
-            $this->db->set('approve_kasi', NULL);
-            $this->db->set('unapprove_oleh', NULL);
-            $this->db->set('status', '0');
+        // if ($ses['level'] == 5) {
+        //     $this->db->set('approve_kasi', NULL);
+        //     $this->db->set('unapprove_oleh', NULL);
+        //     $this->db->set('status', '1');
+        // }
+        // echo ($data['status'] == '10') && ($ses['level'] == 3 || $ses['level'] == 4) && ($data['approv_kabid'] == $ses['id']);
+        if (($data['status'] == '10')  && ($ses['level'] == 3 || $ses['level'] == 4) && ($data['approve_kabid'] == $ses['id'])) {
+            // echo "true";
+            $this->db->set('approve_kabid', NULL);
+            $this->db->set('unapprove_oleh', NULL);   // if ($data_spt['id_bagian'] == $ses['id_bagian']) {
+            $this->db->set('status', '2');
+        } else
+        if (($data['status'] == '12') && ($data['id_ppk'] == $ses['id']) && ($data['approve_sekdin'] == $ses['id'])) {
+            // echo "true";
+            $this->db->set('approve_sekdin', NULL);
+            $this->db->set('sign_ppk', NULL);
+            $this->db->set('unapprove_oleh', NULL);   // if ($data_spt['id_bagian'] == $ses['id_bagian']) {
+            $this->db->set('status', '10');
+        } else
+        if (($data['status'] == '11') && ($data['id_ppk'] == $ses['id'])) {
+            // echo "true";
+            $this->db->set('sign_ppk', NULL);
+            $this->db->set('unapprove_oleh', NULL);   // if ($data_spt['id_bagian'] == $ses['id_bagian']) {
+            $this->db->set('status', '10');
+        } else
+        if (($data['status'] == '12') && ($data['approve_sekdin'] == $ses['id'])) {
+            // echo "true";
+            $this->db->set('approve_sekdin', NULL);
+            $this->db->set('unapprove_oleh', NULL);   // if ($data_spt['id_bagian'] == $ses['id_bagian']) {
+            $this->db->set('status', '10');
         }
-
-        $this->db->where('id_spd', $data['id_spd']);
-        $this->db->update('sppd',);
+        if (($data['status'] == '99') && ($data['approve_kadin'] == $ses['id'])) {
+            // echo "true";
+            $this->db->set('approve_kadin', NULL);
+            $this->db->set('sign_kadin', NULL);
+            $this->db->set('no_spt', NULL);
+            $this->db->set('no_sppd', NULL);
+            $this->db->set('unapprove_oleh', NULL);   // if ($data_spt['id_bagian'] == $ses['id_bagian']) {
+            $this->db->set('status', '12');
+        }
+        $this->db->where('id_spt', $data['id_spt']);
+        $this->db->update('spt',);
         ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
     }
 
@@ -287,5 +589,45 @@ class SPPDModel extends CI_Model
         $this->db->delete('dasar_tambahan');
 
         ExceptionHandler::handleDBError($this->db->error(), "Hapus Dasar Tambahan", "Tambahan");
+    }
+
+    public function addFoto($data)
+    {
+        if (empty($data['id_foto'])) {
+            $this->db->insert('spt_foto', $data);
+            $data['id_foto'] = $this->db->insert_id();
+        } else {
+            $this->db->where('id_foto', $data['id_foto']);
+            $this->db->update('spt_foto', $data);
+        }
+        ExceptionHandler::handleDBError($this->db->error(), "Simpan Foto", "Simpan Foto");
+
+        return $data['id_foto'];
+    }
+
+    public function addLaporan($data)
+    {
+        if (!empty($data['id_laporan'])) {
+            $this->db->where('id_laporan', $data['id_laporan']);
+            $this->db->update('spt_laporan', DataStructure::slice($data, [
+                'text_laporan', 'id_bendahara', 'id_spt', 'honorarium',
+            ], FALSE));
+        } else {
+            $this->db->insert('spt_laporan', DataStructure::slice($data, [
+                'text_laporan', 'id_bendahara', 'id_spt', 'honorarium',
+            ], FALSE));
+        }
+
+        ExceptionHandler::handleDBError($this->db->error(), "Tambah Laporan", "Laporan");
+
+        if (!empty($data['nominal']))
+            foreach ($data['nominal'] as $key => $p) {
+
+                $this->db->set('honorarium', $p);
+                $this->db->where('id_pengikut', $key);
+                $this->db->update('pengikut');
+            }
+
+        ExceptionHandler::handleDBError($this->db->error(), "Tambah Laporan", "Laporan");
     }
 }

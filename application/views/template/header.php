@@ -35,14 +35,22 @@
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/style.css" />
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/custom.css" />
+    <!-- galeri -->
+
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/photoswipe.css" />
+    <!-- end  galeri -->
     <link id="color" rel="stylesheet" href="<?= base_url() ?>assets/css/color-1.css" media="screen" />
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/responsive.css" />
-    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/datatables.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/datatables.css" /> -->
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/js/datatable/datatables/datatables.min.css" />
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/select2.css">
     <script src="<?= base_url() ?>assets/js/jquery-3.5.1.min.js"></script>
-    <script src="<?= base_url() ?>assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
-    <script src="<?= base_url() ?>assets/js/datatable/datatables/datatable.custom.js"></script>
+    <script type="text/javascript" src="<?= base_url() ?>assets/js/datatable/datatables/datatables.min.js"></script>
+
+    <!-- <script src="<?= base_url() ?>assets/js/datatable/datatables/jquery.dataTables.min.js"></script>
+    <script src="<?= base_url() ?>assets/js/datatable/datatables/datatable.custom.js"></script> -->
+    <!-- <script src="<?= base_url() ?>assets/js/datatable/datatables2/datatable.min.js"></script> -->
     <script src="<?= base_url('assets/') ?>js/FileUploader.js"></script>
     <script src="<?= base_url('assets/') ?>js/custom.js?v=0.0.4"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

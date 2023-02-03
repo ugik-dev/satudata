@@ -303,7 +303,7 @@
 
         });
 
-        $("#id_bidang").select2({
+        $("#id_seksi").select2({
             dropdownParent: $('#formProfile .modal-content'),
             ajax: {
                 url: '<?= base_url() ?>Search/bidang',
