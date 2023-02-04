@@ -179,14 +179,14 @@
                 const d = new Date(cur_date);
                 let day = d.getDay();
                 console.log(hari[day]);
-                if (day != 0 && day != 6)
-                    if (data?. [v_tahun]?. [v_bulan]?. [i] === undefined) {
-                        renderData.push([cur_date2, hari[day], '', '']);
-                    } else {
-                        renderData.push([cur_date2, hari[day], data?. [v_tahun]?. [v_bulan]?. [i]?. ['p']?. ['rec_time'],
-                            (data?. [v_tahun]?. [v_bulan]?. [i]?. ['s']?. ['rec_time'] !== undefined ? data[v_tahun][v_bulan][i]['s']['rec_time'] : '')
-                        ]);
-                    }
+                // if (day != 0 && day != 6)
+                if (data?. [v_tahun]?. [v_bulan]?. [i] === undefined) {
+                    renderData.push([cur_date2, hari[day], '', '']);
+                } else {
+                    renderData.push([cur_date2, hari[day], data?. [v_tahun]?. [v_bulan]?. [i]?. ['p']?. ['rec_time'],
+                        (data?. [v_tahun]?. [v_bulan]?. [i]?. ['s']?. ['rec_time'] !== undefined ? data[v_tahun][v_bulan][i]['s']['rec_time'] : '')
+                    ]);
+                }
             }
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }
