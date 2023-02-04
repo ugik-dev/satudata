@@ -3,6 +3,29 @@
 class DataStructure
 {
 
+  public static function absensi_rekap($pegawai, $arr, $usort = true)
+  {
+    $ret = [];
+    foreach ($pegawai as $p) {
+      $ret[$p['id']] = $p;
+    }
+
+    // return $ret;
+    foreach ($arr as $a) {
+      $ret[$a['id_pegawai']]['child'][substr($a['rec_time'], 0, 4)][(int)substr($a['rec_time'], 5, 2)][(int)substr($a['rec_time'], 8, 2)][$a['jenis']] = $a;
+    }
+
+    // if ($usort) {
+    //   usort($ret, function ($item1, $item2) {
+    //     return $item1['no_urut'] <=> $item2['no_urut'];
+    //   });
+    // }
+    // echo json_encode($ret);
+    // die();
+    return $ret;
+  }
+
+
   public static function unique_multidim_array($array, $key)
   {
     $temp_array = array();

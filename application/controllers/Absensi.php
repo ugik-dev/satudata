@@ -7,18 +7,31 @@ class Absensi extends CI_Controller
         parent::__construct();
         $this->load->model(array('SecurityModel', 'GeneralModel', 'AbsenModel'));
         // $this->load->helper(array('DataStructure'));
-        // $this->SecurityModel->userOnlyGuard();
+        $this->SecurityModel->userOnlyGuard();
 
         $this->db->db_debug = TRUE;
     }
 
 
-
+    public function getAllAbsensi()
+    {
+        try {
+            $filter = $this->input->get();
+            if (empty($filter['tahun']))
+                $filter['tahun'] = date('Y');
+            if (empty($filter['bulan']))
+                $filter['bulan'] = date('m');
+            $filter['id_user'] = $id_user = $this->session->userdata('id');
+            $data = $this->AbsenModel->getAllAbsensi($filter)[$id_user];
+            // echo json_encode($data);
+            echo json_encode(['error' => false, 'data' => !empty($data['child']) ? $data['child'] : []]);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
     public function index()
     {
         try {
-            // $this->SecurityModel->userOnlyGuard();
-
             $filter['tahun'] = date('Y');
             $filter['bulan'] = date('m');
             $filter['id_user'] = $this->session->userdata('id');
@@ -41,9 +54,29 @@ class Absensi extends CI_Controller
             $data_absen['longitude'] = $data['longitude'];
             $data_absen['latitude'] = $data['latitude'];
             $data_absen['lokasi'] = $data['lokasi'];
+
+            $current_time = date('H:i');
+            $current_time = '18:30';
+            $pagi1 = "6:00";
+            $pagi2 = "10:00";
+            $sore1 = "16:00";
+            $sore2 = "20:00";
+            $current_time = DateTime::createFromFormat('H:i', $current_time);
+            $pagi1 = DateTime::createFromFormat('H:i', $pagi1);
+            $pagi2 = DateTime::createFromFormat('H:i', $pagi2);
+            $sore1 = DateTime::createFromFormat('H:i', $sore1);
+            $sore2 = DateTime::createFromFormat('H:i', $sore2);
+            // $date3 = DateTime::createFromFormat('h:i a', $sunset);
+
+            if ($pagi1 <= $current_time && $current_time  <= $pagi2) {
+                $data_absen['jenis'] = 'p';
+            } else if ($sore1 <= $current_time && $current_time  <= $sore2) {
+                $data_absen['jenis'] = 's';
+            } else {
+                throw new UserException('Tidak diizinkan absen diwaktu ini!!', UNAUTHORIZED_CODE);
+            }
+            $data_absen['st_absen'] = 'h';
             if (!empty($_FILES['captureimage']['name'])) {
-                // echo 'ada foto';
-                // die();
                 $s =  FileIO::uploadGd2('captureimage', 'bukti_absensi', '', 'jpg|png|jpeg');
                 if (!empty($s['filename']))
                     $data_absen['file_foto'] = $s['filename'];
@@ -69,7 +102,6 @@ class Absensi extends CI_Controller
                 'page' => 'my/absen_record',
                 'title' => 'Record Absen',
                 'dataContent' => $res_data
-
             );
             $this->load->view('page', $data);
         } catch (Exception $e) {

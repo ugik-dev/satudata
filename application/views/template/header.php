@@ -42,8 +42,8 @@
     <link id="color" rel="stylesheet" href="<?= base_url() ?>assets/css/color-1.css" media="screen" />
     <!-- Responsive css-->
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/responsive.css" />
-    <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/datatables.css" /> -->
-    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/js/datatable/datatables/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/datatables.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/js/datatable/datatables/datatables.min.css" /> -->
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/select2.css">
     <script src="<?= base_url() ?>assets/js/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="<?= base_url() ?>assets/js/datatable/datatables/datatables.min.js"></script>

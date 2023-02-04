@@ -13,20 +13,26 @@
                         </p>
                     </div>
                     <div class="col-lg-6">
-                        <a class="btn btn-primary" id="scan_btn"><i class="fa fa-map-marker"></i> Scan</a>
-                        <input id="form_long" name="longitude">
-                        <input id="form_lat" name="latitude">
-                        <input id="waktu_absen" name="waktu_absen">
-                        <input id="lokasi" name="lokasi">
+                        <a class="btn btn-primary" id="scan_btn">
+                            <i class="fa fa-map-marker"></i> Scan
+
+                        </a>
+                        <label for="captureimage">
+                            <a class="btn btn-primary">
+                                <i class="fa fa-camera"></i>Ambil Gambar
+                            </a>
+                        </label>
+                        <button class="btn btn-primary" type="submit" id="save_edit_btn" data-loading-text="Loading..."> <i class="fa fa-save"></i> Simpan</button>
+                        <input id="form_long" name="longitude" type="hidden">
+                        <input id="form_lat" name="latitude" type="hidden">
+                        <input id="waktu_absen" name="waktu_absen" type="hidden">
+                        <input id="lokasi" name="lokasi" type="hidden">
                         <div id="info"></div>
                         <div id="log" style="width: 600px; height: 10px;"></div>
                         <div id="map" style="width: 100%; height: 400px;"></div>
                     </div>
                     <div class="col-sm-12 col-lg-6">
-                        <a class="btn btn-primary">
 
-                            <label for="captureimage"><i class="fa fa-camera"></i>Ambil Gambar</label>
-                        </a>
                         <input type="file" accept="image/*" capture="camera" name="captureimage" id="captureimage" class="btn btn-info" caption style="display:none">
                         <!-- -->
 
@@ -38,7 +44,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" type="submit" id="save_edit_btn" data-loading-text="Loading..."><strong>Simpan</strong></button>
             </div>
         </form>
     </div>
@@ -46,6 +51,7 @@
 
 <script>
     window.setTimeout("waktu()", 1000);
+    inarea = false;
 
     function waktu() {
         var waktu = new Date();
@@ -69,13 +75,21 @@
     };
 
     $(document).ready(function() {
-        // $('#sidebar_wrapper_func').addClass('close_icon');
         $('#sidebar_absensi').addClass('active_c');
-
         $('#sidebar_absensi').addClass('active_c');
-
         absenForm = $('#absen_form');
+        fieldImage = $('#captureimage');
         absenForm.submit(function(event) {
+            console.log('ssts ssubmit :' + $('#captureimage').val());
+            console.log('ssts ssubmit :' + inarea);
+            if (!inarea) {
+                Swal.fire("Tidak dizinkan", 'Pastikan jarak anda dengan titik absensi tidak kurang dari 50 meter!', "error");
+                return;
+            }
+            if (fieldImage.val() == '') {
+                Swal.fire("Gagal", 'Maaf, anda haruskan melampirkan foto!', "error");
+                return;
+            }
             event.preventDefault();
             var url = "<?= base_url('absensi/absensi_process') ?>";
             Swal.fire({
@@ -98,9 +112,7 @@
                 $.ajax({
                     url: url,
                     'type': 'POST',
-                    data:
-                        // formProfile.form.serialize(),
-                        new FormData(absenForm[0]),
+                    data: new FormData(absenForm[0]),
                     contentType: false,
                     processData: false,
                     success: function(data) {
@@ -112,7 +124,9 @@
                         }
                         // var user = json['data']
                         // dataUser[user['id']] = user;
-                        Swal.fire("Simpan Berhasil", "", "success");
+                        Swal.fire("Simpan Berhasil", "", "success").then((result) => {
+                            location.href = "<?= base_url('absensi') ?>"
+                        })
                         // location.reload();
                         // renderUser(dataUser);
                         // formProfile.self.modal('hide');
@@ -181,6 +195,7 @@
         i = 1;
         var cur_loc = 0;
         lokasi.val('0')
+        inarea = false;
         Object.values(dataLocation).forEach((l) => {
             circle[i].setStyle({
                 color: 'green',
@@ -194,6 +209,7 @@
                     color: 'green',
                     fillColor: '#bcf7c1'
                 });
+                inarea = true;
             } else {
                 circle[i].setStyle({
                     color: 'red',
