@@ -109,6 +109,7 @@
                 if (!result.isConfirmed) {
                     return;
                 }
+                swalLoading();
                 $.ajax({
                     url: url,
                     'type': 'POST',
