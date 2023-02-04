@@ -184,7 +184,7 @@
                     renderData.push([cur_date2, hari[day], '', '']);
                 } else {
                     renderData.push([cur_date2, hari[day], data?. [v_tahun]?. [v_bulan]?. [i]?. ['p']?. ['rec_time'],
-                        (data?. [v_tahun]?. [v_bulan]?. [i]?. ['s']?. ['rec_time'] !== undefined ? data[v_tahun][v_bulan][i]['s']['rec_time'] : '')
+                        (data?. [v_tahun]?. [v_bulan]?. [i]?. ['s']?. ['rec_time'] !== undefined ? data?. [v_tahun]?. [v_bulan]?. [i]?. ['s']?. ['rec_time'] : '')
                     ]);
                 }
             }
