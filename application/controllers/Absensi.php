@@ -23,7 +23,8 @@ class Absensi extends CI_Controller
                 $filter['bulan'] = date('m');
             $filter['id_user'] = $id_user = $this->session->userdata('id');
             $data = $this->AbsenModel->getAllAbsensi($filter);
-            // echo json_encode($data);
+            echo json_encode($data);
+            die();
             echo json_encode(['error' => false, 'data' => !empty($data[$id_user]['child']) ? $data[$id_user]['child'] : []]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
