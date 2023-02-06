@@ -156,11 +156,6 @@
         }
 
 
-        // function print() {
-        //     toolbar.tahun.val()
-        //     window.open(`<?= base_url('aktifitas/print/') ?>?tahun=${toolbar.tahun.val()}&bulan=${toolbar.bulan.val()}`);
-        // }
-
         function renderAbsensi(data) {
             console.log(data)
             FDataTable.clear();
@@ -183,7 +178,8 @@
                 if (data?. [v_tahun]?. [v_bulan]?. [i] === undefined) {
                     renderData.push([cur_date2, hari[day], '', '']);
                 } else {
-                    renderData.push([cur_date2, hari[day], data?. [v_tahun]?. [v_bulan]?. [i]?. ['p']?. ['rec_time'],
+                    renderData.push([cur_date2, hari[day],
+                        (data?. [v_tahun]?. [v_bulan]?. [i]?. ['p']?. ['rec_time'] !== undefined ? data?. [v_tahun]?. [v_bulan]?. [i]?. ['p']?. ['rec_time'] : '')
                         (data?. [v_tahun]?. [v_bulan]?. [i]?. ['s']?. ['rec_time'] !== undefined ? data?. [v_tahun]?. [v_bulan]?. [i]?. ['s']?. ['rec_time'] : '')
                     ]);
                 }
