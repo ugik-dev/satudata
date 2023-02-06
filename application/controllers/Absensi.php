@@ -56,7 +56,7 @@ class Absensi extends CI_Controller
             $data_absen['lokasi'] = $data['lokasi'];
 
             $current_time = date('H:i');
-            $current_time = '18:30';
+            // $current_time = '18:30';
             $pagi1 = "6:00";
             $pagi2 = "10:00";
             $sore1 = "16:00";
