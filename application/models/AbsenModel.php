@@ -8,7 +8,7 @@ class AbsenModel extends CI_Model
     {
         $this->db->select('p.nama,p.id, p.jabatan, p.nip');
         $this->db->from('users as p');
-        $this->db->where('id', '1');
+        // $this->db->where('id', $this->session->userdata);
         if (!empty($filter['id_pegawai'])) $this->db->where('p.id', $filter['id_pegawai']);
         // $this->db->join('ref_ptk as pt', 'pt.id_ptk = p.jenis_ptk', 'left');
         // $this->db->join('user as u', 'u.id = p.id');
