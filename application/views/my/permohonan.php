@@ -11,6 +11,7 @@
                         <div class="col-lg-2">
                             <select class="form-control " name="status_permohonan" id="status">
                                 <option value=""> Semua </option>
+                                <option value="menunggu-saya"> Menunggu Saya</option>
                                 <option value="menunggu"> Menunggu </option>
                                 <option value="approv"> Approv </option>
                                 <option value="ditolak"> Ditolak </option>
@@ -225,7 +226,7 @@
                     //     `;
                 <?php  } ?>
 
-                if (spt['status'] == 10 && spt['id_ppk'] == '<?= $this->session->userdata()['id'] ?>' && spt['id_ppk'] != '') {
+                if (spt['status'] == 6 && spt['id_ppk2'] == '<?= $this->session->userdata()['id'] ?>' && spt['id_ppk2'] != '') {
                     var aksiBtn = `
                     <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
                     <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
@@ -234,8 +235,12 @@
                     var aksiBtn = `
                         <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
                         `;
+                };
+                if ((spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>')) {
+                    var aksiBtn = `
+                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
+                        `;
                 }
-
                 var lihatButton = `
                      <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/print/${spt['id_spt']}/1'><i class='fa fa-eye'></i> PDF SPT  </a>
                      <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/print/${spt['id_spt']}/2'><i class='fa fa-eye'></i> PDF SPPD </a>
@@ -297,7 +302,7 @@
                 })
 
                 dfix = d1.split(" ")[0] + ' s.d ' + d1.split(" ")[0];
-                renderData.push([spt['nama_ref_jen_spt'], dfix, pegawai, tmpt, statusSPT(spt['status']), spt['id_spt'], button]);
+                renderData.push([spt['nama_ref_jen_spt'], dfix, pegawai, tmpt, statusSPT(spt['status'], spt['unapprove_oleh']), spt['id_spt'], button]);
             });
             // Object.values(data).forEach((skp) => {
             //     var aksiBtn = '';

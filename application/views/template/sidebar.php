@@ -4,7 +4,7 @@
             <a href="<?= base_url() ?>">
                 <!-- <h3>DINKES</h3> -->
                 <img class="img-fluid for-light" src="<?= base_url() ?>assets/images/logo/logo.png" alt="" />
-                <img class="img-fluid for-dark" src="<?= base_url() ?>assets/images/logo/logo_dark.png" alt="" />
+                <img class="img-fluid for-dark" src="<?= base_url() ?>assets/images/logo/logo.png" alt="" />
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
             <div class="toggle-sidebar">
@@ -32,16 +32,19 @@
                         <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>dashboard"><i data-feather="home"> </i><span>DASHBOARD</span></a>
                     </li>
                     <li class="sidebar-list">
-                        <a style="" class="sidebar-link sidebar-title link-nav" id="sidebar_absensi" href="<?= base_url() ?>absensi"><i data-feather="box"> </i><span>Absensi</span></a>
+                        <a style="" class="sidebar-link sidebar-title link-nav" id="sidebar_absensi" href="<?= base_url() ?>absensi"><i data-feather="calendar"> </i><span>Absensi</span></a>
+                    </li>
+                    <li class="sidebar-list">
+                        <a style="" class="sidebar-link sidebar-title link-nav" id="sidebar_surat_izin" href="<?= base_url() ?>surat-izin"><i data-feather="calendar"> </i><span>Surat Izin</span></a>
                     </li>
                     <!-- <li class="sidebar-list">
                         <a style="" class="sidebar-link sidebar-title link-nav" id="sidebar_aktifitas" href="<?= base_url() ?>aktifitas"><i data-feather="box"> </i><span>Aktifitas Harian</span></a>
                     </li> -->
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title link-nav" id="sidebar_skp" href="<?= base_url() ?>skp"><i data-feather="box"> </i><span>Sasaran Kerja</span></a>
+                        <a class="sidebar-link sidebar-title link-nav" id="sidebar_skp" href="<?= base_url() ?>skp"><i data-feather="feather"> </i><span>Sasaran Kerja</span></a>
                     </li>
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title link-nav" id="sidebar_permohonan" href="<?= base_url() ?>permohonan"><i data-feather="box"> </i><span>Permohonan Approval</span></a>
+                        <a class="sidebar-link sidebar-title link-nav" id="sidebar_permohonan" href="<?= base_url() ?>permohonan"><i data-feather="monitor"> </i><span>Permohonan Approval</span></a>
                     </li>
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>perjalanan-dinas"><i data-feather="box"> </i><span>Perjalanan Dinas Saya</span></a>

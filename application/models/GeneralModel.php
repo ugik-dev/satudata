@@ -4,19 +4,98 @@
 */
 class GeneralModel extends CI_Model
 {
-    public function deteksi_atasan($filter = [])
+    public function deteksi_atasan($data = [])
     {
+
         $this->db->select('*');
         $this->db->from('users as u ');
-        if (!empty($filter['id_user']))
-            $this->db->where('u.id', $filter['id_user']);
+        $this->db->join('roles as r ', 'u.id_role = r.id_role');
+        $this->db->where('u.status', 1);
+        $this->db->where('level', 2);
         $res = $this->db->get();
-        $user = $res->result_array()[0];
+        $user = $res->result_array();
+        // if (!empty($user)) {
+        $sekre = $user[0]['id'];
+        // }
 
-        // $this->db->select('*');
-        // $this->db->from('role as x');
-        echo json_encode($user['id_bagian']);
+        $tmp = [];
+        if ($data['level'] == 6) {
+            if (!empty($data['id_seksi'])) {
+                $this->db->select('*');
+                $this->db->from('users as u ');
+                $this->db->join('roles as r ', 'u.id_role = r.id_role');
+                $this->db->where('level', 5);
+                $this->db->where('u.status', 1);
+                $res = $this->db->get();
+                $user = $res->result_array();
+
+                // $this->db->select('*');
+                // $this->db->from('role as x');
+                if (!empty($user)) {
+                    $tmp['atasan_1'] = $user[0]['id'];
+                }
+            }
+            if (!empty($data['id_bagian'])) {
+                $this->db->select('*');
+                $this->db->from('users as u ');
+                $this->db->join('roles as r ', 'u.id_role = r.id_role');
+                $this->db->where_in('level', [4, 3]);
+                $this->db->where('u.status', 1);
+                $this->db->where('id_bagian', $data['id_bagian']);
+                $res = $this->db->get();
+                $user = $res->result_array();
+                if (!empty($user)) {
+                    $tmp['atasan_2'] = $user[0]['id'];
+                }
+            }
+            // echo json_encode($tmp);
+            // die();
+        }
+        if ($data['level'] == 5) {
+            if (!empty($data['id_bagian'])) {
+                $this->db->select('*');
+                $this->db->from('users as u ');
+                $this->db->join('roles as r ', 'u.id_role = r.id_role');
+                $this->db->where_in('level', [4, 3]);
+                $this->db->where('u.status', 1);
+                $this->db->where('id_bagian', $data['id_bagian']);
+                $res = $this->db->get();
+                $user = $res->result_array();
+                if (!empty($user)) {
+                    $tmp['atasan_2'] = $user[0]['id'];
+                }
+            }
+        }
+
+        if ($data['level'] == 4 || $data['level'] == 3) {
+            if (!empty($data['id_bagian'])) {
+                $this->db->select('*');
+                $this->db->from('users as u ');
+                $this->db->join('roles as r ', 'u.id_role = r.id_role');
+                $this->db->where('u.status', 1);
+                $this->db->where('level', 2);
+                $res = $this->db->get();
+                $user = $res->result_array();
+                if (!empty($user)) {
+                    $tmp[] = $user[0]['id'];
+                }
+            }
+        }
+        if ($data['level'] == 2) {
+            $this->db->select('*');
+            $this->db->from('users as u ');
+            $this->db->join('roles as r ', 'u.id_role = r.id_role');
+            $this->db->where('u.status', 1);
+            $this->db->where('level', 1);
+            $res = $this->db->get();
+            $user = $res->result_array();
+            if (!empty($user)) {
+                $tmp[] = $user[0]['id'];
+            }
+        }
+        return $tmp;
     }
+
     public function getSingnature($id)
     {
         $this->db->select('id,signature,nama, nip');
@@ -25,18 +104,38 @@ class GeneralModel extends CI_Model
         $res = $this->db->get();
         return DataStructure::keyValue($res->result_array(), 'id');
     }
+
+    public function getJenisIzin($filter = [])
+    {
+        $this->db->select('*');
+        $this->db->from('ref_jen_izin');
+        $res = $this->db->get();
+        return $res->result_array();
+    }
+
     public function getAllRole($filter = [])
     {
         $this->db->select('*');
         $this->db->from('roles');
-        // DataStructure::keyValue($res->result_array(), 'id_role');
         if (!empty($filter['id_role']))
             $this->db->where('id_role', $filter['id_role']);
         $res = $this->db->get();
-        // $res = $res->result_array();
         if (!empty($filter['key_id']))        return DataStructure::keyValue($res->result_array(), 'id_role');
         else
             return $res->result_array();
+    }
+
+    public function getAllDasar($filter = [])
+    {
+        $this->db->select('d.*, u1.nama as nama_ppk2, u2.nama as nama_pptk');
+        $this->db->from('dasar as d');
+        $this->db->join('users as u1', 'id_ppk2 = u1.id', 'LEFT');
+        $this->db->join('users as u2', 'id_pptk = u2.id', 'LEFT');
+        if (!empty($filter['id_dasar']))
+            $this->db->where('id_dasar', $filter['id_dasar']);
+        $this->db->where('d.id_bagian', $this->session->userdata('id_bagian'));
+        $res = $this->db->get();
+        return DataStructure::keyValue($res->result_array(), 'id_dasar');
     }
 
 
@@ -64,6 +163,7 @@ class GeneralModel extends CI_Model
         $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
         $this->db->join('ref_seksi sk', 'u.id_seksi= sk.id_ref_seksi', 'LEFT');
         $this->db->join('bagian bg', 'u.id_bagian = bg.id_bagian', 'LEFT');
+        $this->db->where('u.deleted_user', 0);
         if (!empty($filter['id'])) $this->db->where('u.id', $filter['id']);
         $res = $this->db->get();
         return DataStructure::keyValue($res->result_array(), 'id');
@@ -223,9 +323,16 @@ class GeneralModel extends CI_Model
 
     public function getAllPegawai2($filter = [])
     {
-        $this->db->select('id as id, nama as text');
+        // if (!empty($filter['bagian_show'])) {
+        // } else
+        $this->db->select('id as id, CONCAT(nama, " | " , b.nama_bag) as text');
         $this->db->from('users u ');
+
+        if (!empty($filter['bagian_show'])) {
+            $this->db->join('bagian b', 'u.id_bagian = b.id_bagian');
+        }
         if (!empty($filter['searchTerm'])) $this->db->where('nama like "%' . $filter['searchTerm'] . '%"');
+        if (!empty($filter['id_satuan'])) $this->db->where('id_satuan', $filter['id_satuan']);
         // $this->db->where('ppk', 1);
         $this->db->limit('20');
         $res = $this->db->get();

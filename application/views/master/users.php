@@ -24,6 +24,7 @@
                                     <th style="width: 24%; text-align:center!important">Username</th>
                                     <th style="width: 24%; text-align:center!important">Nama</th>
                                     <th style="width: 24%; text-align:center!important">NIP</th>
+                                    <th style="width: 24%; text-align:center!important">Bagian</th>
                                     <th style="width: 10%; text-align:center!important">Role</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
                                 </tr>
@@ -477,7 +478,7 @@
                             </div>
                         </div>`;
 
-                renderData.push([user['id'], user['username'], user['nama'], user['nip'], user['nama_role'], button]);
+                renderData.push([user['id'], user['username'], user['nama'], user['nip'], user['nama_satuan'] + ',<br>' + (user['nama_bag'] ? user['nama_bag'] : ''), user['nama_role'], button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }

@@ -2,7 +2,7 @@
 <style>
     .ck-editor__editable[role="textbox"] {
         /* editing area */
-        min-height: 500px;
+        min-height: 200px;
     }
 </style>
 <div class="container-fluid">
@@ -120,12 +120,13 @@
 
         $("#id_bendahara").select2({
             ajax: {
-                url: '<?= base_url() ?>Search/ppk',
+                url: '<?= base_url() ?>Search/pegawai',
                 type: "get",
                 dataType: 'json',
                 delay: 250,
                 data: function(params) {
                     return {
+                        'id_satuan': <?= $this->session->userdata('id_satuan') ?>,
                         searchTerm: params.term // search term
                     };
                 },
@@ -137,7 +138,6 @@
                 cache: true
             }
         });
-
 
         UserModal.form.submit(function(event) {
             event.preventDefault();

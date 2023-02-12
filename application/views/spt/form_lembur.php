@@ -3,7 +3,7 @@
         <form id="user_form" onsubmit="return false;" type="multipart" autocomplete="off">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal_title">
-                    Form SPPD
+                    Form Lembur
                 </h5>
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -12,13 +12,14 @@
 
                     <input type="" name="id_spt" value="<?= !empty($dataContent['return_data']['id_spt']) ? $dataContent['return_data']['id_spt'] : '' ?>">
                     <input type="" name="sppd" value="2">
-                    <input type="" name="jenis" value="2">
+                    <input type="" name="jenis" value="3">
 
                     <label class="col-sm-2 col-form-label" hidden=""><strong>No SPT</strong></label>
 
                     <div class="col-sm-4" hidden="">
                         <input type="text" class="form-control" name="no_spt" required="" value="<?= !empty($dataContent['return_data']['no_spt']) ? $dataContent['return_data']['no_spt'] : '' ?>" readonly="">
                     </div>
+
                     <div class="hr-line-dashed"></div>
 
                     <label class="col-sm-2 col-form-label" hidden=""><strong>Kadinkes*</strong></label>
@@ -104,77 +105,21 @@
                     </div>
 
                     <div class="col-lg-6">
-                        <div class="col-form-label">Lama Perjalanan</div>
+                        <div class="col-form-label">Lama Lembur (jam)</div>
                         <input class="form-control" id="lama_dinas" name="lama_dinas" type="number" value="<?= !empty($dataContent['return_data']['lama_dinas']) ? $dataContent['return_data']['lama_dinas'] : '' ?>">
                     </div>
-                    <div class="col-lg-6">
+                    <!-- <div class="col-lg-6">
                         <div class="col-form-label">Transportasi</div>
                         <select class="form-control" id="transport" name="transport" required>
                         </select>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-lg-12" id="layout_tujuan">
 
                 </div>
                 <hr>
-                <a class="btn btn-light my-1" type="" id="add_tujuan" data-loading-text="Loading..."><strong>Tambah Tujuan</strong></a>
+                <!-- <a class="btn btn-light my-1" type="" id="add_tujuan" data-loading-text="Loading..."><strong>Tambah Tujuan</strong></a> -->
 
-                <!-- <div class="row">
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tujuan II</div>
-                        <input class="form-control" id="tujuan_2" name="tujuan_2" type="text">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tanggal Berangkat II</div>
-                        <input class="form-control" id="date_berangkat_2" name="date_berangkat_2" type="date">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Kembali II</div>
-                        <input class="form-control" id="tujuan_2" name="tujuan_2" type="text">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tanggal Kembali II</div>
-                        <input class="form-control" id="date_kembali_2" name="date_kembali_2" type="date">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tujuan III</div>
-                        <input class="form-control" id="tujuan_3" name="tujuan_3" type="text">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tanggal Berangkat III</div>
-                        <input class="form-control" id="date_berangkat_3" name="date_berangkat_3" type="date">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Kembali III</div>
-                        <input class="form-control" id="tujuan_3" name="tujuan_3" type="text">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tanggal Kembali III</div>
-                        <input class="form-control" id="date_kembali_3" name="date_kembali_3" type="date">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tujuan IV</div>
-                        <input class="form-control" id="tujuan_4" name="tujuan_4" type="text">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tanggal Berangkat IV</div>
-                        <input class="form-control" id="date_berangkat_4" name="date_berangkat_4" type="date">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Kembali IV</div>
-                        <input class="form-control" id="tujuan_4" name="tujuan_4" type="text">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tanggal Kembali IV</div>
-                        <input class="form-control" id="date_kembali_4" name="date_kembali_4" type="date">
-                    </div>
-                </div> -->
                 <div class="modal-footer">
                     <button class="btn btn-primary" type="submit" id="save_edit_btn" data-loading-text="Loading..."><strong>Simpan Perubahan</strong></button>
                 </div>
@@ -187,7 +132,7 @@
     $(document).ready(function() {
         $('#menu_2').addClass('active');
         $('#opmenu_2').show();
-        $('#submenu_6').addClass('active');
+        $('#submenu_9').addClass('active');
 
         var UserModal = {
             'form': $('#user_form'),

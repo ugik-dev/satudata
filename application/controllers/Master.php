@@ -60,6 +60,43 @@ class Master extends CI_Controller
         }
     }
 
+    public function dasar()
+    {
+        try {
+            $this->SecurityModel->multiRole('Master', 'Dasar Surat');
+            $data = array(
+                'page' => 'master/dasar',
+                'title' => 'Dasar'
+            );
+            $this->load->view('page', $data);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+    public function action_dasar($action)
+    {
+        try {
+            $this->SecurityModel->multiRole('Master', 'Dasar Surat');
+            $this->load->model(['DasarModel']);
+            $data = $this->input->post();
+
+            if ($action == 'add') {
+                $data['user_dasar'] = $this->session->userdata('id');
+                $data['id_bagian'] = $this->session->userdata('id_bagian');
+            } else {
+                $tmp = $this->GeneralModel->getAllDasar(['id_dasar' => $data['id_dasar']])[$data['id_dasar']];
+                if ($tmp['user_dasar'] != $this->session->userdata('id'))
+                    throw new UserException('Kamu tidak berhak melakukan aksi ini!!', UNAUTHORIZED_CODE);
+            }
+            $id = $this->DasarModel->action_dasar($data);
+            $data = $this->GeneralModel->getAllDasar(['id_dasar' => $id])[$id];
+            echo json_encode(['error' => false, 'data' => $data]);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
 
     public function roles()
     {
@@ -198,7 +235,7 @@ class Master extends CI_Controller
         try {
             $this->SecurityModel->multiRole('Master', 'Pegawai');
             $data = $this->input->get();
-
+            $this->UserModel->deleteUser($data);
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
             ExceptionHandler::handle($e);

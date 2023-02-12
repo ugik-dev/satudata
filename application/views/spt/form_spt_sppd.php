@@ -69,16 +69,7 @@
                         <textarea name="maksud" id="maksud" class="form-control" rows="3"><?= !empty($dataContent['return_data']['maksud']) ? $dataContent['return_data']['maksud'] : '' ?></textarea>
                     </div>
 
-                    <div class="col-lg-12">
-                        <div class="col-form-label">PPK</div>
-                        <select class="select2 col-sm-12" id="id_ppk" name="id_ppk">
-                            <?php
-                            if (!empty($dataContent['return_data']['id_ppk'])) {
-                                echo '<option selected value="' . $dataContent['return_data']['id_ppk'] . '">' . $dataContent['return_data']['nama_ppk'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
+
                     <div class="col-lg-6">
                         <div class="col-form-label">Pegawai Pelaksana</div>
                         <select class="select2 col-sm-12" id="id_pegawai" name="id_pegawai">
@@ -187,7 +178,7 @@
     $(document).ready(function() {
         $('#menu_2').addClass('active');
         $('#opmenu_2').show();
-        $('#submenu_6').addClass('active');
+        $('#submenu_8').addClass('active');
 
         var UserModal = {
             'form': $('#user_form'),
@@ -535,27 +526,6 @@
             });
         });
 
-
-
-        $("#id_ppk").select2({
-            ajax: {
-                url: '<?= base_url() ?>Search/ppk',
-                type: "get",
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        searchTerm: params.term // search term
-                    };
-                },
-                processResults: function(response) {
-                    return {
-                        results: response
-                    };
-                },
-                cache: true
-            }
-        });
 
         $("#id_dasar").select2({
             ajax: {

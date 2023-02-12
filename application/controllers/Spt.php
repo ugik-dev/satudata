@@ -23,7 +23,9 @@ class Spt extends CI_Controller
         try {
             $this->SecurityModel->multiRole('SPT / SPPD', 'Daftar Pengajuan');
             $filter = $this->input->get();
-            // $filter['nature'] = 'Assets';
+            if ($this->session->userdata('id_role') != 1)
+                $filter['id_bagian'] = $this->session->userdata('id_bagian');
+
             $data = $this->SPPDModel->getAllSPPD($filter);
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
@@ -120,6 +122,7 @@ class Spt extends CI_Controller
             $res_data['return_data'] = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
             $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
             $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
+            $res_data['return_data']['logs'] = $this->SPPDModel->getLogs(array('id_spt' => $id));
             $laporan = $this->SPPDModel->getLaporan(array('id_spt' => $id));
             if (!empty($laporan))
                 $res_data['laporan'] = $laporan[$id];
@@ -146,12 +149,15 @@ class Spt extends CI_Controller
             // die();
 
             $cur_user = $this->session->userdata();
-            // echo $data['id_bagian'];
-            // var_dump($cur_user);
+            $logs['id_spt'] = $id;
+            $logs['id_user'] = $cur_user['id'];
             if ($data['user_input'] == $cur_user['id']) {
                 if ($data['status'] == 0) {
                     if ($action == 'ajukan') {
+                        $logs['deskripsi'] =  'Mengajukan Permohonan';
+                        $logs['label'] = 'success';
                         $this->SPPDModel->draft_to_diajukan($data);
+                        $this->SPPDModel->addLogs($logs);
                         echo json_encode(array('error' => false, 'data' => $data));
                         return;
                     }
@@ -159,13 +165,22 @@ class Spt extends CI_Controller
             }
 
             if ($action == 'approv') {
+                $logs['deskripsi'] =  'Menyetujui';
+                $logs['label'] = 'success';
                 $this->SPPDModel->approv($data);
+                $this->SPPDModel->addLogs($logs);
             }
             if ($action == 'unapprov') {
+                $logs['deskripsi'] =  'Menolak';
+                $logs['label'] = 'danger';
                 $this->SPPDModel->unapprov($data);
+                $this->SPPDModel->addLogs($logs);
             }
             if ($action == 'undo') {
+                $logs['deskripsi'] = 'Membatalkan Aksi';
+                $logs['label'] = 'warning';
                 $this->SPPDModel->undo($data);
+                $this->SPPDModel->addLogs($logs);
             }
 
 
@@ -601,7 +616,7 @@ class Spt extends CI_Controller
         $pdf->Cell(120, 10, $data['nama_pegawai'], 0, 0, 'R');
         $pdf->Cell(70, 10, '(....................................................)', 0, 1, 'C');
         $sign = $this->GeneralModel->getSingnature($data['id_pegawai'])[$data['id_pegawai']];
-        if (!empty($sign))
+        if (!empty($sign['signature']))
             $pdf->Image(base_url('uploads/signature/' . $sign['signature']), 141, $pdf->getY() - 14, 30, 20);
         $i = 0;
         foreach ($data['pengikut'] as $p) {

@@ -24,7 +24,18 @@ class General extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
-
+    public function getAllKehadian()
+    {
+        try {
+            $filter = $this->input->get();
+            $filter['date'] = date('Y-m-d');
+            $this->load->model(array('AbsenModel'));
+            // $data = $this->AbsenModel->getAllAbsensiM2($filter);
+            // echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
     public function getAllRole()
     {
         try {
@@ -60,7 +71,17 @@ class General extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
-
+    public function getAllDasar()
+    {
+        try {
+            $filter = $this->input->get();
+            // $filter['nature'] = 'Assets';
+            $data = $this->GeneralModel->getAllDasar($filter);
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
     public function getAllPosition()
     {
         try {

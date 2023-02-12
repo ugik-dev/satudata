@@ -15,14 +15,12 @@ class Permohonan extends CI_Controller
     public function getAll()
     {
         try {
-            // $this->SecurityModel->userOnlyGuard();
             $filter = $this->input->get();
             $filter['id_penilai'] = $this->session->userdata()['id'];
             $data_penilai = $this->session->userdata();
-            // if($data_penilai['id_seksi'] != '')
-            // $filter['search_approval']
             $filter['search_approval']['data_penilai'] = $data_penilai;
             $data['spt'] = $this->SPPDModel->getAllSPPD($filter);
+            $data['laporan_spt'] = $this->SPPDModel->getAllLaporan($filter);
 
             // echo json_encode($data);
             // echo json_encode($data_penilai);

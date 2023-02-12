@@ -71,19 +71,21 @@ class FileIO
     } else {
       if (round($CI->upload->data()['file_size']) > 1000) {
         $gambar = $CI->upload->data()['file_name'];
-        $config['image_library'] = 'gd2';
-        $config['source_image'] = realpath(APPPATH . '../uploads/' . $folder . '/' .  $gambar);
-        $config['create_thumb'] = FALSE;
-        $config['maintain_ratio'] = TRUE;
-        $config['quality'] = '20%';
-        $config['width'] = 1010;
-        // $config['height'] = 120;
-        $config['new_image'] = realpath(APPPATH . '../uploads/' . $folder . '/' .  $gambar);
-        $GD2 = &get_instance();
-        $GD2->load->library('image_lib', $config);
-        $res =  $GD2->image_lib->resize();
-        if (!$res) {
-          throw new UserException($GD2->image_lib->display_errors(), UPLOAD_FAILED_CODE);
+        if ($CI->upload->data()['is_image']) {
+          $config['image_library'] = 'gd2';
+          $config['source_image'] = realpath(APPPATH . '../uploads/' . $folder . '/' .  $gambar);
+          $config['create_thumb'] = FALSE;
+          $config['maintain_ratio'] = TRUE;
+          $config['quality'] = '20%';
+          $config['width'] = 1010;
+          // $config['height'] = 120;
+          $config['new_image'] = realpath(APPPATH . '../uploads/' . $folder . '/' .  $gambar);
+          $GD2 = &get_instance();
+          $GD2->load->library('image_lib', $config);
+          $res =  $GD2->image_lib->resize();
+          if (!$res) {
+            throw new UserException($GD2->image_lib->display_errors(), UPLOAD_FAILED_CODE);
+          }
         }
       }
 

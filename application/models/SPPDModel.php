@@ -3,6 +3,16 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class SPPDModel extends CI_Model
 {
+    public function getLogs($filter = [])
+    {
+        $this->db->select('l.*, u.nama');
+        $this->db->from('spt_logs as l');
+        $this->db->join('users as u', 'u.id = l.id_user');
+        $this->db->order_by('time_logs', 'ASC');
+        if (!empty($filter['id_spt'])) $this->db->where('l.id_spt', $filter['id_spt']);
+        // if (!empty($filter['id_foto'])) $this->db->where('id_foto', $filter['id_foto']);
+        return $this->db->get()->result_array();
+    }
     public function getFoto($filter = [])
     {
         $this->db->from('spt_foto');
@@ -20,46 +30,72 @@ class SPPDModel extends CI_Model
         return DataStructure::keyValue($this->db->get()->result_array(), 'id_spt');
     }  // die();
 
-    public function getAllSPPD($filter = [])
+    public function getAllSPPD($filter = [], $sort = true)
     {
+        $ses = $this->session->userdata();
         // echo json_encode($filter);
         // die();
         $this->db->select('rjs.nama_ref_jen_spt');
         $this->db->select('p2.nama as nama_input');
-        $this->db->select('s.nama as nama_pegawai, 
+
+        $this->db->select(' s.nama as nama_pegawai, 
                             s.jabatan jabatan_pegawai, 
                             s.pangkat_gol as pangkat_gol_pegawai,
                             s.id_seksi as id_seksi_pegawai,
                             s.id_bagian as id_bagian_pegawai, 
                             s.nip nip_pegawai');
+
         $this->db->select(' p.nama as nama_ppk, 
                             p.jabatan jabatan_ppk, 
                             p.pangkat_gol as pangkat_gol_ppk, 
                             p.nip nip_ppk');
 
+        $this->db->select(' ptk.nama as nama_pptk, 
+                            ptk.jabatan jabatan_pptk, 
+                            ptk.pangkat_gol as pangkat_gol_pptk, 
+                            ptk.nip nip_pptk');
+
         $this->db->select("un.approval_id_user as id_unapproval ,
                             t.nama_tr as nama_transport, 
                             u.*, 
-                            d.nama_dasar");
+                            d.*");
+
         $this->db->from('spt as u');
         // $this->db->join('tujuan r', 'u.id_spt = r.id_spt');
-        $this->db->join('users p', 'p.id = u.id_ppk', 'LEFT');
+        $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
+        $this->db->join('users p', 'p.id = d.id_ppk2', 'LEFT');
+        $this->db->join('users ptk', 'ptk.id = d.id_pptk', 'LEFT');
         $this->db->join('ref_jen_spt rjs', 'u.jenis = rjs.id_ref_jen_spt', 'LEFT');
         $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
         $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
         $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
         $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
-        $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
         if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
+        // $this->db->where('u.id_spt', 24);
+        if (!empty($filter['id_bagian'])) $this->db->where('u.id_bagian', $filter['id_bagian']);
         if (!empty($filter['my_perjadin'])) $this->db->where('u.id_pegawai', $this->session->userdata()['id']);
         if (!empty($filter['search_approval']['data_penilai'])) {
             $penilai =  $filter['search_approval']['data_penilai'];
-            if ($penilai['level'] == 2) {
+            if ($penilai['level'] == 1) {
+                $this->db->where("(u.status in (12,99) OR unapprove_oleh = {$penilai['id']} OR d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
+
                 // $this->db->where('s.id_bagian', $penilai['id_bagian']);
                 // die();
                 if (!empty($filter['status_permohonan'])) {
-                    if ($filter['status_permohonan'] == 'menunggu') {
-                        $this->db->where('u.status', 11);
+                    if ($filter['status_permohonan'] == 'menunggu-saya' ||  $filter['status_permohonan'] == 'menunggu') {
+                        $this->db->where("u.status = 12 OR (d.id_ppk2 = {$penilai['id']} AND  u.status = 6)");
+                    } else if ($filter['status_permohonan'] == 'approv') {
+                        $this->db->where('u.status = 99');
+                    }
+                }
+            } else if ($penilai['level'] == 2) {
+                $this->db->where("(u.status in (6,11,12,99) OR unapprove_oleh = {$penilai['id']} OR d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
+
+                // $this->db->where('s.id_bagian', $penilai['id_bagian']);
+                // die();
+                if (!empty($filter['status_permohonan'])) {
+                    if ($filter['status_permohonan'] == 'menunggu-saya') {
+                        $this->db->where("u.status = 11 OR (d.id_ppk2 = {$penilai['id']} AND  u.status = 6)");
                     } else if ($filter['status_permohonan'] == 'approv') {
                         $this->db->where('u.status > 11');
                         $this->db->where('u.status <> 98');
@@ -67,7 +103,7 @@ class SPPDModel extends CI_Model
                 }
             } else
             if ($penilai['level'] == 3) {
-                $this->db->where('s.id_bagian', $penilai['id_bagian']);
+                $this->db->where("(u.id_bagian = {$penilai['id_bagian']} OR d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
                 // die();
                 if (!empty($filter['status_permohonan'])) {
                     if ($filter['status_permohonan'] == 'menunggu') {
@@ -80,13 +116,15 @@ class SPPDModel extends CI_Model
             }
 
             if ($filter['status_permohonan'] == 'ditolak') {
-                $this->db->where('u.status = 98');
+                $this->db->where('u.unapprove_oleh is null');
             } else if ($filter['status_permohonan'] == 'selesai') {
                 $this->db->where('u.status = 99');
             }
         }
 
         $res = $this->db->get()->result_array();
+        // echo $this->db->last_query();
+        // die();
         $res_id = [];
         foreach ($res as $rid) {
             array_push($res_id, $rid['id_spt']);
@@ -271,6 +309,13 @@ class SPPDModel extends CI_Model
 
         return $id_spt;
     }
+    public function addLogs($data)
+    {
+
+        $this->db->insert('spt_logs', $data);
+
+        ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
+    }
 
 
     public function editSPPD($data)
@@ -404,21 +449,58 @@ class SPPDModel extends CI_Model
         // echo $num;
     }
 
+    function sign($id, $field, $user, $title)
+    {
+
+        $sign = array(
+            'sign_title' => $title,
+            'sign_name' => $user['nama'],
+            'sign_nip' => $user['nip'],
+            'sign_pangkat' => $user['pangkat_gol'],
+            'sign_id_user' => $user['id'],
+            'sign_signature	' => $user['signature'],
+            'aksi	' => 'approv',
+        );
+        $this->db->insert('sign', $sign);
+        $sign_id =  $this->db->insert_id();
+
+        $this->db->set($field, $sign_id);
+        $this->db->where('id_spt', $id);
+
+        return $sign_id;
+    }
     public function approv($data_spt)
     {
         $ses = $this->session->userdata();
-        // echo json_encode($data_spt);
-        // echo json_encode($ses);
-        // die();
+        $continue = false;
         // kasubag dan kabid
         // if (($data_spt['status'] == '1' && $ses['level'] == 3) || ($ses['level'] == 4  && $data_spt['status'] == '2')) {
         //    kasubag
+        if ($data_spt['id_ppk2'] == $ses['id'] && empty($data_spt['sign_ppk'])) {
+            $data_spt['sign_ppk'] =  $this->sign($data_spt['id_spt'], 'sign_ppk', $ses, 'Pejabat Pembuat Komitmen');
+            $continue = true;
+            if ($ses['level'] == 2) {
+                $this->db->set('approve_sekdin', $ses['id']);
+                $this->db->set('status', '12');
+            }
+        }
+
+        if ($data_spt['id_pptk'] == $ses['id'] && empty($data_spt['sign_pptk'])) {
+            $data_spt['sign_pptk'] = $this->sign($data_spt['id_spt'], 'sign_pptk', $ses, 'Pejabat Pelaksana Teknis Kegiatan');
+            $continue = true;
+        }
+
         if (($data_spt['status'] == '2' && ($ses['level'] == 3 || $ses['level'] == 4))) {
             if ($data_spt['id_bagian'] == $ses['id_bagian']) {
                 if ($data_spt['jenis'] == '1') {
                     $this->db->set('status', '11');
                 } else {
-                    $this->db->set('status', '10');
+                    if (!empty($data_spt['sign_pptk']) && !empty($data_spt['sign_ppk']))
+                        $this->db->set('status', '10');
+                    else if (empty($data_spt['sign_pptk']))
+                        $this->db->set('status', '5');
+                    else if (empty($data_spt['sign_ppk']))
+                        $this->db->set('status', '6');
                 }
                 $this->db->set('approve_kabid', $ses['id']);
             } else {
@@ -433,40 +515,12 @@ class SPPDModel extends CI_Model
             } else {
                 throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
             }
-        }
-        // kabid
-        else if (($data_spt['status'] == '2' && $ses['level'] == 4)) {
-            if ($data_spt['id_bagian'] == $ses['id_bagian']) {
-                if ($data_spt['jenis'] == '1') {
-                    $this->db->set('status', '11');
-                } else {
-                    $this->db->set('status', '10');
-                }
-                $this->db->set('approve_kabid', $ses['id']);
-            } else {
-                throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
-            }
-        }
-        // sekdin
-        else if ($data_spt['status'] == '11' && $ses['level'] == 2) {
+        } else if ($data_spt['status'] == '11' && $ses['level'] == 2) {
             $this->db->set('approve_sekdin', $ses['id']);
             $this->db->set('status', '12');
         } else if ($data_spt['status'] == '12' && $ses['level'] == 1) {
             $nomor = $this->cek_nomor($data_spt);
-            // die();
-            $data_approv = array(
-                'sign_title' => $ses['jabatan'],
-                'sign_name' => $ses['nama'],
-                'sign_nip' => $ses['nip'],
-                'sign_pangkat' => $ses['pangkat_gol'],
-                'sign_id_user' => $ses['id'],
-                'sign_signature	' => $ses['signature'],
-                'aksi	' => 'approv',
-            );
-            $this->db->set($data_approv);
-            $this->db->insert('sign');
-            $id_sign_kadin = $this->db->insert_id();
-            // if ($ses['level'] == 2) {
+            $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
             if (!empty($nomor['spt'])) {
                 $this->db->set('no_spt', $nomor['spt']);
             }
@@ -476,29 +530,8 @@ class SPPDModel extends CI_Model
             $this->db->set('sign_kadin', $id_sign_kadin);
             $this->db->set('approve_kadin', $ses['id']);
             $this->db->set('status', '99');
-        } else if ($data_spt['status'] == '10' && $data_spt['id_ppk'] == $ses['id']) {
-            $data_approv = array(
-                'sign_title' => 'Pejabat Pembuat Komitmen',
-                'sign_name' => $ses['nama'],
-                'sign_nip' => $ses['nip'],
-                'sign_pangkat' => $ses['pangkat_gol'],
-                'sign_id_user' => $ses['id'],
-                'sign_signature	' => $ses['signature'],
-                'aksi	' => 'approv',
-            );
-
-            $this->db->set($data_approv);
-            $this->db->insert('sign');
-            $id_sign = $this->db->insert_id();
-            $this->db->set('sign_ppk', $id_sign);
-
-            if ($ses['level'] == '2') {
-                $this->db->set('approve_sekdin', $ses['id']);
-                $this->db->set('status', '12');
-            } else {
-                // $this->db->set('approve_sekdin', $ses['id']);
-                $this->db->set('status', '11');
-            }
+        } else if ($continue) {
+            $this->db->set('id_spt', $data_spt['id_spt']);
         } else {
             throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
         }
@@ -511,10 +544,17 @@ class SPPDModel extends CI_Model
 
     public function unapprov($data)
     {
-
+        $ses = $this->session->userdata();
+        // if ($ses['level'] == 2) {
+        $this->db->set('unapprove_oleh', $ses['id']);
+        // } else 
+        // if ($ses['level'] == 1) {
+        //     $this->db->set('unnapprove_oleh', $ses['id']);
+        //     $this->db->set('status', 98);
+        // }
 
         $this->db->where('id_spt', $data['id_spt']);
-        $this->db->update('spt', $data);
+        $this->db->update('spt');
         ExceptionHandler::handleDBError($this->db->error(), "Batalkan Aksi", "Batal");
     }
 
@@ -550,12 +590,11 @@ class SPPDModel extends CI_Model
             $this->db->set('unapprove_oleh', NULL);   // if ($data_spt['id_bagian'] == $ses['id_bagian']) {
             $this->db->set('status', '2');
         } else
-        if (($data['status'] == '12') && ($data['id_ppk'] == $ses['id']) && ($data['approve_sekdin'] == $ses['id'])) {
-            // echo "true";
+        if (($data['status'] == '12') && ($data['id_ppk2'] == $ses['id']) && ($data['approve_sekdin'] == $ses['id'])) {
             $this->db->set('approve_sekdin', NULL);
             $this->db->set('sign_ppk', NULL);
             $this->db->set('unapprove_oleh', NULL);   // if ($data_spt['id_bagian'] == $ses['id_bagian']) {
-            $this->db->set('status', '10');
+            $this->db->set('status', '6');
         } else
         if (($data['status'] == '11') && ($data['id_ppk'] == $ses['id'])) {
             // echo "true";
@@ -577,6 +616,10 @@ class SPPDModel extends CI_Model
             $this->db->set('no_sppd', NULL);
             $this->db->set('unapprove_oleh', NULL);   // if ($data_spt['id_bagian'] == $ses['id_bagian']) {
             $this->db->set('status', '12');
+        }
+
+        if ($data['unapprove_oleh'] == $ses['id']) {
+            $this->db->set('unapprove_oleh', NULL);
         }
         $this->db->where('id_spt', $data['id_spt']);
         $this->db->update('spt',);
@@ -607,14 +650,19 @@ class SPPDModel extends CI_Model
 
     public function addLaporan($data)
     {
+        if (!empty($this->session->userdata()['id_seksi']))
+            $data['lap_status'] = 1;
+        else
+            $data['lap_status'] = 2;
+        // $this->db->set('status', '2');
         if (!empty($data['id_laporan'])) {
             $this->db->where('id_laporan', $data['id_laporan']);
             $this->db->update('spt_laporan', DataStructure::slice($data, [
-                'text_laporan', 'id_bendahara', 'id_spt', 'honorarium',
+                'text_laporan', 'id_bendahara', 'id_spt', 'honorarium', 'lap_status'
             ], FALSE));
         } else {
             $this->db->insert('spt_laporan', DataStructure::slice($data, [
-                'text_laporan', 'id_bendahara', 'id_spt', 'honorarium',
+                'text_laporan', 'id_bendahara', 'id_spt', 'honorarium', 'lap_status'
             ], FALSE));
         }
 

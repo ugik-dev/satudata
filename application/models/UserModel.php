@@ -15,11 +15,12 @@ class UserModel extends CI_Model
         if (empty($filter['is_login'])) {
             $this->db->select("NULL as password", FALSE);
         }
+        $this->db->where('u.status', 1);
         if (isset($filter['is_not_self'])) $this->db->where('u.id_user !=', $this->session->userdata('id_user'));
         if (isset($filter['username'])) $this->db->where('u.username', $filter['username']);
         // if (isset($filter['username_email'])) $this->db->where('u.username = "' . $filter['username_email'] . '" OR email = "' . $filter['username_email'] . '"');
 
-        if (isset($filter['id_user'])) $this->db->where('u.id_user', $filter['id_user']);
+        if (isset($filter['id_user'])) $this->db->where('u.id', $filter['id_user']);
         if (isset($filter['except_roles'])) $this->db->where_not_in('u.id_role', $filter['except_roles']);
         if (isset($filter['just_roles'])) $this->db->where_in('u.id_role', $filter['just_roles']);
         if (!empty($filter['id_role'])) $this->db->where('u.id_role', $filter['id_role']);
@@ -177,8 +178,11 @@ class UserModel extends CI_Model
 
     public function deleteUser($data)
     {
+
+        $this->db->set('status', 2);
+        $this->db->set('deleted_user', 1);
         $this->db->where('id', $data['id']);
-        $this->db->delete('users');
+        $this->db->update('users');
 
         ExceptionHandler::handleDBError($this->db->error(), "Hapus User", "User");
     }

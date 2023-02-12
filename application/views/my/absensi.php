@@ -34,15 +34,17 @@
                         <div class=" col-md-6 col-lg-8">
                             <!-- <button type="submit" class="btn btn-primary btn-md" ><i class="fa fa-search"></i> Cari </button> -->
                             <!-- <button type="button" class="btn btn-primary btn-md" name="btn_cari" id="btn_cari"><i class="fa fa-search"></i> Cari </button> -->
-                            <a href="<?= base_url('absensi/record') ?>" class="btn btn-primary btn-md"><i class="fa fa-calendar"></i>Record Absen </a>
+                            <a href="<?= base_url(
+                                'absensi/record'
+                            ) ?>" class="btn btn-primary btn-md"><i class="fa fa-calendar"></i>Record Absen </a>
                             <button type="button" class="btn btn-light btn-md float-end" name="btn_print" id="btn_print"><i class="fa fa-print"></i> Print </button>
                         </div>
                     </form>
                 </div>
 
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="FDataTable" class="table table-bordered">
+                    <div class="">
+                        <table id="FDataTable" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th style=" text-align:center!important" rowspan="2">Tanggal</th>
@@ -92,7 +94,6 @@
             getAbsensi();
         })
         var FDataTable = $('#FDataTable').DataTable({
-            'columnDefs': [],
             paging: false,
             ordering: false,
             info: false,
@@ -139,7 +140,7 @@
             });
             Swal.showLoading()
             return $.ajax({
-                url: `<?php echo site_url('absensi/getAllAbsensi/') ?>`,
+                url: `<?php echo site_url('absensi/getAllAbsensi/'); ?>`,
                 'type': 'get',
                 data: toolbar.form.serialize(),
                 success: function(data) {
@@ -173,8 +174,8 @@
                 cur_date2 = i + '-' + v_bulan + '-' + v_tahun;
                 const d = new Date(cur_date);
                 let day = d.getDay();
-                console.log(hari[day]);
-                // if (day != 0 && day != 6)
+                     console.log(hari[day]);
+                if (day != 0 && day != 6)
                 if (data?. [v_tahun]?. [v_bulan]?. [i] === undefined) {
                     renderData.push([cur_date2, hari[day], '', '']);
                 } else {

@@ -1,4 +1,569 @@
 <!-- Container-fluid starts-->
+<!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/calendar.css" /> -->
+<div class="container-fluid">
+  <div class="page-title">
+    <div class="row">
+      <div class="col-6">
+        <h3>Dashboard</h3>
+      </div>
+      <div class="col-6">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html" data-bs-original-title="" title=""> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg></a></li>
+          <li class="breadcrumb-item">Sistem Informasi Administrasi dan Umum</li>
+          <!-- <li class="breadcrumb-item active">Calender Basic</li> -->
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card box-shadow-title">
+        <div class="card-header">
+          <h5>Basic</h5>
+        </div>
+        <div class="d-flex event-calendar">
+          <div id="lnb">
+            <div class="lnb-new-schedule text-center">
+              <button class="btn btn-primary" id="btn-new-schedule" type="button" data-bs-toggle="modal">
+                New schedule
+              </button>
+            </div>
+            <div class="lnb-calendars" id="lnb-calendars">
+              <div>
+                <div class="lnb-calendars-item">
+                  <label>
+                    <input class="tui-full-calendar-checkbox-square" type="checkbox" value="all" checked="" /><span></span><strong>View all</strong>
+                  </label>
+                </div>
+              </div>
+              <div class="lnb-calendars-d1" id="calendarList"></div>
+            </div>
+          </div>
+          <div id="right">
+            <div id="menu">
+              <div class="dropdown d-inline">
+                <button hidden class="btn btn-default btn-sm dropdown-toggle" id="dropdownMenu-calendarType" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <i class="calendar-icon ic_view_month" id="calendarTypeIcon" style="margin-right: 4px"></i><span id="calendarTypeName">Dropdown</span><i class="calendar-icon tui-full-calendar-dropdown-arrow"></i>
+                </button>
+
+              </div>
+              <span id="menu-navi">
+                <button class="btn btn-default btn-sm move-today" type="button" data-action="move-today">
+                  Today
+                </button>
+                <button class="btn btn-default btn-sm move-day" type="button" data-action="move-prev">
+                  <i class="calendar-icon ic-arrow-line-left" data-action="move-prev"></i>
+                </button>
+                <button class="btn btn-default btn-sm move-day" type="button" data-action="move-next">
+                  <i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i></button></span><span class="render-range" id="renderRange"></span>
+            </div>
+            <div id="calendar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- <script src="<?= base_url() ?>assets/js/calendar/tui-code-snippet.min.js"></script>
+<script src="<?= base_url() ?>assets/js/calendar/tui-time-picker.min.js"></script>
+<script src="<?= base_url() ?>assets/js/calendar/tui-date-picker.min.js"></script>
+<script src="<?= base_url() ?>assets/js/calendar/moment.min.js"></script>
+<script src="<?= base_url() ?>assets/js/calendar/chance.min.js"></script>
+<script src="<?= base_url() ?>assets/js/calendar/tui-calendar.js"></script>
+<script src="<?= base_url() ?>assets/js/calendar/calendars.js"></script>
+<script src="<?= base_url() ?>assets/js/calendar/schedules.js"></script> -->
+<!-- <script src="<?= base_url() ?>assets/js/calendar/app.js"></script> -->
+
+<!-- <script src="<?= base_url() ?>assets/js/tooltip-init.js"></script> -->
+<!-- <script>
+  "use strict";
+
+  /* eslint-disable */
+  /* eslint-env jquery */
+  /* global moment, tui, chance */
+  /* global findCalendar, CalendarList, ScheduleList, generateSchedule */
+
+  (function(window, Calendar) {
+    var cal, resizeThrottled;
+    var useCreationPopup = true;
+    var useDetailPopup = true;
+    var datePicker, selectedCalendar;
+
+    cal = new Calendar("#calendar", {
+      // options.month.visibleWeeksCount = 0;
+      // viewName = "month";
+      defaultView: "month",
+      useCreationPopup: useCreationPopup,
+      useDetailPopup: useDetailPopup,
+      calendars: CalendarList,
+      template: {
+        milestone: function(model) {
+          return (
+            '<span class="calendar-font-icon ic-milestone-b"></span> <span style="background-color: ' +
+            model.bgColor +
+            '">' +
+            model.title +
+            "</span>"
+          );
+        },
+        allday: function(schedule) {
+          // console.log('calendarlist' + CalendarList);
+          console.log('line 150')
+          return getTimeTemplate(schedule, true);
+        },
+        time: function(schedule) {
+          console.log('line 154')
+          return getTimeTemplate(schedule, false);
+        },
+      },
+    });
+
+    // event handlers
+    cal.on({
+      clickMore: function(e) {
+        console.log("clickMore", e);
+      },
+      clickSchedule: function(e) {
+        console.log("clickSchedule", e);
+      },
+      clickDayname: function(date) {
+        console.log("clickDayname", date);
+      },
+      beforeCreateSchedule: function(e) {
+        console.log("beforeCreateSchedule", e);
+        saveNewSchedule(e);
+      },
+      beforeUpdateSchedule: function(e) {
+        var schedule = e.schedule;
+        var changes = e.changes;
+
+        console.log("beforeUpdateSchedule", e);
+
+        if (changes && !changes.isAllDay && schedule.category === "allday") {
+          changes.category = "time";
+        }
+
+        cal.updateSchedule(schedule.id, schedule.calendarId, changes);
+        refreshScheduleVisibility();
+      },
+      beforeDeleteSchedule: function(e) {
+        // console.log("beforeDeleteSchedule", e);
+        cal.deleteSchedule(e.schedule.id, e.schedule.calendarId);
+      },
+      afterRenderSchedule: function(e) {
+        var schedule = e.schedule;
+        // var element = cal.getElement(schedule.id, schedule.calendarId);
+        // console.log('afterRenderSchedule', element);
+      },
+      clickTimezonesCollapseBtn: function(timezonesCollapsed) {
+        // console.log("timezonesCollapsed", timezonesCollapsed);
+
+        if (timezonesCollapsed) {
+          cal.setTheme({
+            "week.daygridLeft.width": "77px",
+            "week.timegridLeft.width": "77px",
+          });
+        } else {
+          cal.setTheme({
+            "week.daygridLeft.width": "60px",
+            "week.timegridLeft.width": "60px",
+          });
+        }
+
+        return true;
+      },
+    });
+
+    /**
+     * Get time template for time and all-day
+     * @param {Schedule} schedule - schedule
+     * @param {boolean} isAllDay - isAllDay or hasMultiDates
+     * @returns {string}
+     */
+    function getTimeTemplate(schedule, isAllDay) {
+      // console.log('ini schedule dari getTimeTemplate')
+      // return;
+      var html = [];
+      var start = moment(schedule.start.toUTCString());
+      // console.log(start)
+      if (!isAllDay) {
+        html.push("<strong> ini waktu" + start.format("HH:mm") + "</strong> ");
+      }
+      if (schedule.isPrivate) {
+        html.push('<span class="calendar-font-icon ic-lock-b"></span>');
+        html.push(" Private");
+      } else {
+        if (schedule.isReadOnly) {
+          html.push('<span class="calendar-font-icon ic-readonly-b"></span>');
+        } else if (schedule.recurrenceRule) {
+          html.push('<span class="calendar-font-icon ic-repeat-b"></span>');
+        } else if (schedule.attendees.length) {
+          html.push('<span class="calendar-font-icon ic-user-b"></span>');
+        } else if (schedule.location) {
+          html.push('<span class="calendar-font-icon ic-location-b"></span>');
+        }
+        html.push("Ini Judul");
+      }
+      // console.log(html.join(""))
+
+      return html.join("");
+    }
+
+    /**
+     * A listener for click the menu
+     * @param {Event} e - click event
+     */
+    function onClickMenu(e) {
+      var target = $(e.target).closest('a[role="menuitem"]')[0];
+      var action = getDataAction(target);
+      var options = cal.getOptions();
+      var viewName = "";
+
+      // console.log(target);
+      // console.log(action);
+      switch (action) {
+        case "toggle-daily":
+          viewName = "day";
+          break;
+        case "toggle-weekly":
+          viewName = "week";
+          break;
+        case "toggle-monthly":
+          options.month.visibleWeeksCount = 0;
+          viewName = "month";
+          break;
+        case "toggle-weeks2":
+          options.month.visibleWeeksCount = 2;
+          viewName = "month";
+          break;
+        case "toggle-weeks3":
+          options.month.visibleWeeksCount = 3;
+          viewName = "month";
+          break;
+        case "toggle-narrow-weekend":
+          options.month.narrowWeekend = !options.month.narrowWeekend;
+          options.week.narrowWeekend = !options.week.narrowWeekend;
+          viewName = cal.getViewName();
+
+          target.querySelector("input").checked = options.month.narrowWeekend;
+          break;
+
+        case "toggle-start-day-1":
+          options.month.startDayOfWeek = options.month.startDayOfWeek ? 0 : 1;
+          options.week.startDayOfWeek = options.week.startDayOfWeek ? 0 : 1;
+          viewName = cal.getViewName();
+
+          target.querySelector("input").checked = options.month.startDayOfWeek;
+          break;
+        case "toggle-workweek":
+          options.month.workweek = !options.month.workweek;
+          options.week.workweek = !options.week.workweek;
+          viewName = cal.getViewName();
+
+          target.querySelector("input").checked = !options.month.workweek;
+          break;
+        default:
+          break;
+      }
+
+      cal.setOptions(options, true);
+      cal.changeView(viewName, true);
+
+      setDropdownCalendarType();
+      setRenderRangeText();
+      setSchedules();
+    }
+
+    function onClickNavi(e) {
+      var action = getDataAction(e.target);
+
+      switch (action) {
+        case "move-prev":
+          cal.prev();
+          break;
+        case "move-next":
+          cal.next();
+          break;
+        case "move-today":
+          cal.today();
+          break;
+        default:
+          return;
+      }
+
+      setRenderRangeText();
+      setSchedules();
+    }
+
+    function onNewSchedule() {
+      var title = $("#new-schedule-title").val();
+      var location = $("#new-schedule-location").val();
+      var isAllDay = document.getElementById("new-schedule-allday").checked;
+      var start = datePicker.getStartDate();
+      var end = datePicker.getEndDate();
+      var calendar = selectedCalendar ? selectedCalendar : CalendarList[0];
+
+      if (!title) {
+        return;
+      }
+
+      cal.createSchedules([{
+        id: String(chance.guid()),
+        calendarId: calendar.id,
+        title: "title",
+        isAllDay: isAllDay,
+        start: start,
+        end: end,
+        category: isAllDay ? "allday" : "time",
+        dueDateClass: "",
+        color: calendar.color,
+        bgColor: calendar.bgColor,
+        dragBgColor: calendar.bgColor,
+        borderColor: calendar.borderColor,
+        raw: {
+          location: location,
+        },
+        state: "Busy",
+      }, ]);
+
+      $("#modal-new-schedule").modal("hide");
+    }
+
+    function onChangeNewScheduleCalendar(e) {
+      var target = $(e.target).closest('a[role="menuitem"]')[0];
+      var calendarId = getDataAction(target);
+      changeNewScheduleCalendar(calendarId);
+    }
+
+    function changeNewScheduleCalendar(calendarId) {
+      var calendarNameElement = document.getElementById("calendarName");
+      var calendar = findCalendar(calendarId);
+      var html = [];
+
+      html.push(
+        '<span class="calendar-bar" style="background-color: ' +
+        calendar.bgColor +
+        "; border-color:" +
+        calendar.borderColor +
+        ';"></span>'
+      );
+      html.push('<span class="calendar-name">' + calendar.name + "</span>");
+
+      calendarNameElement.innerHTML = html.join("");
+
+      selectedCalendar = calendar;
+    }
+
+    function createNewSchedule(event) {
+      var start = event.start ? new Date(event.start.getTime()) : new Date();
+      var end = event.end ?
+        new Date(event.end.getTime()) :
+        moment().add(1, "hours").toDate();
+
+      if (useCreationPopup) {
+        cal.openCreationPopup({
+          start: start,
+          end: end,
+        });
+      }
+    }
+
+
+    function onChangeCalendars(e) {
+      var calendarId = e.target.value;
+      var checked = e.target.checked;
+      var viewAll = document.querySelector(".lnb-calendars-item input");
+      var calendarElements = Array.prototype.slice.call(
+        document.querySelectorAll("#calendarList input")
+      );
+      var allCheckedCalendars = true;
+
+      if (calendarId === "all") {
+        allCheckedCalendars = checked;
+
+        calendarElements.forEach(function(input) {
+          var span = input.parentNode;
+          input.checked = checked;
+          span.style.backgroundColor = checked ?
+            span.style.borderColor :
+            "transparent";
+        });
+
+        CalendarList.forEach(function(calendar) {
+          calendar.checked = checked;
+        });
+      } else {
+        findCalendar(calendarId).checked = checked;
+
+        allCheckedCalendars = calendarElements.every(function(input) {
+          return input.checked;
+        });
+
+        if (allCheckedCalendars) {
+          viewAll.checked = true;
+        } else {
+          viewAll.checked = false;
+        }
+      }
+      refreshScheduleVisibility();
+    }
+
+    function refreshScheduleVisibility() {
+      var calendarElements = Array.prototype.slice.call(
+        document.querySelectorAll("#calendarList input")
+      );
+
+      CalendarList.forEach(function(calendar) {
+        cal.toggleSchedules(calendar.id, !calendar.checked, false);
+      });
+
+      cal.render(true);
+
+      calendarElements.forEach(function(input) {
+        var span = input.nextElementSibling;
+        span.style.backgroundColor = input.checked ?
+          span.style.borderColor :
+          "transparent";
+      });
+    }
+
+    function setDropdownCalendarType() {
+      var calendarTypeName = document.getElementById("calendarTypeName");
+      var calendarTypeIcon = document.getElementById("calendarTypeIcon");
+      var options = cal.getOptions();
+      var type = cal.getViewName();
+      var iconClassName;
+
+      if (type === "day") {
+        type = "Daily";
+        iconClassName = "calendar-icon ic_view_day";
+      } else if (type === "week") {
+        type = "Weekly";
+        iconClassName = "calendar-icon ic_view_week";
+      } else if (options.month.visibleWeeksCount === 2) {
+        type = "2 weeks";
+        iconClassName = "calendar-icon ic_view_week";
+      } else if (options.month.visibleWeeksCount === 3) {
+        type = "3 weeks";
+        iconClassName = "calendar-icon ic_view_week";
+      } else {
+        type = "Monthly";
+        iconClassName = "calendar-icon ic_view_month";
+      }
+
+      calendarTypeName.innerHTML = type;
+      calendarTypeIcon.className = iconClassName;
+    }
+
+    function currentCalendarDate(format) {
+      var currentDate = moment([
+        cal.getDate().getFullYear(),
+        cal.getDate().getMonth(),
+        cal.getDate().getDate(),
+      ]);
+
+      return currentDate.format(format);
+    }
+
+    function setRenderRangeText() {
+      var renderRange = document.getElementById("renderRange");
+      var options = cal.getOptions();
+      var viewName = cal.getViewName();
+
+      var html = [];
+      if (viewName === "day") {
+        html.push(currentCalendarDate("YYYY.MM.DD"));
+      } else if (
+        viewName === "month" &&
+        (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)
+      ) {
+        html.push(currentCalendarDate("YYYY.MM"));
+      } else {
+        html.push(moment(cal.getDateRangeStart().getTime()).format("YYYY.MM.DD"));
+        html.push(" ~ ");
+        html.push(moment(cal.getDateRangeEnd().getTime()).format(" MM.DD"));
+      }
+      renderRange.innerHTML = html.join("");
+    }
+
+    function setSchedules() {
+      cal.clear();
+      generateSchedule(
+        cal.getViewName(),
+        cal.getDateRangeStart(),
+        cal.getDateRangeEnd()
+      );
+
+      cal.createSchedules(ScheduleList);
+
+      refreshScheduleVisibility();
+    }
+
+    function setEventListener() {
+      $("#menu-navi").on("click", onClickNavi);
+      $('.dropdown-menu a[role="menuitem"]').on("click", onClickMenu);
+      $("#lnb-calendars").on("change", onChangeCalendars);
+
+      $("#btn-save-schedule").on("click", onNewSchedule);
+      $("#btn-new-schedule").on("click", createNewSchedule);
+
+      $("#dropdownMenu-calendars-list").on("click", onChangeNewScheduleCalendar);
+
+      window.addEventListener("resize", resizeThrottled);
+    }
+
+    function getDataAction(target) {
+      return target.dataset ?
+        target.dataset.action :
+        target.getAttribute("data-action");
+    }
+
+    resizeThrottled = tui.util.throttle(function() {
+      cal.render();
+    }, 50);
+
+    window.cal = cal;
+
+    setDropdownCalendarType();
+    setRenderRangeText();
+    setSchedules();
+    setEventListener();
+  })(window, tui.Calendar);
+
+  // set calendars
+  (function() {
+    var calendarList = document.getElementById("calendarList");
+    var html = [];
+    CalendarList.forEach(function(calendar) {
+      html.push(
+        '<div class="lnb-calendars-item"><label>' +
+        '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' +
+        calendar.id +
+        '" checked>' +
+        '<span style="border-color: ' +
+        calendar.borderColor +
+        "; background-color: " +
+        calendar.borderColor +
+        ';"></span>' +
+        "<span>" +
+        calendar.name +
+        "</span>" +
+        "</label></div>"
+      );
+    });
+    calendarList.innerHTML = html.join("\n");
+  })();
+</script> -->
+<!-- Plugins JS Ends-->
+<!-- Theme js-->
+<!-- <script src="<?= base_url() ?>assets/js/script.js"></script> -->
+
 <div class="container-fluid">
   <div class="row second-chart-list third-news-update">
     <div class="col-xl-4 col-lg-12 xl-50 morning-sec box-col-12">
@@ -28,7 +593,33 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-8 xl-100 dashboard-sec box-col-12">
+    <div class="col-xl-4 xl-50 appointment box-col-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="header-top">
+            <h5 class="m-0">Graph Kehadiran</h5>
+            <div class="card-header-right-icon">
+              <div class="dropdown">
+                <button class="btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Harian
+                </button>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Tahun</a>
+                  <a class="dropdown-item" href="#">Bulanan</a>
+                  <a class="dropdown-item" href="#">Harian</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-Body">
+          <div class="radar-chart">
+            <div id="kehadiranchart"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-xl-8 xl-100 dashboard-sec box-col-12">
       <div class="card earning-card">
         <div class="card-body p-0">
           <div class="row m-0">
@@ -126,7 +717,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="col-xl-9 xl-100 chart_data_left box-col-12">
       <div class="card">
         <div class="card-body p-0">
@@ -141,7 +732,7 @@
                 <div class="media-body">
                   <div class="right-chart-content">
                     <h4>1001</h4>
-                    <span>Purchase </span>
+                    <span>Jumlah Pegawai </span>
                   </div>
                 </div>
               </div>
@@ -155,8 +746,8 @@
                 </div>
                 <div class="media-body">
                   <div class="right-chart-content">
-                    <h4>1005</h4>
-                    <span>Sales</span>
+                    <h4>0</h4>
+                    <span>Izin Hari ini</span>
                   </div>
                 </div>
               </div>
@@ -170,8 +761,8 @@
                 </div>
                 <div class="media-body">
                   <div class="right-chart-content">
-                    <h4>100</h4>
-                    <span>Sales return</span>
+                    <h4>0</h4>
+                    <span>Pegawai yang DL</span>
                   </div>
                 </div>
               </div>
@@ -200,11 +791,8 @@
         <div class="card-body">
           <div class="media align-items-center">
             <div class="media-body right-chart-content">
-              <h4>$95,900<span class="new-box">Hot</span></h4>
-              <span>Purchase Order Value</span>
-            </div>
-            <div class="knob-block text-center">
-              <input class="knob1" data-width="10" data-height="70" data-thickness=".3" data-angleoffset="0" data-linecap="round" data-fgcolor="#7366ff" data-bgcolor="#eef5fb" value="60" />
+              <h4>96%<span class="new-box">Good</span></h4>
+              <span>Persentase Kehadian</span>
             </div>
           </div>
         </div>
@@ -215,12 +803,10 @@
         <div class="card-body">
           <div class="media align-items-center">
             <div class="media-body right-chart-content">
-              <h4>$95,000<span class="new-box">New</span></h4>
-              <span>Product Order Value</span>
+              <h4>23<span class="new-box">New</span></h4>
+              <span>Jumlah Surat Tugas bulan ini</span>
             </div>
-            <div class="knob-block text-center">
-              <input class="knob1" data-width="50" data-height="70" data-thickness=".3" data-fgcolor="#7366ff" data-linecap="round" data-angleoffset="0" value="60" />
-            </div>
+
           </div>
         </div>
       </div>
@@ -229,7 +815,7 @@
       <div class="card">
         <div class="card-header">
           <div class="header-top">
-            <h5 class="m-0">News &amp; Update</h5>
+            <h5 class="m-0">Pengumuman</h5>
             <div class="card-header-right-icon">
               <div class="dropdown">
                 <button class="btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -246,193 +832,32 @@
           <div class="news-update media">
             <img class="img-fluid me-3 b-r-10" src="<?= base_url() ?>assets/images/dashboard/update/1.jpg" alt="" />
             <div class="media-body">
-              <h6>36% off For pixel Couslations Types.</h6>
-              <span>Lorem Ipsum is simply dummy...</span><span class="time-detail d-block"><i data-feather="clock"></i>10 Minutes Ago</span>
+              <h6>Pengikinian Data Diri</h6>
+              <span>Seluruh Pegawai di harapkan melalukan update data diri pada menu profile..</span><span class="time-detail d-block"><i data-feather="clock"></i>10 Minutes Ago</span>
             </div>
           </div>
           <div class="news-update media">
             <img class="img-fluid me-3 b-r-10" src="<?= base_url() ?>assets/images/dashboard/update/2.jpg" alt="" />
             <div class="media-body">
-              <h6>We are produce new product this</h6>
+              <h6>Manual Book</h6>
               <span>
-                Lorem Ipsum is simply text of the printing... </span><span class="time-detail d-block"><i data-feather="clock"></i>1 Hour Ago</span>
+                Petunjuk penggunaan aplikasi... </span><span class="time-detail d-block"><i data-feather="clock"></i>1 Hour Ago</span>
             </div>
           </div>
           <div class="news-update media">
             <img class="img-fluid me-3 b-r-10" src="<?= base_url() ?>assets/images/dashboard/update/3.jpg" alt="" />
             <div class="media-body">
-              <h6>50% off For COVID Couslations Types.</h6>
-              <span>Lorem Ipsum is simply dummy...</span><span class="time-detail d-block"><i data-feather="clock"></i>8 Hours Ago</span>
+              <h6>Jadwal Apel Februari 2023.</h6>
+              <span>apalah...</span><span class="time-detail d-block"><i data-feather="clock"></i>8 Hours Ago</span>
             </div>
           </div>
         </div>
         <div class="card-footer">
-          <div class="bottom-btn"><a href="#">See all</a></div>
+          <div class="bottom-btn"><a href="#">Lihat Semua</a></div>
         </div>
       </div>
     </div>
-    <div class="col-xl-4 xl-50 appointment-sec box-col-6">
-      <div class="row">
-        <div class="col-xl-12 appointment">
-          <div class="card">
-            <div class="card-header card-no-border">
-              <div class="header-top">
-                <h5 class="m-0">appointment</h5>
-                <div class="card-header-right-icon">
-                  <div class="dropdown">
-                    <button class="btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Today
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                      <a class="dropdown-item" href="#">Today</a><a class="dropdown-item" href="#">Tomorrow</a><a class="dropdown-item" href="#">Yesterday</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card-body pt-0">
-              <div class="appointment-table table-responsive">
-                <table class="table table-bordernone">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <img class="img-fluid img-40 rounded-circle mb-3" src="<?= base_url() ?>assets/images/appointment/app-ent.jpg" alt="Image description" />
-                        <div class="status-circle bg-primary"></div>
-                      </td>
-                      <td class="img-content-box">
-                        <span class="d-block">Venter Loren</span><span class="font-roboto">Now</span>
-                      </td>
-                      <td>
-                        <p class="m-0 font-primary">28 Sept</p>
-                      </td>
-                      <td class="text-end">
-                        <div class="button btn btn-primary">Done</div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <img class="img-fluid img-40 rounded-circle" src="<?= base_url() ?>assets/images/appointment/app-ent.jpg" alt="Image description" />
-                        <div class="status-circle bg-primary"></div>
-                      </td>
-                      <td class="img-content-box">
-                        <span class="d-block">John Loren</span><span class="font-roboto">11:00</span>
-                      </td>
-                      <td>
-                        <p class="m-0 font-primary">22 Sept</p>
-                      </td>
-                      <td class="text-end">
-                        <div class="button btn btn-warning">
-                          Pending
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-12 alert-sec">
-          <div class="card bg-img">
-            <div class="card-header">
-              <div class="header-top">
-                <h5 class="m-0">Alert</h5>
-                <div class="dot-right-icon">
-                  <i data-feather="more-horizontal"></i>
-                </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="body-bottom">
-                <h6>10% off For drama lights Couslations...</h6>
-                <span class="font-roboto">Lorem Ipsum is simply dummy...It is a long
-                  established fact that a reader will be distracted by
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-4 xl-50 notification box-col-6">
-      <div class="card">
-        <div class="card-header card-no-border">
-          <div class="header-top">
-            <h5 class="m-0">notification</h5>
-            <div class="card-header-right-icon">
-              <div class="dropdown">
-                <button class="btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Today
-                </button>
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Today</a><a class="dropdown-item" href="#">Tomorrow</a><a class="dropdown-item" href="#">Yesterday </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body pt-0">
-          <div class="media">
-            <div class="media-body">
-              <p>20-04-2020 <span>10:10</span></p>
-              <h6>
-                Updated Product<span class="dot-notification"></span>
-              </h6>
-              <span>Quisque a consequat ante sit amet magna...</span>
-            </div>
-          </div>
-          <div class="media">
-            <div class="media-body">
-              <p>
-                20-04-2020<span class="ps-1">Today</span><span class="badge badge-secondary">New</span>
-              </p>
-              <h6>
-                Tello just like your product<span class="dot-notification"></span>
-              </h6>
-              <span>Quisque a consequat ante sit amet magna... </span>
-            </div>
-          </div>
-          <div class="media">
-            <div class="media-body">
-              <div class="d-flex mb-3">
-                <div class="inner-img">
-                  <img class="img-fluid" src="<?= base_url() ?>assets/images/notification/1.jpg" alt="Product-1" />
-                </div>
-                <div class="inner-img">
-                  <img class="img-fluid" src="<?= base_url() ?>assets/images/notification/2.jpg" alt="Product-2" />
-                </div>
-              </div>
-              <span class="mt-3">Quisque a consequat ante sit amet magna...</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-4 xl-50 appointment box-col-6">
-      <div class="card">
-        <div class="card-header">
-          <div class="header-top">
-            <h5 class="m-0">Market Value</h5>
-            <div class="card-header-right-icon">
-              <div class="dropdown">
-                <button class="btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Year
-                </button>
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Year</a><a class="dropdown-item" href="#">Month</a><a class="dropdown-item" href="#">Day</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-Body">
-          <div class="radar-chart">
-            <div id="marketchart"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-4 xl-100 chat-sec box-col-6">
+    <div class="col-xl-4 xl-50 chat-sec box-col-6">
       <div class="card chat-default">
         <div class="card-header card-no-border">
           <div class="media media-dashboard">
@@ -499,7 +924,148 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-4 col-lg-12 xl-50 calendar-sec box-col-6">
+    <!-- <div class="col-xl-4 xl-50 appointment-sec box-col-6">
+      <div class="row">
+        <div class="col-xl-12 appointment">
+          <div class="card">
+            <div class="card-header card-no-border">
+              <div class="header-top">
+                <h5 class="m-0">appointment</h5>
+                <div class="card-header-right-icon">
+                  <div class="dropdown">
+                    <button class="btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Today
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#">Today</a><a class="dropdown-item" href="#">Tomorrow</a><a class="dropdown-item" href="#">Yesterday</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body pt-0">
+              <div class="appointment-table table-responsive">
+                <table class="table table-bordernone">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <img class="img-fluid img-40 rounded-circle mb-3" src="<?= base_url() ?>assets/images/appointment/app-ent.jpg" alt="Image description" />
+                        <div class="status-circle bg-primary"></div>
+                      </td>
+                      <td class="img-content-box">
+                        <span class="d-block">Venter Loren</span><span class="font-roboto">Now</span>
+                      </td>
+                      <td>
+                        <p class="m-0 font-primary">28 Sept</p>
+                      </td>
+                      <td class="text-end">
+                        <div class="button btn btn-primary">Done</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <img class="img-fluid img-40 rounded-circle" src="<?= base_url() ?>assets/images/appointment/app-ent.jpg" alt="Image description" />
+                        <div class="status-circle bg-primary"></div>
+                      </td>
+                      <td class="img-content-box">
+                        <span class="d-block">John Loren</span><span class="font-roboto">11:00</span>
+                      </td>
+                      <td>
+                        <p class="m-0 font-primary">22 Sept</p>
+                      </td>
+                      <td class="text-end">
+                        <div class="button btn btn-warning">
+                          Pending
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      <div class="col-xl-12 alert-sec">
+          <div class="card bg-img">
+            <div class="card-header">
+              <div class="header-top">
+                <h5 class="m-0">Alert</h5>
+                <div class="dot-right-icon">
+                  <i data-feather="more-horizontal"></i>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="body-bottom">
+                <h6>10% off For drama lights Couslations...</h6>
+                <span class="font-roboto">Lorem Ipsum is simply dummy...It is a long
+                  established fact that a reader will be distracted by
+                </span>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div> -->
+    <!-- <div class="col-xl-4 xl-50 notification box-col-6">
+      <div class="card">
+        <div class="card-header card-no-border">
+          <div class="header-top">
+            <h5 class="m-0">notification</h5>
+            <div class="card-header-right-icon">
+              <div class="dropdown">
+                <button class="btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Today
+                </button>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Today</a><a class="dropdown-item" href="#">Tomorrow</a><a class="dropdown-item" href="#">Yesterday </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-0">
+          <div class="media">
+            <div class="media-body">
+              <p>20-04-2020 <span>10:10</span></p>
+              <h6>
+                Updated Product<span class="dot-notification"></span>
+              </h6>
+              <span>Quisque a consequat ante sit amet magna...</span>
+            </div>
+          </div>
+          <div class="media">
+            <div class="media-body">
+              <p>
+                20-04-2020<span class="ps-1">Today</span><span class="badge badge-secondary">New</span>
+              </p>
+              <h6>
+                Tello just like your product<span class="dot-notification"></span>
+              </h6>
+              <span>Quisque a consequat ante sit amet magna... </span>
+            </div>
+          </div>
+          <div class="media">
+            <div class="media-body">
+              <div class="d-flex mb-3">
+                <div class="inner-img">
+                  <img class="img-fluid" src="<?= base_url() ?>assets/images/notification/1.jpg" alt="Product-1" />
+                </div>
+                <div class="inner-img">
+                  <img class="img-fluid" src="<?= base_url() ?>assets/images/notification/2.jpg" alt="Product-2" />
+                </div>
+              </div>
+              <span class="mt-3">Quisque a consequat ante sit amet magna...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- chat -->
+
+    <!-- Kalender Lama -->
+    <!-- <div class="col-xl-4 col-lg-12 xl-50 calendar-sec box-col-6">
       <div class="card gradient-primary o-hidden">
         <div class="card-body">
           <div class="setting-dot">
@@ -515,11 +1081,521 @@
           <span class="default-dots-stay overview-dots full-width-dots"><span class="dots-group"><span class="dots dots1"></span><span class="dots dots2 dot-small"></span><span class="dots dots3 dot-small"></span><span class="dots dots4 dot-medium"></span><span class="dots dots5 dot-small"></span><span class="dots dots6 dot-small"></span><span class="dots dots7 dot-small-semi"></span><span class="dots dots8 dot-small-semi"></span><span class="dots dots9 dot-small"> </span></span></span>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
 <!-- Container-fluid Ends-->
 </div>
 <!-- footer start-->
+<script>
+  $(document).ready(function() {
 
-<script src="<?= base_url() ?>assets/js/dashboard/default.js"></script>
+    var primary = localStorage.getItem("primary") || "#7366ff";
+    var secondary = localStorage.getItem("secondary") || "#f73164";
+    var options = {
+      series: [{
+          name: "Online",
+          data: [6, 20, 15, 40, 18, 20, 18, 23, 18, 35, 30, 55, 0],
+        },
+        {
+          name: "Store",
+          data: [2, 22, 35, 32, 40, 25, 50, 38, 42, 28, 20, 45, 0],
+        },
+      ],
+      chart: {
+        height: 254,
+        type: "area",
+        toolbar: {
+          show: false,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "smooth",
+      },
+      xaxis: {
+        type: "category",
+        low: 0,
+        offsetX: 0,
+        offsetY: 0,
+        show: false,
+        categories: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+          "Jan",
+        ],
+        labels: {
+          low: 0,
+          offsetX: 0,
+          show: false,
+        },
+        axisBorder: {
+          low: 0,
+          offsetX: 0,
+          show: false,
+        },
+      },
+      markers: {
+        strokeWidth: 3,
+        colors: "#ffffff",
+        strokeColors: ["#7366ff", "#f73164"],
+        hover: {
+          size: 6,
+        },
+      },
+      yaxis: {
+        low: 0,
+        offsetX: 0,
+        offsetY: 0,
+        show: false,
+        labels: {
+          low: 0,
+          offsetX: 0,
+          show: false,
+        },
+        axisBorder: {
+          low: 0,
+          offsetX: 0,
+          show: false,
+        },
+      },
+      grid: {
+        show: false,
+        padding: {
+          left: 0,
+          right: 0,
+          bottom: -15,
+          top: -40,
+        },
+      },
+      colors: [primary, secondary],
+      fill: {
+        type: "gradient",
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.5,
+          stops: [0, 80, 100],
+        },
+      },
+      legend: {
+        show: false,
+      },
+      tooltip: {
+        x: {
+          format: "MM",
+        },
+      },
+    };
+
+    // var chart = new ApexCharts(document.querySelector("#chart-currently"), options);
+    // chart.render();
+
+    //small chart-1
+
+    // new Chartist.Bar(
+    //   ".small-chart", {
+    //     labels: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7"],
+    //     series: [
+    //       [400, 900, 800, 1000, 700, 1200, 300],
+    //       [1000, 500, 600, 400, 700, 200, 1100],
+    //     ],
+    //   }, {
+    //     plugins: [
+    //       Chartist.plugins.tooltip({
+    //         appendToBody: false,
+    //         className: "ct-tooltip",
+    //       }),
+    //     ],
+    //     stackBars: true,
+    //     axisX: {
+    //       showGrid: false,
+    //       showLabel: false,
+    //       offset: 0,
+    //     },
+    //     axisY: {
+    //       low: 0,
+    //       showGrid: false,
+    //       showLabel: false,
+    //       offset: 0,
+    //       labelInterpolationFnc: function(value) {
+    //         return value / 1000 + "k";
+    //       },
+    //     },
+    //   }
+    // ).on("draw", function(data) {
+    //   if (data.type === "bar") {
+    //     data.element.attr({
+    //       style: "stroke-width: 3px",
+    //     });
+    //   }
+    // });
+
+    //small-2
+
+    // new Chartist.Bar(
+    //   ".small-chart1", {
+    //     labels: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7"],
+    //     series: [
+    //       [400, 600, 900, 800, 1000, 1200, 500],
+    //       [1000, 800, 500, 600, 400, 200, 900],
+    //     ],
+    //   }, {
+    //     plugins: [
+    //       Chartist.plugins.tooltip({
+    //         appendToBody: false,
+    //         className: "ct-tooltip",
+    //       }),
+    //     ],
+    //     stackBars: true,
+    //     axisX: {
+    //       showGrid: false,
+    //       showLabel: false,
+    //       offset: 0,
+    //     },
+    //     axisY: {
+    //       low: 0,
+    //       showGrid: false,
+    //       showLabel: false,
+    //       offset: 0,
+    //       labelInterpolationFnc: function(value) {
+    //         return value / 1000 + "k";
+    //       },
+    //     },
+    //   }
+    // ).on("draw", function(data) {
+    //   if (data.type === "bar") {
+    //     data.element.attr({
+    //       style: "stroke-width: 3px",
+    //     });
+    //   }
+    // });
+    // small-3
+
+    // new Chartist.Bar(
+    //   ".small-chart2", {
+    //     labels: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7"],
+    //     series: [
+    //       [1100, 900, 600, 1000, 700, 1200, 300],
+    //       [300, 500, 800, 400, 700, 200, 1100],
+    //     ],
+    //   }, {
+    //     plugins: [
+    //       Chartist.plugins.tooltip({
+    //         appendToBody: false,
+    //         className: "ct-tooltip",
+    //       }),
+    //     ],
+    //     stackBars: true,
+    //     axisX: {
+    //       showGrid: false,
+    //       showLabel: false,
+    //       offset: 0,
+    //     },
+    //     axisY: {
+    //       low: 0,
+    //       showGrid: false,
+    //       showLabel: false,
+    //       offset: 0,
+    //       labelInterpolationFnc: function(value) {
+    //         return value / 1000 + "k";
+    //       },
+    //     },
+    //   }
+    // ).on("draw", function(data) {
+    //   if (data.type === "bar") {
+    //     data.element.attr({
+    //       style: "stroke-width: 3px",
+    //     });
+    //   }
+    // });
+    // small-4
+    // new Chartist.Bar(
+    //   ".small-chart3", {
+    //     labels: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7"],
+    //     series: [
+    //       [400, 600, 800, 1000, 700, 1100, 300],
+    //       [1000, 500, 600, 300, 700, 200, 1100],
+    //     ],
+    //   }, {
+    //     plugins: [
+    //       Chartist.plugins.tooltip({
+    //         appendToBody: false,
+    //         className: "ct-tooltip",
+    //       }),
+    //     ],
+    //     stackBars: true,
+    //     axisX: {
+    //       showGrid: false,
+    //       showLabel: false,
+    //       offset: 0,
+    //     },
+    //     axisY: {
+    //       low: 0,
+    //       showGrid: false,
+    //       showLabel: false,
+    //       offset: 0,
+    //       labelInterpolationFnc: function(value) {
+    //         return value / 1000 + "k";
+    //       },
+    //     },
+    //   }
+    // ).on("draw", function(data) {
+    //   if (data.type === "bar") {
+    //     data.element.attr({
+    //       style: "stroke-width: 3px",
+    //     });
+    //   }
+    // });
+
+    // right-side-small-chart
+
+    // (function($) {
+    //   "use strict";
+    //   $(".knob1").knob({
+    //     width: 65,
+    //     height: 65,
+    //     max: 100,
+
+    //     change: function(value) {
+    //       //console.log("change : " + value);
+    //     },
+    //     release: function(value) {
+    //       //console.log(this.$.attr('value'));
+    //       console.log("release : " + value);
+    //     },
+    //     cancel: function() {
+    //       console.log("cancel : ", this);
+    //     },
+    //     format: function(value) {
+    //       return value + "%";
+    //     },
+    //     draw: function() {
+    //       // "tron" case
+    //       if (this.$.data("skin") == "tron") {
+    //         this.cursorExt = 1;
+
+    //         var a = this.arc(this.cv), // Arc
+    //           pa, // Previous arc
+    //           r = 1;
+
+    //         this.g.lineWidth = this.lineWidth;
+
+    //         if (this.o.displayPrevious) {
+    //           pa = this.arc(this.v);
+    //           this.g.beginPath();
+    //           this.g.strokeStyle = this.pColor;
+    //           this.g.arc(
+    //             this.xy,
+    //             this.xy,
+    //             this.radius - this.lineWidth,
+    //             pa.s,
+    //             pa.e,
+    //             pa.d
+    //           );
+    //           this.g.stroke();
+    //         }
+
+    //         this.g.beginPath();
+    //         this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
+    //         this.g.arc(
+    //           this.xy,
+    //           this.xy,
+    //           this.radius - this.lineWidth,
+    //           a.s,
+    //           a.e,
+    //           a.d
+    //         );
+    //         this.g.stroke();
+
+    //         this.g.lineWidth = 2;
+    //         this.g.beginPath();
+    //         this.g.strokeStyle = this.o.fgColor;
+    //         this.g.arc(
+    //           this.xy,
+    //           this.xy,
+    //           this.radius - this.lineWidth + 1 + (this.lineWidth * 2) / 3,
+    //           0,
+    //           2 * Math.PI,
+    //           false
+    //         );
+    //         this.g.stroke();
+
+    //         return false;
+    //       }
+    //     },
+    //   });
+    //   // Example of infinite knob, iPod click wheel
+    //   var v,
+    //     up = 0,
+    //     down = 0,
+    //     i = 0,
+    //     $idir = $("div.idir"),
+    //     $ival = $("div.ival"),
+    //     incr = function() {
+    //       i++;
+    //       $idir.show().html("+").fadeOut();
+    //       $ival.html(i);
+    //     },
+    //     decr = function() {
+    //       i--;
+    //       $idir.show().html("-").fadeOut();
+    //       $ival.html(i);
+    //     };
+    //   $("input.infinite").knob({
+    //     min: 0,
+    //     max: 20,
+    //     stopper: false,
+    //     change: function() {
+    //       if (v > this.cv) {
+    //         if (up) {
+    //           decr();
+    //           up = 0;
+    //         } else {
+    //           up = 1;
+    //           down = 0;
+    //         }
+    //       } else {
+    //         if (v < this.cv) {
+    //           if (down) {
+    //             incr();
+    //             down = 0;
+    //           } else {
+    //             down = 1;
+    //             up = 0;
+    //           }
+    //         }
+    //       }
+    //       v = this.cv;
+    //     },
+    //   });
+    // })(jQuery);
+
+    var options1 = {
+      chart: {
+        height: 380,
+        type: "radar",
+        toolbar: {
+          show: false,
+        },
+      },
+      series: [{
+        name: "Market value",
+        data: [20, 100, 40, 30, 50, 80, 33],
+      }, ],
+      stroke: {
+        width: 3,
+        curve: "smooth",
+      },
+      labels: [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ],
+      plotOptions: {
+        radar: {
+          size: 140,
+          polygons: {
+            fill: {
+              colors: ["#fcf8ff", "#f7eeff"],
+            },
+          },
+        },
+      },
+      colors: [CubaAdminConfig.primary],
+      markers: {
+        size: 6,
+        colors: ["#fff"],
+        strokeColor: CubaAdminConfig.primary,
+        strokeWidth: 3,
+      },
+      tooltip: {
+        y: {
+          formatter: function(val) {
+            return val;
+          },
+        },
+      },
+      yaxis: {
+        tickAmount: 7,
+        labels: {
+          formatter: function(val, i) {
+            if (i % 2 === 0) {
+              return val;
+            } else {
+              return "";
+            }
+          },
+        },
+      },
+    };
+    getKehadiran()
+
+    function getKehadiran() {
+      Swal.fire({
+        title: 'Loading SPPD!',
+        allowOutsideClick: false,
+      });
+      Swal.showLoading()
+      return $.ajax({
+        url: `<?php echo site_url('general/getAllKehadian/') ?>`,
+        'type': 'get',
+        // data: toolbar.form.serialize(),
+        success: function(data) {
+          Swal.close();
+          var json = JSON.parse(data);
+          if (json['error']) {
+            return;
+          }
+          // dataSKP = json['data'];
+          // renderSKP(dataSKP);
+        },
+        error: function(e) {}
+      });
+    }
+
+    function getKehadiran() {
+      Swal.fire({
+        title: 'Loading SPPD!',
+        allowOutsideClick: false,
+      });
+      Swal.showLoading()
+      return $.ajax({
+        url: `<?php echo site_url('general/getAllKehadian/') ?>`,
+        'type': 'get',
+        // data: toolbar.form.serialize(),
+        success: function(data) {
+          Swal.close();
+          var json = JSON.parse(data);
+          if (json['error']) {
+            return;
+          }
+          // dataSKP = json['data'];
+          // renderSKP(dataSKP);
+        },
+        error: function(e) {}
+      });
+    }
+
+
+    var chart1 = new ApexCharts(document.querySelector("#kehadiranchart"), options1);
+
+    chart1.render();
+  });
+</script>

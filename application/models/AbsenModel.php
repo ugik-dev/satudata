@@ -4,16 +4,40 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class AbsenModel extends CI_Model
 {
 
+    public function getAllAbsensiM2($filter = [], $sort = true)
+    {
+        if ($this->session->userdata('id_satuan') == 1) {
+            // $this->db->select('id_satuan,nama_satuan');
+            // $this->db->from('satuan as p');
+            $this->db->from('bagian as b', 'p.');
+            $this->db->where_in('jenis_bagian', [1, 2, 3, 4]);
+            $this->db->order_by('jenis_bagian');
+        }
+
+        $satuan = $this->db->get()->result_array();
+
+        foreach ($satuan as $key => $s) {
+
+            $filter['id_bagian'] = $s['id_bagian'];
+            $satuan[$key]['pegawai'] =
+                $this->getAllAbsensi($filter, $sort);
+        };
+        // $this->db->result_array();
+        // $satuan =   DataStructure::keyValue($this->db->get()->result_array(), 'id_bagian');
+        // echo json_encode($satuan);
+        // die();
+        return $satuan;
+
+        // $this->getAllAbsensi($filter[])
+    }
     public function getAllAbsensi($filter = [], $sort = true)
     {
         $this->db->select('p.nama,p.id, p.jabatan, p.nip');
         $this->db->from('users as p');
-        // $this->db->where('id', $this->session->userdata);
         if (!empty($filter['id_pegawai'])) $this->db->where('p.id', $filter['id_pegawai']);
-        // $this->db->join('ref_ptk as pt', 'pt.id_ptk = p.jenis_ptk', 'left');
-        // $this->db->join('user as u', 'u.id = p.id');
+        if (!empty($filter['id_bagian'])) $this->db->where('p.id_bagian', $filter['id_bagian']);
+
         $pegawai = $this->db->get();
-        // $pegawai = $pegawai->result_array();
         $pegawai =   DataStructure::keyValue($pegawai->result_array(), 'id');
         $ptmp = [];
         foreach ($pegawai as $p) {
@@ -24,11 +48,23 @@ class AbsenModel extends CI_Model
         if (!empty($filter['tanggal'])) $this->db->where('date(rec_time)', $filter['tanggal']);
         if (!empty($filter['bulan'])) $this->db->where('month(rec_time)', $filter['bulan']);
 
-        // $this->db->where_in('id_pegawai', $ptmp);
+        // echo json_encode($ptmp);
+        // die();
+        if (!empty($ptmp))
+            $this->db->where_in('id_pegawai', $ptmp);
+        else {
+            $this->db->where(false);
+        }
         $res =  $this->db->get();
         // echo $this->db->last_query();
         // die();
+        // if ($filter['id_bagian'] == 7) {
+        //     echo json_encode($res->result_array());
+        //     die();
+        // }
         $res =  DataStructure::absensi_rekap($pegawai, $res->result_array(), $sort);
+        // echo json_encode($res);
+        // die();
         // echo json_encode($res);
         // die();
         return $res;

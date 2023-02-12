@@ -83,6 +83,17 @@
                                         ?>
                                     </div>
                                 </div>
+                                <div class="row">
+
+                                    <div class="col-lg-6">
+                                        <div class="col-form-label"><strong>PPK</strong></div>
+                                        <?= $dataContent['return_data']['nama_ppk'] ?>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="col-form-label"><strong>PPTK</strong></div>
+                                        <?= $dataContent['return_data']['nama_pptk'] ?>
+                                    </div>
+                                </div>
                                 <?php
                                 $last_dasar = 1;
                                 if (!empty($dataContent['return_data']['dasar_tambahan'])) {
@@ -113,22 +124,10 @@
                                         <div class="col-form-label"><strong>Transportasi</strong></div>
                                         <?= $dataContent['return_data']['nama_transport'] ?>
                                     </div>
-                                    <div class="col-lg-4">
-                                        <div class="col-form-label"><strong>PPK</strong></div>
-                                        <?= $dataContent['return_data']['nama_ppk'] ?>
-                                    </div>
+
                                 </div>
                                 <hr>
                             </div>
-                            <!-- <div class="col-lg-12">
-                                <div class="row">
-                                    <div class="col-sm-2"><strong>PPK</strong></div>
-                                    <div class="col-sm-9">
-                                        <?= $dataContent['return_data']['nama_ppk'] ?>
-                                    </div>
-                                </div>
-                                <hr>
-                            </div> -->
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-sm-2"><strong>Pegawai</strong></div>
@@ -254,6 +253,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                            foreach ($dataContent['return_data']['logs'] as $log) {
+                                echo "<tr>
+                                    <td> {$log['deskripsi']}</td>
+                                    <td> {$log['nama']}</td>
+                                    <td> {$log['time_logs']}</td>
+                                </tr>";
+                            }
+                            ?>
                             <tr>
                                 <td>Mengajukan</td>
                                 <td><?= $dataContent['return_data']['nama_input'] ?></td>

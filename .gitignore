@@ -22,6 +22,8 @@
 
 /uploads/bukti_absensi/*
 !/uploads/bukti_absensi/default.png
+/uploads/lampiran_izin/*
+!/uploads/lampiran_izin/default.png
 /uploads/foto_profil/*
 !/uploads/foto_profil/default.png
 /uploads/foto_sppd/*
