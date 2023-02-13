@@ -3,7 +3,7 @@
         <form id="absen_form" onsubmit="return false;" type="multipart" autocomplete="off">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal_title">
-                    Form Saran Kerja Pegawai
+                    Rekam Absen
                 </h5>
             </div>
             <div class="modal-body">
@@ -17,7 +17,7 @@
                             <i class="fa fa-map-marker"></i> Scan
 
                         </a>
-                        <label for="captureimage">
+                        <label for="captureimage" hidden>
                             <a class="btn btn-primary">
                                 <i class="fa fa-camera"></i>Ambil Gambar
                             </a>
@@ -83,17 +83,17 @@
             console.log('ssts ssubmit :' + $('#captureimage').val());
             console.log('ssts ssubmit :' + inarea);
             if (!inarea) {
-                Swal.fire("Tidak dizinkan", 'Pastikan jarak anda dengan titik absensi tidak kurang dari 50 meter!', "error");
+                Swal.fire("Tidak dizinkan", 'Pastikan jarak anda dengan titik absensi tidak kurang dari 75 meter!', "error");
                 return;
             }
-            if (fieldImage.val() == '') {
-                Swal.fire("Gagal", 'Maaf, anda haruskan melampirkan foto!', "error");
-                return;
-            }
+            // if (fieldImage.val() == '') {
+            //     Swal.fire("Gagal", 'Maaf, anda haruskan melampirkan foto!', "error");
+            //     return;
+            // }
             event.preventDefault();
             var url = "<?= base_url('absensi/absensi_process') ?>";
             Swal.fire({
-                title: "Apakah anda Yakinss?",
+                title: "Apakah anda Yakin?",
                 text: "Data Disimpan!",
                 icon: "warning",
                 allowOutsideClick: false,
@@ -183,7 +183,7 @@
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 50
+                radius: 75
             }).addTo(map);
             i++;
         })
@@ -203,7 +203,7 @@
                 fillColor: '#bcf7c1'
             });
             distance = calcCrow(lat, long, l['lat_location'], l['long_location'])
-            if (distance < 50) {
+            if (distance < 75) {
                 console.log(l);
                 lokasi.val(l.id_location);
                 circle[i].setStyle({
@@ -242,7 +242,6 @@
 
 
     function getLocation() {
-
         if (navigator.geolocation) {
             // info.innerHTML = "Geolocation is suport.";
             navigator.geolocation.getCurrentPosition(showPosition, showError);

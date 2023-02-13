@@ -11,18 +11,92 @@ class Permohonan extends CI_Controller
 
         $this->db->db_debug = TRUE;
     }
+    public function action($action, $id)
+    {
+        try {
+            $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
+            $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
+            // $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
+            // $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
+            // echo json_encode($res_data);
+            // die();
+
+            $cur_user = $this->session->userdata();
+            $logs['id_spt'] = $id;
+            $logs['id_user'] = $cur_user['id'];
+            if ($data['user_input'] == $cur_user['id']) {
+                if ($data['status'] == 0) {
+                    if ($action == 'ajukan') {
+                        $logs['deskripsi'] =  'Mengajukan Permohonan';
+                        $logs['label'] = 'success';
+                        $this->SPPDModel->draft_to_diajukan($data);
+                        $this->SPPDModel->addLogs($logs);
+                        echo json_encode(array('error' => false, 'data' => $data));
+                        return;
+                    }
+                }
+            }
+
+            if ($action == 'approv') {
+                $logs['deskripsi'] =  'Menyetujui';
+                $logs['label'] = 'success';
+                $this->SPPDModel->approv($data);
+                $this->SPPDModel->addLogs($logs);
+            }
+            if ($action == 'unapprov') {
+                $logs['deskripsi'] =  'Menolak';
+                $logs['label'] = 'danger';
+                $this->SPPDModel->unapprov($data);
+                $this->SPPDModel->addLogs($logs);
+            }
+            if ($action == 'undo') {
+                $logs['deskripsi'] = 'Membatalkan Aksi';
+                $logs['label'] = 'warning';
+                $this->SPPDModel->undo($data);
+                $this->SPPDModel->addLogs($logs);
+            }
+
+
+            // if ($cur_user['level'] == 2 && $data['id_bagian_pegawai'] == $cur_user['id_bagian']) {
+            //     if ($data['status'] == 1) {
+            //         if ($action == 'approv') {
+            //             $this->SPPDModel->approv($data);
+            //         }
+            //         if ($action == 'unapprov') {
+            //             $this->SPPDModel->unapprov($data);
+            //         }
+            //     } else if ($data['status'] == 2 && $data['id_unapproval'] == $cur_user['id']) {
+            //         if ($action == 'undo') {
+            //             $this->SPPDModel->undo($data);
+            //         }
+            //     } else
+            //         throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
+            // } else {
+            //     throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
+            // }
+            $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
 
     public function getAll()
     {
         try {
             $filter = $this->input->get();
-            $filter['id_penilai'] = $this->session->userdata()['id'];
-            $data_penilai = $this->session->userdata();
-            $filter['search_approval']['data_penilai'] = $data_penilai;
-            $data['spt'] = $this->SPPDModel->getAllSPPD($filter);
+            $filter['search_approval']['data_penilai'] = $data_penilai = $this->session->userdata();
+            $filter['id_penilai'] = $data_penilai['id'];
             $data['surat_izin'] = $this->SuratIzinModel->getAll($filter);
-            $data['laporan_spt'] = $this->SPPDModel->getLaporan($filter, true);
 
+            if (in_array($data_penilai['level'], [1, 2, 3, 4, 5])) {
+                $data['laporan_spt'] = $this->SPPDModel->getLaporan($filter, true);
+                $data['spt'] = $this->SPPDModel->getAllSPPD($filter);
+            } else {
+                $data['spt'] = [];
+                $data['laporan_spt'] = [];
+            }
             // echo json_encode($data);
             // echo json_encode($data_penilai);
             // die();

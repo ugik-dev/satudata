@@ -104,6 +104,83 @@ class SuratIzin extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
+    public function action($action, $id)
+    {
+        try {
+            $data = $this->SuratIzinModel->getAll(array('id_surat_izin' => $id))[$id];
+            // $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
+            // $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
+            $cur_user = $this->session->userdata();
+            // echo json_encode($data);
+            // die();
+            if ($data['status_izin'] == 0) {
+                if ($action == 'approve' && $data['id_pengganti'] == $cur_user['id']) {
+                    $logs['deskripsi'] =  'Menyetujui pelimpahan wewenang.';
+                    $logs['label'] = 'success';
+                    $sign =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
+                    $pegawai =  $this->GeneralModel->getAllUser(['id' => $data['id_pegawai']])[$data['id_pegawai']];
+
+                    if ($pegawai['level'] == 6) {
+                        if (!empty($pegawai['id_seksi'])) {
+                            $data['status_izin'] = 1;
+                        } else {
+                            $data['status_izin'] = 2;
+                        }
+                    } else if ($pegawai['level'] == 5) {
+                        if (!empty($pegawai['id_seksi'])) {
+                            $data['status_izin'] = 2;
+                        }
+                    } else if ($pegawai['level'] == 4 || $pegawai['level'] == 3) {
+                        $data['status_izin'] = 5;
+                    } else if ($pegawai['level'] == 2) {
+                        $data['status_izin'] = 6;
+                    } else if ($pegawai['level'] == 1) {
+                        $data['status_izin'] = 10;
+                    }
+
+                    // echo json_encode($data);
+                    // die();
+                    $this->SuratIzinModel->approve_pelimpahan($data, $sign);
+                    // $this->SPPDModel->addLogs($logs);
+                    echo json_encode(array('error' => false, 'data' => $data));
+                    return;
+                }
+            }
+
+            if ($cur_user['level'] == 5 && $data['status_izin'] == 2) {
+                // approve kasi
+            }
+
+
+            if (($cur_user['level'] == 3 || $cur_user['level'] == 4) && $data['status_izin'] == 3) {
+                // approve kabid kasubag
+            }
+
+            if ($action == 'approv') {
+                $logs['deskripsi'] =  'Menyetujui';
+                $logs['label'] = 'success';
+                $this->SPPDModel->approv($data);
+                $this->SPPDModel->addLogs($logs);
+            }
+            if ($action == 'unapprov') {
+                $logs['deskripsi'] =  'Menolak';
+                $logs['label'] = 'danger';
+                $this->SPPDModel->unapprov($data);
+                $this->SPPDModel->addLogs($logs);
+            }
+            if ($action == 'undo') {
+                $logs['deskripsi'] = 'Membatalkan Aksi';
+                $logs['label'] = 'warning';
+                $this->SPPDModel->undo($data);
+                $this->SPPDModel->addLogs($logs);
+            }
+
+            $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
 
     function tgl_indo($tanggal)
     {

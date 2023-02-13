@@ -77,16 +77,16 @@ class Absensi extends CI_Controller
                 throw new UserException('Tidak diizinkan absen diwaktu ini!!', UNAUTHORIZED_CODE);
             }
             $data_absen['st_absen'] = 'h';
-            if (!empty($_FILES['captureimage']['name'])) {
-                $s =  FileIO::uploadGd2('captureimage', 'bukti_absensi', '', 'jpg|png|jpeg');
-                if (!empty($s['filename']))
-                    $data_absen['file_foto'] = $s['filename'];
-                else {
-                    throw new UserException('Gagal Upload, terjadi kesalahahn!!', UNAUTHORIZED_CODE);
-                }
-            } else {
-                throw new UserException('Foto harus diupload !!', UNAUTHORIZED_CODE);
-            }
+            // if (!empty($_FILES['captureimage']['name'])) {
+            //     $s =  FileIO::uploadGd2('captureimage', 'bukti_absensi', '', 'jpg|png|jpeg');
+            //     if (!empty($s['filename']))
+            //         $data_absen['file_foto'] = $s['filename'];
+            //     else {
+            //         throw new UserException('Gagal Upload, terjadi kesalahahn!!', UNAUTHORIZED_CODE);
+            //     }
+            // } else {
+            //     throw new UserException('Foto harus diupload !!', UNAUTHORIZED_CODE);
+            // }
 
             $this->AbsenModel->record($data_absen);
             echo json_encode(['error' => false, 'data' => $data]);

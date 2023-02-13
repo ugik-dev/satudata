@@ -6,13 +6,13 @@ class SKPModel extends CI_Model
 
     public function getAll($filter = [])
     {
+
         $this->db->select("u.*,pen.nama as nama_penilai, count(r.id_skp) as skp");
         $this->db->from('skp as u');
         $this->db->join('skp_child r', 'u.id_skp = r.id_skp');
         $this->db->join('users p', 'p.id = u.id_user');
         $this->db->join('users pen', 'pen.id = u.id_penilai');
         $this->db->group_by('id_skp');
-
         if (!empty($filter['id_skp'])) $this->db->where('u.id_skp', $filter['id_skp']);
         if (!empty($filter['my_skp'])) $this->db->where('u.id_user', $this->session->userdata()['id']);
         $res = $this->db->get();

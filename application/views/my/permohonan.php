@@ -82,7 +82,7 @@
             responsive: true,
             deferRender: true,
             "order": [
-                [5, "desc"]
+                [1, "desc"]
             ]
         });
 
@@ -172,8 +172,8 @@
                 console.log(d['status_izin'] + curUser + d['id_pengganti'])
                 if (d['status_izin'] == '0' && curUser == d['id_pengganti']) {
                     aksiBtn =
-                        `<a class="approv dropdown-item"  data-jenis='surat_izin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
-                    <a class="deapprov dropdown-item " data-jenis='surat_izin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                        `<a class="approv dropdown-item"  data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
+                    <a class="deapprov dropdown-item " data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
                     `;
                 }
                 var button = `
@@ -191,7 +191,7 @@
                             </div>
                         </div>`;
                 info = 'Pengganti : ' + d['nama_pengganti'];
-                renderData.push(['Surat Izin',
+                renderData.push([d['nama_izin'],
                     d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
                     d['nama_pegawai'], info, statusIzin(d['status_izin'], d['unapprove']), d['id_surat_izin'], aksiBtn != '' ? button : ''
                 ]);
@@ -391,6 +391,7 @@
         FDataTable.on('click', '.approv', function() {
             var currentData = dataSKP[$(this).data('id')];
             var jenis = $(this).data('jenis');
+            var link = $(this).data('link');
             Swal.fire({
                 title: "Konfrirmasi Approv",
                 text: "Data ini akan di approv anda yakin ?",
@@ -415,15 +416,13 @@
                 Swal.showLoading()
                 cur_id = $(this).data('id')
                 $.ajax({
-                    url: `<?= base_url('Spt/action/approv/') ?>${cur_id}`,
+                    url: `<?= base_url() ?>${jenis}/action/approve/${cur_id}`,
                     'type': 'get',
                     data: {
                         jenis: jenis
                     },
                     success: function(data) {
-
                         Swal.close();
-
                         // buttonIdle(button);
                         var json = JSON.parse(data);
                         if (json['error']) {

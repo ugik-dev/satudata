@@ -35,8 +35,8 @@
                             <!-- <button type="submit" class="btn btn-primary btn-md" ><i class="fa fa-search"></i> Cari </button> -->
                             <!-- <button type="button" class="btn btn-primary btn-md" name="btn_cari" id="btn_cari"><i class="fa fa-search"></i> Cari </button> -->
                             <a href="<?= base_url(
-                                'absensi/record'
-                            ) ?>" class="btn btn-primary btn-md"><i class="fa fa-calendar"></i>Record Absen </a>
+                                            'absensi/record'
+                                        ) ?>" class="btn btn-primary btn-md"><i class="fa fa-calendar"></i>Record Absen </a>
                             <button type="button" class="btn btn-light btn-md float-end" name="btn_print" id="btn_print"><i class="fa fa-print"></i> Print </button>
                         </div>
                     </form>
@@ -174,16 +174,16 @@
                 cur_date2 = i + '-' + v_bulan + '-' + v_tahun;
                 const d = new Date(cur_date);
                 let day = d.getDay();
-                     console.log(hari[day]);
+                console.log(hari[day]);
                 if (day != 0 && day != 6)
-                if (data?. [v_tahun]?. [v_bulan]?. [i] === undefined) {
-                    renderData.push([cur_date2, hari[day], '', '']);
-                } else {
-                    renderData.push([cur_date2, hari[day],
-                        (data?. [v_tahun]?. [v_bulan]?. [i]?. ['p']?. ['rec_time'] !== undefined ? data?. [v_tahun]?. [v_bulan]?. [i]?. ['p']?. ['rec_time'] : ''),
-                        (data?. [v_tahun]?. [v_bulan]?. [i]?. ['s']?. ['rec_time'] !== undefined ? data?. [v_tahun]?. [v_bulan]?. [i]?. ['s']?. ['rec_time'] : '')
-                    ]);
-                }
+                    if (data?. [v_tahun]?. [v_bulan]?. [i] === undefined) {
+                        renderData.push([cur_date2, hari[day], '', '']);
+                    } else {
+                        renderData.push([cur_date2, hari[day],
+                            (data?. [v_tahun]?. [v_bulan]?. [i]?. ['p']?. ['rec_time'] !== undefined ? data?. [v_tahun]?. [v_bulan]?. [i]?. ['p']?. ['rec_time'] : ''),
+                            (data?. [v_tahun]?. [v_bulan]?. [i]?. ['s']?. ['rec_time'] !== undefined ? data?. [v_tahun]?. [v_bulan]?. [i]?. ['s']?. ['rec_time'] : '')
+                        ]);
+                    }
             }
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }
