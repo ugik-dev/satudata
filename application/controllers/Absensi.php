@@ -59,7 +59,7 @@ class Absensi extends CI_Controller
             $current_time = date('H:i');
             // $current_time = '18:30';
             $pagi1 = "6:00";
-            $pagi2 = "10:00";
+            $pagi2 = "12:00";
             $sore1 = "16:00";
             $sore2 = "20:00";
             $current_time = DateTime::createFromFormat('H:i', $current_time);
