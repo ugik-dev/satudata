@@ -5,7 +5,7 @@ class Permohonan extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model(array('SecurityModel', 'GeneralModel', 'SKPModel', 'PermohonanModel', 'SPPDModel'));
+        $this->load->model(array('SecurityModel', 'GeneralModel', 'SKPModel', 'PermohonanModel', 'SPPDModel', 'SuratIzinModel'));
         // $this->load->helper(array('DataStructure'));
         $this->SecurityModel->userOnlyGuard();
 
@@ -20,7 +20,8 @@ class Permohonan extends CI_Controller
             $data_penilai = $this->session->userdata();
             $filter['search_approval']['data_penilai'] = $data_penilai;
             $data['spt'] = $this->SPPDModel->getAllSPPD($filter);
-            $data['laporan_spt'] = $this->SPPDModel->getAllLaporan($filter);
+            $data['surat_izin'] = $this->SuratIzinModel->getAll($filter);
+            $data['laporan_spt'] = $this->SPPDModel->getLaporan($filter, true);
 
             // echo json_encode($data);
             // echo json_encode($data_penilai);

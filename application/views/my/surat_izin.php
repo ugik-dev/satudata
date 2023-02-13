@@ -102,7 +102,7 @@
             });
             Swal.showLoading()
             return $.ajax({
-                url: `<?php echo site_url('cuti/getAllSKP/') ?>`,
+                url: `<?php echo site_url('surat-izin/getAll/') ?>`,
                 'type': 'POST',
                 data: toolbar.form.serialize(),
                 success: function(data) {
@@ -127,31 +127,31 @@
             var i = 0;
 
             var renderData = [];
-            Object.values(data).forEach((cuti) => {
+            Object.values(data).forEach((d) => {
                 var editButton = `
-                    <a class="dropdown-item"  href='<?= base_url() ?>cuti/edit/${cuti['id_cuti']}'><i class='fa fa-pencil'></i> Edit</a>
+                    <a class="dropdown-item"  href='<?= base_url() ?>surat-izin/edit/${d['id_surat_izin']}'><i class='fa fa-pencil'></i> Edit</a>
                   `;
                 var deleteButton = `
-                    <a class="delete dropdown-item" data-id='${cuti['id_cuti']}'><i class='fa fa-trash'></i> Hapus</a>
+                    <a class="delete dropdown-item" data-id='${d['id_surat_izin']}'><i class='fa fa-trash'></i> Hapus</a>
                   `;
                 var aksiBtn = `
-                  <a class="dropdown-item ajukan_approv" style="width: 110px" data-id='${cuti['id_cuti']}'><i class='fa fa-eye'></i> Ajukan Approv </a>
+                  <a class="dropdown-item ajukan_approv" style="width: 110px" data-id='${d['id_surat_izin']}'><i class='fa fa-eye'></i> Ajukan Approv </a>
                      `;
-                console.log(cuti['status']);
-                if (cuti['status'] == 2) {
+                console.log(d['status']);
+                if (d['status'] == 2) {
                     var deleteButton = '';
                     var editButton = '';
                     var aksiBtn = '';
                     var lihatButton = `
-                    <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>cuti/print/${cuti['id_cuti']}'><i class='fa fa-eye'></i> Cetak </a>
-                    <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>cuti/print/${cuti['id_cuti']}/barcode'><i class='fa fa-eye'></i> Cetak + Barcode </a>
+                    <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>surat-izin/print/${d['id_surat_izin']}'><i class='fa fa-eye'></i> Cetak </a>
+                    <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>surat-izin/print/${d['id_surat_izin']}/barcode'><i class='fa fa-eye'></i> Cetak + Barcode </a>
                 `;
                 } else {
                     //     var aksiBtn = `
-                    //   <a class="dropdown-item ajukan_approv" style="width: 110px" data-id='${cuti['id_cuti']}'><i class='fa fa-eye'></i> Ajukan Approv </a>
+                    //   <a class="dropdown-item ajukan_approv" style="width: 110px" data-id='${surat-izin['id_surat_izin']}'><i class='fa fa-eye'></i> Ajukan Approv </a>
                     //      `;
                     var lihatButton = `
-                        <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>cuti/print/${cuti['id_cuti']}'><i class='fa fa-eye'></i> Lihat </a>
+                        <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>surat-izin/print/${d['id_surat_izin']}'><i class='fa fa-eye'></i> Lihat </a>
                     `;
                 }
                 var button = `
@@ -174,10 +174,11 @@
                 tujuan = '';
                 i = 1;
 
-                renderData.push([cuti['id_cuti'], cuti['periode_start'], cuti['nama_penilai'], cuti['cuti'], statusSKP(cuti['status']), button]);
+                renderData.push([d['id_surat_izin'], d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']), d['nama_pengganti'], d['nama_izin'], statusIzin(d['status_izin'], d['unapprove']), button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }
+
 
         FDataTable.on('click', '.ajukan_approv', function() {
             var currentData = dataSKP[$(this).data('id')];
@@ -199,7 +200,7 @@
                     return;
                 }
                 $.ajax({
-                    url: '<?= base_url('cuti/ajukan_approv') ?>',
+                    url: '<?= base_url('surat-izin/ajukan_approv') ?>',
                     'type': 'get',
                     data: {
                         id: $(this).data('id')
@@ -218,7 +219,7 @@
                             return;
                         }
                         var user = json['data']
-                        dataSKP[user['id_cuti']] = user;
+                        dataSKP[user['id_surat_izin']] = user;
                         Swal.fire("Simpan Berhasil", "", "success");
                         renderSKP(dataSKP);
                         // UserModal.self.modal('hide');
@@ -249,10 +250,10 @@
                     return;
                 }
                 $.ajax({
-                    url: "<?= site_url('User/deleteMySKP') ?>",
+                    url: "<?= site_url('surat-izin/delete') ?>",
                     'type': 'get',
                     data: {
-                        'id_cuti': id
+                        'id_surat_izin': id
                     },
                     success: function(data) {
                         var json = JSON.parse(data);

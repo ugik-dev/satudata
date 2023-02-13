@@ -197,6 +197,30 @@ function statusSPT(status, unnaprove) {
   else if (status == "98")
     return `<i class='fa fa-times text-danger'></i> <b class="text-danger"> Approv Ditolak </b>`;
 }
+function statusIzin(status, unnaprove = null) {
+  if (unnaprove != null)
+    return `<i class='fa fa-times text-danger'></i> <b class="text-danger"> Approv Ditolak </b>`;
+  else if (status == "0")
+    return ` <i class='fa fa-edit text-warning'> </i> <b class="text-warning"> Menunggu Persetujuan Pengganti </b> `;
+  else if (status == "1")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kasi</b></i> `;
+  else if (status == "2")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kabid / Kasubag </b></i> `;
+  else if (status == "3")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Sekretaris Dinas</b></i> `;
+  else if (status == "6")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kepala Dinas</b></i> `;
+  else if (status == "10")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Verifikasi Admin Kepegawaian</b></i> `;
+  else if (status == "11")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kasubag Kepegawaian </b></i> `;
+  else if (status == "12")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kepala Dinas </b></i> `;
+  else if (status == "99")
+    return `<i class='fa fa-check text-success'></i> <b class="text-success"> Approv Diterima </b>`;
+  else if (status == "98")
+    return `<i class='fa fa-times text-danger'></i> <b class="text-danger"> Approv Ditolak </b>`;
+}
 
 function statusSKP(status) {
   if (status == "0")

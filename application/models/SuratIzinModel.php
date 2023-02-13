@@ -6,14 +6,16 @@ class SuratIzinModel extends CI_Model
 
     public function getAll($filter = [])
     {
-        $this->db->select("*");
-        $this->db->from('surat_izin as u');
-        // $this->db->join('surat_izin_child r', 'u.id_surat_izin = r.id_surat_izin');
-        // $this->db->join('users p', 'p.id = u.id_user');
+        $this->db->select("si.*, r.nama_izin, p.nama as nama_pegawai, pg.nama as nama_pengganti");
+        $this->db->from('surat_izin as si');
+        $this->db->join('ref_jen_izin r', 'si.jenis_izin = r.id_ref_jen_izin');
+        $this->db->join('users p', 'p.id = si.id_pegawai');
+        $this->db->join('users pg', 'pg.id = si.id_pengganti', 'LEFT');
         // $this->db->join('users pen', 'pen.id = u.id_penilai');
         // $this->db->group_by('id_surat_izin');
 
-        // if (!empty($filter['id_surat_izin'])) $this->db->where('u.id_surat_izin', $filter['id_surat_izin']);
+        if (!empty($filter['id_pegawai'])) $this->db->where('u.id_pegawai', $filter['id_pegawai']);
+        if (!empty($filter['id_pengganti'])) $this->db->where('u.id_pengganti', $filter['id_pengganti']);
         // if (!empty($filter['my_surat_izin'])) $this->db->where('u.id_user', $this->session->userdata()['id']);
         $res = $this->db->get();
         // echo json_encode($res->result_array());

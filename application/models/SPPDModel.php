@@ -20,10 +20,17 @@ class SPPDModel extends CI_Model
         if (!empty($filter['id_foto'])) $this->db->where('id_foto', $filter['id_foto']);
         return DataStructure::keyValue($this->db->get()->result_array(), 'id_foto');;
     }
-    public function getLaporan($filter = [])
+    public function getLaporan($filter = [], $sort = false)
     {
-        $this->db->select('sl.*, u.nama as nama_bendahara');
+        if ($sort)
+            $this->db->select('
+            s.no_sppd, no_spt,u.nama as nama_bendahara,
+            sl.id_laporan, sl.id_spt, lap_approve_seksi, lap_approve_kabid,lap_approve_sekdin,lap_approve_kadin,lap_approve_bendahara,id_bendahara,lap_unapprove,lap_status,timestamp_lap
+            ');
+        else
+            $this->db->select('sl.*, u.nama as nama_bendahara');
         $this->db->from('spt_laporan sl');
+        $this->db->join('spt s', 's.id_spt = sl.id_spt');
         $this->db->join('users u', 'sl.id_bendahara = u.id', 'LEFT');
         if (!empty($filter['id_spt'])) $this->db->where('sl.id_spt', $filter['id_spt']);
         if (!empty($filter['id_laporan'])) $this->db->where('sl.id_laporan', $filter['id_laporan']);

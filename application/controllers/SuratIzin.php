@@ -5,25 +5,31 @@ class SuratIzin extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model(array('SecurityModel', 'GeneralModel', 'CutiModel', 'SuratIzinModel'));
+        $this->load->model(array('SecurityModel', 'GeneralModel', 'SuratIzinModel'));
         // $this->load->helper(array('DataStructure'));
         $this->SecurityModel->userOnlyGuard();
 
         $this->db->db_debug = TRUE;
     }
 
+    public function getAll()
+    {
+        try {
+            $filter = $this->input->get();
+            $data =  $this->SuratIzinModel->getAll($filter);
+            echo json_encode(['error' => false, 'data' => $data]);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
 
 
     public function index()
     {
         try {
-            // $this->SecurityModel->userOnlyGuard();
-
             $data = array(
                 'page' => 'my/surat_izin',
                 'title' => 'Cuti Saya',
-                // 'dataContent' => $res_data
-
             );
             $this->load->view('page', $data);
         } catch (Exception $e) {
@@ -55,7 +61,6 @@ class SuratIzin extends CI_Controller
             $filter['my_skp'] = true;
             $filter['id_skp'] = $this->input->get('id');
             $res_data = $this->SKPModel->getAll($filter)[$filter['id_skp']];
-            // echo json_encode($res_data);
             if (!empty($res_data));
             if ($res_data['status'] == 0 && $res_data['id_user'] == $this->session->userdata('id')) {
                 // echo 'ajikan ';

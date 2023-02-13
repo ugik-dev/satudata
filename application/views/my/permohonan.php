@@ -163,6 +163,40 @@
             var i = 0;
 
             var renderData = [];
+            curUser = <?= $this->session->userdata()['id'] ?>;
+            curLevel = <?= $this->session->userdata()['level'] ?>;
+            Object.values(data['surat_izin']).forEach((d) => {
+                var aksiBtn = '';
+                console.log('pengganti :' +
+                    d['id_pengganti'])
+                console.log(d['status_izin'] + curUser + d['id_pengganti'])
+                if (d['status_izin'] == '0' && curUser == d['id_pengganti']) {
+                    aksiBtn =
+                        `<a class="approv dropdown-item"  data-jenis='surat_izin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
+                    <a class="deapprov dropdown-item " data-jenis='surat_izin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+                }
+                var button = `
+                           <div class="dropdown-basic">
+                            <div class="dropdown">
+                                <div class="btn-group mb-1">
+                                    <button class="dropbtn btn-square btn-sm btn-primary" style="width : 120px"  type="button">
+                                        Aksi
+                                        <span><i class="icofont icofont-arrow-down"> </i></span>
+                                    </button>
+                                    <div class="dropdown-content">
+                                        ${aksiBtn}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                info = 'Pengganti : ' + d['nama_pengganti'];
+                renderData.push(['Surat Izin',
+                    d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
+                    d['nama_pegawai'], info, statusIzin(d['status_izin'], d['unapprove']), d['id_surat_izin'], aksiBtn != '' ? button : ''
+                ]);
+            });
+
             Object.values(data['spt']).forEach((spt) => {
                 var aksiBtn = '';
                 <?php if ($this->session->userdata()['level'] == 3 or $this->session->userdata()['level'] == 4) { ?>
