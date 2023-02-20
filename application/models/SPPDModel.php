@@ -274,7 +274,7 @@ class SPPDModel extends CI_Model
         $data['user_input'] = $ses['id'];
         $this->db->insert('spt', DataStructure::slice($data, [
             'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas', 'jenis',
-            'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk'
+            'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk', 'status'
 
         ], FALSE));
 
@@ -288,6 +288,7 @@ class SPPDModel extends CI_Model
                     'tempat_kembali' => !empty($data['tempat_kembali'][$i]) ? $data['tempat_kembali'][$i] : '',
                     'date_berangkat' => $data['date_berangkat'][$i],
                     'date_kembali' => !empty($data['date_kembali'][$i]) ? $data['date_kembali'][$i] : '',
+                    'jam' => !empty($data['jam'][$i]) ? $data['jam'][$i] : '',
                     'ke' => $i + 1,
                 );
                 $this->db->insert('tujuan', $d_tujuan);

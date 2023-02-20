@@ -250,6 +250,7 @@ class Spt extends CI_Controller
     public function create_process()
     {
         try {
+
             $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
             $data = $this->input->post();
 
@@ -266,6 +267,12 @@ class Spt extends CI_Controller
                     }
                 }
             }
+            if (!empty($data['id_seksi']))
+                $data['staus'] == 1;
+            else
+                $data['staus'] == 2;
+
+
             $id =  $this->SPPDModel->addSPPD($data);
             echo json_encode(array('error' => false, 'data' => $id));
             // $this->load->view('page', $data);

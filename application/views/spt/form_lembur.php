@@ -93,10 +93,10 @@
                         </select>
                     </div>
 
-                    <div class="col-lg-6">
+                    <!-- <div class="col-lg-6">
                         <div class="col-form-label">Lama Lembur (jam)</div>
                         <input class="form-control" id="lama_dinas" name="lama_dinas" type="number" value="<?= !empty($dataContent['return_data']['lama_dinas']) ? $dataContent['return_data']['lama_dinas'] : '' ?>">
-                    </div>
+                    </div> -->
 
                     <!-- <div class="col-lg-6">
                         <div class="col-form-label">Transportasi</div>
@@ -392,7 +392,7 @@
             htmlTujuan = ` <hr>
             <div class="row">
             <div class="col-lg-6">
-            <div class="col-form-label"><b>Tempat ${last_tujuan}</b></div>
+            <div class="col-form-label"><b>Ke ${last_tujuan}</b></div>
             <input type="hidden" id="id_tujuan[]" name="id_tujuan[]" type="text" value="${id}">
             <input class="form-control" id="tempat_tujuan[]" name="tempat_tujuan[]" type="text" value="${tj}" placeholder="ex. Puskesmas Bakam">
             </div>
@@ -401,8 +401,8 @@
             <input class="form-control" id="date_berangkat[]" name="date_berangkat[]" type="date" value="${dj}">
             </div>
             <div class="col-lg-3">
-            <div class="col-form-label">s.d Tanggal </div>
-            <input class="form-control" id="date_kembali[]" name="date_kembali[]" type="date" value="${dk}">
+            <div class="col-form-label">Lama (jam) </div>
+            <input class="form-control" id="jam[]" name="jam[]" type="number" value="${dk}">
             </div>
             </div>`;
 
