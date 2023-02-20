@@ -328,9 +328,9 @@ class GeneralModel extends CI_Model
         $this->db->select('id as id, CONCAT(nama, " | " , b.nama_bag) as text');
         $this->db->from('users u ');
 
-        if (!empty($filter['bagian_show'])) {
-            $this->db->join('bagian b', 'u.id_bagian = b.id_bagian');
-        }
+        // if (!empty($filter['bagian_show'])) {
+        $this->db->join('bagian b', 'u.id_bagian = b.id_bagian');
+        // }
         if (!empty($filter['searchTerm'])) $this->db->where('nama like "%' . $filter['searchTerm'] . '%"');
         if (!empty($filter['id_satuan'])) $this->db->where('id_satuan', $filter['id_satuan']);
         // $this->db->where('ppk', 1);

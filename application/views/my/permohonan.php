@@ -165,12 +165,19 @@
             var renderData = [];
             curUser = <?= $this->session->userdata()['id'] ?>;
             curLevel = <?= $this->session->userdata()['level'] ?>;
+            bagian = <?= $this->session->userdata()['id_bagian'] ?>;
             Object.values(data['surat_izin']).forEach((d) => {
                 var aksiBtn = '';
                 console.log('pengganti :' +
                     d['id_pengganti'])
                 console.log(d['status_izin'] + curUser + d['id_pengganti'])
                 if (d['status_izin'] == '0' && curUser == d['id_pengganti']) {
+                    aksiBtn =
+                        `<a class="approv dropdown-item"  data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
+                    <a class="deapprov dropdown-item " data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+                }
+                if (d['status_izin'] == '2' && d['id_bagian'] == bagian) {
                     aksiBtn =
                         `<a class="approv dropdown-item"  data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
                     <a class="deapprov dropdown-item " data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>

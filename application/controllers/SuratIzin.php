@@ -147,13 +147,14 @@ class SuratIzin extends CI_Controller
                 }
             }
 
-            if ($cur_user['level'] == 5 && $data['status_izin'] == 2) {
+            if ($cur_user['level'] == 5 && $data['status_izin'] == 1) {
                 // approve kasi
             }
 
 
-            if (($cur_user['level'] == 3 || $cur_user['level'] == 4) && $data['status_izin'] == 3) {
+            if (($cur_user['level'] == 3 || $cur_user['level'] == 4) && $data['status_izin'] == 2 && ($cur_user['id_bagian'] = $data['id_bagian'])) {
                 // approve kabid kasubag
+                $this->SuratIzinModel->approvBagian();
             }
 
             if ($action == 'approv') {

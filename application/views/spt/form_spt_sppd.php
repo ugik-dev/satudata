@@ -8,11 +8,11 @@
                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
 
-                    <input type="" name="id_spt" value="<?= !empty($dataContent['return_data']['id_spt']) ? $dataContent['return_data']['id_spt'] : '' ?>">
-                    <input type="" name="sppd" value="2">
-                    <input type="" name="jenis" value="2">
+                <div class="row">
+                    <input type="hidden" name="id_spt" value="<?= !empty($dataContent['return_data']['id_spt']) ? $dataContent['return_data']['id_spt'] : '' ?>">
+                    <input type="hidden" name="sppd" value="2">
+                    <input type="hidden" name="jenis" value="2">
 
                     <label class="col-sm-2 col-form-label" hidden=""><strong>No SPT</strong></label>
 
@@ -223,7 +223,7 @@
             htmlDasarTambahan = `<div class="mb-3 row" id='new_row_dasar_${last_dasar}'>
                                 <label class="col-sm-1 col-form-label">${last_dasar}. </label>
                                 <div class="col-sm-10">
-                                    <input name='id_dasar_tambahan[]' value='' type=''>
+                                    <input type='hidden' name='id_dasar_tambahan[]' value='' type=''>
 
                                     <textarea name="dasar_tambahan[]" class="form-control" rows="2"></textarea>
                                 </div>
@@ -398,7 +398,7 @@
             <div class="row">
             <div class="col-lg-3">
             <div class="col-form-label"><b>Tujuan ${last_tujuan}</b></div>
-            <input class="" id="id_tujuan[]" name="id_tujuan[]" type="text" value="${id}">
+            <input type="hidden" id="id_tujuan[]" name="id_tujuan[]" type="text" value="${id}">
             <input class="form-control" id="tempat_tujuan[]" name="tempat_tujuan[]" type="text" value="${tj}" placeholder="ex. Puskesmas Bakam">
             </div>
             <div class="col-lg-3">

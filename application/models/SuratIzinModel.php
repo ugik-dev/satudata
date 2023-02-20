@@ -24,7 +24,7 @@ class SuratIzinModel extends CI_Model
             if ($penilai['level'] == 5)
                 $this->db->where("si.id_seksi =  {$penilai['id_seksi']}");
             if ($penilai['level'] == 4 || $penilai['level'] == 3)
-                $this->db->where("si.id_bagian =  {$penilai['id_bagian']}");
+                $this->db->where("si.id_bagian =  {$penilai['id_bagian']} and si.status_izin in (2,3,4,5,6)");
             if ($penilai['level'] == 2)
                 $this->db->where("si.status_izin in (5,6,7,8,99)");
         }
