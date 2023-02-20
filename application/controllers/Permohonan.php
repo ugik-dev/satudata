@@ -97,9 +97,7 @@ class Permohonan extends CI_Controller
                 $data['spt'] = [];
                 $data['laporan_spt'] = [];
             }
-            // echo json_encode($data);
-            // echo json_encode($data_penilai);
-            // die();
+
             $data['skp'] = $this->PermohonanModel->getAll($filter); //skp
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {

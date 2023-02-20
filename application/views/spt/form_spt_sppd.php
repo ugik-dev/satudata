@@ -519,7 +519,7 @@
                             },
                         }).then((result) => {
 
-                            // location.href = "<?= base_url('spt/detail/') ?>" + json['data'];
+                            location.href = "<?= base_url('spt/detail/') ?>" + json['data'];
                         });
                     }
                 });

@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="col-lg-12">
-                        <div class="col-form-label">Maksud Perjalanan Dinas</div>
+                        <div class="col-form-label">Maksud Lembur</div>
                         <textarea name="maksud" id="maksud" class="form-control" rows="3"><?= !empty($dataContent['return_data']['maksud']) ? $dataContent['return_data']['maksud'] : '' ?></textarea>
                     </div>
 
@@ -94,20 +94,21 @@
                     </div>
 
                     <div class="col-lg-6">
-                        <div class="col-form-label">Lama Perjalanan</div>
+                        <div class="col-form-label">Lama Lembur (jam)</div>
                         <input class="form-control" id="lama_dinas" name="lama_dinas" type="number" value="<?= !empty($dataContent['return_data']['lama_dinas']) ? $dataContent['return_data']['lama_dinas'] : '' ?>">
                     </div>
-                    <div class="col-lg-6">
+
+                    <!-- <div class="col-lg-6">
                         <div class="col-form-label">Transportasi</div>
                         <select class="form-control" id="transport" name="transport" required>
                         </select>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-lg-12" id="layout_tujuan">
 
                 </div>
                 <hr>
-                <a class="btn btn-light my-1" type="" id="add_tujuan" data-loading-text="Loading..."><strong>Tambah Tujuan</strong></a>
+                <a class="btn btn-light my-1" type="" id="add_tujuan" data-loading-text="Loading..."><strong>Tambah Tempat</strong></a>
 
                 <!-- <div class="row">
                     <div class="col-lg-3">
@@ -194,7 +195,7 @@
             'status': $('#status'),
             'password': $('#password'),
             'id_role': $('#id_role'),
-            'transport': $('#transport'),
+            // 'transport': $('#transport'),
         }
         var swalSaveConfigure = {
             title: "Konfirmasi simpan",
@@ -212,7 +213,7 @@
             showCancelButton: true,
         };
 
-        $.when(getAllTransport()).then((e) => {}).fail((e) => {
+        $.when().then((e) => {}).fail((e) => {
             // console.log(e)
         });
         last_dasar = 2;
@@ -387,29 +388,20 @@
         }
         ?>
 
-        // addTujuan()
-        // addTujuan()
-        // addTujuan()
-        // addTujuan()
-
         function addTujuan(id = '', tj = '', dj = '', tk = '', dk = '') {
             htmlTujuan = ` <hr>
             <div class="row">
-            <div class="col-lg-3">
-            <div class="col-form-label"><b>Tujuan ${last_tujuan}</b></div>
+            <div class="col-lg-6">
+            <div class="col-form-label"><b>Tempat ${last_tujuan}</b></div>
             <input type="hidden" id="id_tujuan[]" name="id_tujuan[]" type="text" value="${id}">
             <input class="form-control" id="tempat_tujuan[]" name="tempat_tujuan[]" type="text" value="${tj}" placeholder="ex. Puskesmas Bakam">
             </div>
             <div class="col-lg-3">
-            <div class="col-form-label">Tanggal Berangkat</div>
+            <div class="col-form-label">Dari Tanggal </div>
             <input class="form-control" id="date_berangkat[]" name="date_berangkat[]" type="date" value="${dj}">
             </div>
             <div class="col-lg-3">
-            <div class="col-form-label">Kembali</div>
-            <input class="form-control" id="tempat_kembali[]" name="tempat_kembali[]" type="text" value="${tk}" placeholder="ex. Sungailiat">
-            </div>
-            <div class="col-lg-3">
-            <div class="col-form-label">Tanggal Kembali </div>
+            <div class="col-form-label">s.d Tanggal </div>
             <input class="form-control" id="date_kembali[]" name="date_kembali[]" type="date" value="${dk}">
             </div>
             </div>`;
@@ -422,47 +414,47 @@
             addTujuan();
         })
 
-        function getAllTransport() {
-            Swal.fire({
-                title: 'Loading',
-                allowOutsideClick: false,
-            });
-            Swal.showLoading()
-            return $.ajax({
-                url: `<?php echo site_url('Search/transport') ?>`,
-                'type': 'get',
-                data: {},
-                success: function(data) {
-                    Swal.close();
-                    var json = JSON.parse(data);
-                    if (json['error']) {
-                        return;
-                    }
-                    dataTransport = json['data'];
-                    renderTransport(dataTransport);
-                },
-                error: function(e) {}
-            });
-        }
+        // function getAllTransport() {
+        //     Swal.fire({
+        //         title: 'Loading',
+        //         allowOutsideClick: false,
+        //     });
+        //     Swal.showLoading()
+        //     return $.ajax({
+        //         url: `<?php echo site_url('Search/transport') ?>`,
+        //         'type': 'get',
+        //         data: {},
+        //         success: function(data) {
+        //             Swal.close();
+        //             var json = JSON.parse(data);
+        //             if (json['error']) {
+        //                 return;
+        //             }
+        //             dataTransport = json['data'];
+        //             renderTransport(dataTransport);
+        //         },
+        //         error: function(e) {}
+        //     });
+        // }
 
-        function renderTransport(data) {
-            UserModal.transport.empty();
-            UserModal.transport.append($('<option>', {
-                value: "",
-                text: "--"
-            }));
-            Object.values(data).forEach((d) => {
-                console.log(d)
-                UserModal.transport.append($('<option>', {
-                    value: d['transport'],
-                    text: d['nama_tr'],
-                }));
-            });
+        // function renderTransport(data) {
+        //     UserModal.transport.empty();
+        //     UserModal.transport.append($('<option>', {
+        //         value: "",
+        //         text: "--"
+        //     }));
+        //     Object.values(data).forEach((d) => {
+        //         console.log(d)
+        //         UserModal.transport.append($('<option>', {
+        //             value: d['transport'],
+        //             text: d['nama_tr'],
+        //         }));
+        //     });
 
-            <?php if (!empty($dataContent['return_data']['transport'])) { ?>
-                UserModal.transport.val("<?= $dataContent['return_data']['transport'] ?>");
-            <?php } ?>
-        }
+        //     <?php if (!empty($dataContent['return_data']['transport'])) { ?>
+        //         UserModal.transport.val("<?= $dataContent['return_data']['transport'] ?>");
+        //     <?php } ?>
+        // }
         UserModal.form.submit(function(event) {
             event.preventDefault();
             var url = "<?= base_url() . $dataContent['form_url'] ?>";
@@ -518,7 +510,7 @@
                             },
                         }).then((result) => {
 
-                            // location.href = "<?= base_url('spt/detail/') ?>" + json['data'];
+                            location.href = "<?= base_url('spt/detail/') ?>" + json['data'];
                         });
                     }
                 });

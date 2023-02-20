@@ -40,7 +40,7 @@ class SPPDModel extends CI_Model
     public function getAllSPPD($filter = [], $sort = true)
     {
         $ses = $this->session->userdata();
-        // echo json_encode($filter);
+        // echo json_encode($ses);
         // die();
         $this->db->select('rjs.nama_ref_jen_spt');
         $this->db->select('p2.nama as nama_input');
@@ -111,6 +111,7 @@ class SPPDModel extends CI_Model
             } else
             if ($penilai['level'] == 3) {
                 $this->db->where("(u.id_bagian = {$penilai['id_bagian']} OR d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
+                $this->db->where('u.status > 1');
                 // die();
                 if (!empty($filter['status_permohonan'])) {
                     if ($filter['status_permohonan'] == 'menunggu') {
@@ -284,9 +285,9 @@ class SPPDModel extends CI_Model
                 $d_tujuan = array(
                     'id_spt' => $id_spt,
                     'tempat_tujuan' => $data['tempat_tujuan'][$i],
-                    'tempat_kembali' => $data['tempat_kembali'][$i],
+                    'tempat_kembali' => !empty($data['tempat_kembali'][$i]) ? $data['tempat_kembali'][$i] : '',
                     'date_berangkat' => $data['date_berangkat'][$i],
-                    'date_kembali' => $data['date_kembali'][$i],
+                    'date_kembali' => !empty($data['date_kembali'][$i]) ? $data['date_kembali'][$i] : '',
                     'ke' => $i + 1,
                 );
                 $this->db->insert('tujuan', $d_tujuan);
@@ -496,7 +497,8 @@ class SPPDModel extends CI_Model
             $data_spt['sign_pptk'] = $this->sign($data_spt['id_spt'], 'sign_pptk', $ses, 'Pejabat Pelaksana Teknis Kegiatan');
             $continue = true;
         }
-
+        // echo "xs";
+        // die();
         if (($data_spt['status'] == '2' && ($ses['level'] == 3 || $ses['level'] == 4))) {
             if ($data_spt['id_bagian'] == $ses['id_bagian']) {
                 if ($data_spt['jenis'] == '1') {

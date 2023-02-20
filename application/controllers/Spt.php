@@ -163,8 +163,9 @@ class Spt extends CI_Controller
                     }
                 }
             }
-
             if ($action == 'approv') {
+                // echo "x";
+                // die();
                 $logs['deskripsi'] =  'Menyetujui';
                 $logs['label'] = 'success';
                 $this->SPPDModel->approv($data);

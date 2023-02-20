@@ -423,7 +423,7 @@
                 Swal.showLoading()
                 cur_id = $(this).data('id')
                 $.ajax({
-                    url: `<?= base_url() ?>${jenis}/action/approve/${cur_id}`,
+                    url: `<?= base_url() ?>${jenis}/action/approv/${cur_id}`,
                     'type': 'get',
                     data: {
                         jenis: jenis
