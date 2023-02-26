@@ -7,6 +7,7 @@
                     <form class="form-inline" id="toolbar_form" onsubmit="return false;">
                         <!-- <div class="col-lg-2"> -->
                         <input type="hidden" id="is_not_self" name="is_not_self" value="1">
+                        <input type="hidden" id="id_pegawai" name="id_pegawai" value="<?= $this->session->userdata('id') ?>">
                         <!-- </div> -->
                         <!-- <div class="col-lg-2">
                             <select class="form-control mr-sm-2" name="tool_id_role" id="tool_id_role"></select>
@@ -25,9 +26,9 @@
                             <thead>
                                 <tr>
                                     <th style="width: 2%; text-align:center!important">ID</th>
-                                    <th style="width: 10%; text-align:center!important">TANGGAL</th>
+                                    <th style="width: 10%; text-align:center!important">PELIMPAHAN</th>
                                     <th style="width: 10%; text-align:center!important">PENILAI</th>
-                                    <th style="width: 10%; text-align:center!important">JUMLAH KEGIATAN</th>
+                                    <th style="width: 10%; text-align:center!important">JENIS</th>
                                     <th style="width: 10%; text-align:center!important">STATUS</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
                                 </tr>
@@ -41,16 +42,13 @@
     </div>
 </div>
 <!-- </div> -->
-
-
-
 <script>
     $(document).ready(function() {
         $('#sidebar_surat_izin').addClass('active_c');
         var toolbar = {
             'form': $('#toolbar_form'),
             'id_role': $('#toolbar_form').find('#id_role'),
-            'id_opd': $('#toolbar_form').find('#id_opd'),
+            'id_pegawai': $('#toolbar_form').find('#id_pegawai'),
             'newBtn': $('#new_btn'),
         }
 
@@ -97,13 +95,13 @@
 
         function getAllSppd() {
             Swal.fire({
-                title: 'Loading SPPD!',
+                title: 'Loading Surat Izin!',
                 allowOutsideClick: false,
             });
             Swal.showLoading()
             return $.ajax({
                 url: `<?php echo site_url('surat-izin/getAll/') ?>`,
-                'type': 'POST',
+                'type': 'get',
                 data: toolbar.form.serialize(),
                 success: function(data) {
                     Swal.close();
@@ -134,14 +132,10 @@
                 var deleteButton = `
                     <a class="delete dropdown-item" data-id='${d['id_surat_izin']}'><i class='fa fa-trash'></i> Hapus</a>
                   `;
-                var aksiBtn = `
-                  <a class="dropdown-item ajukan_approv" style="width: 110px" data-id='${d['id_surat_izin']}'><i class='fa fa-eye'></i> Ajukan Approv </a>
-                     `;
                 console.log(d['status']);
                 if (d['status'] == 2) {
                     var deleteButton = '';
                     var editButton = '';
-                    var aksiBtn = '';
                     var lihatButton = `
                     <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>surat-izin/print/${d['id_surat_izin']}'><i class='fa fa-eye'></i> Cetak </a>
                     <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>surat-izin/print/${d['id_surat_izin']}/barcode'><i class='fa fa-eye'></i> Cetak + Barcode </a>
@@ -164,7 +158,6 @@
                                     </button>
                                     <div class="dropdown-content">
                                     ${editButton}
-                                    ${aksiBtn}
                                     ${deleteButton}
                                     ${lihatButton}
                                     </div>
@@ -178,56 +171,6 @@
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }
-
-
-        FDataTable.on('click', '.ajukan_approv', function() {
-            var currentData = dataSKP[$(this).data('id')];
-            Swal.fire({
-                title: "Konfrirmasi",
-                text: "Akan mengajukan approval data ini ?",
-                icon: "warning",
-                allowOutsideClick: false,
-                showCancelButton: true,
-                buttons: {
-                    cancel: 'Batal !!',
-                    catch: {
-                        text: "Ya, Ajukan !!",
-                        value: true,
-                    },
-                },
-            }).then((result) => {
-                if (!result.isConfirmed) {
-                    return;
-                }
-                $.ajax({
-                    url: '<?= base_url('surat-izin/ajukan_approv') ?>',
-                    'type': 'get',
-                    data: {
-                        id: $(this).data('id')
-                    },
-                    success: function(data) {
-                        Swal.fire({
-                            title: 'Loading Approv!',
-                            allowOutsideClick: false,
-                        });
-                        Swal.showLoading()
-                        // buttonIdle(button);
-                        Swal.close();
-                        var json = JSON.parse(data);
-                        if (json['error']) {
-                            Swal.fire("Simpan Gagal", json['message'], "error");
-                            return;
-                        }
-                        var user = json['data']
-                        dataSKP[user['id_surat_izin']] = user;
-                        Swal.fire("Simpan Berhasil", "", "success");
-                        renderSKP(dataSKP);
-                        // UserModal.self.modal('hide');
-                    },
-                    error: function(e) {}
-                });
-            });
-        })
 
         FDataTable.on('click', '.delete', function() {
             event.preventDefault();

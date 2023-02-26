@@ -8,7 +8,7 @@
                 <div class="modal-body">
                     <input type="hidden" name="id_role" value="<?= !empty($dataContent['users']['id_role']) ? $dataContent['users']['id_role'] : '' ?>">
                     <div class="row">
-                        <div class="col-lg-9">
+                        <div class="col-lg-6">
                             <div class=" form-group">
                                 <label for="nama">Nama Role</label>
                                 <input type="text" placeholder="" class="form-control" value="<?= !empty($dataContent['users']['nama_role']) ? $dataContent['users']['nama_role'] : '' ?>" name="nama_role" required>
@@ -18,18 +18,22 @@
                             <div class="form-group">
                                 <label for="nama">Level</label>
                                 <select class="form-control" name="level">
+                                    <option value="">-</option>
                                     <?php
                                     $name_level = [
                                         '',
-                                        'KEPALA DINAS',
+                                        'Dinas Kesehatan',
                                         'Sekretaris',
                                         'Kepala Sub Bagian',
                                         'Kepala Bidang',
                                         'Kepala Seksi',
-                                        'Pegawai Receh',
-                                        'Admin',
+                                        'Pegawai',
+                                        'Kepala Puskesmas',
+                                        'Kasubag Puskesmas',
+                                        'Pegawai Puskesmas',
                                     ];
-                                    for ($i = 1; $i <= 6; $i++) {
+
+                                    for ($i = 1; $i <= 9; $i++) {
                                         if (!empty($dataContent['users']['level'])) {
                                             if ($dataContent['users']['level'] == $i)
                                                 echo "<option value='" . $i . "' selected>" . $i . '. ' . $name_level[$i] . " </option>";
@@ -37,6 +41,34 @@
                                                 echo "<option value='" . $i . "'>" . $i . '. ' . $name_level[$i] . " </option>";
                                         } else
                                             echo "<option value='" . $i . "'>" . $i . '. ' . $name_level[$i] . " </option>";
+                                    }
+                                    ?>
+                                </select>
+                                <!-- <input type="text" placeholder="" class="form-control" value="<?= !empty($dataContent['users']['nama_role']) ? $dataContent['users']['nama_role'] : '' ?>" name="nama_role" required> -->
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label for="nama">Jenis Satuan Kerja</label>
+                                <select class="form-control" name="jen_satker">
+                                    <?php
+
+                                    $dataSatKer = [
+                                        'Semua',
+                                        'Dinas Kesehatan',
+                                        'Puskesmas',
+                                        'Rumah Sakit',
+                                        'UPT'
+                                    ];
+                                    for ($i = 0; $i <= 4; $i++) {
+                                        if (!empty($dataContent['users']['jen_satker'])) {
+                                            if ($dataContent['users']['jen_satker'] == $i)
+                                                echo "<option value='" . $i . "' selected>" . $i . '. ' . $dataSatKer[$i] . " </option>";
+                                            else
+                                                echo "<option value='" . $i . "'>" . $i . '. ' . $dataSatKer[$i] . " </option>";
+                                        } else
+                                            echo "<option value='" . $i . "'>" . $i . '. ' . $dataSatKer[$i] . " </option>";
                                     }
                                     ?>
                                 </select>
@@ -183,7 +215,6 @@
                                             },
                                         },
                                     }).then((result) => {
-
                                         location.href = "<?= base_url('master/roles') ?>";
                                     });
                                 }

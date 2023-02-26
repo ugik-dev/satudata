@@ -118,7 +118,7 @@ class Spt extends CI_Controller
     public function detail($id)
     {
         try {
-            $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
+            // $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
             $res_data['return_data'] = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
             $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
             $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
@@ -141,7 +141,7 @@ class Spt extends CI_Controller
     public function action($action, $id)
     {
         try {
-            $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
+            // $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
             $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
             // $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
             // $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
@@ -163,9 +163,8 @@ class Spt extends CI_Controller
                     }
                 }
             }
+
             if ($action == 'approv') {
-                // echo "x";
-                // die();
                 $logs['deskripsi'] =  'Menyetujui';
                 $logs['label'] = 'success';
                 $this->SPPDModel->approv($data);
@@ -254,8 +253,8 @@ class Spt extends CI_Controller
             $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
             $data = $this->input->post();
 
-            $hari_pertama = '';
-            $hari_terakhir = '';
+            // $hari_pertama = '';
+            // $hari_terakhir = '';
             if ($data['jenis'] == '2') {
                 foreach ($data['id_tujuan'] as $key => $t) {
                     // echo $data['date_berangkat'][$key];
@@ -266,12 +265,20 @@ class Spt extends CI_Controller
                         $hari_terakhir = $data['date_kembali'][$key];
                     }
                 }
+                $this->SPPDModel->CekJadwal($data, $hari_pertama, $hari_terakhir);
             }
-            if (!empty($data['id_seksi']))
-                $data['staus'] == 1;
-            else
-                $data['staus'] == 2;
-
+            // echo $hari_pertama;
+            // echo $hari_terakhir;
+            // die();
+            if ($this->session->userdata('jen_satker') == 1) {
+                if (!empty($this->session->userdata('id_seksi')))
+                    $data['status'] = 1;
+                else
+                    $data['status'] = 2;
+            } else
+            if ($this->session->userdata('jen_satker') == 2) {
+                $data['status'] = 50;
+            }
 
             $id =  $this->SPPDModel->addSPPD($data);
             echo json_encode(array('error' => false, 'data' => $id));
@@ -359,6 +366,30 @@ class Spt extends CI_Controller
             $pdf->SetLineWidth(0.4);
             $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
             $pdf->SetLineWidth(0.2);
+        } else
+        if ($data['jen_satker'] == 2) {
+            // echo json_encode($data);
+            $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);
+            $pdf->SetFont('Arial', '', 13);
+            $pdf->SetFont('Arial', 'B', 15);
+            $pdf->Cell(15, 6, '', 0, 0, 'C');
+            $pdf->Cell(185, 6, 'PEMERINTAH KABUPATEN BANGKA', 0, 1, 'C');
+            $pdf->Cell(15, 6, '', 0, 0, 'C');
+            $pdf->Cell(185, 6, 'DINAS KESEHATAN', 0, 1, 'C');
+            $pdf->Cell(15, 6, '', 0, 0, 'C');
+            $pdf->SetFont('Arial', 'B', 20);
+            $pdf->Cell(185, 7, $data['nama_satuan'], 0, 1, 'C');
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(15, 4, '', 0, 0, 'C');
+            $pdf->Cell(185, 4, 'Jalan : ' . $data['alamat_lengkap'], 0, 1, 'C');
+            $pdf->Cell(15, 4, '', 0, 0, 'C');
+            $pdf->Cell(185, 4, (!empty($data['kode_pos']) ? 'Kode Pos : ' . $data['kode_pos'] . ' ' : '') . (!empty($data['no_tlp']) ? 'Telp. ' . $data['no_tlp'] : ''), 0, 1, 'C');
+            $pdf->Cell(15, 4, '', 0, 0, 'C');
+            $pdf->Cell(185, 4, (!empty($data['email']) ? ' Email : ' . $data['email'] : '') . (!empty($data['website']) ? ' Website : ' . $data['website'] : ''), 0, 1, 'C');
+            $pdf->Line($pdf->GetX(), $pdf->GetY() + 3, $pdf->GetX() + 195, $pdf->GetY() + 3);
+            $pdf->SetLineWidth(0.4);
+            $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
+            $pdf->SetLineWidth(0.2);
         }
     }
 
@@ -431,7 +462,10 @@ class Spt extends CI_Controller
             $pdf->Cell($w1, 5, '', 0, 0, 'L');
             $pdf->Cell(30, 5, 'Yaitu Untuk', 0, 0, 'L');
             $pdf->Cell(3, 5, ':', 0, 0, 'L');
-            $pdf->MultiCell(83, 5, "Pembayaran perjalanan dinas dalam rangka " . $data['maksud'], 0, 'L');
+            if ($data['jenis'] == 3)
+                $pdf->MultiCell(83, 5, "Pembayaran lembur dalam rangka " . $data['maksud'], 0, 'L');
+            else if ($data['jenis'] == 2)
+                $pdf->MultiCell(83, 5, "Pembayaran perjalanan dinas dalam rangka " . $data['maksud'], 0, 'L');
             $pdf->Cell(10, 10, '', 0, 1, 'L');
             $pdf->SetFont('Arial', 'BI', 14);
             $pdf->Cell($w1, 5, '', 0, 0, 'L');
@@ -451,11 +485,11 @@ class Spt extends CI_Controller
             $pdf->SetY($fy);
             $pdf->Line(3, $fy, 212, $fy);
 
-            $pdf->Cell(50, 4, 'Mengetahui :', 1, 0, 'C');
-            $pdf->Cell(55, 4, 'Mengetahui :', 1, 0, 'C');
-            $pdf->Cell(50, 4, 'Tanggal,                            ' . substr($data['tgl_pengajuan'], 0, 4), 1, 0, 'C');
+            $pdf->Cell(50, 4, 'Mengetahui :', 0, 0, 'C');
+            $pdf->Cell(55, 4, 'Mengetahui :', 0, 0, 'C');
+            $pdf->Cell(50, 4, 'Tanggal,                            ' . substr($data['tgl_pengajuan'], 0, 4), 0, 0, 'C');
 
-            $pdf->Cell(50, 4, '', 1, 1, 'C');
+            $pdf->Cell(50, 4, '', 0, 1, 'C');
             $y5 = $pdf->GetY();
             $pdf->MultiCell(50, 4, "Kuasa Pengguna Anggaran\nDinas Kesehatan\nKabupaten Bangka", 0, 'C');
             $pdf->SetY($y5);
@@ -586,11 +620,16 @@ class Spt extends CI_Controller
         $pdf->SetFillColor(230, 230, 230);
         $pdf->Cell(190, 7, ' ', 0, 1, 'L', 0);
         $pdf->SetLineWidth(0.4);
-        $pdf->Cell(195, 5, 'LAPORAN PERJALAN DINAS', 0, 1, 'C', 0);
+        if ($data['jenis'] == 3)
+            $pdf->Cell(195, 5, 'LAPORAN LEMBUR', 0, 1, 'C', 0);
+        else if ($data['jenis'] == 2)
+            $pdf->Cell(195, 5, 'LAPORAN PERJALAN DINAS', 0, 1, 'C', 0);
+        else if ($data['jenis'] == 1)
+            $pdf->Cell(195, 5, 'LAPORAN TUGAS', 0, 1, 'C', 0);
         $pdf->Cell(10, 10, '', 0, 1, 'L');
         $pdf->SetFont('Arial', '', 10.5);
         $pdf->Cell(10, 5, 'I.', 0, 0, 'L');
-        $pdf->Cell(100, 5, 'Tujuan Perjalanan Dinas :', 0, 1, 'L');
+        $pdf->Cell(100, 5, 'Tujuan :', 0, 1, 'L');
         $pdf->Cell(10, 5, '', 0, 0, 'L');
         $pdf->MultiCell(185, 5, $data['maksud'], 0, 'L');
         $pdf->Cell(10, 5, '', 0, 1, 'L');
@@ -602,16 +641,19 @@ class Spt extends CI_Controller
         $pdf->Cell(70, 5, 'Surat Perintah Tugas Nomor ', 0, 0, 'L');
         $pdf->Cell(4, 5, ':', 0, 0, 'L');
         $pdf->Cell(90, 5, $data['no_spt'], 0, 1, 'L');
-        $pdf->Cell(10, 5, '', 0, 0, 'L');
-        $pdf->Cell(4, 5, 'b.', 0, 0, 'L');
-        $pdf->Cell(70, 5, 'Surat Perintah Perjalanan Dinas Nomor ', 0, 0, 'L');
-        $pdf->Cell(4, 5, ':', 0, 0, 'L');
-        $pdf->Cell(90, 5, $data['no_sppd'], 0, 1, 'L');
+
+        if ($data['jenis'] == 2) {
+            $pdf->Cell(10, 5, '', 0, 0, 'L');
+            $pdf->Cell(4, 5, 'b.', 0, 0, 'L');
+            $pdf->Cell(70, 5, 'Surat Perintah Perjalanan Dinas Nomor ', 0, 0, 'L');
+            $pdf->Cell(4, 5, ':', 0, 0, 'L');
+            $pdf->Cell(90, 5, $data['no_sppd'], 0, 1, 'L');
+        }
 
         $pdf->Cell(10, 5, '', 0, 1, 'L');
         $pdf->SetFont('Arial', '', 10.5);
         $pdf->Cell(10, 5, 'III.', 0, 0, 'L');
-        $pdf->Cell(100, 5, 'Hasil laporan perjalanan dinas :', 0, 1, 'L');
+        $pdf->Cell(100, 5, 'Hasil laporan :', 0, 1, 'L');
         $pdf->Cell(10, 2, '', 0, 1, 'L');
         $pdf->Cell(10, 5, '', 0, 0, 'L');
         $pdf->MultiCell(185, 5, $this->convertHTML($laporan['text_laporan']), 0, 'L');
@@ -1072,7 +1114,7 @@ class Spt extends CI_Controller
         $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(30, 5, 'Jabatan', 0, 0, 'L', 0);
         $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-        $pdf->Cell(160, 5, $data['jabatan_pegawai'], 0, 1, 'L', 0);
+        $pdf->MultiCell(145, 5, $data['jabatan_pegawai'], 1,  'L', 0);
         $i = 2;
         foreach ($data['pengikut'] as $pengikut) {
             $pdf->Cell(5, 2, '', 0, 1, 'L', 0);
@@ -1095,7 +1137,7 @@ class Spt extends CI_Controller
             $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
             $pdf->Cell(30, 5, 'Jabatan', 0, 0, 'L', 0);
             $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-            $pdf->Cell(160, 5, $pengikut['jabatan'], 0, 1, 'L', 0);
+            $pdf->MultiCell(145, 5, $pengikut['jabatan'],  1, 'L', 0);
             $i++;
         }
 
@@ -1104,25 +1146,46 @@ class Spt extends CI_Controller
         $i = 1;
         $d1 = '';
         $d2 = '';
-        foreach ($data['tujuan'] as $tujuan) {
-            if ($i == 1) {
-                $d1 = $tujuan['date_berangkat'];
-                $tujuan_text .= $tujuan['tempat_tujuan'];
-            } else if ($count_t == $i) {
-                $tujuan_text .= ' dan ' . $tujuan['tempat_tujuan'];
-            } else {
-                $tujuan_text .= ', ' . $tujuan['tempat_tujuan'];
+        if ($data['jenis'] == 3) {
+            $t = '';
+            foreach ($data['tujuan'] as $tujuan) {
+                if ($i == 1) {
+                    $tujuan_text .= $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' ' . 'pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
+                } else if ($count_t == $i) {
+                    $tujuan_text .= ' dan ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
+                } else {
+                    $tujuan_text .= ', ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
+                    // $tujuan_text .= ', di ' . $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
+                }
+                $t = $tujuan['tempat_tujuan'];
+                $i++;
             }
-            if (!empty($tujuan['date_kembali']))
-                $d2 = $tujuan['date_kembali'];
-            $i++;
+            // if ($d1 != $d2) {
+            //     $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1) . ' sampai ' . tanggal_indonesia($d2);
+            // } else {
+            //     $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1);
+            // }
+        } else {
+            foreach ($data['tujuan'] as $tujuan) {
+                if ($i == 1) {
+                    $d1 = $tujuan['date_berangkat'];
+                    $tujuan_text .= $tujuan['tempat_tujuan'];
+                } else if ($count_t == $i) {
+                    $tujuan_text .= ' dan ' . $tujuan['tempat_tujuan'];
+                } else {
+                    $tujuan_text .= ', ' . $tujuan['tempat_tujuan'];
+                }
+                if (!empty($tujuan['date_kembali']))
+                    $d2 = $tujuan['date_kembali'];
+                $i++;
+            }
+            if ($d1 != $d2) {
+                $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1) . ' sampai ' . tanggal_indonesia($d2);
+            } else {
+                $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1);
+            }
         }
 
-        if ($d1 != $d2) {
-            $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1) . ' sampai ' . tanggal_indonesia($d2);
-        } else {
-            $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1);
-        }
         $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
         $pdf->MultiCell(194, 5, 'Dalam Rangka ' . $data['maksud'] . ' di ' . $tujuan_text . '.', 0, 'J');
         $pdf->Cell(5, 4, '', 0, 1, 'L', 0);

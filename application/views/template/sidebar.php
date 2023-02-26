@@ -40,16 +40,16 @@
                     <!-- <li class="sidebar-list">
                         <a style="" class="sidebar-link sidebar-title link-nav" id="sidebar_aktifitas" href="<?= base_url() ?>aktifitas"><i data-feather="box"> </i><span>Aktifitas Harian</span></a>
                     </li> -->
-                    <li class="sidebar-list">
+                    <!-- <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title link-nav" id="sidebar_skp" href="<?= base_url() ?>skp"><i data-feather="feather"> </i><span>Sasaran Kerja</span></a>
-                    </li>
+                    </li> -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title link-nav" id="sidebar_permohonan" href="<?= base_url() ?>permohonan"><i data-feather="monitor"> </i><span>Permohonan Approval</span></a>
                     </li>
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>perjalanan-dinas"><i data-feather="box"> </i><span>Perjalanan Dinas Saya</span></a>
                     </li>
-                    </li>
+                    <!-- </li> -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>cuti"><i data-feather="box"> </i><span>Cuti</span></a>
                     </li>

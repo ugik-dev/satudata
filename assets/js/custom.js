@@ -174,7 +174,11 @@ function coloriseRealisasi(realisasi) {
     return `<span class="label label-info">${realisasi}%</span>`;
   return `<span class="label label-success">${realisasi}%</span>`;
 }
-
+function statusDasar(status) {
+  // var realisasi = parseFloat(realisasi);
+  if (status == "Y") return `<span class="label label-success">Aktif</span>`;
+  else return `<span class="label label-danger">Non Aktif</span>`;
+}
 function statusSPT(status, unnaprove) {
   if (unnaprove != null)
     return `<i class='fa fa-times text-danger'></i> <b class="text-danger"> Approv Ditolak </b>`;
@@ -186,6 +190,14 @@ function statusSPT(status, unnaprove) {
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kabid / Kasubag </b></i> `;
   else if (status == "5")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv PPTK</b></i> `;
+  else if (status == "50")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kasubag Puskesmas</b></i> `;
+  else if (status == "51")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv PPTK</b></i> `;
+  else if (status == "52")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv PPK</b></i> `;
+  else if (status == "59")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kepala Puskesmas</b></i> `;
   else if (status == "6")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv PPK</b></i> `;
   else if (status == "11")
@@ -214,12 +226,13 @@ function statusIzin(status, unnaprove = null) {
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Verifikasi Admin Kepegawaian</b></i> `;
   else if (status == "11")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kasubag Kepegawaian </b></i> `;
-  else if (status == "12")
+  else if (status == "15")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kepala Dinas </b></i> `;
   else if (status == "99")
     return `<i class='fa fa-check text-success'></i> <b class="text-success"> Approv Diterima </b>`;
   else if (status == "98")
     return `<i class='fa fa-times text-danger'></i> <b class="text-danger"> Approv Ditolak </b>`;
+  else return "-";
 }
 
 function statusSKP(status) {

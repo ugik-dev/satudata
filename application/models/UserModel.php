@@ -6,7 +6,7 @@ class UserModel extends CI_Model
 
     public function getAllUser($filter = [])
     {
-        $this->db->select("u.*,r.*, nama_bag, nama_seksi, nama_satuan, approv_lv_1, approv_lv_2, approv_lv_3, approv_lv_4, ppk, jabatan, pangkat_gol");
+        $this->db->select("u.*,r.*, nama_bag, nama_seksi, nama_satuan,s.jen_satker, jabatan, pangkat_gol");
         $this->db->from('users as u');
         $this->db->join('roles r', 'u.id_role = r.id_role');
         $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
@@ -162,14 +162,16 @@ class UserModel extends CI_Model
     {
         if (!empty($data['password'])) $this->db->set('password', md5($data['password']));
         $this->db->set(DataStructure::slice($data, [
-            'username', 'nama', 'email', 'nip', 'alamat', 'ppk', 'penomoran',
+            'username', 'nama', 'email', 'nip', 'alamat',
             'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_seksi', 'pangkat_gol', 'jabatan', 'signature', 'photo',
             'pend_jenjang',  'pend_jurusan', 'j_k', 'tempat_lahir', 'tanggal_lahir', 'tmt_kerja', 'jenis_pegawai'
-        ]));
+        ], TRUE));
         $this->db->where('id', $data['id']);
         $this->db->update('users');
 
-        ExceptionHandler::handleDBError($this->db->error(), "Ubah User", "User");
+        // var_dump($this->db->error());
+        // die();
+        ExceptionHandler::handleDBError($this->db->error(), "Edit Pegawai", "Pegawai");
 
         return $data['id'];
     }
@@ -240,6 +242,7 @@ class UserModel extends CI_Model
     {
         $this->db->set('nama_role', $data['nama_role']);
         $this->db->set('level', $data['level']);
+        $this->db->set('jen_satker', $data['jen_satker']);
         $this->db->where('id_role', $data['id_role']);
         $this->db->update('roles');
 
@@ -261,7 +264,8 @@ class UserModel extends CI_Model
     public function add_hak_akses($data)
     {
         $this->db->set('nama_role', $data['nama_role']);
-        // $this->db->where('id_role', $data['id_role']);
+        $this->db->set('level', $data['level']);
+        $this->db->set('jen_satker', $data['jen_satker']);
         $this->db->insert('roles');
         $id = $this->db->insert_id();
 

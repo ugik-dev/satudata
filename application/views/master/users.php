@@ -133,19 +133,19 @@
                         <h6>Hak Aksess</h6>
                         <div class="col-lg-4">
                             <div class="col-form-label">Instansi</div>
-                            <select class="select2 col-sm-12" id="id_satuan" name="id_satuan">
+                            <select class="select2 col-sm-12" id="id_satuan" name="id_satuan" <?= $this->session->userdata()['id_role'] != 1 ? 'disabled' : '' ?>>
                             </select>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4" <?= $this->session->userdata()['id_satuan'] != 1 ? 'hidden' : '' ?>>
                             <div class="col-form-label"> Bagian
                             </div>
                             <select class="select2 col-sm-12" id="id_bagian" name="id_bagian"></select>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4" <?= $this->session->userdata()['id_satuan'] != 1 ? 'hidden' : '' ?>>
                             <div class="col-form-label">Seksi</div>
                             <select class="select2 col-sm-12" id="id_seksi" name="id_seksi"></select>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4" <?= $this->session->userdata()['id_satuan'] != 1 ? 'hidden' : '' ?>>
                             <div class="col-form-label">PPK</div>
                             <select class="col-sm-12 form-control" id="ppk" name="ppk">
                                 <option value="">--</option>
@@ -153,7 +153,7 @@
                                 <option value="2">Tidak</option>
                             </select>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4" <?= $this->session->userdata()['id_satuan'] != 1 ? 'hidden' : '' ?>>
                             <div class="col-form-label">PENOMORAN</div>
                             <select class="col-sm-12 form-control" id="penomoran" name="penomoran">
                                 <option value="">--</option>
@@ -497,6 +497,23 @@
             UserModal.saveEditBtn.hide();
             UserModal.password.prop('placeholder', 'Password');
             UserModal.password.prop('required', true);
+
+            <?php
+            if ($this->session->userdata()['id_role'] != 1) {
+            } ?>
+
+            var $defOption = $("<option selected='selected'></option>").val('<?= $this->session->userdata()['id_satuan'] ?>').text('<?= $this->session->userdata()['nama_satuan'] ?>');
+            UserModal.id_satuan.append($defOption).trigger('change');
+
+            // var $newOption2 = $("<option selected='selected'></option>").val(currentData['id_seksi']).text(currentData['nama_seksi']);
+            // UserModal.id_seksi.append($newOption2).trigger('change');
+
+            // var $newOption3 = $("<option selected='selected'></option>").val(currentData['id_bagian']).text(currentData['nama_bag']);
+            // UserModal.id_bagian.append($newOption3).trigger('change');
+
+            var $newOption4 = $("<option selected='selected'></option>").val('').text("--");
+            UserModal.id_role.append($newOption4).trigger('change');
+
         });
 
         FDataTable.on('click', '.edit', function() {
@@ -526,7 +543,9 @@
             UserModal.nama.val(currentData['nama']);
             UserModal.j_k.val(currentData['j_k']);
             UserModal.id_satuan.val(1);
-
+            <?php
+            if ($this->session->userdata()['id_role'] != 1) {
+            } ?>
             var $newOption = $("<option selected='selected'></option>").val(currentData['id_satuan']).text(currentData['nama_satuan']);
             UserModal.id_satuan.append($newOption).trigger('change');
 

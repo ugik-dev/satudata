@@ -97,7 +97,6 @@ class Absensi extends CI_Controller
     public function record()
     {
         try {
-            // $res_data['form_url'] = 'absen/record';
             $res_data['location'] = $this->AbsenModel->getLocation();
             $data = array(
                 'page' => 'my/absen_record',

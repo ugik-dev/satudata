@@ -41,7 +41,12 @@ class SuratIzin extends CI_Controller
     {
         try {
             $res_data['form_url'] = 'surat-izin/add_process';
-            $res_data['jenis_izin'] = $this->GeneralModel->getJenisIzin();
+            if ($this->session->userdata()['jenis_pegawai'] == 1) {
+                $filter['jen_izin'] = 1;
+            } else {
+                $filter['jen_izin'] = 2;
+            }
+            $res_data['jenis_izin'] = $this->GeneralModel->getJenisIzin($filter);
             $data = array(
                 'page' => 'my/surat_izin_form',
                 'title' => 'Form Cuti',
@@ -111,12 +116,16 @@ class SuratIzin extends CI_Controller
             // $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
             // $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
             $cur_user = $this->session->userdata();
-            // echo json_encode($data);
-            // die();
+            $logs['id_si'] = $id;
+            $logs['id_user'] = $cur_user['id'];
+
             if ($data['status_izin'] == 0) {
-                if ($action == 'approve' && $data['id_pengganti'] == $cur_user['id']) {
+                // echo $cur_user['id'] . '<br>';
+                // echo  $data['id_pengganti'];
+                if ($action == 'approv' && $data['id_pengganti'] == $cur_user['id']) {
                     $logs['deskripsi'] =  'Menyetujui pelimpahan wewenang.';
                     $logs['label'] = 'success';
+                    $this->SuratIzinModel->addLogs($logs);
                     $sign =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
                     $pegawai =  $this->GeneralModel->getAllUser(['id' => $data['id_pegawai']])[$data['id_pegawai']];
 
@@ -137,7 +146,9 @@ class SuratIzin extends CI_Controller
                     } else if ($pegawai['level'] == 1) {
                         $data['status_izin'] = 10;
                     }
-
+                    if ($cur_user['jen_satker'] == 2) {
+                        $data['status_izin'] = 50;
+                    }
                     // echo json_encode($data);
                     // die();
                     $this->SuratIzinModel->approve_pelimpahan($data, $sign);
@@ -146,43 +157,78 @@ class SuratIzin extends CI_Controller
                     return;
                 }
             }
-
+            // echo json_encode($data);
+            // die();
             if ($cur_user['level'] == 5 && $data['status_izin'] == 1) {
                 // approve kasi
             }
 
 
             if (($cur_user['level'] == 3 || $cur_user['level'] == 4) && $data['status_izin'] == 2 && ($cur_user['id_bagian'] = $data['id_bagian'])) {
-                // approve kabid kasubag
-                $this->SuratIzinModel->approvBagian();
-            }
-
-            if ($action == 'approv') {
                 $logs['deskripsi'] =  'Menyetujui';
                 $logs['label'] = 'success';
-                $this->SPPDModel->approv($data);
-                $this->SPPDModel->addLogs($logs);
-            }
-            if ($action == 'unapprov') {
-                $logs['deskripsi'] =  'Menolak';
-                $logs['label'] = 'danger';
-                $this->SPPDModel->unapprov($data);
-                $this->SPPDModel->addLogs($logs);
-            }
-            if ($action == 'undo') {
-                $logs['deskripsi'] = 'Membatalkan Aksi';
-                $logs['label'] = 'warning';
-                $this->SPPDModel->undo($data);
-                $this->SPPDModel->addLogs($logs);
+                $data['status_izin'] = 3;
+                if ($data['level_pegawai'] == 6) {
+                    $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
+                    $this->SuratIzinModel->approv($data, $sign);
+                } else
+                    $this->SuratIzinModel->approv($data);
+                $this->SuratIzinModel->addLogs($logs);
+            } else if ($cur_user['level'] == 2 && $data['status_izin'] == 3) {
+                $logs['deskripsi'] =  'Menyetujui';
+                $logs['label'] = 'success';
+                if ($data['jen_izin'] == 1)
+                    $data['status_izin'] = 10;
+                else
+                    $data['status_izin'] = 15;
+
+                if ($data['level_pegawai'] != 6) {
+                    $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
+                    $this->SuratIzinModel->approv($data, $sign);
+                } else
+                    $this->SuratIzinModel->approv($data);
+                $this->SuratIzinModel->addLogs($logs);
+            } else if ($cur_user['level'] == 1 && $data['status_izin'] == 15) {
+                $logs['deskripsi'] =  'Menyetujui';
+                $logs['label'] = 'success';
+                $data['status_izin'] = 99;
+                $sign['kadin'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
+                $this->SuratIzinModel->approv($data, $sign);
+                $this->SuratIzinModel->addLogs($logs);
+            } else if ($cur_user['level'] == 3 && $cur_user['id_bagian'] == 2 && $data['status_izin'] == 11) {
+                $logs['deskripsi'] =  'Menyetujui';
+                $logs['label'] = 'success';
+                $data['status_izin'] = 15;
+                $this->SuratIzinModel->approv($data);
+                $this->SuratIzinModel->addLogs($logs);
             }
 
-            $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
     }
-
+    public function action_verif()
+    {
+        try {
+            $data_post = $this->input->post();
+            $id = $data_post['id_surat_izin'];
+            $data = $this->SuratIzinModel->getAll(array('id_surat_izin' => $id))[$id];
+            // $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
+            // $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
+            $cur_user = $this->session->userdata();
+            // $logs['id_si'] = $id;
+            // $logs['id_user'] = $cur_user['id'];
+            if ($data['verif_cuti'] == $cur_user['id'] && $data['status_izin'] == 10) {
+                // echo "as";
+                // die();
+                $this->SuratIzinModel->approv_verif($data_post);
+            }
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
     function tgl_indo($tanggal)
     {
         $bulan = array(
@@ -230,236 +276,6 @@ class SuratIzin extends CI_Controller
         return substr($s, 0, -1);
     }
 
-    public function print($id, $barcode = false)
-    {
-        try {
-            $res_data['form_url'] = 'skp/edit_process';
-            // $filter['my_skp'] = true;
-            $filter['id_skp'] = $id;
-            $data = $this->SKPModel->getDetail($filter)[$id];
-            if ($data['status'] == 0) {
-                $users = $this->GeneralModel->getAllUser(array('id' => $data['id_user']))[$data['id_user']];
-                $penilai = $this->GeneralModel->getAllUser(array('id' => $data['id_penilai']))[$data['id_penilai']];
-            }
-            // echo json_encode($data);
-            // die();
-            // require('assets/fpdf/fpdf.php');
-            // $pdf = new FPDF('p', 'mm', 'Legal');
-            require('assets/fpdf/mc_table.php');
-
-            $pdf = new PDF_MC_Table();
-
-            $pdf->SetMargins(10, 15, 10, 10, 'C');
-            $pdf->AddPage();
-            $pdf->SetFont('Arial', 'B', 13);
-            // 
-            // $this->head_pembayaran($pdf, $dataContent);
-
-            // $pdf->SetTextColor(107, 104, 104);
-            $pdf->Cell(190, 6, 'RENCANA', 0, 1, 'C');
-            $pdf->Cell(190, 6, 'SASARAN KERJA PEGAWAI', 0, 1, 'C');
-            $pdf->Cell(190, 5, '', 0, 1, 'C');
-            $pdf->SetFont('Arial', '', 9.5);
-            $pdf->Cell(95, 5, 'PEMERINTAH DAERAH KABUPATEN BANGKA', 0, 0, 'L');
-            $pdf->Cell(95, 5, 'Periode     ', 0, 1, 'R');
-            $pdf->SetFont('Arial', 'B');
-            $pdf->Cell(95, 5, 'DINAS KESEHATAN', 0, 0, 'L');
-            $pdf->SetFont('Arial', '');
-
-            $pdf->Cell(95, 5, $this->tgl_indo($data['periode_start']) . ' s.d ' . $this->tgl_indo($data['periode_end']), 0, 1, 'R');
-            $pdf->SetFont('Arial', 'B');
-            $pdf->SetFillColor(230, 230, 230);
-            $pdf->Cell(100, 5, 'PEGAWAI YANG DINLAI', 1, 0, 'C', 1);
-            $pdf->Cell(93, 5, 'PEJABAT PENILAI     ', 1, 1, 'C', 1);
-            $row_1 = 30;
-            $row_2 = 20;
-            $row_3 = 20;
-            $row_4 = 35;
-            $row_a1 = 70;
-            $row_a2 =  46;
-            $row_a3 = 35;
-            $row_a4 =  42;
-            if ($data['status'] == 0) {
-                $users = $this->GeneralModel->getAllUser(array('id' => $data['id_user']))[$data['id_user']];
-                $penilai = $this->GeneralModel->getAllUser(array('id' => $data['id_penilai']))[$data['id_penilai']];
-                $pdf->row_skp_head('Nama', $users['nama'], 'Nama', $penilai['nama']);
-                $pdf->row_skp_head('NIP', $users['nip'], 'NIP', $penilai['nip']);
-                $pdf->row_skp_head('Pangkat/Gol', $users['pangkat_gol'], 'Pangkat/Gol', $penilai['pangkat_gol']);
-                $pdf->row_skp_head('Jabatan', $users['jabatan'], 'Jabatan', $penilai['jabatan']);
-                $pdf->row_skp_head('Unit Kerja', 'Dinas Kesehatan', 'Unit Kerja', 'Dinas Kesehatan');
-            }
-            if ($data['status'] == 2) {
-                $data_approv = $this->GeneralModel->getSKPApprov(array('id_skp' => $data['id_skp']))[0];
-                // echo json_encode($data_approv);
-                // die();
-                $pdf->row_skp_head('Nama', $data_approv['pengaju_nama'], 'Nama', $data_approv['penilai_nama']);
-                $pdf->row_skp_head('NIP', $data_approv['pengaju_nip'], 'NIP', $data_approv['penilai_nip']);
-                $pdf->row_skp_head('Pangkat/Gol', $data_approv['pengaju_pangkat_gol'], 'Pangkat/Gol', $data_approv['penilai_pangkat_gol']);
-                $pdf->row_skp_head('Jabatan', $data_approv['pengaju_jabatan'], 'Jabatan', $data_approv['penilai_jabatan']);
-                $pdf->row_skp_head('Unit Kerja', $data_approv['pengaju_satuan'], 'Unit Kerja', $data_approv['penilai_satuan']);
-            }
-
-            $pdf->Cell(10, 19, 'NO', 1, 0, 'C', 1);
-            $current_y = $pdf->GetY();
-            $current_x = $pdf->GetX();
-            $pdf->Cell(50, 19, '', 1, 0, 'C', 1);
-            $pdf->Cell(40, 19, '', 1, 0, 'C', 1);
-            $pdf->Cell(16, 19, 'ASPEK', 1, 0, 'C', 1);
-
-            $pdf->Cell(35, 19, "IKI", 1, 0, 'C', 1);
-            $pdf->Cell(21, 7, 'TARGET', 1, 0, 'C', 1);
-            $pdf->Cell(21, 19, '', 1, 1, 'C', 1);
-            $pdf->SetY($current_y + 7);
-            $pdf->SetX($current_x + 60 + 30 + 35 + 16);
-            $pdf->SetFont('Arial', 'B', 8.5);
-
-            $pdf->Cell(10, 12, 'Min', 1, 0, 'C', 1);
-            $pdf->MultiCell(11, 4, 'Max/ Single Rate', 1, 'C', 1);
-            $pdf->SetFont('Arial', 'B', 9.5);
-
-            $pdf->SetY($current_y + 6);
-            $pdf->SetX($current_x);
-            $pdf->MultiCell(50, 4, "RENCANA KINERJA ATASAN\n YANG DIINTERVENSI", 0, 'C', 0);
-            $pdf->SetY($current_y + 6);
-            $pdf->SetX($current_x + 50);
-            $pdf->MultiCell(40, 4, "RENCANA\nKINERJA", 0, 'C', 0);
-            $pdf->SetY($current_y + 6);
-            $pdf->SetX($current_x + 157);
-            $pdf->MultiCell(31, 4, "KETER\nANGAN", 0, 'C', 0);
-            $pdf->SetY($current_y + 19);
-            $pdf->SetX($current_x - 10);
-            $pdf->Cell(10, 5, "(1)", 1, 0, 'C', 1);
-            $pdf->Cell(50, 5, "(2)", 1, 0, 'C', 1);
-            $pdf->Cell(40, 5, "(3)", 1, 0, 'C', 1);
-            $pdf->Cell(16, 5, "(4)", 1, 0, 'C', 1);
-            $pdf->Cell(35, 5, "(5)", 1, 0, 'C', 1);
-            $pdf->Cell(21, 5, "(6)", 1, 0, 'C', 1);
-            $pdf->Cell(21, 5, "(7)", 1, 1, 'C', 1);
-            $pdf->Cell(193, 5, "  A. KINERJA UTAMA", 1, 1, 'L', 1);
-
-            $pdf->SetFont('Arial', '', 9.5);
-
-            $i = 1;
-            foreach ($data['child'] as $a) {
-                if ($a['jenis_keg'] == 'KU') {
-                    $pdf->row($i, $a);
-                    $i++;
-                }
-            }
-
-            $pdf->SetFont('Arial', 'B', 9.5);
-            $pdf->SetFillColor(71, 71, 71);
-            $pdf->Cell(193, 5, "", 1, 1, 'L', 1);
-
-            $pdf->SetFillColor(230, 230, 230);
-            $pdf->Cell(193, 5, "  B. KINERJA TAMBAHAN", 1, 1, 'L', 1);
-            $pdf->SetFont('Arial', '', 9.5);
-
-            $i = 1;
-            foreach ($data['child'] as $a) {
-                if ($a['jenis_keg'] == 'KT') {
-                    $pdf->row($i, $a);
-                    $i++;
-                }
-            }
-            // die();
-
-            if ($data['status'] == 0) {
-                $pdf->CheckPageBreak(60);
-                $pdf->Ln(7);
-                $pdf->Cell(96.5, 5, "Sungailiat, " . $this->tgl_indo($data['tgl_pengajuan']), 0, 0, 'C',);
-                $pdf->Cell(96.5, 5, "", 0, 1, 'C',);
-                $pdf->Cell(96.5, 5, "Pegawai Yang Dinilai", 0, 0, 'C',);
-                $pdf->Cell(96.5, 5, "Pejabat Penilai", 0, 1, 'C',);
-                $x = $pdf->getX();
-                $y = $pdf->getY();
-                $pdf->Ln(30);
-                $pdf->Cell(96.5, 5, $users['nama'], 0, 0, 'C',);
-                $pdf->Cell(96.5, 5, $penilai['nama'], 0, 1, 'C',);
-                $pdf->Cell(96.5, 5, 'NIP. ' . $users['nip'], 0, 0, 'C',);
-                $pdf->Cell(96.5, 5, 'NIP. ' . $penilai['nip'], 0, 1, 'C',);
-            } else if ($data['status'] == 2) {
-                if ($barcode) {
-                    $pdf->CheckPageBreak(60);
-                    $pdf->Ln(7);
-                    $pdf->Cell(96.5, 5, "", 0, 0, 'C',);
-                    $pdf->Cell(96.5, 5, "Sungailiat, " . $this->tgl_indo($data['tgl_pengajuan']), 0, 1, 'C',);
-                    $pdf->Cell(96.5, 5, "", 0, 0, 'C',);
-                    $pdf->Cell(96.5, 5, "Pejabat Penilai", 0, 1, 'C',);
-                    $x = $pdf->getX();
-                    $y = $pdf->getY();
-                    $pdf->Ln(30);
-
-                    $pdf->Cell(96.5, 5, '', 0, 0, 'C',);
-                    $pdf->Cell(96.5, 5, $data_approv['penilai_nama'], 0, 1, 'C',);
-                    $pdf->Cell(96.5, 5, '', 0, 0, 'C',);
-                    $pdf->Cell(96.5, 5, 'NIP. ' . $data_approv['penilai_nip'], 0, 1, 'C',);
-                    $pdf->SetXY($x, $y);
-                    // $sign1 = base_url('uploads/signature/' . $data_approv['pengaju_signature']);
-                    $sign2 = base_url('uploads/qrcode/10' . $data_approv['key'] . '.png');
-                    // $pdf->Image($sign2, 5, $pdf->GetY(), 33.78);
-                    // $pdf->Image($sign1, $x + 15, $y - 5, 55);
-                    $pdf->Image($sign2, $x + 130, $y, 30);
-                } else {
-                    $pdf->CheckPageBreak(60);
-                    $pdf->Ln(7);
-                    $pdf->Cell(96.5, 5, "Sungailiat, " . $this->tgl_indo($data['tgl_pengajuan']), 0, 0, 'C',);
-                    $pdf->Cell(96.5, 5, "", 0, 1, 'C',);
-                    $pdf->Cell(96.5, 5, "Pegawai Yang Dinilai", 0, 0, 'C',);
-                    $pdf->Cell(96.5, 5, "Pejabat Penilai", 0, 1, 'C',);
-                    $x = $pdf->getX();
-                    $y = $pdf->getY();
-                    $pdf->Ln(30);
-                    $pdf->Cell(96.5, 5, $data_approv['pengaju_nama'], 0, 0, 'C',);
-                    $pdf->Cell(96.5, 5, $data_approv['penilai_nama'], 0, 1, 'C',);
-                    $pdf->Cell(96.5, 5, 'NIP. ' . $data_approv['pengaju_nip'], 0, 0, 'C',);
-                    $pdf->Cell(96.5, 5, 'NIP. ' . $data_approv['penilai_nip'], 0, 1, 'C',);
-                    $pdf->SetXY($x, $y);
-                    if (!empty($data_approv['pengaju_signature'])) {
-                        $sign1 = base_url('uploads/signature/' . $data_approv['pengaju_signature']);
-                        $pdf->Image($sign1, $x + 15, $y - 5, 55);
-                    }
-                    if (!empty($data_approv['penilai_signature'])) {
-                        $sign2 = base_url('uploads/signature/' . $data_approv['penilai_signature']);
-                        $pdf->Image($sign2, $x + 110, $y - 5, 55);
-                    }
-                    // $pdf->Image($sign2, 5, $pdf->GetY(), 33.78);
-                }
-                // $pdf->Cell(96.5, 40, $pdf->Image($sign2, $x + 15, $y - 5, 60), 1, 0, 'L', false);
-                // $pdf->Cell(96.5, 5, 'NIP. ' . $data_approv['penilai_nip'], 1, 1, 'C',);
-            }
-
-            $filename = 'SKP_';
-            // $dataContent['id'] . '.pdf';
-
-            $pdf->Output('', $filename, false);
-        } catch (Exception $e) {
-            ExceptionHandler::handle($e);
-        }
-    }
-
-    public function approv($id)
-    {
-        try {
-            $res_data['form_url'] = 'skp/edit_process';
-            // $filter['my_skp'] = true;
-            $filter['id_skp'] = $id;
-            $data = $this->SKPModel->getDetail($filter)[$id];
-            $users = $this->GeneralModel->getAllUser(array('id' => $data['id_user']));
-            $penilai = $this->GeneralModel->getAllUser(array('id' => $data['id_penilai']));
-            if ($data['id_penilai'] != $this->session->userdata()['id'])
-                throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
-            else {
-                $this->SKPModel->approv($data);
-            }
-            echo json_encode($data);
-            // echo $this->session->userdata()['id'];
-            // $penilai = $this->GeneralModel->$this->load->view('page', $data);
-        } catch (Exception $e) {
-            ExceptionHandler::handle($e);
-        }
-    }
-
 
 
     public function add_process()
@@ -468,30 +284,6 @@ class SuratIzin extends CI_Controller
             // $this->SecurityModel->multiRole('SPPD', 'Entri SPPD');
             $data = $this->input->post();
             $ses = $this->session->userdata();
-            // $this->load->model('UserModel');
-            // $atasan_pegawai = $this->GeneralModel->deteksi_atasan($ses);
-            // $tmp = [];
-            // foreach ($atasan_pegawai as $ap1) {
-            //     $tmp[] = $ap1;
-            // }
-            // if (!empty($data['id_pengganti'])) {
-
-            //     $pengganti = $this->UserModel->getAllUser(['id_user' => $data['id_pengganti']])[$data['id_pengganti']];
-            //     $atasan_pengganti = $this->GeneralModel->deteksi_atasan($pengganti);
-
-            //     foreach ($atasan_pengganti as $ap2) {
-            //         if (!in_array($ap2, $tmp)) {
-            //             $tmp[] = $ap2;
-            //         }
-            //     }
-            // }
-
-            // $i = 1;
-            // foreach ($tmp as $a) {
-            //     $data['atasan_' . $i] = $a;
-            //     $i++;
-            // }
-
             $data['id_pegawai'] = $ses['id'];
             if (empty($data['id_pengganti'])) {
                 // jika tidak ada pengganti maka
@@ -534,6 +326,8 @@ class SuratIzin extends CI_Controller
             }
 
             $id =  $this->SuratIzinModel->add($data);
+
+            $data = $this->SuratIzinModel->getAll(['id_surat_izin' => $id]);
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -553,5 +347,256 @@ class SuratIzin extends CI_Controller
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
+    }
+
+    public function print($id, $tipe)
+    {
+        $filter = $this->input->get();
+        $data = $this->SuratIzinModel->getAll(['id_surat_izin' => $id])[$id];
+
+        if ($tipe == 1)
+            $this->print_spw($data);
+        // if ($tipe == 2)
+        //     $this->print_sppd($data);
+        // if ($tipe == 3)
+        //     $this->print_lpd($data);
+        // if ($tipe == 4)
+        //     $this->print_pencairan($data);
+    }
+    function kop($pdf, $data)
+    {
+        if ($data['jen_satker'] == 1) {
+            // echo json_encode($data);
+            $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);
+            $pdf->SetFont('Arial', '', 13);
+            $pdf->SetFont('Arial', 'B', 15);
+            $pdf->Cell(15, 6, '', 0, 0, 'C');
+            $pdf->Cell(185, 7, 'PEMERINTAH KABUPATEN BANGKA', 0, 1, 'C');
+            $pdf->Cell(15, 6, '', 0, 0, 'C');
+            $pdf->SetFont('Arial', 'B', 20);
+            $pdf->Cell(185, 7, 'DINAS KESEHATAN', 0, 1, 'C');
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(15, 4, '', 0, 0, 'C');
+            $pdf->Cell(185, 4, 'JL. AHMAD YANI. JALUR DUA (II) SUNGAILIAT', 0, 1, 'C');
+            $pdf->Cell(15, 4, '', 0, 0, 'C');
+            $pdf->Cell(185, 4, 'Kode Pos 33215 Telp (0717) 91952 Fax (0717) 91952', 0, 1, 'C');
+            $pdf->Cell(15, 4, '', 0, 0, 'C');
+            $pdf->Cell(185, 4, 'Email : dinkesbangka@gmail.com. Website : www.dinkes.bangka.go.id', 0, 1, 'C');
+            $pdf->Line($pdf->GetX(), $pdf->GetY() + 3, $pdf->GetX() + 195, $pdf->GetY() + 3);
+            $pdf->SetLineWidth(0.4);
+            $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
+            $pdf->SetLineWidth(0.2);
+        } else
+        if ($data['jen_satker'] == 2) {
+            // echo json_encode($data);
+            $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);
+            $pdf->SetFont('Arial', '', 13);
+            $pdf->SetFont('Arial', 'B', 15);
+            $pdf->Cell(15, 6, '', 0, 0, 'C');
+            $pdf->Cell(185, 6, 'PEMERINTAH KABUPATEN BANGKA', 0, 1, 'C');
+            $pdf->Cell(15, 6, '', 0, 0, 'C');
+            $pdf->Cell(185, 6, 'DINAS KESEHATAN', 0, 1, 'C');
+            $pdf->Cell(15, 6, '', 0, 0, 'C');
+            $pdf->SetFont('Arial', 'B', 20);
+            $pdf->Cell(185, 7, $data['nama_satuan'], 0, 1, 'C');
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->Cell(15, 4, '', 0, 0, 'C');
+            $pdf->Cell(185, 4, 'Jalan : ' . $data['alamat_lengkap'], 0, 1, 'C');
+            $pdf->Cell(15, 4, '', 0, 0, 'C');
+            $pdf->Cell(185, 4, (!empty($data['kode_pos']) ? 'Kode Pos : ' . $data['kode_pos'] . ' ' : '') . (!empty($data['no_tlp']) ? 'Telp. ' . $data['no_tlp'] : ''), 0, 1, 'C');
+            $pdf->Cell(15, 4, '', 0, 0, 'C');
+            $pdf->Cell(185, 4, (!empty($data['email']) ? ' Email : ' . $data['email'] : '') . (!empty($data['website']) ? ' Website : ' . $data['website'] : ''), 0, 1, 'C');
+            $pdf->Line($pdf->GetX(), $pdf->GetY() + 3, $pdf->GetX() + 195, $pdf->GetY() + 3);
+            $pdf->SetLineWidth(0.4);
+            $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
+            $pdf->SetLineWidth(0.2);
+        }
+    }
+
+    function print_spw($data)
+    {
+        require('assets/fpdf/mc_table.php');
+
+        $pdf = new PDF_MC_Table('P', 'mm', array(215.9, 355.6));
+
+        $pdf->SetTitle('SPT ' . $data['id_surat_izin']);
+        $pdf->SetMargins(10, 5, 15, 10, 'C');
+        $pdf->AddPage();
+        $data_satuan =  $this->GeneralModel->getSatuan(['id_satuan' => $data['id_satuan']])[0];
+
+        $this->kop($pdf, $data_satuan);
+
+        $pdf->SetFont('Arial', '', 9.5);
+
+        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->SetFillColor(230, 230, 230);
+        $pdf->Cell(190, 7, ' ', 0, 1, 'L', 0);
+        $pdf->SetLineWidth(0.4);
+        $pdf->Line(70, $pdf->GetY() + 4.5, 144, $pdf->GetY() + 4.5);
+        $pdf->SetLineWidth(0.2);
+        $pdf->Cell(195, 5, 'SURAT PELIMPAHAN WEWENANG', 0, 1, 'C', 0);
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->Cell(195, 5, 'Nomor : ' . $data['no_surat_izin'], 0, 1, 'C', 0);
+
+
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->Cell(25, 5, ' ', 0, 1, 'L', 0);
+        $pdf->Cell(25, 5, 'Yang bertanda tangan dibawah ini:', 0,  1, 'L', 0);
+        // $pdf->Cell(5, 5, '1. ', 0, 0, 'L', 0);
+        // $pdf->MultiCell(165, 5, !empty($data['nama_dasar']) ? $data['nama_dasar'] : $data['dasar'], 0, 'J');
+        // $pdf->Cell(25, 5, ' ', 0, 1, 'L', 0);
+        // $pdf->SetFont('Arial', 'B', 11);
+        // $pdf->Cell(195, 5, 'MEMERINTAHKAN :', 0, 1, 'C', 0);
+        // $pdf->SetFont('Arial', '', 11);
+
+        $pdf->Cell(5, 5, '', 0, 1, 'L', 0);
+        $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(10, 5, '1.', 0, 0, 'L', 0);
+        $pdf->Cell(30, 5, 'Nama', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        $pdf->Cell(160, 5, $data['nama_pegawai'], 0, 1, 'L', 0);
+        $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(30, 5, 'NIP', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        $pdf->Cell(160, 5, $data['nip_pegawai'], 0, 1, 'L', 0);
+        // $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        // $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        // $pdf->Cell(30, 5, 'Pangkat/Gol', 0, 0, 'L', 0);
+        // $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        // $pdf->Cell(160, 5, $data['pangkat_gol_pegawai'], 0, 1, 'L', 0);
+        // $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        // $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        // $pdf->Cell(30, 5, 'Jabatan', 0, 0, 'L', 0);
+        // $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        // $pdf->MultiCell(145, 5, $data['jabatan_pegawai'], 1,  'L', 0);
+        // $i = 2;
+        // foreach ($data['pengikut'] as $pengikut) {
+        //     $pdf->Cell(5, 2, '', 0, 1, 'L', 0);
+        //     $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        //     $pdf->Cell(10, 5, $i . '.', 0, 0, 'L', 0);
+        //     $pdf->Cell(30, 5, 'Nama', 0, 0, 'L', 0);
+        //     $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        //     $pdf->Cell(160, 5, $pengikut['nama'], 0, 1, 'L', 0);
+        //     $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        //     $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        //     $pdf->Cell(30, 5, 'NIP', 0, 0, 'L', 0);
+        //     $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        //     $pdf->Cell(160, 5, $pengikut['nip'], 0, 1, 'L', 0);
+        //     $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        //     $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        //     $pdf->Cell(30, 5, 'Pangkat/Gol', 0, 0, 'L', 0);
+        //     $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        //     $pdf->Cell(160, 5, $pengikut['pangkat_gol'], 0, 1, 'L', 0);
+        //     $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        //     $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        //     $pdf->Cell(30, 5, 'Jabatan', 0, 0, 'L', 0);
+        //     $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        //     $pdf->MultiCell(145, 5, $pengikut['jabatan'],  1, 'L', 0);
+        //     $i++;
+        // }
+
+        // $tujuan_text = '';
+        // $count_t = count($data['tujuan']);
+        // $i = 1;
+        // $d1 = '';
+        // $d2 = '';
+        // if ($data['jenis'] == 3) {
+        //     $t = '';
+        //     foreach ($data['tujuan'] as $tujuan) {
+        //         if ($i == 1) {
+        //             $tujuan_text .= $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' ' . 'pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
+        //         } else if ($count_t == $i) {
+        //             $tujuan_text .= ' dan ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
+        //         } else {
+        //             $tujuan_text .= ', ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
+        //             // $tujuan_text .= ', di ' . $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
+        //         }
+        //         $t = $tujuan['tempat_tujuan'];
+        //         $i++;
+        //     }
+        //     // if ($d1 != $d2) {
+        //     //     $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1) . ' sampai ' . tanggal_indonesia($d2);
+        //     // } else {
+        //     //     $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1);
+        //     // }
+        // } else {
+        //     foreach ($data['tujuan'] as $tujuan) {
+        //         if ($i == 1) {
+        //             $d1 = $tujuan['date_berangkat'];
+        //             $tujuan_text .= $tujuan['tempat_tujuan'];
+        //         } else if ($count_t == $i) {
+        //             $tujuan_text .= ' dan ' . $tujuan['tempat_tujuan'];
+        //         } else {
+        //             $tujuan_text .= ', ' . $tujuan['tempat_tujuan'];
+        //         }
+        //         if (!empty($tujuan['date_kembali']))
+        //             $d2 = $tujuan['date_kembali'];
+        //         $i++;
+        //     }
+        //     if ($d1 != $d2) {
+        //         $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1) . ' sampai ' . tanggal_indonesia($d2);
+        //     } else {
+        //         $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1);
+        //     }
+        // }
+
+        // $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
+        // $pdf->MultiCell(194, 5, 'Dalam Rangka ' . $data['maksud'] . ' di ' . $tujuan_text . '.', 0, 'J');
+        // $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
+        // $pdf->MultiCell(194, 5, 'Surat tugas ini dibuat untuk dilaksanakan dan setelah selesai, pelaksanaan tugas segera menyampaikan laporan kepada atasan langsungnya. Kepada instansi terkait, kami mohon bantuan demi kelancaran pelaksanaan tugas dimaksud.', 0, 'J');
+
+        // $pdf->SetFont('Arial', 'B', 11);
+        // $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(3, 5, "", 0, 1, 'L', 0);
+        $cur_x = $pdf->getX();
+        $cur_y = $pdf->GetY();
+
+        $pdf->CheckPageBreak(65);
+
+        if ($data['status_izin'] == '99' && !empty($data['sign_kadin'])) {
+            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $pdf->Cell(30, 5, 'Ditetapkan di', 0, 0, 'L', 0);
+            $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
+            $pdf->Cell(40, 5, $data_satuan['satuan_tempat'], 0, 1, 'L', 0);
+
+            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $pdf->Cell(30, 5, 'Pada Tanggal', 0, 0, 'L', 0);
+            $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
+            $pdf->Cell(40, 5, tanggal_indonesia(date('Y-m-d')), 0, 1, 'L', 0);
+            $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
+            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $pdf->MultiCell(45, 5,  ucwords(strtolower($sign_kadin['sign_title'])), 0, 'L', 0);
+
+            $pdf->Cell(120, 25, '', 0, 1, 'C', 0);
+            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $pdf->MultiCell(70, 5,  ucwords(strtolower($sign_kadin['sign_name'])), 0, 'L', 0);
+            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $pdf->MultiCell(70, 5,  $sign_kadin['sign_pangkat'], 0, 'L', 0);
+            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $pdf->MultiCell(70, 5,  'NIP. ' . $sign_kadin['sign_nip'], 0, 'L', 0);
+            $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 140, $pdf->getY() - 40, 40);
+        } else {
+            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $pdf->Cell(30, 5, 'Ditetapkan di', 0, 0, 'L', 0);
+            $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
+            $pdf->Cell(40, 5, '', 0, 1, 'L', 0);
+
+            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $pdf->Cell(30, 5, 'Pada Tanggal', 0, 0, 'L', 0);
+            $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
+            $pdf->Cell(40, 5, '', 0, 1, 'L', 0);
+            $pdf->Cell(120, 5, '', 0, 1, 'C', 0);
+            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $pdf->MultiCell(45, 5,  'ttd', 0, 'L', 0);
+            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $pdf->MultiCell(45, 5,  '', 0, 'L', 0);
+            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $pdf->MultiCell(45, 5,  '', 0, 'L', 0);
+        }
+        $pdf->Cell(130, 5, '', 0, 0, 'C', 0);
+        $filename = 'SPT ' . $data['id_surat_izin'];
+
+        $pdf->Output('', $filename, false);
     }
 }

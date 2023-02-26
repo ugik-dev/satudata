@@ -10,9 +10,9 @@
             <div class="modal-body">
                 <div class="row">
 
-                    <input type="" name="id_spt" value="<?= !empty($dataContent['return_data']['id_spt']) ? $dataContent['return_data']['id_spt'] : '' ?>">
-                    <input type="" name="sppd" value="1">
-                    <input type="" name="jenis" value="1">
+                    <input type="hidden" name="id_spt" value="<?= !empty($dataContent['return_data']['id_spt']) ? $dataContent['return_data']['id_spt'] : '' ?>">
+                    <input type="hidden" name="sppd" value="1">
+                    <input type="hidden" name="jenis" value="1">
                     <label class="col-sm-2 col-form-label" hidden=""><strong>No SPT</strong></label>
 
                     <div class="col-sm-4" hidden="">
@@ -410,7 +410,7 @@
             <div class="row">
             <div class="col-lg-3">
             <div class="col-form-label"><b>Tujuan ${last_tujuan}</b></div>
-            <input class="" id="id_tujuan[]" name="id_tujuan[]" type="text" value="${id}">
+            <input class="" id="id_tujuan[]" name="id_tujuan[]" type="hidden" value="${id}">
             <input class="form-control" id="tempat_tujuan[]" name="tempat_tujuan[]" type="text" value="${tj}" placeholder="ex. Puskesmas Bakam">
             </div>
             <div class="col-lg-3">

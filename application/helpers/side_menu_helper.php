@@ -3,6 +3,8 @@
 if (!function_exists('User_Access')) {
 	function User_Access($para_user_id = '')
 	{
+		// $ci2	= &get_instance();
+		// $ci2->load->session();
 		$CI	= &get_instance();
 		$CI->load->database();
 		// $CI->db->select("mp_menu.id as parent_id,mp_menulist.id as page_id,mp_menu.name,mp_menu.icon,mp_menu.order_number,title as sub_name, link as sub_link,slug as link, , id_hak_aksess, view, hk_create,hk_update, hk_delete");

@@ -109,6 +109,7 @@ class GeneralModel extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('ref_jen_izin');
+        if (!empty($filter['jen_izin'])) $this->db->where('jen_izin', $filter['jen_izin']);
         $res = $this->db->get();
         return $res->result_array();
     }
@@ -127,14 +128,19 @@ class GeneralModel extends CI_Model
 
     public function getAllDasar($filter = [])
     {
-        $this->db->select('d.*, u1.nama as nama_ppk2, u2.nama as nama_pptk');
+        $this->db->select('d.*,us.nama as nama_petugas, u1.nama as nama_ppk2, u2.nama as nama_pptk');
         $this->db->from('dasar as d');
+        $this->db->join('users as us', 'us.id = d.user_dasar');
         $this->db->join('users as u1', 'id_ppk2 = u1.id', 'LEFT');
         $this->db->join('users as u2', 'id_pptk = u2.id', 'LEFT');
         if (!empty($filter['id_dasar']))
             $this->db->where('id_dasar', $filter['id_dasar']);
-        $this->db->where('d.id_bagian', $this->session->userdata('id_bagian'));
+
+        if (!empty($this->session->userdata('id_bagian'))) $this->db->where('d.id_bagian', $this->session->userdata('id_bagian'));
+        $this->db->where('d.id_satuan', $this->session->userdata('id_satuan'));
         $res = $this->db->get();
+        // echo $this->db->last_query();
+        // die();
         return DataStructure::keyValue($res->result_array(), 'id_dasar');
     }
 
@@ -157,7 +163,7 @@ class GeneralModel extends CI_Model
 
     public function getAllUser($filter = [])
     {
-        $this->db->select("u.*,r.*, nama_bag, nama_seksi, nama_satuan, approv_lv_1, approv_lv_2, approv_lv_3, approv_lv_4, ppk, jabatan, pangkat_gol");
+        $this->db->select("u.*,r.*, nama_bag, nama_seksi, nama_satuan, jabatan, pangkat_gol");
         $this->db->from('users as u');
         $this->db->join('roles r', 'u.id_role = r.id_role', 'LEFT');
         $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
@@ -165,6 +171,9 @@ class GeneralModel extends CI_Model
         $this->db->join('bagian bg', 'u.id_bagian = bg.id_bagian', 'LEFT');
         $this->db->where('u.deleted_user', 0);
         if (!empty($filter['id'])) $this->db->where('u.id', $filter['id']);
+        if ($this->session->userdata()['id_role'] != 1) {
+            $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
+        }
         $res = $this->db->get();
         return DataStructure::keyValue($res->result_array(), 'id');
     }
@@ -172,8 +181,12 @@ class GeneralModel extends CI_Model
 
     public function getAllSatuan($filter = [])
     {
-        $this->db->select('*');
+        $this->db->select('u.* , b.nama as nama_bendahara, c.nama as nama_bendahara_pem, d.nama as nama_verif_cuti');
         $this->db->from('satuan u ');
+        $this->db->join('users b', 'u.bendahara = b.id', 'LEFT');
+        $this->db->join('users c', 'u.bendahara_pem = c.id', 'LEFT');
+        $this->db->join('users d', 'u.verif_cuti = d.id', 'LEFT');
+        if (!empty($filter['id_satuan'])) $this->db->where('id_satuan', $filter['id_satuan']);
         $res = $this->db->get();
         return DataStructure::keyValue($res->result_array(), 'id_satuan');
     }
@@ -224,8 +237,6 @@ class GeneralModel extends CI_Model
         $res = $this->db->get();
         return $res->result_array();
     }
-
-
 
     public function getRencanaKinerjaAtasan($filter = [])
     {
@@ -287,12 +298,15 @@ class GeneralModel extends CI_Model
 
     public function getAllRole2($filter = [])
     {
+        $jen_satker = $this->session->userdata('jen_satker');
         $this->db->select('id_role as id, nama_role as text');
         $this->db->from('roles u ');
         if (!empty($filter['searchTerm'])) $this->db->where('nama_role like "%' . $filter['searchTerm'] . '%"');
         // searchTerm
         $this->db->limit('20');
-
+        if ($jen_satker != 1) {
+            $this->db->where("u.jen_satker = $jen_satker OR u.jen_satker = 0");
+        }
         // $this->db->join('roles r', 'u.id_role = r.id_role');
         $res = $this->db->get();
         return $res->result_array();
@@ -323,25 +337,43 @@ class GeneralModel extends CI_Model
 
     public function getAllPegawai2($filter = [])
     {
-        // if (!empty($filter['bagian_show'])) {
-        // } else
-        $this->db->select('id as id, CONCAT(nama, " | " , b.nama_bag) as text');
-        $this->db->from('users u ');
+        if ($this->session->userdata()['id_role'] == 1) {
+            $this->db->select('id as id, CONCAT(u.nama, " | " , COALESCE(s.nama_satuan,""), " - " , COALESCE(b.nama_bag,"")) as text');
+        } else if ($this->session->userdata()['id_satuan'] == 1) {
+            $this->db->select('id as id, CONCAT(u.nama, " | " , b.nama_bag) as text');
+        } else {
+            $this->db->select('id as id, u.nama as text');
+        }
 
-        // if (!empty($filter['bagian_show'])) {
-        $this->db->join('bagian b', 'u.id_bagian = b.id_bagian');
-        // }
+        $this->db->from('users u ');
+        $this->db->join('bagian b', 'u.id_bagian = b.id_bagian', 'LEFT');
+        $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
+
+
         if (!empty($filter['searchTerm'])) $this->db->where('nama like "%' . $filter['searchTerm'] . '%"');
-        if (!empty($filter['id_satuan'])) $this->db->where('id_satuan', $filter['id_satuan']);
+
+        if ($this->session->userdata()['id_role'] != 1) {
+            // die();
+            // if ($this->session->userdata()['id_satuan'] == 1) {
+            // }
+            $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
+        }
+        // if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
         // $this->db->where('ppk', 1);
         $this->db->limit('20');
         $res = $this->db->get();
+        // echo $this->db->last_query();
+        // die();
         return $res->result_array();
     }
     public function getAllDasar2($filter = [])
     {
         $this->db->select('id_dasar as id, CONCAT_WS(" | " , nama_dasar , kode_rekening ) as text');
+
         $this->db->from('dasar u ');
+        if ($this->session->userdata()['id_role'] != 1) {
+            $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
+        }
         if (!empty($filter['searchTerm'])) $this->db->where('nama_dasar like "%' . $filter['searchTerm'] . '%"');
         $this->db->limit('20');
         $res = $this->db->get();

@@ -201,53 +201,6 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label for="id_role">Hak Approv Lv1</label>
-                                <select class="form-control mr-sm-2" name="approv_lv_1" id="approv_lv_1">
-                                    <option value="1">Ya</option>
-                                    <option value="2">Tidak</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label for="id_role">Hak Approv Lv2</label>
-                                <select class="form-control mr-sm-2" name="approv_lv_2" id="approv_lv_2">
-                                    <option value="1">Ya</option>
-                                    <option value="2">Tidak</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label for="id_role">Hak Approv Lv3</label>
-                                <select class="form-control mr-sm-2" name="approv_lv_3" id="approv_lv_3">
-                                    <option value="1">Ya</option>
-                                    <option value="2">Tidak</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label for="id_role">Hak Approv Lv4</label>
-                                <select class="form-control mr-sm-2" name="approv_lv_4" id="approv_lv_4">
-                                    <option value="1">Ya</option>
-                                    <option value="2">Tidak</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label for="id_role">Hak PPK</label>
-                                <select class="form-control mr-sm-2" name="ppk" id="ppk">
-                                    <option value="1">Ya</option>
-                                    <option value="2">Tidak</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">

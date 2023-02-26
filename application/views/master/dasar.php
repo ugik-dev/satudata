@@ -30,6 +30,7 @@
                                     <th style="width: 16%; text-align:center!important">PPK/BLUD</th>
                                     <th style="width: 16%; text-align:center!important">PPTK</th>
                                     <th style="width: 16%; text-align:center!important">Status</th>
+                                    <th style="width: 16%; text-align:center!important">Petugas Entri</th>
                                     <th style="width: 5%; text-align:center!important">Aksi</th>
                                 </tr>
                             </thead>
@@ -227,7 +228,7 @@
             ${deleteButton}
             `;
                 renderData.push([dpa['id_dasar'], dpa['kode_rekening'], dpa['nama_dasar'], dpa['pembebanan_anggaran'],
-                    dpa['nama_ppk2'], dpa['nama_pptk'], dpa['dasar_status'], button
+                    dpa['nama_ppk2'], dpa['nama_pptk'], statusDasar(dpa['dasar_status']), dpa['nama_petugas'], button
                 ]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');

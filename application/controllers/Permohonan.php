@@ -16,10 +16,6 @@ class Permohonan extends CI_Controller
         try {
             $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
             $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
-            // $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
-            // $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
-            // echo json_encode($res_data);
-            // die();
 
             $cur_user = $this->session->userdata();
             $logs['id_spt'] = $id;
@@ -88,17 +84,21 @@ class Permohonan extends CI_Controller
             $filter = $this->input->get();
             $filter['search_approval']['data_penilai'] = $data_penilai = $this->session->userdata();
             $filter['id_penilai'] = $data_penilai['id'];
-            $data['surat_izin'] = $this->SuratIzinModel->getAll($filter);
-
-            if (in_array($data_penilai['level'], [1, 2, 3, 4, 5])) {
-                $data['laporan_spt'] = $this->SPPDModel->getLaporan($filter, true);
-                $data['spt'] = $this->SPPDModel->getAllSPPD($filter);
+            if (!empty($filter['chk-surat-izin']) or !empty($filter['chk-surat-cuti']))
+                $data['surat_izin'] = $this->SuratIzinModel->getAll($filter);
+            else
+                $data['surat_izin'] = [];
+            if (in_array($data_penilai['level'], [1, 2, 3, 4, 5, 7, 8, 6])) {
+                // $data['laporan_spt'] = $this->SPPDModel->getLaporan($filter, true);
+                if (!empty($filter['chk-spt']) or !empty($filter['chk-sppd']) or !empty($filter['chk-lembur']))
+                    $data['spt'] = $this->SPPDModel->getAllSPPD($filter);
+                else $data['spt'] = [];
             } else {
                 $data['spt'] = [];
                 $data['laporan_spt'] = [];
             }
 
-            $data['skp'] = $this->PermohonanModel->getAll($filter); //skp
+            // $data['skp'] = $this->PermohonanModel->getAll($filter); //skp
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
             ExceptionHandler::handle($e);

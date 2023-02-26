@@ -63,10 +63,7 @@ class AbsenModel extends CI_Model
         //     die();
         // }
         $res =  DataStructure::absensi_rekap($pegawai, $res->result_array(), $sort);
-        // echo json_encode($res);
-        // die();
-        // echo json_encode($res);
-        // die();
+
         return $res;
     }
 

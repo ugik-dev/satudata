@@ -7,12 +7,14 @@ class Master extends CI_Controller
         parent::__construct();
         $this->load->model(array('SecurityModel', 'UserModel', 'GeneralModel'));
         // $this->load->helper(array('DataStructure'));
-        $this->db->db_debug = TRUE;
+        $this->db->db_debug = FALSE;
     }
 
     public function pegawai()
     {
         try {
+            // echo json_encode($this->session->userdata());
+            // die();
             $this->SecurityModel->multiRole('Master', 'Pegawai');
             $data = array(
                 'page' => 'master/users',
@@ -69,6 +71,29 @@ class Master extends CI_Controller
                 'title' => 'Dasar'
             );
             $this->load->view('page', $data);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+    public function action_satuan()
+    {
+        try {
+            $this->SecurityModel->multiRole('Master', 'Satuan / Unit', true);
+            $this->load->model(['SatuanModel']);
+            $data = $this->input->post();
+
+            // if ($action == 'add') {
+            //     $data['user_dasar'] = $this->session->userdata('id');
+            //     $data['id_bagian'] = $this->session->userdata('id_bagian');
+            // } else {
+            //     $tmp = $this->GeneralModel->getAllDasar(['id_dasar' => $data['id_dasar']])[$data['id_dasar']];
+            //     if ($tmp['user_dasar'] != $this->session->userdata('id'))
+            //         throw new UserException('Kamu tidak berhak melakukan aksi ini!!', UNAUTHORIZED_CODE);
+            // }
+            $id = $this->SatuanModel->action_satuan($data);
+            $data = $this->GeneralModel->getAllSatuan(['id_dasar' => $id])[$id];
+            echo json_encode(['error' => false, 'data' => $data]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
@@ -163,8 +188,11 @@ class Master extends CI_Controller
             $mdata['id_role'] = $data['id_role'];
             $mdata['nama_role'] = $data['nama_role'];
             $mdata['level'] = $data['level'];
+            $mdata['jen_satker'] = $data['jen_satker'];
+            unset($data['id_role']);
             unset($data['level']);
             unset($data['nama_role']);
+            unset($data['jen_satker']);
             $ndata = array();
             foreach ($data as $k => $dt) {
                 $n = array();
@@ -192,10 +220,13 @@ class Master extends CI_Controller
             $this->SecurityModel->multiRole('Master', 'Roles');
             $data = $this->input->post();
             // die();
-            // $mdata['id_role'] = $data['id_role'];
+            $mdata['level'] = $data['level'];
             $mdata['nama_role'] = $data['nama_role'];
+            $mdata['jen_satker'] = $data['jen_satker'];
             // unset($data['id_user']);
             unset($data['nama_role']);
+            unset($data['jen_satker']);
+            unset($data['level']);
             $ndata = array();
             foreach ($data as $k => $dt) {
                 $n = array();
@@ -249,9 +280,11 @@ class Master extends CI_Controller
         try {
             $this->SecurityModel->multiRole('Master', 'Pegawai');
             $data = $this->input->post();
+            if ($this->session->userdata()['id_satuan'] != 1) {
+                $data['id_satuan'] = $this->session->userdata()['id_satuan'];
+            }
             $id =  $this->UserModel->addUser($data);
             $data = $this->GeneralModel->getAllUser(array('id' => $id))[$id];
-
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
             ExceptionHandler::handle($e);

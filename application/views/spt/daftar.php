@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-header">
 
-                    <form class="form-inline" id="toolbar_form" onsubmit="return false;">
+                    <form hidden class="form-inline" id="toolbar_form" onsubmit="return false;">
                         <!-- <div class="col-lg-2"> -->
                         <input type="hidden" id="is_not_self" name="is_not_self" value="1">
                         <!-- </div> -->
@@ -30,6 +30,7 @@
                                     <th style="width: 10%; text-align:center!important">NO SPPD</th>
                                     <th style="width: 24%; text-align:center!important">PEGAWAI</th>
                                     <th style="width: 10%; text-align:center!important">TUJUAN</th>
+                                    <th style="width: 10%; text-align:center!important">Status</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
                                 </tr>
                             </thead>
@@ -188,7 +189,7 @@
                     i++;
 
                 })
-                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], spt['no_sppd'], spt['jenis'] == 2 ? spt['no_spt'] : '-', spt['nama_pegawai'], tujuan, button]);
+                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], spt['no_sppd'], spt['jenis'] == 2 ? spt['no_spt'] : '-', spt['nama_pegawai'], tujuan, statusSPT(spt['status']), button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }

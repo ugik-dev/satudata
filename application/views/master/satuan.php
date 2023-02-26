@@ -120,6 +120,31 @@
                                 <input type="text" placeholder="" class="form-control" id="ktrngn" name="ktrngn">
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="satuan_tempat">Tempat (ttd)</label>
+                                <input type="text" placeholder="" class="form-control" id="satuan_tempat" name="satuan_tempat">
+                            </div>
+                        </div>
+                        <hr class="mt-2">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="bendahara">Bendahara</label>
+                                <select class="select2 col-sm-12" id="bendahara" name="bendahara"></select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="bendahara_pem">Bendahara Pembantu</label>
+                                <select class="select2 col-sm-12" id="bendahara_pem" name="bendahara_pem"></select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="verif_cuti">Verifikator Cuti</label>
+                                <select class="select2 col-sm-12" id="verif_cuti" name="verif_cuti"></select>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
@@ -150,7 +175,7 @@
             'columnDefs': [],
             deferRender: true,
             "order": [
-                [0, "desc"]
+                [0, "asc"]
             ]
         });
 
@@ -172,7 +197,11 @@
             'kode_pos': $('#satuan_modal').find('#kode_pos'),
             'kode_surat': $('#satuan_modal').find('#kode_surat'),
             'ktrngn': $('#satuan_modal').find('#ktrngn'),
+            'satuan_tempat': $('#satuan_modal').find('#satuan_tempat'),
             'no_tlp': $('#satuan_modal').find('#no_tlp'),
+            'bendahara': $('#satuan_modal').find('#bendahara'),
+            'bendahara_pem': $('#satuan_modal').find('#bendahara_pem'),
+            'verif_cuti': $('#satuan_modal').find('#verif_cuti'),
         }
 
         var dataRole = {}
@@ -203,6 +232,66 @@
         });
 
 
+        $("#bendahara").select2({
+            dropdownParent: $('#satuan_modal .modal-content'),
+            ajax: {
+                url: '<?= base_url() ?>Search/Pegawai',
+                type: "get",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        searchTerm: params.term // search term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+        $("#bendahara_pem").select2({
+            dropdownParent: $('#satuan_modal .modal-content'),
+            ajax: {
+                url: '<?= base_url() ?>Search/Pegawai',
+                type: "get",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        searchTerm: params.term // search term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+        $("#verif_cuti").select2({
+            dropdownParent: $('#satuan_modal .modal-content'),
+            ajax: {
+                url: '<?= base_url() ?>Search/Pegawai',
+                type: "get",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        searchTerm: params.term // search term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
 
         function getAllSatuan() {
             Swal.fire({
@@ -255,6 +344,10 @@
 
         function resetSatuanModal() {
             SatuanModal.form.trigger('reset');
+            var $blankOption2 = $("<option selected='selected'></option>").val('').text('-');
+            SatuanModal.bendahara.append($blankOption2).trigger('change');
+            SatuanModal.bendahara_pem.append($blankOption2).trigger('change');
+            SatuanModal.verif_cuti.append($blankOption2).trigger('change');
             // SatuanModal.no_tlp.val(toolbar.no_tlp.val());
             // SatuanModal.alamat.val("");
             // SatuanModal.alamat_lengkap.val("");
@@ -287,20 +380,28 @@
             SatuanModal.no_tlp.val(currentData['no_tlp']);
             SatuanModal.website.val(currentData['website']);
             SatuanModal.ktrngn.val(currentData['ktrngn']);
+            SatuanModal.satuan_tempat.val(currentData['satuan_tempat']);
+            var $blankOption2 = $("<option selected='selected'></option>").val(currentData['bendahara']).text(currentData['nama_bendahara']);
+            SatuanModal.bendahara.append($blankOption2).trigger('change');
+            var $blankOption2 = $("<option selected='selected'></option>").val(currentData['bendahara_pem']).text(currentData['nama_bendahara_pem']);
+            SatuanModal.bendahara_pem.append($blankOption2).trigger('change');
+            var $blankOption2 = $("<option selected='selected'></option>").val(currentData['verif_cuti']).text(currentData['nama_verif_cuti']);
+            SatuanModal.verif_cuti.append($blankOption2).trigger('change');
         });
 
         SatuanModal.form.submit(function(event) {
             event.preventDefault();
             var isAdd = SatuanModal.addBtn.is(':visible');
-            var url = "<?= site_url('SatuanController/') ?>";
-            url += isAdd ? "addSatuan" : "editSatuan";
+            var url = "<?= site_url('Master/action_satuan') ?>";
+            // url += isAdd ? "addSatuan" : "editSatuan";
             var button = isAdd ? SatuanModal.addBtn : SatuanModal.saveEditBtn;
 
             Swal.fire(swalSaveConfigure).then((result) => {
                 if (!result.value) {
                     return;
                 }
-                buttonLoading(button);
+                // buttonLoading(button);
+
                 $.ajax({
                     url: url,
                     'type': 'POST',

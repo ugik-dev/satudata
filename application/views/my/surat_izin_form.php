@@ -36,16 +36,34 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="col-form-label">Jenis Perizinan</div>
-                        <select name="jenis_izin" id="jenis_izin" class="form-control">
-                            <option>Pilih Jenis Izin</option>
-                            <?php
-                            foreach ($dataContent['jenis_izin'] as $ji) {
-                                echo "<option value='{$ji['id_ref_jen_izin']}'>{$ji['nama_izin']}</option>";
-                            } ?>
-                        </select>
+                        <div class="row">
+                            <div class="col-lg-12">
 
+                                <div class="col-form-label">Jenis Perizinan</div>
+                                <select name="jenis_izin" id="jenis_izin" class="form-control" required="required">
+                                    <option value="">Pilih Jenis Izin</option>
+                                    <?php
+                                    foreach ($dataContent['jenis_izin'] as $ji) {
+                                        echo "<option value='{$ji['id_ref_jen_izin']}'>{$ji['nama_izin']}</option>";
+                                    } ?>
+                                </select>
+                            </div>
+                            <div class="col-lg-4 layout_c_tahunan">
+                                <div class="col-form-label">Tahun N</div>
+                                <input type="number" name="c_n" id="c_n" class="form-control" required />
+                            </div>
+                            <div class="col-lg-4 layout_c_tahunan">
+                                <div class="col-form-label">Tahun N-1</div>
+                                <input type="number" name="c_n1" id="c_n1" class="form-control" required />
+                            </div>
+                            <div class="col-lg-4 layout_c_tahunan">
+                                <div class="col-form-label">Tahun N-2</div>
+                                <input type="number" name="c_n2" id="c_n2" class="form-control" required />
+                            </div>
+                        </div>
                     </div>
+
+
                     <div class="col-lg-6">
                         <div class="col-form-label">Pelimpahan Wewenang</div>
                         <select class="select2 col-sm-12" id="id_pengganti" name="id_pengganti">
@@ -99,7 +117,12 @@
             'add_kt': $('#add_kt'),
             'periode_start': $('#periode_start'),
             'periode_end': $('#periode_end'),
+            'jenis_izin': $('#jenis_izin'),
+            'c_n': $('#c_n'),
+            'c_n1': $('#c_n1'),
+            'c_n2': $('#c_n2'),
         }
+
         var swalSaveConfigure = {
             title: "Konfirmasi simpan",
             text: "Yakin akan menyimpan data ini?",
@@ -123,7 +146,21 @@
 
         last_ku = 1;
         last_kt = 1;
+        UserModal.jenis_izin.on('change', function() {
+            if (UserModal.jenis_izin.val() == '11') {
+                // $('.layout_c_tahunan').show();
+                UserModal.c_n.prop('disabled', false);
+                UserModal.c_n1.prop('disabled', false);
+                UserModal.c_n2.prop('disabled', false);
+            } else {
+                // $('.layout_c_tahunan').hide();
+                UserModal.c_n.prop('disabled', true);
+                UserModal.c_n1.prop('disabled', true);
+                UserModal.c_n2.prop('disabled', true);
 
+            }
+        })
+        UserModal.jenis_izin.trigger('change');
         $("#id_pengganti").select2({
             ajax: {
                 url: '<?= base_url() ?>Search/pegawai',

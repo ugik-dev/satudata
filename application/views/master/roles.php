@@ -84,7 +84,17 @@
             'Kepala Sub Bagian',
             'Kepala Bidang',
             'Kepala Seksi',
-            'Pegawai Receh',
+            'Pegawai',
+            'Kepala Puskesmas',
+            'Kasubag Puskesmas',
+            'Pegawai Puskesmas',
+        ]
+        var dataSatKer = [
+            'Semua',
+            'Dinas Kesehatan',
+            'Puskesmas',
+            'Rumah Sakit',
+            'UPT'
         ]
         var swalSaveConfigure = {
             title: "Konfirmasi simpan",

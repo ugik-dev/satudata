@@ -92,80 +92,12 @@
                             ?>
                         </select>
                     </div>
-
-                    <!-- <div class="col-lg-6">
-                        <div class="col-form-label">Lama Lembur (jam)</div>
-                        <input class="form-control" id="lama_dinas" name="lama_dinas" type="number" value="<?= !empty($dataContent['return_data']['lama_dinas']) ? $dataContent['return_data']['lama_dinas'] : '' ?>">
-                    </div> -->
-
-                    <!-- <div class="col-lg-6">
-                        <div class="col-form-label">Transportasi</div>
-                        <select class="form-control" id="transport" name="transport" required>
-                        </select>
-                    </div> -->
                 </div>
                 <div class="col-lg-12" id="layout_tujuan">
-
                 </div>
                 <hr>
                 <a class="btn btn-light my-1" type="" id="add_tujuan" data-loading-text="Loading..."><strong>Tambah Tempat</strong></a>
 
-                <!-- <div class="row">
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tujuan II</div>
-                        <input class="form-control" id="tujuan_2" name="tujuan_2" type="text">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tanggal Berangkat II</div>
-                        <input class="form-control" id="date_berangkat_2" name="date_berangkat_2" type="date">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Kembali II</div>
-                        <input class="form-control" id="tujuan_2" name="tujuan_2" type="text">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tanggal Kembali II</div>
-                        <input class="form-control" id="date_kembali_2" name="date_kembali_2" type="date">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tujuan III</div>
-                        <input class="form-control" id="tujuan_3" name="tujuan_3" type="text">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tanggal Berangkat III</div>
-                        <input class="form-control" id="date_berangkat_3" name="date_berangkat_3" type="date">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Kembali III</div>
-                        <input class="form-control" id="tujuan_3" name="tujuan_3" type="text">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tanggal Kembali III</div>
-                        <input class="form-control" id="date_kembali_3" name="date_kembali_3" type="date">
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tujuan IV</div>
-                        <input class="form-control" id="tujuan_4" name="tujuan_4" type="text">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tanggal Berangkat IV</div>
-                        <input class="form-control" id="date_berangkat_4" name="date_berangkat_4" type="date">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Kembali IV</div>
-                        <input class="form-control" id="tujuan_4" name="tujuan_4" type="text">
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="col-form-label">Tanggal Kembali IV</div>
-                        <input class="form-control" id="date_kembali_4" name="date_kembali_4" type="date">
-                    </div>
-                </div> -->
                 <div class="modal-footer">
                     <button class="btn btn-primary" type="submit" id="save_edit_btn" data-loading-text="Loading..."><strong>Simpan Perubahan</strong></button>
                 </div>
@@ -178,7 +110,7 @@
     $(document).ready(function() {
         $('#menu_2').addClass('active');
         $('#opmenu_2').show();
-        $('#submenu_8').addClass('active');
+        $('#submenu_9').addClass('active');
 
         var UserModal = {
             'form': $('#user_form'),
@@ -236,7 +168,6 @@
                 event.preventDefault();
                 Swal.fire({
                     title: "Hapus Dasar Tambahan?",
-                    // text: "Data Role akan dirubah dan hak aksess user terkait akan berubah juga!",
                     icon: "warning",
                     allowOutsideClick: false,
                     showCancelButton: true,
@@ -391,18 +322,22 @@
         function addTujuan(id = '', tj = '', dj = '', tk = '', dk = '') {
             htmlTujuan = ` <hr>
             <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-5">
             <div class="col-form-label"><b>Ke ${last_tujuan}</b></div>
             <input type="hidden" id="id_tujuan[]" name="id_tujuan[]" type="text" value="${id}">
             <input class="form-control" id="tempat_tujuan[]" name="tempat_tujuan[]" type="text" value="${tj}" placeholder="ex. Puskesmas Bakam">
             </div>
             <div class="col-lg-3">
-            <div class="col-form-label">Dari Tanggal </div>
+            <div class="col-form-label">Tanggal </div>
             <input class="form-control" id="date_berangkat[]" name="date_berangkat[]" type="date" value="${dj}">
             </div>
-            <div class="col-lg-3">
-            <div class="col-form-label">Lama (jam) </div>
-            <input class="form-control" id="jam[]" name="jam[]" type="number" value="${dk}">
+            <div class="col-lg-2">
+            <div class="col-form-label">Dari </div>
+            <input class="form-control" id="dari[]" name="dari[]" type="time" value="${dk}">
+            </div>
+            <div class="col-lg-2">
+            <div class="col-form-label">Sampai </div>
+            <input class="form-control" id="sampai[]" name="sampai[]" type="time" value="${dk}">
             </div>
             </div>`;
 

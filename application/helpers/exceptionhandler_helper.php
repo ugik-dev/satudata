@@ -16,7 +16,7 @@ class ExceptionHandler
       case 0:
         return;
       case 1062:
-        throw new UserException($aksi . " gagal! " . $resourceName . " sudah ada", $e['code']);
+        throw new UserException($aksi . " gagal! " . $e['message'], $e['code']);
       case 1451:
         throw new UserException($aksi . " gagal! " . $resourceName . " memiliki " . $otherResourceName, $e['code']);
       default:

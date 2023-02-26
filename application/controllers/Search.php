@@ -55,6 +55,8 @@ class Search extends CI_Controller
         try {
             $filter = $this->input->get();
             $data = $this->GeneralModel->getAllRole2($filter);
+            array_unshift($data, array('id' => 'NULL', 'text' => '--'));
+
             echo json_encode($data);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);

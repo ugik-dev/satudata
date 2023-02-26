@@ -13,7 +13,7 @@
                 <div class="tab-pane fade show active" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-12" id="layout_aksi_btn">
                                 <!-- <div class="modal-footer"> -->
                                 <?php
                                 $cur_user = $this->session->userdata();
@@ -114,20 +114,24 @@
                                 <?= $dataContent['return_data']['maksud'] ?>
                                 <hr>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="col-form-label"><strong>Lama Perjalanan</strong></div>
-                                        <?= $dataContent['return_data']['lama_dinas'] ?> hari
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="col-form-label"><strong>Transportasi</strong></div>
-                                        <?= $dataContent['return_data']['nama_transport'] ?>
-                                    </div>
+                            <?php if ($dataContent['return_data']['jenis'] == 3) { ?>
+                            <?php } else { ?>
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="col-form-label"><strong>Lama Perjalanan</strong></div>
+                                            <?= $dataContent['return_data']['lama_dinas'] ?> hari
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="col-form-label"><strong>Transportasi</strong></div>
+                                            <?= $dataContent['return_data']['nama_transport'] ?>
+                                        </div>
 
-                                </div>
-                                <hr>
-                            </div>
+                                    </div>
+                                    <hr>
+                                </div> <?php } ?>
+
+
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-sm-2"><strong>Pegawai</strong></div>
@@ -203,32 +207,65 @@
                         </div>
                         <div class="col-lg-12" id="layout_tujuan">
                             <!-- <div class="card"> -->
-                            <div class="col-sm-2"><strong>Tujuan</strong></div>
-
+                            <?php if ($dataContent['return_data']['jenis'] == 3) { ?>
+                                <div class="col-sm-2"><strong>Tempat & Waktu</strong></div>
+                            <?php } else { ?>
+                                <div class="col-sm-2"><strong>Tujuan</strong></div>
+                            <?php } ?>
                             <!-- <div class="card-body"> -->
                             <!-- <div class="table-responsive mb-0"> -->
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Tempat Tujuan</th>
-                                        <th>Tanggal Berangkat</th>
-                                        <th>Temmpat Kembali</th>
-                                        <th>Tanggal Kembali</th>
+                                        <?php if ($dataContent['return_data']['jenis'] == 3) { ?>
+                                            <th>Tempat</th>
+                                            <th>Tanggal Lembur</th>
+                                            <th>Dari</th>
+                                            <th>Sampai</th>
+                                            <th>Total Jam</th>
+                                        <?php } else { ?>
+                                            <th>Tempat Tujuan</th>
+                                            <th>Tanggal Berangkat</th>
+                                            <th>Temmpat Kembali</th>
+                                            <th>Tanggal Kembali</th>
+                                        <?php } ?>
+
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     if (!empty($dataContent['return_data']['tujuan'])) {
                                         $i = 1;
-                                        foreach ($dataContent['return_data']['tujuan'] as $t) { ?>
-                                            <tr>
-                                                <td><?= to_romawi($i) ?></td>
-                                                <td><?= $t['tempat_tujuan'] ?></td>
-                                                <td><?= $t['date_berangkat'] ?></td>
-                                                <td><?= $t['tempat_kembali'] ?></td>
-                                                <td><?= $t['date_kembali'] ?></td>
-                                            </tr>
+                                        foreach ($dataContent['return_data']['tujuan'] as $t) {
+                                            if ($dataContent['return_data']['jenis'] == 3) {
+                                                $first  = new DateTime($t['dari']);
+                                                $second = new DateTime($t['sampai']);
+                                                $diff = $first->diff($second);
+                                                $cur_jam =  $diff->format('%h');
+                                    ?>
+                                                <tr>
+                                                    <td><?= to_romawi($i) ?></td>
+                                                    <td><?= $t['tempat_tujuan'] ?></td>
+                                                    <td><?= $t['date_berangkat'] ?></td>
+                                                    <td><?= substr($t['dari'], 0, 5) ?></td>
+                                                    <td><?= substr($t['sampai'], 0, 5)  ?></td>
+                                                    <td><?= $cur_jam ?> jam</td>
+                                                </tr>
+                                            <?php
+
+                                            } else { ?>
+                                                <tr>
+                                                    <td><?= to_romawi($i) ?></td>
+                                                    <td><?= $t['tempat_tujuan'] ?></td>
+                                                    <td><?= $t['date_berangkat'] ?></td>
+                                                    <td><?= $t['tempat_kembali'] ?></td>
+                                                    <td><?= $t['date_kembali'] ?></td>
+                                                </tr>
+                                            <?php } ?>
+
+
                                     <?php
                                             $i++;
                                         }
@@ -287,18 +324,26 @@
                                             <td>Surat Perintah Tugas</td>
                                             <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/1') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
                                         </tr>
+                                        <?php if ($dataContent['return_data']['jenis'] == 2) {
+                                        ?>
+                                            <tr>
+                                                <td>Surat Perintah Perjalanan Dinas</td>
+                                                <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/2') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
+                                            </tr>
+                                        <?php } ?>
                                         <tr>
-                                            <td>Surat Perintah Perjalanan Dinas</td>
-                                            <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/2') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Laporan Perjalanan Dinas</td>
+                                            <td>Laporan </td>
                                             <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/3') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
                                         </tr>
-                                        <tr>
-                                            <td>Tanda Bukti Pembayaran</td>
-                                            <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/4') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
-                                        </tr>
+                                        <?php if ($dataContent['return_data']['jenis'] != 1) {
+                                        ?>
+                                            <tr>
+                                                <td>Tanda Bukti Pembayaran</td>
+                                                <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/4') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
+                                            </tr>
+                                        <?php } ?>
+
+
                                     </tbody>
                                 </table>
 
@@ -779,5 +824,154 @@
 
             });
         })
+        console.log('ss');
+        renderButtonSPT()
+
+        function renderButtonSPT() {
+            spt = <?= json_encode($dataContent['return_data']) ?>;
+            currentUser = <?= json_encode($this->session->userdata()) ?>;
+            console.log(spt);
+            var aksiBtn = '';
+            <?php if ($this->session->userdata()['level'] == 3 or $this->session->userdata()['level'] == 4) { ?>
+                console.log('ini level 3 KASUBAG / KABID');
+                if (spt['status'] == 2) {
+                    var aksiBtn = `
+                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
+                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+                } else if (spt['status'] == 10) {
+                    var aksiBtn = `
+                    <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
+                    `;
+                }
+            <?php } else if ($this->session->userdata()['level'] == 2) { ?>
+                if (spt['status'] == 11) {
+                    var aksiBtn = `
+                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
+                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+                } else if (spt['status'] == 12 || spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>') {
+                    var aksiBtn = `
+                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
+                        `;
+                }
+            <?php  } else if ($this->session->userdata()['level'] == 1) { ?>
+                if (spt['status'] == 12) {
+                    var aksiBtn = `
+                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
+                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+                } else if (spt['status'] == 99 || spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>') {
+                    var aksiBtn = `
+                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
+                        `;
+                }
+            <?php  } else if ($this->session->userdata()['level'] == 5) { ?>
+                console.log(spt['status'])
+                if (spt['status'] == 1 && spt['id_seksi'] == currentUser['id_seksi']) {
+                    var aksiBtn = `
+                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
+                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+                } else if ((spt['status'] == 2 || spt['unapprove_oleh'] == currentUser['id']) && spt['id_seksi'] == currentUser['id_seksi']) {
+                    var aksiBtn = `
+                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
+                        `;
+                }
+            <?php  } else if ($this->session->userdata()['level'] == 8) { ?>
+                console.log(spt['id_satuan'])
+                if (spt['status'] == 50 && spt['id_satuan'] == currentUser['id_satuan']) {
+                    console.log("hereess23")
+                    var aksiBtn = `
+                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
+                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+                } else if ((spt['status'] == 51 || spt['unapprove_oleh'] == currentUser['id']) && spt['id_satuan'] == currentUser['id_satuan']) {
+                    var aksiBtn = `
+                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
+                        `;
+                }
+            <?php  } else if ($this->session->userdata()['level'] == 7) { ?>
+                console.log(spt['id_satuan'])
+                if (spt['status'] == 59 && spt['id_satuan'] == currentUser['id_satuan']) {
+                    console.log("hereess23")
+                    var aksiBtn = `
+                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
+                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+                } else if ((spt['status'] == 51 || spt['unapprove_oleh'] == currentUser['id']) && spt['id_satuan'] == currentUser['id_satuan']) {
+                    var aksiBtn = `
+                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
+                        `;
+                }
+            <?php  } else if ($this->session->userdata()['penomoran'] == 1) { ?>
+                console.log('here')
+                if (spt['status'] == 99) {
+                    var aksiBtn = `
+                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
+                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+                }
+                // } else if (spt['status'] == 99 || spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>') {
+                //     var aksiBtn = `
+                //     <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
+                //     `;
+            <?php  } ?>
+            if (spt['status'] == 6 && spt['id_ppk2'] == '<?= $this->session->userdata()['id'] ?>' && spt['id_ppk2'] != '') {
+                var aksiBtn = `
+                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
+                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+            } else if ((spt['status'] == 11 || spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>') && spt['id_ppk'] == '<?= $this->session->userdata()['id'] ?>' && spt['id_ppk'] != '') {
+                var aksiBtn = `
+                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
+                        `;
+            } else if (
+                (spt['status'] == 51 && spt['id_pptk'] == '<?= $this->session->userdata()['id'] ?>' && spt['id_pptk'] != '') ||
+                (spt['status'] == 52 && spt['id_ppk2'] == '<?= $this->session->userdata()['id'] ?>' && spt['id_ppk'] != '')
+            ) {
+                var aksiBtn = `
+                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
+                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+            };
+            if ((spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>')) {
+                var aksiBtn = `
+                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
+                        `;
+            }
+            var lihatButton = `
+                     <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/print/${spt['id_spt']}/1'><i class='fa fa-eye'></i> PDF SPT  </a>
+                     <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/print/${spt['id_spt']}/2'><i class='fa fa-eye'></i> PDF SPPD </a>
+                     <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/print/${spt['id_spt']}/3'><i class='fa fa-eye'></i> PDF SPT Barcode </a>
+                     <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/print/${spt['id_spt']}/barcode'><i class='fa fa-eye'></i> PDF Barcode </a>
+                      <a class="dropdown-item" style="width: 110px" href='<?= base_url() ?>spt/detail/${spt['id_spt']}'><i class='fa fa-eye'></i> Lihat </a>
+                 `;
+
+            var aprvButton = `
+                                `;
+            var deaprvButton = `
+                                `;
+            var button = `
+                           <div class="dropdown-basic mb-2">
+                            <div class="dropdown">
+                                <div class="btn-group mb-1">
+                                    <button class="dropbtn btn-square btn-sm btn-primary" style="width : 120px"  type="button">
+                                        Aksi
+                                        <span><i class="icofont icofont-arrow-down"> </i></span>
+                                    </button>
+                                    <div class="dropdown-content">
+                                        ${aksiBtn}
+                                        ${lihatButton}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+            $('#layout_aksi_btn').append(button);
+            console.log('sad');
+            // console.log(button)
+        }
+
+
     })
 </script>
