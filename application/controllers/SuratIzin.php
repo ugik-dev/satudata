@@ -189,14 +189,14 @@ class SuratIzin extends CI_Controller
                     $this->SuratIzinModel->approv($data);
                 $this->SuratIzinModel->addLogs($logs);
             } else if ($cur_user['level'] == 1 && $data['status_izin'] == 15) {
-                $logs['deskripsi'] =  'Menyetujui';
+                $logs['deskripsi'] =  'Verifikasi Cuti Oleh Admin';
                 $logs['label'] = 'success';
                 $data['status_izin'] = 99;
                 $sign['kadin'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
                 $this->SuratIzinModel->approv($data, $sign);
                 $this->SuratIzinModel->addLogs($logs);
             } else if ($cur_user['level'] == 3 && $cur_user['id_bagian'] == 2 && $data['status_izin'] == 11) {
-                $logs['deskripsi'] =  'Menyetujui';
+                $logs['deskripsi'] =  'Menyetujui Kasubag Kepegawaian';
                 $logs['label'] = 'success';
                 $data['status_izin'] = 15;
                 $this->SuratIzinModel->approv($data);
@@ -214,16 +214,15 @@ class SuratIzin extends CI_Controller
             $data_post = $this->input->post();
             $id = $data_post['id_surat_izin'];
             $data = $this->SuratIzinModel->getAll(array('id_surat_izin' => $id))[$id];
-            // $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
-            // $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
             $cur_user = $this->session->userdata();
             // $logs['id_si'] = $id;
             // $logs['id_user'] = $cur_user['id'];
-            if ($data['verif_cuti'] == $cur_user['id'] && $data['status_izin'] == 10) {
+            if ($data['verif_cuti'] == $cur_user['id'] && in_array($data['status_izin'], [10, 11])) {
                 // echo "as";
                 // die();
                 $this->SuratIzinModel->approv_verif($data_post);
             }
+            $data = $this->SuratIzinModel->getAll(array('id_surat_izin' => $id))[$id];
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
             ExceptionHandler::handle($e);

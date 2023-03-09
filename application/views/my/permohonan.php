@@ -127,39 +127,33 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-6" id="status_izin">
-
-                        </div>
-
-
+                        <div class="col-lg-6" id="status_izin"> </div>
                     </div>
                     <div class="hr-line-dashed"></div>
-                    <hr>
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="col-form-label">Pegawai Cuti</div>
-                            <input id="nama_pegawai" class="form-control" readonly>
+                            <input id="nama_pegawai" class="form-control" readonly />
                         </div>
                         <div class="col-lg-6">
                             <div class="col-form-label">Pegawai Pengganti</div>
-                            <input id="nama_pengganti" class="form-control" readonly>
+                            <input id="nama_pengganti" class="form-control" readonly />
                         </div>
                         <div class="col-lg-3">
                             <div class="col-form-label">Jenis Cuti</div>
-                            <input id="nama_izin" class="form-control" readonly>
+                            <input id="nama_izin" class="form-control" readonly />
                         </div>
-                        <!-- <div class="hr-line-dashed"></div> -->
                         <div class="col-lg-7">
                             <div class="col-form-label">Tanggal Izin</div>
                             <div class="row">
                                 <div class="col">
-                                    <input name="periode_start" type="date" id="periode_start" readonly class="form-control" value="<?= !empty($dataContent['return_data']['periode_start']) ? $dataContent['return_data']['periode_start'] : date("Y-m-d") ?>">
+                                    <input name="periode_start" type="date" id="periode_start" readonly class="form-control" value="<?= !empty($dataContent['return_data']['periode_start']) ? $dataContent['return_data']['periode_start'] : date("Y-m-d") ?>" />
                                 </div>
                                 <div class="col-1 d-flex align-items-center">
                                     s.d.
                                 </div>
                                 <div class="col">
-                                    <input name="periode_end" type="date" id="periode_end" readonly class="form-control" value="<?= !empty($dataContent['return_data']['periode_end']) ? $dataContent['return_data']['periode_end'] : date("Y-m-d") ?>">
+                                    <input name="periode_end" type="date" id="periode_end" readonly class="form-control" value="<?= !empty($dataContent['return_data']['periode_end']) ? $dataContent['return_data']['periode_end'] : date("Y-m-d") ?>" />
                                 </div>
                             </div>
                         </div>
@@ -221,6 +215,7 @@
                             Close
                         </button>
                     </div>
+                </div>
             </form>
         </div>
     </div>
@@ -237,11 +232,11 @@
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="" id="id_surat_izin" name="id_surat_izin">
+                    <input type="hidden" id="id_surat_izin" name="id_surat_izin">
                     <div class="row">
                         <div class="col-lg-2">
                             <div class="col-form-label">Aksi</div>
-                            <button class="btn btn-primary" type="submit" id="save_edit_btn" data-loading-text="Loading..."><strong>Simpan Satuan</strong></button>
+                            <button class="btn btn-primary" type="submit" id="save_edit_btn" data-loading-text="Loading..."><strong>Simpan</strong></button>
                         </div>
                         <div class="col-lg-4">
                             <div class="col-form-label">Status Verifikasi</div>
@@ -345,6 +340,7 @@
                             Close
                         </button>
                     </div>
+                </div>
             </form>
         </div>
     </div>
@@ -517,12 +513,12 @@
                           <a class="deapprov dropdown-item " data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
                     `;
                 }
-                if (d['status_izin'] == '10' && curUser == d['verif_cuti']) {
+                if ((d['status_izin'] == '10' || d['status_izin'] == '11') && curUser == d['verif_cuti']) {
                     aksiBtn =
                         `<a class="verif_cuti dropdown-item"  data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv / Batal</a>
                     `;
                 }
-                if (d['status_izin'] == '11' && bagian == 2) {
+                if (d['status_izin'] == '11' && bagian == 2 && curLevel == 3) {
                     aksiBtn =
                         `<a class="approv dropdown-item"  data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
                           <a class="deapprov dropdown-item " data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
@@ -739,10 +735,12 @@
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         };
         FDataTable.on('click', '.verif_cuti', function() {
-            var jenis = $(this).data('jenis');
+            // var jenis = $(this).data('jenis');
             curData = dataSKP['surat_izin'][$(this).data('id')];
+            console.log('verf');
             console.log(curData);
             VerifModal.self.modal('show');
+            $('#verif_modal').modal('show');
             VerifModal.idSuratIzin.val(curData['id_surat_izin']);
             VerifModal.periode_start.val(curData['periode_start']);
             VerifModal.periode_end.val(curData['periode_end']);
@@ -751,15 +749,35 @@
             VerifModal.nama_pegawai.val(curData['nama_pegawai']);
             VerifModal.nama_pengganti.val(curData['nama_pengganti']);
             VerifModal.alasan.val(curData['alasan']);
+            if (curData['jenis_izin'] == '11') {
+                VerifModal.c_n.prop('required', true)
+                VerifModal.c_n1.prop('required', true)
+                VerifModal.c_n2.prop('required', true)
+                VerifModal.c_sisa_n.prop('required', true)
+                VerifModal.c_sisa_n1.prop('required', true)
+                VerifModal.c_sisa_n2.prop('required', true)
+                $('.layout_c_tahunan').show();
+            } else {
+                VerifModal.c_n.prop('required', false)
+                VerifModal.c_n1.prop('required', false)
+                VerifModal.c_n2.prop('required', false)
+                VerifModal.c_sisa_n.prop('required', false)
+                VerifModal.c_sisa_n1.prop('required', false)
+                VerifModal.c_sisa_n2.prop('required', false)
+                $('.layout_c_tahunan').hide();
+            }
             VerifModal.c_n.val(curData['c_n']);
             VerifModal.c_n1.val(curData['c_n1']);
             VerifModal.c_n2.val(curData['c_n2']);
+            VerifModal.c_sisa_n.val(curData['c_sisa_n']);
+            VerifModal.c_sisa_n1.val(curData['c_sisa_n1']);
+            VerifModal.c_sisa_n2.val(curData['c_sisa_n2']);
             if (curData['lampiran'] != null && curData['lampiran'] != '') {
                 file_lampiran = curData['lampiran'].split(".");
                 // if (file_lampiran[1] == 'pdf')
 
                 lampHtml = `<a href='<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}'> Download </a>
-                
+
                 `
                 lampHtml += `
                 <div class="col-lg-12">
@@ -772,55 +790,7 @@
 
             } else
                 VerifModal.layout_lampiran.html('<b>tidak ada lampiran</b>');
-            // Swal.fire({
-            //     title: "Konfrirmasi Approv",
-            //     text: "Data ini akan di approv anda yakin ?",
-            //     icon: "warning",
-            //     allowOutsideClick: false,
-            //     showCancelButton: true,
-            //     buttons: {
-            //         cancel: 'Batal !!',
-            //         catch: {
-            //             text: "Ya, Approv !!",
-            //             value: true,
-            //         },
-            //     },
-            // }).then((result) => {
-            //     if (!result.isConfirmed) {
-            //         return;
-            //     }
-            //     Swal.fire({
-            //         title: 'Loading Approv!',
-            //         allowOutsideClick: false,
-            //     });
-            //     Swal.showLoading()
-            //     cur_id = $(this).data('id')
-            //     $.ajax({
-            //         url: `<?= base_url() ?>${jenis}/action/approv/${cur_id}`,
-            //         'type': 'get',
-            //         data: {
-            //             jenis: jenis
-            //         },
-            //         success: function(data) {
-            //             Swal.close();
-            //             // buttonIdle(button);
-            //             var json = JSON.parse(data);
-            //             if (json['error']) {
-            //                 Swal.fire("Simpan Gagal", json['message'], "error");
-            //                 return;
-            //             }
-            //             var d = json['data']
-            //             if (jenis == 'spt')
-            //                 dataSKP[jenis][d['id_spt']] = d;
-            //             else if (jenis == 'suratizin')
-            //                 dataSKP['surat_izin'][d['id_surat_izin']] = d;
-            //             console.log(jenis);
-            //             Swal.fire("Approv Berhasil", "", "success");
-            //             renderSKP(dataSKP);
-            //         },
-            //         error: function(e) {}
-            //     });
-            // });
+
         });
 
         FDataTable.on('click', '.data_izin', function() {
@@ -838,11 +808,10 @@
             LihatModal.c_n.val(curData['c_n']);
             LihatModal.c_n1.val(curData['c_n1']);
             LihatModal.c_n2.val(curData['c_n2']);
-            LihatModal.status_izin.html(statusIzin(curData['status_izin']))
+            LihatModal.status_izin.html(statusIzin(curData['status_izin'], curData['unapprove']))
             if (curData['lampiran'] != null && curData['lampiran'] != '') {
                 file_lampiran = curData['lampiran'].split(".");
                 lampHtml = `<a href='<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}'> Download </a>
-                
                 `
                 lampHtml += `
                 <div class="col-lg-12">
@@ -850,7 +819,6 @@
                                 <iframe src="<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}"></iframe>
                             </object>
                             </div>`
-                // file_lampiran[1];
                 LihatModal.layout_lampiran.html(lampHtml);
 
             } else
@@ -872,17 +840,17 @@
                     'type': 'POST',
                     data: VerifModal.form.serialize(),
                     success: function(data) {
-                        buttonIdle(button);
+                        // buttonIdle(button);
                         var json = JSON.parse(data);
                         if (json['error']) {
                             Swal.fire("Simpan Gagal", json['message'], "error");
                             return;
                         }
-                        var satuan = json['data']
-                        dataSatuan[satuan['id_satuan']] = satuan;
+                        var d = json['data']
+                        dataSKP['surat_izin'][d['id_surat_izin']] = d;
                         Swal.fire("Simpan Berhasil", "", "success");
-                        // renderSatuan(dataSatuan);
-                        // SatuanModal.self.modal('hide');
+                        renderSKP(dataSKP);
+                        VerifModal.self.modal('hide');
                     },
                     error: function(e) {}
                 });

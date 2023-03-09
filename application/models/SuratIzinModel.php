@@ -247,10 +247,14 @@ class SuratIzinModel extends CI_Model
         $id_user = $this->session->userdata()['id'];
         if ($data['verif'] == 1) {
             $data['verif'] = $id_user;
+            $data['unapprove'] = NULL;
+
             $data['status_izin'] = 11;
         } else {
             unset($data['verif']);
+            $data['verif'] = NULL;
             $data['unapprove'] = $id_user;
+            $data['status_izin'] = 10;
         }
         // echo json_encode($data);
         // die();

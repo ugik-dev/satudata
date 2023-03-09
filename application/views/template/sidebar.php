@@ -50,9 +50,9 @@
                         <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>perjalanan-dinas"><i data-feather="box"> </i><span>Perjalanan Dinas Saya</span></a>
                     </li>
                     <!-- </li> -->
-                    <li class="sidebar-list">
+                    <!-- <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>cuti"><i data-feather="box"> </i><span>Cuti</span></a>
-                    </li>
+                    </li> -->
                     <?php $menu = User_Access($this->session->userdata('id_role'));
                     if (!empty($menu))
                         foreach ($menu as $m) {
