@@ -967,7 +967,7 @@
                                 </div>
                             </div>
                         </div>`;
-            $('#layout_aksi_btn').append(button);
+            // $('#layout_aksi_btn').append(button);
             console.log('sad');
             // console.log(button)
         }
