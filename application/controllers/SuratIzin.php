@@ -351,14 +351,14 @@ class SuratIzin extends CI_Controller
     public function print($id, $tipe)
     {
         $filter = $this->input->get();
-        $data = $this->SuratIzinModel->getAll(['id_surat_izin' => $id])[$id];
+        $data = $this->SuratIzinModel->getAll(['id_surat_izin' => $id, 'detail' => true])[$id];
 
         if ($tipe == 1)
             $this->print_spw($data);
-        // if ($tipe == 2)
-        //     $this->print_sppd($data);
-        // if ($tipe == 3)
-        //     $this->print_lpd($data);
+        if ($tipe == 2)
+            $this->print_spc($data);
+        if ($tipe == 3)
+            $this->print_form($data);
         // if ($tipe == 4)
         //     $this->print_pencairan($data);
     }
@@ -418,7 +418,7 @@ class SuratIzin extends CI_Controller
 
         $pdf = new PDF_MC_Table('P', 'mm', array(215.9, 355.6));
 
-        $pdf->SetTitle('SPT ' . $data['id_surat_izin']);
+        $pdf->SetTitle('SPW ' . $data['id_surat_izin']);
         $pdf->SetMargins(10, 5, 15, 10, 'C');
         $pdf->AddPage();
         $data_satuan =  $this->GeneralModel->getSatuan(['id_satuan' => $data['id_satuan']])[0];
@@ -437,20 +437,14 @@ class SuratIzin extends CI_Controller
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(195, 5, 'Nomor : ' . $data['no_surat_izin'], 0, 1, 'C', 0);
 
-
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(25, 5, ' ', 0, 1, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(25, 5, 'Yang bertanda tangan dibawah ini:', 0,  1, 'L', 0);
-        // $pdf->Cell(5, 5, '1. ', 0, 0, 'L', 0);
-        // $pdf->MultiCell(165, 5, !empty($data['nama_dasar']) ? $data['nama_dasar'] : $data['dasar'], 0, 'J');
-        // $pdf->Cell(25, 5, ' ', 0, 1, 'L', 0);
-        // $pdf->SetFont('Arial', 'B', 11);
-        // $pdf->Cell(195, 5, 'MEMERINTAHKAN :', 0, 1, 'C', 0);
-        // $pdf->SetFont('Arial', '', 11);
 
         $pdf->Cell(5, 5, '', 0, 1, 'L', 0);
         $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
-        $pdf->Cell(10, 5, '1.', 0, 0, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(30, 5, 'Nama', 0, 0, 'L', 0);
         $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
         $pdf->Cell(160, 5, $data['nama_pegawai'], 0, 1, 'L', 0);
@@ -459,102 +453,191 @@ class SuratIzin extends CI_Controller
         $pdf->Cell(30, 5, 'NIP', 0, 0, 'L', 0);
         $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
         $pdf->Cell(160, 5, $data['nip_pegawai'], 0, 1, 'L', 0);
-        // $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
-        // $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
-        // $pdf->Cell(30, 5, 'Pangkat/Gol', 0, 0, 'L', 0);
-        // $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-        // $pdf->Cell(160, 5, $data['pangkat_gol_pegawai'], 0, 1, 'L', 0);
-        // $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
-        // $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
-        // $pdf->Cell(30, 5, 'Jabatan', 0, 0, 'L', 0);
-        // $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-        // $pdf->MultiCell(145, 5, $data['jabatan_pegawai'], 1,  'L', 0);
-        // $i = 2;
-        // foreach ($data['pengikut'] as $pengikut) {
-        //     $pdf->Cell(5, 2, '', 0, 1, 'L', 0);
-        //     $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
-        //     $pdf->Cell(10, 5, $i . '.', 0, 0, 'L', 0);
-        //     $pdf->Cell(30, 5, 'Nama', 0, 0, 'L', 0);
-        //     $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-        //     $pdf->Cell(160, 5, $pengikut['nama'], 0, 1, 'L', 0);
-        //     $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
-        //     $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
-        //     $pdf->Cell(30, 5, 'NIP', 0, 0, 'L', 0);
-        //     $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-        //     $pdf->Cell(160, 5, $pengikut['nip'], 0, 1, 'L', 0);
-        //     $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
-        //     $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
-        //     $pdf->Cell(30, 5, 'Pangkat/Gol', 0, 0, 'L', 0);
-        //     $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-        //     $pdf->Cell(160, 5, $pengikut['pangkat_gol'], 0, 1, 'L', 0);
-        //     $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
-        //     $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
-        //     $pdf->Cell(30, 5, 'Jabatan', 0, 0, 'L', 0);
-        //     $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-        //     $pdf->MultiCell(145, 5, $pengikut['jabatan'],  1, 'L', 0);
-        //     $i++;
-        // }
+        $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(30, 5, 'Pangkat/Gol', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        $pdf->Cell(160, 5, $data['pangkat_gol_pegawai'], 0, 1, 'L', 0);
+        $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(30, 5, 'Jabatan', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        $pdf->MultiCell(145, 5, $data['jabatan_pegawai'], 0,  'L', 0);
+        $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
+        if ($data['periode_start'] == $data['periode_end']) {
+            $tanggal_ct = tanggal_indonesia($data['periode_start']);
+        } else {
+            $tanggal_ct = tanggal_indonesia($data['periode_start']) . ' sampai dengan ' . tanggal_indonesia($data['periode_end']);
+        }
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->MultiCell(177, 5, 'Selama menjalankan ' . $data['nama_izin'] . ' tanggal ' . $tanggal_ct . ' dengan ini memberikan pelimpahan wewenang untuk membantu tugas saya selama saya menjalankan ' . $data['nama_izin'] . ' tersebut kepada :', 0, 'J');
 
-        // $tujuan_text = '';
-        // $count_t = count($data['tujuan']);
-        // $i = 1;
-        // $d1 = '';
-        // $d2 = '';
-        // if ($data['jenis'] == 3) {
-        //     $t = '';
-        //     foreach ($data['tujuan'] as $tujuan) {
-        //         if ($i == 1) {
-        //             $tujuan_text .= $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' ' . 'pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
-        //         } else if ($count_t == $i) {
-        //             $tujuan_text .= ' dan ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
-        //         } else {
-        //             $tujuan_text .= ', ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
-        //             // $tujuan_text .= ', di ' . $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
-        //         }
-        //         $t = $tujuan['tempat_tujuan'];
-        //         $i++;
-        //     }
-        //     // if ($d1 != $d2) {
-        //     //     $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1) . ' sampai ' . tanggal_indonesia($d2);
-        //     // } else {
-        //     //     $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1);
-        //     // }
-        // } else {
-        //     foreach ($data['tujuan'] as $tujuan) {
-        //         if ($i == 1) {
-        //             $d1 = $tujuan['date_berangkat'];
-        //             $tujuan_text .= $tujuan['tempat_tujuan'];
-        //         } else if ($count_t == $i) {
-        //             $tujuan_text .= ' dan ' . $tujuan['tempat_tujuan'];
-        //         } else {
-        //             $tujuan_text .= ', ' . $tujuan['tempat_tujuan'];
-        //         }
-        //         if (!empty($tujuan['date_kembali']))
-        //             $d2 = $tujuan['date_kembali'];
-        //         $i++;
-        //     }
-        //     if ($d1 != $d2) {
-        //         $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1) . ' sampai ' . tanggal_indonesia($d2);
-        //     } else {
-        //         $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1);
-        //     }
-        // }
+        $pdf->Cell(15, 5, '', 0, 1, 'L', 0);
+        $pdf->Cell(15, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(30, 5, 'Nama', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        $pdf->Cell(160, 5, $data['nama_pengganti'], 0, 1, 'L', 0);
+        $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(30, 5, 'NIP', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        $pdf->Cell(160, 5, $data['nip_pengganti'], 0, 1, 'L', 0);
+        $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(30, 5, 'Pangkat/Gol', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        $pdf->Cell(160, 5, $data['pangkat_gol_pengganti'], 0, 1, 'L', 0);
+        $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(30, 5, 'Jabatan', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        $pdf->MultiCell(145, 5, $data['jabatan_pengganti'], 0,  'L', 0);
+        $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->MultiCell(177, 5, 'Demikian surat pelimpahan wewenang ini untuk dapat digunakan dengan penuh tanggung jawab sesuai ketentuan yang berlaku.', 0, 'J');
 
-        // $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
-        // $pdf->MultiCell(194, 5, 'Dalam Rangka ' . $data['maksud'] . ' di ' . $tujuan_text . '.', 0, 'J');
-        // $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
-        // $pdf->MultiCell(194, 5, 'Surat tugas ini dibuat untuk dilaksanakan dan setelah selesai, pelaksanaan tugas segera menyampaikan laporan kepada atasan langsungnya. Kepada instansi terkait, kami mohon bantuan demi kelancaran pelaksanaan tugas dimaksud.', 0, 'J');
-
-        // $pdf->SetFont('Arial', 'B', 11);
-        // $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(3, 5, "", 0, 1, 'L', 0);
         $cur_x = $pdf->getX();
         $cur_y = $pdf->GetY();
 
         $pdf->CheckPageBreak(65);
+        $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
+        $pdf->Cell(80, 5, 'Yang diberi Pelimpahan', 0, 0, 'C', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'C', 0);
+        $pdf->Cell(80, 5, 'Yang memberi Pelimpahan', 0, 0, 'C', 0);
+        $pdf->Cell(10, 30, '', 0, 1, 'C', 0);
 
+        if ($data['status_izin'] == '99' && !empty($data['sign_pelimpahan'])) {
+            $sign_pelimpahan =  $this->GeneralModel->getSign(['id' => $data['sign_pelimpahan']])[0];
+        }
+        if ($data['status_izin'] == '99' && !empty($data['sign_atasan'])) {
+            $sign_atasan =  $this->GeneralModel->getSign(['id' => $data['sign_atasan']])[0];
+        }
+        $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
+        $pdf->Cell(80, 5, !empty($sign_pelimpahan['sign_name']) ? '( ' . ucwords(strtolower($sign_pelimpahan['sign_name'])) . ' )' : '( ' . ucwords(strtolower($data['nama_pengganti'])) . ' )', 0, 0, 'C', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'C', 0);
+        $pdf->Cell(80, 5, '( ' . ucwords(strtolower($data['nama_pegawai'])) . ' )', 0, 1, 'C', 0);
+        $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
+        $pdf->Cell(80, 5, 'NIP. ' . (!empty($sign_pelimpahan['sign_nip']) ? ucwords(strtolower($sign_pelimpahan['sign_nip'])) : ' - '), 0, 0, 'C', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'C', 0);
+        $pdf->Cell(80, 5, 'NIP. ' . (!empty($data['nip_pegawai']) ? ucwords(strtolower($data['nip_pegawai'])) : ' - '), 0, 0, 'C', 0);
+        $pdf->Cell(10, 15, '', 0, 1, 'C', 0);
+        $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
+
+        if (!empty(!empty($sign_pelimpahan['sign_signature'])))
+            $pdf->Image(base_url('uploads/signature/' . $sign_pelimpahan['sign_signature']), 40, $pdf->getY() - 45, 50);
+        if (!empty(!empty($data['signature_pegawai'])))
+            $pdf->Image(base_url('uploads/signature/' . $data['signature_pegawai']), 130, $pdf->getY() - 45, 50);
+
+        $pdf->Cell(169, 5, 'Mengetahui,', 0, 1, 'C', 0);
+        $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
+        if ($sign_atasan) {
+            $pdf->Cell(169, 5, $sign_atasan['sign_title'], 0, 1, 'C', 0);
+            $pdf->Cell(10, 30, '', 0, 1, 'C', 0);
+            $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
+            $pdf->Cell(169, 5, $sign_atasan['sign_name'], 0, 1, 'C', 0);
+            $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
+            $pdf->Cell(169, 5, 'NIP. ' . $sign_atasan['sign_nip'], 0, 1, 'C', 0);
+            if (!empty(!empty($sign_atasan['sign_signature'])))
+                $pdf->Image(base_url('uploads/signature/' . $sign_atasan['sign_signature']), 85, $pdf->getY() - 39, 50);
+        }
+        $filename = 'SPW ' . $data['id_surat_izin'];
+
+        $pdf->Output('', $filename, false);
+    }
+
+    function print_spc($data)
+    {
+        require('assets/fpdf/mc_table.php');
+
+        $pdf = new PDF_MC_Table('P', 'mm', array(215.9, 355.6));
+
+        $pdf->SetTitle('SPC ' . $data['id_surat_izin']);
+        $pdf->SetMargins(10, 5, 15, 10, 'C');
+        $pdf->AddPage();
+        $data_satuan =  $this->GeneralModel->getSatuan(['id_satuan' => $data['id_satuan']])[0];
+
+        $this->kop($pdf, $data_satuan);
+
+        $pdf->SetFont('Arial', '', 9.5);
+
+        $pdf->SetFont('Arial', 'B', 11);
+        $pdf->SetFillColor(230, 230, 230);
+        $pdf->Cell(190, 7, ' ', 0, 1, 'L', 0);
+        $pdf->SetLineWidth(0.4);
+        $pdf->Line(70, $pdf->GetY() + 4.5, 144, $pdf->GetY() + 4.5);
+        $pdf->SetLineWidth(0.2);
+        $pdf->Cell(195, 5, 'SURAT PEMBERIAN ' . strtoupper($data['nama_izin']), 0, 1, 'C', 0);
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->Cell(195, 5, 'Nomor : ' . $data['no_surat_izin'], 0, 1, 'C', 0);
+
+        $pdf->SetFont('Arial', '', 11);
+        $pdf->Cell(25, 5, ' ', 0, 1, 'L', 0);
+        $pdf->Cell(5, 5, ' ', 0, 0, 'L', 0);
+        $pdf->Cell(5, 5, '1.', 0, 0, 'L', 0);
+        $pdf->Cell(25, 5, 'Diberikan ' . $data['nama_izin'] . ' untuk tahun ' . explode('-', $data['periode_start'])[0] . ' Pegawai Negeri Sipil :', 0,  1, 'L', 0);
+
+        $pdf->Cell(5, 5, '', 0, 1, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(35, 5, 'Nama', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        $pdf->Cell(160, 5, $data['nama_pegawai'], 0, 1, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(35, 5, 'NIP', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        $pdf->Cell(160, 5, $data['nip_pegawai'], 0, 1, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(35, 5, 'Pangkat/Gol', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        $pdf->Cell(160, 5, $data['pangkat_gol_pegawai'], 0, 1, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(35, 5, 'Jabatan', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        $pdf->MultiCell(145, 5, $data['jabatan_pegawai'], 0,  'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(35, 5, 'Satuan Organisasi', 0, 0, 'L', 0);
+        $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
+        if ($data_satuan['jen_satker'] == 1) {
+            $pdf->MultiCell(145, 5, $data_satuan['nama_satuan'], 0,  'L', 0);
+        } else {
+            $pdf->MultiCell(145, 5, $data_satuan['nama_satuan'] . ' Dinas Kesehatan Kabupaten Bangka', 0,  'L', 0);
+        }
+
+        $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
+        if ($data['periode_start'] == $data['periode_end']) {
+            $tanggal_ct = 'pada tanggal ' . tanggal_indonesia($data['periode_start']);
+        } else {
+            $tanggal_ct = 'mulai tanggal ' . tanggal_indonesia($data['periode_start']) . ' sampai dengan ' . tanggal_indonesia($data['periode_end']);
+        }
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->MultiCell(177, 5, 'Selama ' . $data['lama_izin'] . ' hari kerja ' . $tanggal_ct . ' dengan ketentuan sebagai berikut : ', 0, 'J');
+
+        $pdf->Cell(15, 5, '', 0, 1, 'L', 0);
+        $pdf->Cell(15, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(5, 5, 'a. ', 0, 0, 'L', 0);
+        $pdf->MultiCell(169, 5, 'Sebelum menjalankan Cuti Tahunan, wajib menyerahkan pekerjaannya kepada atasan langsung.', 0, 'J');
+        $pdf->Cell(15, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(5, 5, 'b. ', 0, 0, 'L', 0);
+        $pdf->MultiCell(169, 5, 'Setelah menjalankan Cuti Tahunan wajib melaporkan diri kepada atasan langsungnya dan bekerja kembali sebagaimana biasa.', 0, 'J');
+
+        $pdf->Cell(15, 5, '', 0, 1, 'L', 0);
+        $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
+        $pdf->Cell(5, 5, '2.', 0, 0, 'L', 0);
+        $pdf->MultiCell(169, 5, 'Demikian surat pemberian Cuti Tahunan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.', 0, 'J');
+
+        $pdf->Cell(3, 5, "", 0, 1, 'L', 0);
+        $cur_x = $pdf->getX();
+        $cur_y = $pdf->GetY();
+
+        $pdf->CheckPageBreak(65);
         if ($data['status_izin'] == '99' && !empty($data['sign_kadin'])) {
-            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $sign_atasan =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
+        }
+        $pdf->Cell(15, 10, '', 0, 1, 'C', 0);
+
+        $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
+        if ($data['status_izin'] == '99' && !empty($data['sign_kadin'])) {
+            $pdf->Cell(105, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Ditetapkan di', 0, 0, 'L', 0);
             $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
             $pdf->Cell(40, 5, $data_satuan['satuan_tempat'], 0, 1, 'L', 0);
@@ -569,33 +652,334 @@ class SuratIzin extends CI_Controller
 
             $pdf->Cell(120, 25, '', 0, 1, 'C', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
+            $pdf->SetFont('Arial', 'B', 9.5);
             $pdf->MultiCell(70, 5,  ucwords(strtolower($sign_kadin['sign_name'])), 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  $sign_kadin['sign_pangkat'], 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  'NIP. ' . $sign_kadin['sign_nip'], 0, 'L', 0);
             $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 140, $pdf->getY() - 40, 40);
-        } else {
-            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
-            $pdf->Cell(30, 5, 'Ditetapkan di', 0, 0, 'L', 0);
-            $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
-            $pdf->Cell(40, 5, '', 0, 1, 'L', 0);
-
-            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
-            $pdf->Cell(30, 5, 'Pada Tanggal', 0, 0, 'L', 0);
-            $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
-            $pdf->Cell(40, 5, '', 0, 1, 'L', 0);
-            $pdf->Cell(120, 5, '', 0, 1, 'C', 0);
-            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
-            $pdf->MultiCell(45, 5,  'ttd', 0, 'L', 0);
-            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
-            $pdf->MultiCell(45, 5,  '', 0, 'L', 0);
-            $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
-            $pdf->MultiCell(45, 5,  '', 0, 'L', 0);
         }
-        $pdf->Cell(130, 5, '', 0, 0, 'C', 0);
-        $filename = 'SPT ' . $data['id_surat_izin'];
+        $pdf->SetFont('Arial', '', 9);
+        $pdf->Cell(10, 15, '', 0, 1, 'L', 0);
+        $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
+        $pdf->MultiCell(120, 5,  "Tembusan Yth : \n1. Inspektur Inspektorat Kabupaten Bangka\n2. Kepala BKPSDMD Kabupaten Bangka\n3. Kepala BPPKAD Kabupaten Bangka", 0, 'L', 0);
+        $filename = 'SPC ' . $data['id_surat_izin'];
 
         $pdf->Output('', $filename, false);
+    }
+
+    public function print_form($data)
+    {
+        // try {
+        require('assets/fpdf/mc_table.php');
+
+        $pdf = new PDF_MC_Table('P', 'mm', array(215.9, 355.6));
+
+        $pdf->SetTitle('SPC ' . $data['id_surat_izin']);
+        $pdf->SetMargins(10, 5, 15, 10, 'C');
+        // $pdf->AddPage();
+        $data_satuan =  $this->GeneralModel->getSatuan(['id_satuan' => $data['id_satuan']])[0];
+
+        // $this->kop($pdf, $data_satuan);
+
+        $pdf->SetFont('Arial', '', 9.5);
+
+        $pdf->SetTitle('Permohonan Cuti ' . $data['nama_pegawai'] . ' ' . $data['nip_pegawai'] . ' ' . $data['periode_start'] . ' s.d. ' . $data['periode_end']);
+        $pdf->SetMargins(15, 3, 15, 10, 'C');
+        $pdf->AddPage();
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(190, 6, 'FORMULIR PERMINTAAN DAN PEMBERIAN CUTI', 0, 1, 'C');
+        $pdf->Cell(190, 3, 'Nomor:       /     /               /2022', 0, 1, 'C');
+        $pdf->Cell(190, 2, '', 0, 1, 'C');
+        $pdf->SetFont('Arial', '', 9.5);
+
+        $pdf->Cell(190, 5, 'Tanggal : ' . tanggal_indonesia($data['tanggal_pengajuan']), 0, 1, 'R');
+        $pdf->SetFont('Arial', 'B');
+        $pdf->SetFillColor(230, 230, 230);
+        $pdf->Cell(190, 5, ' I. DATA PEGAWAI', 1, 1, 'L', 0);
+        $row_1 = 30;
+        $row_2 = 20;
+        $row_3 = 20;
+        $row_4 = 35;
+        $row_a1 = 70;
+        $row_a2 =  46;
+        $row_a3 = 35;
+        $row_a4 =  42;
+        $pdf->SetFont('Arial', '', 9.5);
+
+        $pdf->row_cuti_head('Nama', $data['nama_pegawai'], 'NIP', $data['nip_pegawai']);
+        $datetime1 = date_create($data['tmt_kerja']);
+        $datetime2 = date_create($data['tanggal_pengajuan']);
+
+        // Calculates the difference between DateTime objects
+        $interval = date_diff($datetime1, $datetime2);
+        $pdf->row_cuti_head('Jabatan', $data['jabatan_pegawai'], 'Masa Kerja', $interval->format('%y Tahun %m Bulan'));
+        $pdf->row_cuti_head('Unit Kerja', 'SMK NEGERI 1 BAKAM', 'Pangkat/Gol', $data['pangkat_gol_pegawai']);
+        $pdf->Cell(50, 5, '', 0, 1, 'C');
+        $pdf->SetFont('Arial', 'B', 9.5);
+        $pdf->Cell(190, 5, ' II. JENIS CUTI YANG DIAMBIL', 1, 1, 'L', 0);
+        $pdf->SetFont('Arial', '', 9.5);
+        $pdf->Cell(80, 5, ' 1. Cuti Tahunan', 1, 0, 'L');
+        $p1x = $pdf->getX();
+        $p1y = $pdf->getY();
+        $pdf->Cell(15, 5, '', 1, 0, 'L');
+        $pdf->Cell(80, 5, ' 2. Cuti Besar', 1, 0, 'L');
+        $p2x = $pdf->getX();
+        $p2y = $pdf->getY();
+        $pdf->Cell(15, 5, '', 1, 1, 'L');
+
+        $pdf->Cell(80, 5, ' 3. Cuti Sakit ', 1, 0, 'L');
+        $p3x = $pdf->getX();
+        $p3y = $pdf->getY();
+        $pdf->Cell(15, 5, '', 1, 0, 'L');
+        $pdf->Cell(80, 5, ' 4. Cuti Melahirkan', 1, 0, 'L');
+        $p4x = $pdf->getX();
+        $p4y = $pdf->getY();
+        $pdf->Cell(15, 5, '', 1, 1, 'L');
+        $pdf->Cell(80, 5, ' 5. Cuti Karena Alasan Penting', 1, 0, 'L');
+        $p5x = $pdf->getX();
+        $p5y = $pdf->getY();
+        $pdf->Cell(15, 5, '', 1, 0, 'L');
+        $pdf->Cell(80, 5, ' 6. Cuti di Luar Tanggungan Negara', 1, 0, 'L');
+        $p6x = $pdf->getX();
+        $p6y = $pdf->getY();
+        $pdf->Cell(15, 5, '', 1, 1, 'L');
+
+        $centang = base_url('assets/img/centang.png');
+        if ($data['jenis_izin'] == 11)
+            $pdf->Image($centang, $p1x + 5, $p1y + 0, 4);
+        else if ($data['jenis_izin'] == 12)
+            $pdf->Image($centang, $p2x + 5, $p2y + 0, 4);
+        else if ($data['jenis_izin'] == 13)
+            $pdf->Image($centang, $p3x + 5, $p3y + 0, 4);
+        else if ($data['jenis_izin'] == 14)
+            $pdf->Image($centang, $p4x + 5, $p4y + 0, 4);
+        else if ($data['jenis_izin'] == 15)
+            $pdf->Image($centang, $p5x + 5, $p5y + 0, 4);
+        else if ($data['jenis_izin'] == 6)
+            $pdf->Image($centang, $p6x + 5, $p6y + 0, 4);
+
+        // $pdf->SetXY($c1x, $c1y);
+        $pdf->Cell(15, 5, '', 0, 1, 'L');
+
+        // $pdf->Cell(1, 5, '', 0, 1, 'C');
+        $pdf->SetFont('Arial', 'B');
+        $pdf->Cell(190, 7, ' III. ALASAN CUTI', 1, 1, 'L', 0);
+        $pdf->SetFont('Arial', '');
+        $pdf->MultiCell(190, 7, $data['alasan'], 1, 'C', 0);
+        $pdf->Cell(15, 5, '', 0, 1, 'L');
+        $pdf->SetFont('Arial', 'B');
+        $pdf->Cell(190, 7, ' IV. LAMANYA CUTI', 1, 1, 'L', 0);
+        $pdf->SetFont('Arial', '');
+        $pdf->Cell(28, 7, 'Selama', 1, 0, 'L');
+        $pdf->Cell(40, 7, $data['lama_izin'] . '  hari', 1, 0, 'C');
+        $pdf->Cell(30, 7, 'Mulai Tanggal', 1, 0, 'L');
+        $pdf->Cell(40, 7, tanggal_indonesia($data['periode_start']), 1, 0, 'C');
+        $pdf->Cell(12, 7, 's/d', 1, 0, 'C');
+        $pdf->Cell(40, 7, tanggal_indonesia($data['periode_end']), 1, 1, 'C');
+        $pdf->Cell(15, 5, '', 0, 1, 'L');
+
+        $pdf->SetFont('Arial', 'B');
+        $pdf->Cell(190, 7, ' V. CATATAN CUTI ***', 1, 1, 'L', 0);
+        $pdf->SetFont('Arial', '');
+
+        $pdf->Cell(7, 7, '1.', 1, 0, 'C');
+        $pdf->Cell(88, 7, 'Cuti Tahunan', 1, 0, 'L');
+        $pdf->Cell(7, 7, '2.', 1, 0, 'C');
+        $pdf->Cell(51, 7, 'Cuti Besar', 1, 0, 'L');
+        $pdf->Cell(37, 7, '', 1, 1, 'L');
+
+        $pdf->Cell(7, 7, '', 1, 0, 'C');
+        $pdf->Cell(20, 7, 'Tahun', 1, 0, 'C');
+        $pdf->Cell(15, 7, 'Sisa', 1, 0, 'C');
+        $pdf->Cell(53, 7, 'Keterangan', 1, 0, 'C');
+        $pdf->Cell(7, 7, '3.', 1, 0, 'C');
+        $pdf->Cell(51, 7, 'Cuti Sakit', 1, 0, 'L');
+        $pdf->Cell(37, 7, '', 1, 1, 'L');
+        $this_year = date('Y');
+
+        $pdf->Cell(7, 7, '', 1, 0, 'C');
+        $pdf->Cell(20, 7, explode('-', $data['periode_start'])[0], 1, 0, 'C');
+        $pdf->Cell(15, 7, $data['c_sisa_n'], 1, 0, 'C');
+        $pdf->Cell(53, 7, $data['c_n'], 1, 0, 'C');
+        $pdf->Cell(7, 7, '4.', 1, 0, 'C');
+        $pdf->Cell(51, 7, 'Cuti Melahirkan', 1, 0, 'L');
+        $pdf->Cell(37, 7, '', 1, 1, 'L');
+        $pdf->Cell(7, 7, '', 1, 0, 'C');
+        $pdf->Cell(20, 7, explode('-', $data['periode_start'])[0] - 1, 1, 0, 'C');
+        $pdf->Cell(15, 7, $data['c_sisa_n1'], 1, 0, 'C');
+        $pdf->Cell(53, 7, $data['c_n1'], 1, 0, 'C');
+        $pdf->Cell(7, 7, '5.', 1, 0, 'C');
+        $pdf->Cell(51, 7, 'Cuti Karena Alasan Penting', 1, 0, 'L');
+        $pdf->Cell(37, 7, '', 1, 1, 'L');
+
+        $pdf->Cell(7, 7, '', 1, 0, 'C');
+        $pdf->Cell(20, 7, '', 1, 0, 'C');
+        $pdf->Cell(15, 7, "", 1, 0, 'C');
+        $pdf->Cell(53, 7, '', 1, 0, 'C');
+        $pdf->Cell(7, 7, '6.', 1, 0, 'C');
+        $pdf->Cell(51, 7, 'Cuti di Luar Tanggungan Negara', 1, 0, 'L');
+        $pdf->Cell(37, 7, '', 1, 1, 'L');
+
+        $pdf->Cell(15, 5, '', 0, 1, 'L');
+        // $pdf->Cell(15, 5, '', 0, 1, 'L');
+        $pdf->SetFont('Arial', 'B');
+        $pdf->Cell(190, 7, ' V. ALAMAT SELAMA MENJALANKAN CUTI', 1, 1, 'L', 0);
+        $pdf->SetFont('Arial', '');
+        $c1x = $pdf->getX();
+        $c1y = $pdf->getY();
+
+        $pdf->CELL(120, 44, '', 1, 0, 'L');
+        $pdf->CELL(20, 7, 'Telpon', 1, 0, 'C');
+        $pdf->CELL(50, 7, $data['no_hp'], 1, 1, 'C');
+        $pdf->SetXY($c1x + 120, $c1y + 7);
+        $pdf->Cell(70, 37, "", 1, 1);
+        $pdf->SetXY($c1x, $c1y + 7);
+        $pdf->Cell(120, 7);
+        $pdf->Cell(70, 7, 'Hormat saya,', 0, 1, 'C');
+
+
+
+        $pdf->Cell(120, 20, '', 0, 1);
+        $pdf->Cell(120, 5);
+        $pdf->Cell(70, 5, $data['nama_pegawai'], 0, 1, 'C');
+
+        $pdf->Cell(120, 5);
+        $pdf->Cell(70, 5, $data['nip_pegawai'], 0, 1, 'C');
+        if (!empty($data['signature_pegawai']))
+            $pdf->Image(base_url('uploads/signature/' . $data['signature_pegawai']), 149, $pdf->getY() - 30, 40);
+        $c2x = $pdf->getX();
+        $c2y = $pdf->getY();
+        $pdf->SetXY($c1x + 6, $c1y + 6);
+        $pdf->MultiCell(110, 7, $data['alamat_izin'], 0, 'L', 0);
+        $pdf->SetXY($c2x, $c2y);
+
+        $pdf->Cell(15, 5, '', 0, 1, 'L');
+        $pdf->SetFont('Arial', 'B');
+        $pdf->Cell(190, 7, ' VI. PERTIMBANGAN ATASAN LANGSUNG **', 1, 1, 'L', 0);
+        $pdf->SetFont('Arial', '');
+        $c1x = $pdf->getX();
+        $c1y = $pdf->getY();
+
+        if ($data['status_izin'] == '99' && !empty($data['sign_atasan'])) {
+            $sign_atasan =  $this->GeneralModel->getSign(['id' => $data['sign_atasan']])[0];
+        }
+
+        $pdf->CELL(120, 44, '', 1, 0, 'L');
+        $pdf->SetXY($c1x + 120, $c1y);
+        $pdf->Cell(70, 44, "", 1, 1);
+        $pdf->SetXY($c1x, $c1y);
+        $pdf->Cell(120, 6);
+        $pdf->Cell(70, 6, $sign_atasan['sign_title'], 0, 1, 'C');
+        $pdf->Cell(120, 2);
+        $pdf->Cell(70, 2, 'Dinas Kesehatan Kabupaten Bangka', 0, 1, 'C');
+        $pdf->Cell(120, 27, '', 0, 1);
+        $pdf->Cell(120, 5);
+        $pdf->Cell(70, 5,  $sign_atasan['sign_name'], 0, 1, 'C');
+        $pdf->Cell(120, 2);
+        $pdf->Cell(70, 2, 'NIP. ' .  $sign_atasan['sign_nip'], 0, 1, 'C');
+        $pdf->Image(base_url('uploads/signature/' . $sign_atasan['sign_signature']), 149, $pdf->getY() - 35, 40);
+
+
+        $pdf->SetXY($c1x, $c1y);
+        $pdf->Cell(25, 11, "", 1, 0, 'L');
+        $pdf->Cell(29, 11, "", 1, 0, 'L');
+        $pdf->Cell(34, 11, "", 1, 0, 'L');
+        $pdf->Cell(32, 11, "", 1, 1, 'L');
+        $pdf->Cell(30, 7, "Catatan : ", 0, 1, 'L');
+        $pdf->SetXY($c1x, $c1y + 2);
+
+        $pdf->Cell(2, 7, "", 0, 0, 'L');
+        $pdf->Cell(7, 7, "", 1, 0, 'L');
+        $pdf->Cell(16, 7, "Disetujui", 0, 0, 'L');
+        $pdf->Cell(2, 7, "", 0, 0, 'L');
+        $pdf->Cell(7, 7, "", 1, 0, 'L');
+        $pdf->Cell(19, 7, "Perubahan", 0, 0, 'L');
+        $pdf->Cell(3, 7, "", 0, 0, 'L');
+        $pdf->Cell(7, 7, "", 1, 0, 'L');
+        $pdf->Cell(24, 7, "Ditangguhkan", 0, 0, 'L');
+        $pdf->Cell(3, 7, "", 0, 0, 'L');
+        $pdf->Cell(7, 7, "", 1, 0, 'L');
+        $pdf->Cell(20, 7, "Tidak disetujui", 0, 0, 'L');
+        $pdf->SetXY($c1x + 6, $c1y + 20);
+        $pdf->MultiCell(114, 6, 'cttn', 0, 'L', 0);
+
+        // if ($data['level'] != 3)
+        if ($data['status_izin'] == '99')
+            $pdf->Image($centang, $c1x + 3, $c1y + 3, 5);
+
+
+        $pdf->SetXY($c1x + 190, $c1y + 43);
+
+        $pdf->Cell(15, 5, '', 0, 1, 'L');
+        $pdf->SetFont('Arial', 'B');
+        $pdf->Cell(190, 7, ' VII. KEPUTUSAN PEJABAT YANG BERWENANG MEMBERIKAN CUTI **', 1, 1, 'L', 0);
+        $pdf->SetFont('Arial', '');
+        $c1x = $pdf->getX();
+        $c1y = $pdf->getY();
+
+        $pdf->CELL(120, 44, '', 1, 0, 'L');
+        $pdf->SetXY($c1x + 120, $c1y);
+        $pdf->Cell(70, 44, "", 1, 1);
+        $pdf->SetXY($c1x, $c1y);
+        $pdf->Cell(120, 6);
+        if ($data['status_izin'] == '99')
+            $pdf->Image($centang, $c1x + 3, $c1y + 3, 5);
+        if ($data['status_izin'] == '99' && !empty($data['sign_kadin'])) {
+            $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
+            $pdf->Cell(70, 6, "Kepala Dinas Kesehatan", 0, 1, 'C');
+            $pdf->Cell(120, 2);
+            $pdf->Cell(70, 2, 'Kabupaten Bangka', 0, 1, 'C');
+            $pdf->Cell(120, 23, '', 0, 1);
+            $pdf->Cell(120, 5);
+            $pdf->Cell(70, 5, $sign_kadin['sign_name'], 0, 1, 'C');
+            $pdf->Cell(120, 3);
+            $pdf->Cell(70, 3, $sign_kadin['sign_pangkat'], 0, 1, 'C');
+            $pdf->Cell(120, 5);
+            $pdf->Cell(70, 5, "NIP. " . $sign_kadin['sign_nip'], 0, 1, 'C');
+            $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 149, $pdf->getY() - 40, 40);
+        }
+        $pdf->SetXY($c1x, $c1y);
+
+        $pdf->Cell(25, 11, "", 1, 0, 'L');
+        $pdf->Cell(29, 11, "", 1, 0, 'L');
+        $pdf->Cell(34, 11, "", 1, 0, 'L');
+        $pdf->Cell(32, 11, "", 1, 1, 'L');
+        $pdf->Cell(30, 7, "Catatan : ", 0, 1, 'L');
+        $pdf->SetXY($c1x, $c1y + 2);
+
+        $pdf->Cell(2, 7, "", 0, 0, 'L');
+        $pdf->Cell(7, 7, "", 1, 0, 'L');
+        $pdf->Cell(16, 7, "Disetujui", 0, 0, 'L');
+        $pdf->Cell(2, 7, "", 0, 0, 'L');
+        $pdf->Cell(7, 7, "", 1, 0, 'L');
+        $pdf->Cell(19, 7, "Perubahan", 0, 0, 'L');
+        $pdf->Cell(3, 7, "", 0, 0, 'L');
+        $pdf->Cell(7, 7, "", 1, 0, 'L');
+        $pdf->Cell(24, 7, "Ditangguhkan", 0, 0, 'L');
+        $pdf->Cell(3, 7, "", 0, 0, 'L');
+        $pdf->Cell(7, 7, "", 1, 0, 'L');
+        $pdf->Cell(20, 7, "Tidak disetujui", 0, 0, 'L');
+        $pdf->SetXY($c1x + 6, $c1y + 20);
+        $pdf->MultiCell(114, 6, '________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________', 0, 'L', 0);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->MultiCell(170, 3, '
+        Catatan :
+        * Coret yang tidak perlu
+        ** Pilih salah satu dengan memberi tanda centang ( )
+        *** diisi oleh pejabat yang menangani bidang kepegawaian sebelum PNS mengajukan cuti
+        **** diberi tanda centang dan alasannya
+        N = Cuti tahun berjalan
+        N-1 = Sisa cuti 1 tahun sebelumnya
+        N-2 = Sisa cuti 2 tahun sebelumnya', 0, 'L', 0);
+
+
+        $filename = 'Form Permohonan Cuti ' . $data['id_surat_izin'];
+
+        $pdf->Output('', $filename, false);
+        // } catch (Exception $e) {
+        //     ExceptionHandler::handle($e);
+        // }
     }
 }

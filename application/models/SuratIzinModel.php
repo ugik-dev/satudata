@@ -9,8 +9,19 @@ class SuratIzinModel extends CI_Model
         $ses = $this->session->userdata();
         // echo json_encode($filter);
         // die();
-
         $this->db->select("si.*, r.nama_izin,s.verif_cuti, r.jen_izin,ro.level level_pegawai, p.nama as nama_pegawai, pg.nama as nama_pengganti");
+        if (!empty($filter['detail'])) {
+            $this->db->select('p.nip nip_pegawai,
+            p.pangkat_gol pangkat_gol_pegawai,
+            p.jabatan jabatan_pegawai,
+            p.signature signature_pegawai,
+            p.tmt_kerja,
+            p.no_hp,
+             pg.nip nip_pengganti,
+             p.pangkat_gol pangkat_gol_pengganti,
+             p.jabatan jabatan_pengganti
+             ');
+        }
         $this->db->from('surat_izin as si');
         $this->db->join('ref_jen_izin r', 'si.jenis_izin = r.id_ref_jen_izin');
         $this->db->join('users p', 'p.id = si.id_pegawai', 'LEFT');
@@ -21,15 +32,18 @@ class SuratIzinModel extends CI_Model
             $penilai =  $filter['search_approval']['data_penilai'];
             if ($penilai['level'] == 6)
                 $this->db->where("si.id_pengganti =  {$penilai['id']} OR (s.verif_cuti = {$penilai['id']}  && si.status_izin in (10, 11,15) )");
-            if ($penilai['level'] == 5)
-                $this->db->where("si.id_seksi =  {$penilai['id_seksi']}");
+            if ($penilai['level'] == 5) {
+                // echo $penilai['id_seksi'];
+                // die();
+                $this->db->where("si.id_pengganti =  {$penilai['id']} OR si.id_seksi = {$penilai['id_seksi']}");
+            }
             if ($penilai['level'] == 4 || $penilai['level'] == 3)
                 if ($penilai['id_bagian'] == 2)
                     $this->db->where("((si.id_bagian =  {$penilai['id_bagian']} and si.status_izin in (2,3,4,5,6)) OR status_izin = 11)");
                 else
                     $this->db->where("si.id_bagian =  {$penilai['id_bagian']} and si.status_izin in (2,3,4,5,6)");
             if ($penilai['level'] == 2)
-                $this->db->where("si.status_izin in (3,10,15,6,99)");
+                $this->db->where("si.status_izin in (3,10,15,6,99) ");
             if ($penilai['level'] == 1)
                 $this->db->where("si.status_izin in (15,6,99)");
             if ($penilai['level'] == 8) {
@@ -151,6 +165,8 @@ class SuratIzinModel extends CI_Model
 
     function sign($user, $title)
     {
+        if (empty($user['signature']))
+            throw new UserException('Kamu belum upload tanda tangan!');
         $sign = array(
             'sign_title' => $title,
             'sign_name' => $user['nama'],

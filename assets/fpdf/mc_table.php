@@ -132,7 +132,45 @@ class PDF_MC_Table extends FPDF
 		// print_r($h);
 		// $this->Cell($w, 4, 'xxxxxxxx', 0, 'C');
 	}
+	function row_cuti_head($label, $str_1, $label_2, $str_2)
+	{
+		$r = [30, 65, 30, 65];
+		$nb = 1;
+		$nb = max($nb, $this->NbLines($r[1], $str_1));
+		$nb = max($nb, $this->NbLines($r[3], $str_2));
+		$h = 6 * $nb;
+		$this->CheckPageBreak($h);
 
+
+
+		$w = $r[0];
+		$x = $this->GetX();
+		$y = $this->GetY();
+		$this->Rect($x, $y, $w, $h);
+		$this->MultiCell($w, 5, $label, 0, 'L');
+		$this->SetXY($x + $w, $y);
+
+		$w = $r[1];
+		$x = $this->GetX();
+		$y = $this->GetY();
+		$this->Rect($x, $y, $w, $h);
+		$this->MultiCell($w, 5, $str_1, 0, 'L');
+		$this->SetXY($x + $w, $y);
+
+		$w = $r[2];
+		$x = $this->GetX();
+		$y = $this->GetY();
+		$this->Rect($x, $y, $w, $h,);
+		$this->MultiCell($w, 5, $label_2, 0, 'L');
+		$this->SetXY($x + $w, $y);
+		$w = $r[3];
+		$x = $this->GetX();
+		$y = $this->GetY();
+		$this->Rect($x, $y, $w, $h);
+		$this->MultiCell($w, 5, $str_2, 0, 'L');
+		$this->SetXY($x + $w, $y);
+		$this->Ln($h);
+	}
 	function RowSPPD($no, $text1, $text2, $text3 = null)
 	{
 		// $i = 0;

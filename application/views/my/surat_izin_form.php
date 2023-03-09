@@ -9,7 +9,6 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-
                     <input type="hidden" name="id_skp" value="<?= !empty($dataContent['return_data']['id_skp']) ? $dataContent['return_data']['id_skp'] : '' ?>">
                     <div class="hr-line-dashed"></div>
                     <div class="col-lg-8">
@@ -231,7 +230,7 @@
                         Swal.close();
                         Swal.fire({
                             title: "Berhasil !!",
-                            text: "Hak Aksess Berhasil Diperbaharui",
+                            text: "Surat Permohonan berhasil diajukan",
                             icon: "success",
                             allowOutsideClick: true,
                             buttons: {
@@ -242,7 +241,7 @@
                             },
                         }).then((result) => {
 
-                            // location.href = "<?= base_url('skp') ?>";
+                            location.href = "<?= base_url('surat-izin') ?>";
                         });
                     }
                 });

@@ -26,10 +26,10 @@
                             <thead>
                                 <tr>
                                     <th style="width: 2%; text-align:center!important">ID</th>
-                                    <th style="width: 10%; text-align:center!important">PELIMPAHAN</th>
-                                    <th style="width: 10%; text-align:center!important">PENILAI</th>
-                                    <th style="width: 10%; text-align:center!important">JENIS</th>
-                                    <th style="width: 10%; text-align:center!important">STATUS</th>
+                                    <th style="width: 10%; text-align:center!important">Tanggal Izin</th>
+                                    <th style="width: 10%; text-align:center!important">Pengganti</th>
+                                    <th style="width: 10%; text-align:center!important">Jenis</th>
+                                    <th style="width: 10%; text-align:center!important">Status</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
                                 </tr>
                             </thead>

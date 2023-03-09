@@ -535,6 +535,11 @@
                     `<a class="data_izin dropdown-item"  data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-eye'></i> Lihat</a>
                     `;
                 // }
+                print_btn = `
+                <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>surat-izin/print/${d['id_surat_izin']}/1'><i class='fa fa-eye'></i> PDF SPW </a>
+                <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>surat-izin/print/${d['id_surat_izin']}/2'><i class='fa fa-eye'></i> PDF SPC </a>
+                        <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>surat-izin/print/${d['id_surat_izin']}/3'><i class='fa fa-eye'></i> PDF Form Cuti </a>
+                `;
                 var button = `
                            <div class="dropdown-basic">
                             <div class="dropdown">
@@ -546,12 +551,13 @@
                                     <div class="dropdown-content">
                                         ${aksiBtn}
                                         ${cek_btn}
+                                        ${print_btn}
                                     </div>
                                 </div>
                             </div>
                         </div>`;
 
-                info = 'Pengganti : ' + d['nama_pengganti'];
+                info = 'Pengganti : ' + (d['nama_pengganti'] ? d['nama_pengganti'] : '-');
                 console.log(d['unapprove']);
                 renderData.push([d['nama_izin'],
                     d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
