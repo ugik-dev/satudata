@@ -23,6 +23,7 @@
                                                     <div class=" media-body">
                                                         <h5 class="mb-1"><?= $data_profile['nama'] ?></h5>
                                                         <p><?= $data_profile['nama_role'] ?></p>
+                                                        <p><?= $data_profile['id_role'] ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -132,7 +133,6 @@
                                                 <option value="2" <?= $data_profile['jenis_pegawai'] == '2' ? 'selected' : '' ?>>Honorer</option>
                                                 <option value="3" <?= $data_profile['jenis_pegawai'] == '3' ? 'selected' : '' ?>>Out Sourcing</option>
                                             </select>
-                                            <!-- <input class="form-control" name="jenis_pegawai" type="text" value="<?= $data_profile['tempat_lahir'] ?>" /> -->
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-6">
@@ -282,7 +282,6 @@
         });
 
         $("#id_role").select2({
-            // dropdownParent: $('#formProfile .modal-content'),
             ajax: {
                 url: '<?= base_url() ?>Search/role',
                 type: "get",

@@ -68,6 +68,19 @@
                         <!-- </div>
                     <div class="row"> -->
                         <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Jenis Pegawai</label>
+                                <select class="form-control" name="jenis_pegawai" id="jenis_pegawai" require>
+                                    <option value="">-</option>
+                                    <option value="1">PNS</option>
+                                    <option value="3">PPPK</option>
+                                    <option value="2">Honorer</option>
+                                    <!-- <option value="3">Out Sourcing</option> -->
+                                </select>
+                                <!-- <input class="form-control" name="jenis_pegawai" type="text" value="<?= $data_profile['tempat_lahir'] ?>" /> -->
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="nama">Jabatan</label>
                                 <input type="text" placeholder="" class="form-control" id="jabatan" name="jabatan" required="required">
@@ -267,6 +280,8 @@
             'tanggal_lahir': $('#user_modal').find('#tanggal_lahir'),
             'tempat_lahir': $('#user_modal').find('#tempat_lahir'),
             'tmt_kerja': $('#user_modal').find('#tmt_kerja'),
+            'jenis_pegawai': $('#user_modal').find('#jenis_pegawai'),
+
             'j_k': $('#user_modal').find('#j_k'),
         }
 
@@ -542,6 +557,9 @@
             UserModal.tmt_kerja.val(currentData['tmt_kerja']);
             UserModal.nama.val(currentData['nama']);
             UserModal.j_k.val(currentData['j_k']);
+            UserModal.jenis_pegawai.val(currentData['jenis_pegawai']);
+
+
             UserModal.id_satuan.val(1);
             <?php
             if ($this->session->userdata()['id_role'] != 1) {

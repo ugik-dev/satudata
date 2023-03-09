@@ -1114,7 +1114,7 @@ class Spt extends CI_Controller
         $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(30, 5, 'Jabatan', 0, 0, 'L', 0);
         $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-        $pdf->MultiCell(145, 5, $data['jabatan_pegawai'], 1,  'L', 0);
+        $pdf->MultiCell(145, 5, $data['jabatan_pegawai'], 0,  'L', 0);
         $i = 2;
         foreach ($data['pengikut'] as $pengikut) {
             $pdf->Cell(5, 2, '', 0, 1, 'L', 0);
@@ -1137,7 +1137,7 @@ class Spt extends CI_Controller
             $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
             $pdf->Cell(30, 5, 'Jabatan', 0, 0, 'L', 0);
             $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-            $pdf->MultiCell(145, 5, $pengikut['jabatan'],  1, 'L', 0);
+            $pdf->MultiCell(145, 5, $pengikut['jabatan'],  0, 'L', 0);
             $i++;
         }
 
@@ -1150,12 +1150,14 @@ class Spt extends CI_Controller
             $t = '';
             foreach ($data['tujuan'] as $tujuan) {
                 if ($i == 1) {
-                    $tujuan_text .= $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' ' . 'pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
+                    $tujuan_text .= $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']);
+                    // $tujuan_text .= $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' ' . 'pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
                 } else if ($count_t == $i) {
-                    $tujuan_text .= ' dan ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
+                    $tujuan_text .= ' dan ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']);
+                    // $tujuan_text .= ' dan ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
                 } else {
-                    $tujuan_text .= ', ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
-                    // $tujuan_text .= ', di ' . $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
+                    $tujuan_text .= ', ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']);
+                    // $tujuan_text .= ', ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
                 }
                 $t = $tujuan['tempat_tujuan'];
                 $i++;
@@ -1187,9 +1189,15 @@ class Spt extends CI_Controller
         }
 
         $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
-        $pdf->MultiCell(194, 5, 'Dalam Rangka ' . $data['maksud'] . ' di ' . $tujuan_text . '.', 0, 'J');
-        $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
-        $pdf->MultiCell(194, 5, 'Surat tugas ini dibuat untuk dilaksanakan dan setelah selesai, pelaksanaan tugas segera menyampaikan laporan kepada atasan langsungnya. Kepada instansi terkait, kami mohon bantuan demi kelancaran pelaksanaan tugas dimaksud.', 0, 'J');
+        if ($data['jenis'] == 3) {
+            $pdf->MultiCell(194, 5, 'Untuk melaksanakan lembur ' . $data['maksud'] . ' di ' . $tujuan_text . '.', 0, 'J');
+            $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
+            $pdf->MultiCell(194, 5, 'Surat tugas ini dibuat untuk dilaksanakan dan setelah selesai, pelaksanaan tugas segera menyampaikan laporan kepada atasan langsungnya.', 0, 'J');
+        } else {
+            $pdf->MultiCell(194, 5, 'Dalam Rangka ' . $data['maksud'] . ' di ' . $tujuan_text . '.', 0, 'J');
+            $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
+            $pdf->MultiCell(194, 5, 'Surat tugas ini dibuat untuk dilaksanakan dan setelah selesai, pelaksanaan tugas segera menyampaikan laporan kepada atasan langsungnya. Kepada instansi terkait, kami mohon bantuan demi kelancaran pelaksanaan tugas dimaksud.', 0, 'J');
+        }
 
         $pdf->SetFont('Arial', 'B', 11);
         $pdf->SetFont('Arial', '', 10);
