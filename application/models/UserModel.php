@@ -164,9 +164,11 @@ class UserModel extends CI_Model
         if (!empty($data['null_seksi'])) $data['id_seksi'] = null;
         if (!empty($data['null_bagian'])) $data['id_bagian'] = null;
         if (empty($data['nip'])) $data['nip'] = null;
+        else $data['nip'] = preg_replace("/[^0-9]/", "", $data['nip']);
+        if (!empty($data['nik'])) $data['nik'] = preg_replace("/[^0-9]/", "", $data['nik']);
         if (empty($data['email'])) $data['email'] = null;
         $this->db->set(DataStructure::slice($data, [
-            'username', 'nama', 'email', 'nip', 'alamat',
+            'username', 'nama', 'email', 'nip', 'alamat', 'nik', 'nama_bank', 'no_bank',
             'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_seksi', 'pangkat_gol', 'jabatan', 'signature', 'photo',
             'pend_jenjang',  'pend_jurusan', 'j_k', 'tempat_lahir', 'tanggal_lahir', 'tmt_kerja', 'jenis_pegawai'
         ], false));

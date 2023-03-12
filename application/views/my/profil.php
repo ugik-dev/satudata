@@ -23,7 +23,6 @@
                                                     <div class=" media-body">
                                                         <h5 class="mb-1"><?= $data_profile['nama'] ?></h5>
                                                         <p><?= $data_profile['nama_role'] ?></p>
-                                                        <p><?= $data_profile['id_role'] ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -85,13 +84,18 @@
                                             <input class="form-control" name="nama" type="text" value="<?= $data_profile['nama'] ?>" />
                                         </div>
                                     </div>
-                                    <div class="col-sm-12 col-md-6">
+                                    <div class="col-sm-12 col-md-3">
                                         <div class="mb-3">
                                             <label class="form-label">NIP</label>
                                             <input class="form-control" name="nip" type="text" value="<?= $data_profile['nip'] ?>" />
                                         </div>
                                     </div>
-
+                                    <div class="col-sm-12 col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label">NIK</label>
+                                            <input class="form-control" name="nik" type="text" value="<?= $data_profile['nik'] ?>" />
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Alamat</label>
@@ -101,6 +105,18 @@
                                 </div>
                                 <hr>
                                 <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Nama Bank</label>
+                                            <input class="form-control" name="nama_bank" type="text" value="<?= $data_profile['nama_bank'] ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">No Rekening Bank</label>
+                                            <input class="form-control" name="no_bank" type="text" value="<?= $data_profile['no_bank'] ?>" />
+                                        </div>
+                                    </div>
                                     <div class="col-sm-12 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Jenjang</label>
