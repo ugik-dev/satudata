@@ -174,6 +174,14 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
+                            <div class="col-form-label">Alamat Selamat Menjalankan Cuti / Izin</div>
+                            <div class="row">
+                                <div class="col">
+                                    <textarea type="text" readonly id="alamat_izin" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-4 layout_c_tahunan">
                                     <div class="col-form-label">Tahun N</div>
@@ -299,6 +307,14 @@
                             </div>
                         </div>
                         <div class="col-lg-6">
+                            <div class="col-form-label">Alamat Selamat Menjalankan Cuti / Izin</div>
+                            <div class="row">
+                                <div class="col">
+                                    <textarea type="text" readonly id="alamat_izin" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-4 layout_c_tahunan">
                                     <div class="col-form-label">Tahun N</div>
@@ -383,6 +399,7 @@
             'c_n1': $('#verif_modal').find('#c_n1'),
             'c_n2': $('#verif_modal').find('#c_n2'),
             'alasan': $('#verif_modal').find('#alasan'),
+            'alamat_izin': $('#verif_modal').find('#alamat_izin'),
             'nama_izin': $('#verif_modal').find('#nama_izin'),
             'nama_pegawai': $('#verif_modal').find('#nama_pegawai'),
             'nama_pengganti': $('#verif_modal').find('#nama_pengganti'),
@@ -402,6 +419,7 @@
             'c_n1': $('#lihat_modal').find('#c_n1'),
             'c_n2': $('#lihat_modal').find('#c_n2'),
             'alasan': $('#lihat_modal').find('#alasan'),
+            'alamat_izin': $('#lihat_modal').find('#alamat_izin'),
             'nama_izin': $('#lihat_modal').find('#nama_izin'),
             'nama_pegawai': $('#lihat_modal').find('#nama_pegawai'),
             'nama_pengganti': $('#lihat_modal').find('#nama_pengganti'),
@@ -530,7 +548,18 @@
                           <a class="deapprov dropdown-item " data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
                     `;
                 }
-                // if ((d['status_izin'] == '99')) {
+                if ((d['status_izin'] == '50') && curLevel == 8) {
+                    aksiBtn =
+                        `<a class="approv dropdown-item"  data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
+                          <a class="deapprov dropdown-item " data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+                }
+                if ((d['status_izin'] == '51') && curLevel == 7) {
+                    aksiBtn =
+                        `<a class="approv dropdown-item"  data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
+                          <a class="deapprov dropdown-item " data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    `;
+                } // if ((d['status_izin'] == '99')) {
                 cek_btn =
                     `<a class="data_izin dropdown-item"  data-jenis='suratizin' data-id='${d['id_surat_izin']}' ><i class='fa fa-eye'></i> Lihat</a>
                     `;
@@ -764,6 +793,7 @@
             VerifModal.nama_pegawai.val(curData['nama_pegawai']);
             VerifModal.nama_pengganti.val(curData['nama_pengganti']);
             VerifModal.alasan.val(curData['alasan']);
+            VerifModal.alamat_izin.val(curData['alamat_izin']);
             if (curData['jenis_izin'] == '11') {
                 VerifModal.c_n.prop('required', true)
                 VerifModal.c_n1.prop('required', true)
@@ -820,6 +850,7 @@
             LihatModal.nama_pegawai.val(curData['nama_pegawai']);
             LihatModal.nama_pengganti.val(curData['nama_pengganti']);
             LihatModal.alasan.val(curData['alasan']);
+            LihatModal.alamat_izin.val(curData['alamat_izin']);
             LihatModal.c_n.val(curData['c_n']);
             LihatModal.c_n1.val(curData['c_n1']);
             LihatModal.c_n2.val(curData['c_n2']);
@@ -835,9 +866,8 @@
                             </object>
                             </div>`
                 LihatModal.layout_lampiran.html(lampHtml);
-
             } else
-                VerifModal.layout_lampiran.html('<b>tidak ada lampiran</b>');
+                LihatModal.layout_lampiran.html('<b>tidak ada lampiran</b>');
 
         });
         VerifModal.form.submit(function(event) {

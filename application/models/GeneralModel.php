@@ -163,7 +163,7 @@ class GeneralModel extends CI_Model
 
     public function getAllUser($filter = [])
     {
-        $this->db->select("u.*,r.*, nama_bag, nama_seksi, nama_satuan, jabatan, pangkat_gol");
+        $this->db->select("u.*,r.*, nama_bag, nama_seksi, nama_satuan, jabatan, pangkat_gol, s.jen_satker");
         $this->db->from('users as u');
         $this->db->join('roles r', 'u.id_role = r.id_role', 'LEFT');
         $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
@@ -194,7 +194,7 @@ class GeneralModel extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('sign u ');
-        if (!empty($filter['id'])) $this->db->where('id_sign', $filter['id']);
+        $this->db->where('id_sign', $filter['id']);
         $res = $this->db->get()->result_array();
         return $res;
         // return DataStructure::keyValue($res->result_array(), 'id_satuan');
@@ -227,7 +227,7 @@ class GeneralModel extends CI_Model
 
     public function getAllSatuan2($filter = [])
     {
-        $this->db->select('id_satuan as id, nama_satuan as text');
+        $this->db->select('id_satuan as id, nama_satuan as text, jen_satker as jenis');
         $this->db->from('satuan u ');
         if (!empty($filter['searchTerm'])) $this->db->where('nama_satuan like "%' . $filter['searchTerm'] . '%"');
         // searchTerm
@@ -275,6 +275,7 @@ class GeneralModel extends CI_Model
         $this->db->select('id_ref_seksi as id, nama_seksi as text');
         $this->db->from('ref_seksi u ');
         if (!empty($filter['searchTerm'])) $this->db->where('nama_seksi like "%' . $filter['searchTerm'] . '%"');
+        if (!empty($filter['bagian'])) $this->db->where('id_bidang', $filter['bagian']);
         // searchTerm
         $this->db->limit('20');
 
@@ -285,7 +286,7 @@ class GeneralModel extends CI_Model
 
     public function getAllBagian2($filter = [])
     {
-        $this->db->select('id_bagian as id, nama_bag as text');
+        $this->db->select('id_bagian as id, nama_bag as text, jenis_bagian jenis');
         $this->db->from('bagian u ');
         if (!empty($filter['searchTerm'])) $this->db->where('nama_bag like "%' . $filter['searchTerm'] . '%"');
         // searchTerm
@@ -294,6 +295,22 @@ class GeneralModel extends CI_Model
         // $this->db->join('roles r', 'u.id_role = r.id_role');
         $res = $this->db->get();
         return $res->result_array();
+    }
+
+    public function getAllRefSaker($filter = [])
+    {
+        $this->db->select('id_bagian as id, nama_bag as text, jenis_bagian jenis');
+        $this->db->from('bagian u ');
+        $res = $this->db->get();
+        $result['bagian'] =  DataStructure::keyValue($res->result_array(), 'id');
+        // $res->result_array();
+
+        $this->db->select('id_satuan as id, nama_satuan as text, jen_satker jenis');
+        $this->db->from('satuan u ');
+        $res = $this->db->get();
+        $result['satuan'] =  DataStructure::keyValue($res->result_array(), 'id');
+
+        return $result;
     }
 
     public function getAllRole2($filter = [])

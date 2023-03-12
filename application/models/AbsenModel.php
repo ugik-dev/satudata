@@ -73,7 +73,7 @@ class AbsenModel extends CI_Model
         // $this->db->select("u.*,pen.nama as nama_penilai, count(r.id_skp) as skp");
         $this->db->from('absen_location as u');
 
-        // if (!empty($filter['id_skp'])) $this->db->where('u.id_skp', $filter['id_skp']);
+        if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
         // if (!empty($filter['my_skp'])) $this->db->where('u.id_user', $this->session->userdata()['id']);
         $res = $this->db->get();
         // echo json_encode($res->result_array());

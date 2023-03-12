@@ -9,7 +9,7 @@ class SuratIzinModel extends CI_Model
         $ses = $this->session->userdata();
         // echo json_encode($filter);
         // die();
-        $this->db->select("si.*, r.nama_izin,s.verif_cuti, r.jen_izin,ro.level level_pegawai, p.nama as nama_pegawai, pg.nama as nama_pengganti");
+        $this->db->select("si.*, r.nama_izin,s.verif_cuti,s.jen_satker, r.jen_izin,ro.level level_pegawai, p.nama as nama_pegawai, pg.nama as nama_pengganti");
         if (!empty($filter['detail'])) {
             $this->db->select('p.nip nip_pegawai,
             p.pangkat_gol pangkat_gol_pegawai,
@@ -33,8 +33,6 @@ class SuratIzinModel extends CI_Model
             if ($penilai['level'] == 6)
                 $this->db->where("si.id_pengganti =  {$penilai['id']} OR (s.verif_cuti = {$penilai['id']}  && si.status_izin in (10, 11,15) )");
             if ($penilai['level'] == 5) {
-                // echo $penilai['id_seksi'];
-                // die();
                 $this->db->where("si.id_pengganti =  {$penilai['id']} OR si.id_seksi = {$penilai['id_seksi']}");
             }
             if ($penilai['level'] == 4 || $penilai['level'] == 3)
@@ -47,9 +45,8 @@ class SuratIzinModel extends CI_Model
             if ($penilai['level'] == 1)
                 $this->db->where("si.status_izin in (15,6,99)");
             if ($penilai['level'] == 8) {
-                // $this->db->where("(d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
                 $this->db->where('si.status_izin = 50');
-                $this->db->where('si.id_satuan', $penilai['id']);
+                $this->db->where('si.id_satuan', $penilai['id_satuan']);
                 // die();
                 if (!empty($filter['status_permohonan'])) {
                     if ($filter['status_permohonan'] == 'menunggu') {
@@ -63,7 +60,7 @@ class SuratIzinModel extends CI_Model
             if ($penilai['level'] == 7) {
                 // $this->db->where("(d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
                 $this->db->where('si.status_izin = 51');
-                $this->db->where('si.id_satuan', $penilai['id']);
+                $this->db->where('si.id_satuan', $penilai['id_satuan']);
                 // die();
                 if (!empty($filter['status_permohonan'])) {
                     if ($filter['status_permohonan'] == 'menunggu') {
@@ -97,6 +94,33 @@ class SuratIzinModel extends CI_Model
 
         return  DataStructure::keyValue($res->result_array(), 'id_surat_izin');
     }
+    function cek_nomor($data)
+    {
+        // $this->db->where('id_satuan', $data['id_satuan']);
+        // $satuan = $this->db->get('satuan')->result_array()[0]['kode_surat'];
+        $s3 = 'Dinkes/' . substr($data['tanggal_pengajuan'], 0, 4);
+
+        $this->db->select('no_spc , SUBSTRING_INDEX(SUBSTRING_INDEX(no_spc,"/",2),"/",-1) as x, SUBSTRING_INDEX(no_spc,"/",1),SUBSTRING_INDEX(no_spc,"/",-2)');
+        $this->db->from('surat_izin');
+        // $this->db->where('no_spt <> ""');
+        $this->db->where('SUBSTRING_INDEX(no_spc,"/",-2)', $s3);
+        $this->db->where('SUBSTRING_INDEX(no_spc,"/",1)', '910');
+        $this->db->order_by('CAST(x AS UNSIGNED INTEGER)', 'DESC');
+        $this->db->limit(1);
+        $res = $this->db->get()->result_array();
+        // echo json_encode($res);
+        // die();
+        if (!empty($res)) {
+            $num['spc'] = '910/' . ($res[0]['x'] + 1) . '/' . $s3;
+        } else {
+            $num['spc'] = '910/1/' . $s3;
+        }
+        return $num;
+        // echo json_encode($num);
+        // die();
+        // echo $num;
+    }
+
     public function getJenisSuratIzin($filter = [])
     {
         $this->db->select("*");
@@ -150,6 +174,7 @@ class SuratIzinModel extends CI_Model
         $this->db->set('status_izin', $data['status_izin']);
         if (!empty($sign['kadin'])) $this->db->set('sign_kadin', $sign['kadin']);
         if (!empty($sign['atasan'])) $this->db->set('sign_atasan', $sign['atasan']);
+        if (!empty($data['no_spc'])) $this->db->set('no_spc', $data['no_spc']);
         $this->db->where('id_surat_izin', $data['id_surat_izin']);
         $this->db->update('surat_izin');
         ExceptionHandler::handleDBError($this->db->error(), "Tambah Surat Izin", "Surat Izin");
@@ -224,7 +249,7 @@ class SuratIzinModel extends CI_Model
         // $data['id_seksi'] = $ses['id_seksi'];
         $data['tanggal_pengajuan'] = date('Y-m-d');
         $this->db->insert('surat_izin', DataStructure::slice($data, [
-            'id_pegawai', 'id_pengganti', 'jenis_izin', 'alasan', 'tanggal_pengajuan', 'periode_start', 'periode_end', 'lama_izin', 'status_izin',
+            'id_pegawai', 'id_pengganti', 'jenis_izin', 'alasan', 'tanggal_pengajuan', 'periode_start', 'periode_end', 'lama_izin', 'status_izin', 'alamat_izin',
             'c_sisa_n', 'c_sisa_n1', 'c_sisa_n2', 'c_n', 'c_n1', 'c_n2', 'lampiran',
             'id_seksi', 'id_bagian', 'id_satuan', 'atasan_1',  'atasan_2',  'atasan_3',  'atasan_4',
         ], FALSE));

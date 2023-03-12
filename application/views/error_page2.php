@@ -68,7 +68,7 @@
                         <?= $message ?> </p>
                 </div>
                 <div>
-                    <a class="btn btn-warning-gradien btn-lg" href="<?= base_url() ?>">KEMBALI KE HALAMAN UTAMA</a>
+                    <a class="btn btn-warning-gradien btn-lg" href="<?= base_url() . (!empty($redirect) ? $redirect : '') ?>">KEMBALI KE HALAMAN UTAMA</a>
                 </div>
             </div>
         </div>

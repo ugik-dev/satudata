@@ -120,35 +120,35 @@ class SuratIzin extends CI_Controller
             $logs['id_user'] = $cur_user['id'];
 
             if ($data['status_izin'] == 0) {
-                // echo $cur_user['id'] . '<br>';
-                // echo  $data['id_pengganti'];
                 if ($action == 'approv' && $data['id_pengganti'] == $cur_user['id']) {
                     $logs['deskripsi'] =  'Menyetujui pelimpahan wewenang.';
                     $logs['label'] = 'success';
                     $this->SuratIzinModel->addLogs($logs);
                     $sign =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
                     $pegawai =  $this->GeneralModel->getAllUser(['id' => $data['id_pegawai']])[$data['id_pegawai']];
-
-                    if ($pegawai['level'] == 6) {
-                        if (!empty($pegawai['id_seksi'])) {
-                            $data['status_izin'] = 1;
-                        } else {
-                            $data['status_izin'] = 2;
+                    // if ($data['jen_satker'] == 1) {
+                    if ($cur_user['jen_satker'] == 1) {
+                        if ($pegawai['level'] == 6 && $pegawai['id_satuan'] == 1) {
+                            if (!empty($pegawai['id_seksi'])) {
+                                $data['status_izin'] = 1;
+                            } else {
+                                $data['status_izin'] = 2;
+                            }
+                        } else if ($pegawai['level'] == 5) {
+                            if (!empty($pegawai['id_seksi'])) {
+                                $data['status_izin'] = 2;
+                            }
+                        } else if ($pegawai['level'] == 4 || $pegawai['level'] == 3) {
+                            $data['status_izin'] = 5;
+                        } else if ($pegawai['level'] == 2) {
+                            $data['status_izin'] = 6;
+                        } else if ($pegawai['level'] == 1) {
+                            $data['status_izin'] = 10;
                         }
-                    } else if ($pegawai['level'] == 5) {
-                        if (!empty($pegawai['id_seksi'])) {
-                            $data['status_izin'] = 2;
-                        }
-                    } else if ($pegawai['level'] == 4 || $pegawai['level'] == 3) {
-                        $data['status_izin'] = 5;
-                    } else if ($pegawai['level'] == 2) {
-                        $data['status_izin'] = 6;
-                    } else if ($pegawai['level'] == 1) {
-                        $data['status_izin'] = 10;
-                    }
-                    if ($cur_user['jen_satker'] == 2) {
+                    } else {
                         $data['status_izin'] = 50;
                     }
+                    // }
                     // echo json_encode($data);
                     // die();
                     $this->SuratIzinModel->approve_pelimpahan($data, $sign);
@@ -162,7 +162,6 @@ class SuratIzin extends CI_Controller
             if ($cur_user['level'] == 5 && $data['status_izin'] == 1) {
                 // approve kasi
             }
-
 
             if (($cur_user['level'] == 3 || $cur_user['level'] == 4) && $data['status_izin'] == 2 && ($cur_user['id_bagian'] = $data['id_bagian'])) {
                 $logs['deskripsi'] =  'Menyetujui';
@@ -189,17 +188,37 @@ class SuratIzin extends CI_Controller
                     $this->SuratIzinModel->approv($data);
                 $this->SuratIzinModel->addLogs($logs);
             } else if ($cur_user['level'] == 1 && $data['status_izin'] == 15) {
-                $logs['deskripsi'] =  'Verifikasi Cuti Oleh Admin';
+                $logs['deskripsi'] =  'Menyetuji Kepala Dinas';
                 $logs['label'] = 'success';
                 $data['status_izin'] = 99;
                 $sign['kadin'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
-                $this->SuratIzinModel->approv($data, $sign);
+                $data['no_spc'] = $this->SuratIzinModel->cek_nomor($data)['spc'];
+                // echo json_encode($data);
+                // die();
+                $this->SuratIzinModel->approv($data, $sign,);
                 $this->SuratIzinModel->addLogs($logs);
             } else if ($cur_user['level'] == 3 && $cur_user['id_bagian'] == 2 && $data['status_izin'] == 11) {
                 $logs['deskripsi'] =  'Menyetujui Kasubag Kepegawaian';
                 $logs['label'] = 'success';
                 $data['status_izin'] = 15;
                 $this->SuratIzinModel->approv($data);
+                $this->SuratIzinModel->addLogs($logs);
+            } else if ($cur_user['level'] == 8 && $cur_user['id_satuan'] == $data['id_satuan'] && $data['status_izin'] == 50) {
+                $logs['deskripsi'] =  'Menyetujui Kasubag Puskesmas';
+                $logs['label'] = 'success';
+                $data['status_izin'] = 51;
+                $this->SuratIzinModel->approv($data);
+                $this->SuratIzinModel->addLogs($logs);
+            } else if ($cur_user['level'] == 7 && $cur_user['id_satuan'] == $data['id_satuan'] && $data['status_izin'] == 51) {
+                $logs['deskripsi'] =  'Menyetujui Kepala Puskesmas Puskesmas';
+                $logs['label'] = 'success';
+                if ($data['jen_izin'] == 1) {
+                    $data['status_izin'] = 10;
+                } else {
+                    $data['status_izin'] = 99;
+                }
+                $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
+                $this->SuratIzinModel->approv($data, $sign);
                 $this->SuratIzinModel->addLogs($logs);
             }
 
@@ -311,7 +330,9 @@ class SuratIzin extends CI_Controller
             }
             if (!empty($ses['id_seksi']))
                 $data['id_seksi'] = $ses['id_seksi'];
-            $data['id_bagian'] = $ses['id_bagian'];
+            if (!empty($ses['id_bagian']))
+                $data['id_bagian'] = $ses['id_bagian'];
+
             $data['id_satuan'] = $ses['id_satuan'];
             if (!empty($_FILES['file_lampiran']['name'])) {
                 $s =  FileIO::uploadGd2('file_lampiran', 'lampiran_izin', '');
@@ -715,7 +736,7 @@ class SuratIzin extends CI_Controller
         // Calculates the difference between DateTime objects
         $interval = date_diff($datetime1, $datetime2);
         $pdf->row_cuti_head('Jabatan', $data['jabatan_pegawai'], 'Masa Kerja', $interval->format('%y Tahun %m Bulan'));
-        $pdf->row_cuti_head('Unit Kerja', 'SMK NEGERI 1 BAKAM', 'Pangkat/Gol', $data['pangkat_gol_pegawai']);
+        $pdf->row_cuti_head('Unit Kerja', $data_satuan['jen_satker'] == 1 ? 'Dinas Kesehatan Kabupaten Bangka' : ucwords(strtolower($data_satuan['nama_satuan'])) . ' - Dinas Kesehatan Kabupaten Bangka');
         $pdf->Cell(50, 5, '', 0, 1, 'C');
         $pdf->SetFont('Arial', 'B', 9.5);
         $pdf->Cell(190, 5, ' II. JENIS CUTI YANG DIAMBIL', 1, 1, 'L', 0);
@@ -741,24 +762,25 @@ class SuratIzin extends CI_Controller
         $p5x = $pdf->getX();
         $p5y = $pdf->getY();
         $pdf->Cell(15, 5, '', 1, 0, 'L');
-        $pdf->Cell(80, 5, ' 6. Cuti di Luar Tanggungan Negara', 1, 0, 'L');
+        $pdf->Cell(80, 5, '  ', 1, 0, 'L');
         $p6x = $pdf->getX();
         $p6y = $pdf->getY();
         $pdf->Cell(15, 5, '', 1, 1, 'L');
 
         $centang = base_url('assets/img/centang.png');
+        $data['jenis_izin'] = 15;
         if ($data['jenis_izin'] == 11)
             $pdf->Image($centang, $p1x + 5, $p1y + 0, 4);
-        else if ($data['jenis_izin'] == 12)
-            $pdf->Image($centang, $p2x + 5, $p2y + 0, 4);
-        else if ($data['jenis_izin'] == 13)
-            $pdf->Image($centang, $p3x + 5, $p3y + 0, 4);
-        else if ($data['jenis_izin'] == 14)
-            $pdf->Image($centang, $p4x + 5, $p4y + 0, 4);
         else if ($data['jenis_izin'] == 15)
+            $pdf->Image($centang, $p2x + 5, $p2y + 0, 4);
+        else if ($data['jenis_izin'] == 12)
+            $pdf->Image($centang, $p3x + 5, $p3y + 0, 4);
+        else if ($data['jenis_izin'] == 13)
+            $pdf->Image($centang, $p4x + 5, $p4y + 0, 4);
+        else if ($data['jenis_izin'] == 14)
             $pdf->Image($centang, $p5x + 5, $p5y + 0, 4);
-        else if ($data['jenis_izin'] == 6)
-            $pdf->Image($centang, $p6x + 5, $p6y + 0, 4);
+        // else if ($data['jenis_izin'] == 15)
+        //     $pdf->Image($centang, $p6x + 5, $p6y + 0, 4);
 
         // $pdf->SetXY($c1x, $c1y);
         $pdf->Cell(15, 5, '', 0, 1, 'L');
@@ -903,7 +925,7 @@ class SuratIzin extends CI_Controller
         $pdf->Cell(7, 7, "", 1, 0, 'L');
         $pdf->Cell(20, 7, "Tidak disetujui", 0, 0, 'L');
         $pdf->SetXY($c1x + 6, $c1y + 20);
-        $pdf->MultiCell(114, 6, 'cttn', 0, 'L', 0);
+        $pdf->MultiCell(114, 6, '', 0, 'L', 0);
 
         // if ($data['level'] != 3)
         if ($data['status_izin'] == '99')

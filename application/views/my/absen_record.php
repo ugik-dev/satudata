@@ -17,7 +17,7 @@
                             <i class="fa fa-map-marker"></i> Scan
 
                         </a>
-                        <label for="captureimage" hidden>
+                        <label for="captureimage">
                             <a class="btn btn-primary">
                                 <i class="fa fa-camera"></i>Ambil Gambar
                             </a>
@@ -86,10 +86,10 @@
                 Swal.fire("Tidak dizinkan", 'Pastikan jarak anda dengan titik absensi tidak kurang dari 75 meter!', "error");
                 return;
             }
-            // if (fieldImage.val() == '') {
-            //     Swal.fire("Gagal", 'Maaf, anda haruskan melampirkan foto!', "error");
-            //     return;
-            // }
+            if (fieldImage.val() == '') {
+                Swal.fire("Gagal", 'Maaf, anda haruskan melampirkan foto!', "error");
+                return;
+            }
             event.preventDefault();
             var url = "<?= base_url('absensi/absensi_process') ?>";
             Swal.fire({

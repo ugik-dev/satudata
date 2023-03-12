@@ -132,9 +132,12 @@ class PDF_MC_Table extends FPDF
 		// print_r($h);
 		// $this->Cell($w, 4, 'xxxxxxxx', 0, 'C');
 	}
-	function row_cuti_head($label, $str_1, $label_2, $str_2)
+	function row_cuti_head($label, $str_1, $label_2 = null, $str_2 = null)
 	{
-		$r = [30, 65, 30, 65];
+		if ($label_2 != null)
+			$r = [30, 65, 30, 65];
+		else
+			$r = [30, 160, 0, 0];
 		$nb = 1;
 		$nb = max($nb, $this->NbLines($r[1], $str_1));
 		$nb = max($nb, $this->NbLines($r[3], $str_2));

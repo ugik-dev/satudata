@@ -240,6 +240,10 @@ function statusIzin(status, unnaprove = null) {
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Verifikasi Admin Kepegawaian</b></i> `;
   else if (status == "11")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kasubag Kepegawaian </b></i> `;
+  else if (status == "50")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Kasubag </b></i> `; //pkm
+  else if (status == "51")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approve Kepala Puskesmas </b></i> `; //pkm
   else if (status == "15")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kepala Dinas </b></i> `;
   else if (status == "99")

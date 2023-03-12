@@ -82,6 +82,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-12">
+                    <div class="col-form-label">Alamat Selama Menjalankan Izin / Cuti</div>
+                    <div class="row">
+                        <div class="col">
+                            <textarea type="text" name="alamat_izin" id="alamat_izin" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-4">
                     <div class="col-form-label">Dokumen Lampiran</div>
                     <div class="row">
@@ -120,6 +128,7 @@
             'c_n': $('#c_n'),
             'c_n1': $('#c_n1'),
             'c_n2': $('#c_n2'),
+            'alamat_izin': $('#alamat_izin'),
         }
 
         var swalSaveConfigure = {
@@ -147,12 +156,12 @@
         last_kt = 1;
         UserModal.jenis_izin.on('change', function() {
             if (UserModal.jenis_izin.val() == '11') {
-                // $('.layout_c_tahunan').show();
+                $('.layout_c_tahunan').show();
                 UserModal.c_n.prop('disabled', false);
                 UserModal.c_n1.prop('disabled', false);
                 UserModal.c_n2.prop('disabled', false);
             } else {
-                // $('.layout_c_tahunan').hide();
+                $('.layout_c_tahunan').hide();
                 UserModal.c_n.prop('disabled', true);
                 UserModal.c_n1.prop('disabled', true);
                 UserModal.c_n2.prop('disabled', true);

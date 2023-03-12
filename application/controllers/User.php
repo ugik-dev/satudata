@@ -59,12 +59,14 @@ class User extends CI_Controller
         try {
             $this->SecurityModel->userOnlyGuard();
             $data_profile = $this->GeneralModel->getAllUser(array('id' => $this->session->userdata('id')))[$this->session->userdata('id')];
-            // echo json_encode($data_profile);
+            $ref  = $this->GeneralModel->getAllRefSaker();
+            // echo json_encode($ref);
             // die();
             $data = array(
                 'page' => 'my/profil',
                 'title' => 'My Profile',
-                'data_profile' => $data_profile
+                'data_profile' => $data_profile,
+                'ref_satker' => $ref
 
                 // 'dataContent' => $res_data
 

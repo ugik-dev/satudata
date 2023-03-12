@@ -161,11 +161,15 @@ class UserModel extends CI_Model
     public function editUser($data)
     {
         if (!empty($data['password'])) $this->db->set('password', md5($data['password']));
+        if (!empty($data['null_seksi'])) $data['id_seksi'] = null;
+        if (!empty($data['null_bagian'])) $data['id_bagian'] = null;
+        if (empty($data['nip'])) $data['nip'] = null;
+        if (empty($data['email'])) $data['email'] = null;
         $this->db->set(DataStructure::slice($data, [
             'username', 'nama', 'email', 'nip', 'alamat',
             'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_seksi', 'pangkat_gol', 'jabatan', 'signature', 'photo',
             'pend_jenjang',  'pend_jurusan', 'j_k', 'tempat_lahir', 'tanggal_lahir', 'tmt_kerja', 'jenis_pegawai'
-        ], TRUE));
+        ], false));
         $this->db->where('id', $data['id']);
         $this->db->update('users');
 

@@ -5,7 +5,7 @@
             <div class="form-group w-100">
                 <div class="Typeahead Typeahead--twitterUsers">
                     <div class="u-posRelative">
-                        <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search Cuba .." name="q" title="" autofocus />
+                        <input class="demo-input Typeahead-input form-control-plaintext w-100" type="text" placeholder="Search Data .." name="q" title="" autofocus />
                         <div class="spinner-border Typeahead-spinner" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
@@ -450,18 +450,24 @@
                 </li>
                 <li class="onhover-dropdown p-0 me-0">
                     <div class="media profile-media">
-                        <img class="b-r-10" src="<?= base_url() ?>assets/images/dashboard/profile.jpg" alt="" />
+                        <?php $userdata = $this->session->userdata();
+                        if (!empty($userdata['photo']))
+                            $photo = base_url('uploads/foto_profil/') . $userdata['photo'];
+                        else
+                            $photo = base_url('assets/images/dashboard/profile.jpg');
+                        ?>
+
+                        <img class="b-r-10" width=37px height="37px" src="<?= $photo ?>" alt="" />
                         <div class="media-body">
-                            <?php $userdata = $this->session->userdata(); ?>
                             <span><?= $userdata['nama'] ?></span>
                             <p class="mb-0 font-roboto">
-                                <?= $userdata['nama_role'] ?> <i class="middle fa fa-angle-down"></i>
+                                <?= $userdata['jabatan'] ?> <i class="middle fa fa-angle-down"></i>
                             </p>
                         </div>
                     </div>
                     <ul class="profile-dropdown onhover-show-div">
                         <li>
-                            <a href="<?= base_url('profil') ?>"><i data-feather="user"></i><span>Account </span></a>
+                            <a href="<?= base_url('profil') ?>"><i data-feather="user"></i><span>Profile </span></a>
                         </li>
                         <li>
                             <a href="#"><i data-feather="mail"></i><span>Inbox</span></a>

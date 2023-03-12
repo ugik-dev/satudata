@@ -17,8 +17,8 @@
             <div class="modal-body">
                 <div class="row">
 
-                    <input type="" name="id_spt" value="<?= !empty($dataContent['return_data']['id_spt']) ? $dataContent['return_data']['id_spt'] : '' ?>">
-                    <input type="" name="id_laporan" value="<?= !empty($dataContent['laporan']['id_laporan']) ? $dataContent['laporan']['id_laporan'] : '' ?>">
+                    <input type="hidden" name="id_spt" value="<?= !empty($dataContent['return_data']['id_spt']) ? $dataContent['return_data']['id_spt'] : '' ?>">
+                    <input type="hidden" name="id_laporan" value="<?= !empty($dataContent['laporan']['id_laporan']) ? $dataContent['laporan']['id_laporan'] : '' ?>">
                     <div class="col-lg-12">
                         <label for="text_laporan">Laporan </label>
                         <textarea id="text_laporan" name="text_laporan"><?= !empty($dataContent['laporan']['text_laporan']) ? $dataContent['laporan']['text_laporan'] : '' ?></textarea>
@@ -37,16 +37,7 @@
                         </script>
                     </div>
                     <div class="hr-line-dashed"></div>
-                    <div class="col-lg-12">
-                        <div class="col-form-label">Bendahara</div>
-                        <select class="select2 col-sm-12" id="id_bendahara" name="id_bendahara">
-                            <?php
-                            if (!empty($dataContent['laporan']['id_bendahara'])) {
-                                echo '<option selected value="' . $dataContent['laporan']['id_bendahara'] . '">' . $dataContent['laporan']['nama_bendahara'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
+
                     <div class="col-lg-12" id="layout_honorarium">
                         <table class="table">
                             <thead>
@@ -118,26 +109,7 @@
         };
 
 
-        $("#id_bendahara").select2({
-            ajax: {
-                url: '<?= base_url() ?>Search/pegawai',
-                type: "get",
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        'id_satuan': <?= $this->session->userdata('id_satuan') ?>,
-                        searchTerm: params.term // search term
-                    };
-                },
-                processResults: function(response) {
-                    return {
-                        results: response
-                    };
-                },
-                cache: true
-            }
-        });
+
 
         UserModal.form.submit(function(event) {
             event.preventDefault();

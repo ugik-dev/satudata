@@ -330,7 +330,14 @@
                                                 <td>Surat Perintah Perjalanan Dinas</td>
                                                 <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/2') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
                                             </tr>
-                                        <?php } ?>
+                                        <?php } else if ($dataContent['return_data']['jenis'] == 3) {
+                                        ?>
+                                            <tr>
+                                                <td>Draft Absensi</td>
+                                                <td><a href="<?= base_url('download/absensi_lembur/' . $dataContent['return_data']['id_spt']) ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
+                                            </tr>
+                                        <?php
+                                        } ?>
                                         <tr>
                                             <td>Laporan </td>
                                             <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/3') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>

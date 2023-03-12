@@ -156,20 +156,29 @@
                                     <div class="col-sm-12 col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label">Satuan</label>
-                                            <select class="select2 col-sm-12" id="id_satuan" name="id_satuan">
+                                            <select class="select2 col-sm-12" id="id_satuan" name="id_satuan" required>
                                                 <option value="<?= $data_profile['id_satuan'] ?>" selected><?= $data_profile['nama_satuan'] ?></option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-12 col-md-6">
+                                    <div class="col-sm-12 col-md-6" id="layout_bagian">
                                         <div class="mb-3">
                                             <label class="form-label">Bagian</label>
+                                            <input type="hidden" id="null_bagian" name="null_bagian" value="true" disabled>
                                             <select class="select2 col-sm-12" id="id_bagian" name="id_bagian">
                                                 <option value="<?= $data_profile['id_bagian'] ?>" selected><?= $data_profile['nama_bag'] ?></option>
                                             </select>
                                         </div>
                                     </div>
-
+                                    <div class="col-sm-12 col-md-6" id="layout_seksi">
+                                        <div class="mb-3">
+                                            <label class="form-label">Seksi</label>
+                                            <input type="hidden" id="null_seksi" name="null_seksi" value="true" disabled>
+                                            <select class="select2 col-sm-12" id="id_seksi" name="id_seksi">
+                                                <option value="<?= $data_profile['id_seksi'] ?>" selected><?= $data_profile['nama_seksi'] ?></option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <!-- <div class="col-sm-12 col-md-12">
                                 <div class="mb-3">
                                     <label class="form-label">Satuan</label>
@@ -221,9 +230,6 @@
 
 
 <script>
-    // $(".js-example-basic-single").select2();
-
-
     $(document).ready(function() {
 
         // $('#menu_1').addClass('active');
@@ -236,6 +242,18 @@
             "ordering": false,
             "info": false
         });
+        var dataSatuan = [];
+
+        function DataSturcture(data) {
+            var newData = [];
+            i = 0;
+            Object.values(data).forEach((d) => {
+                // console.log(i);
+                // i++;
+                newData[d['id']] = d;
+            })
+            return newData;
+        };
 
         $("#id_satuan").select2({
             // dropdownParent: $('#formProfile .modal-content'),
@@ -256,11 +274,38 @@
                 },
                 cache: true
             }
-
         });
-
+        RefSatker = <?= json_encode($ref_satker) ?>;
+        $("#id_satuan").on('change', function() {
+            console.log('change satyab')
+            cur_satuan = $("#id_satuan").val();
+            // dinkesvar = [1, 2, 3, 4, 5]
+            if (RefSatker['satuan'][cur_satuan]['jenis'] != 1) {
+                $('#layout_bagian , #layout_seksi').hide();
+                $("#null_bagian , #null_seksi").prop('disabled', false)
+                $("#id_bagian , #id_seksi").prop('disabled', true)
+                // $("#null_seksi").prop('disabled', false)
+                // $("#id_seksi").prop('disabled', true)
+            } else {
+                $('#layout_bagian , #layout_seksi').show();
+                $("#null_bagian , #null_seksi").prop('disabled', true)
+                $("#id_bagian , #id_seksi").prop('disabled', false)
+            }
+        });
+        $("#id_bagian").on('change', function() {
+            cur_bagian = $("#id_bagian").val();
+            // dinkesvar = [1, 2, 3, 4, 5]
+            if (RefSatker['bagian'][cur_bagian]['jenis'] != 4) {
+                $('#layout_seksi').hide();
+                $("#id_seksi").prop('disabled', true)
+                $("#null_seksi").prop('disabled', false)
+            } else {
+                $('#layout_seksi').show();
+                $("#null_seksi").prop('disabled', true)
+                $("#id_seksi").prop('disabled', false)
+            }
+        })
         $("#id_bagian").select2({
-            // dropdownParent: $('#formProfile .modal-content'),
             ajax: {
                 url: '<?= base_url() ?>Search/bagian',
                 type: "get",
@@ -280,7 +325,28 @@
             }
 
         });
+        $("#id_seksi").select2({
+            ajax: {
+                url: '<?= base_url() ?>Search/seksi',
+                type: "get",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    cur_bagian = $("#id_bagian").val();
+                    return {
+                        searchTerm: params.term,
+                        bagian: cur_bagian
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
 
+        });
         $("#id_role").select2({
             ajax: {
                 url: '<?= base_url() ?>Search/role',
@@ -302,26 +368,7 @@
 
         });
 
-        $("#id_seksi").select2({
-            dropdownParent: $('#formProfile .modal-content'),
-            ajax: {
-                url: '<?= base_url() ?>Search/bidang',
-                type: "get",
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        searchTerm: params.term // search term
-                    };
-                },
-                processResults: function(response) {
-                    return {
-                        results: response
-                    };
-                },
-                cache: true
-            }
-        });
+
 
 
 
@@ -459,5 +506,9 @@
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }
+
+        $("#id_satuan").trigger('change');
+        $("#id_bagian").trigger('change');
+
     });
 </script>

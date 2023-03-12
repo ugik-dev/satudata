@@ -408,127 +408,131 @@ class Spt extends CI_Controller
             $this->print_pencairan($data);
     }
 
-    function template_kwitansi($pdf, $dasar, $sign_pptk, $sign_bendahara, $laporan, $data, $pegawai = null)
-    { {
-            $pdf->SetFont('Arial', 'BU', 15);
-            $pdf->SetFillColor(230, 230, 230);
-            // $pdf->Cell(190, 7, ' ', 0, 1, 'L', 0);
-            $pdf->SetLineWidth(0.4);
-            $y1 = $pdf->GetY();
-            $pdf->Cell(195, 5, 'TANDA BUKTI PEMBAYARAN', 0, 1, 'C', 0);
-            $pdf->Cell(10, 4, '', 0, 1, 'L');
-            $pdf->SetFont('Arial', '', 7.5);
-            $y2 = $pdf->GetY();
-            $pdf->Cell(30, 5, 'Pembebanan Atas', 0, 0, 'L');
-            $pdf->Cell(3, 5, ':', 0, 0, 'L');
-            // $pdf->Cell(100, 5, 'Tujuan Perjalanan Dinas :', 0, 1, 'L');
-            $pdf->MultiCell(50, 5, $dasar['pembebanan_anggaran'], 0, 'L');
-            $pdf->Cell(10, 1, '', 0, 1, 'L');
-            $pdf->Cell(30, 5, 'Mata Anggaran', 0, 0, 'L');
-            $pdf->Cell(3, 5, ':', 0, 0, 'L');
-            // $pdf->Cell(100, 5, 'Tujuan Perjalanan Dinas :', 0, 1, 'L');
-            $pdf->MultiCell(50, 5, $dasar['kode_rekening'], 0, 'L');
-            $pdf->Cell(10, 1, '', 0, 1, 'L');
+    function template_kwitansi($pdf, $dasar, $laporan, $data, $sign_ppk, $sign_pptk, $bendahara, $bendahara_pem, $data_satuan, $pegawai = null)
+    {
+        $pdf->SetFont('Arial', 'BU', 15);
+        $pdf->SetFillColor(230, 230, 230);
+        // $pdf->Cell(190, 7, ' ', 0, 1, 'L', 0);
+        $pdf->SetLineWidth(0.4);
+        $y1 = $pdf->GetY();
+        $pdf->Cell(195, 5, 'TANDA BUKTI PEMBAYARAN', 0, 1, 'C', 0);
+        $pdf->Cell(10, 4, '', 0, 1, 'L');
+        $pdf->SetFont('Arial', '', 7.5);
+        $y2 = $pdf->GetY();
+        $pdf->Cell(30, 5, 'Pembebanan Atas', 0, 0, 'L');
+        $pdf->Cell(3, 5, ':', 0, 0, 'L');
+        // $pdf->Cell(100, 5, 'Tujuan Perjalanan Dinas :', 0, 1, 'L');
+        $pdf->MultiCell(50, 5, $dasar['pembebanan_anggaran'], 0, 'L');
+        $pdf->Cell(10, 1, '', 0, 1, 'L');
+        $pdf->Cell(30, 5, 'Mata Anggaran', 0, 0, 'L');
+        $pdf->Cell(3, 5, ':', 0, 0, 'L');
+        // $pdf->Cell(100, 5, 'Tujuan Perjalanan Dinas :', 0, 1, 'L');
+        $pdf->MultiCell(50, 5, $dasar['kode_rekening'], 0, 'L');
+        $pdf->Cell(10, 1, '', 0, 1, 'L');
 
-            $pdf->Cell(30, 5, 'Tahun Anggaran', 0, 0, 'L');
-            $pdf->Cell(3, 5, ':', 0, 0, 'L');
-            // $pdf->Cell(100, 5, 'Tujuan Perjalanan Dinas :', 0, 1, 'L');
-            $pdf->MultiCell(50, 5, substr($data['tgl_pengajuan'], 0, 4), 0, 'L');
-            $pdf->Cell(10, 1, '', 0, 1, 'L');
+        $pdf->Cell(30, 5, 'Tahun Anggaran', 0, 0, 'L');
+        $pdf->Cell(3, 5, ':', 0, 0, 'L');
+        // $pdf->Cell(100, 5, 'Tujuan Perjalanan Dinas :', 0, 1, 'L');
+        $pdf->MultiCell(50, 5, substr($data['tgl_pengajuan'], 0, 4), 0, 'L');
+        $pdf->Cell(10, 1, '', 0, 1, 'L');
 
-            $pdf->Cell(30, 5, 'Diperiksa Oleh', 0, 0, 'L');
-            $pdf->Cell(3, 5, ':', 0, 0, 'L');
-            // $pdf->Cell(100, 5, 'Tujuan Perjalanan Dinas :', 0, 1, 'L');
-            $pdf->MultiCell(50, 5, 'PPK SKPD', 0, 'C');
-            $pdf->Cell(10, 15, '', 0, 1, 'L');
-            $pdf->Cell(33, 5, '', 0, 0, 'L');
-            $pdf->MultiCell(50, 5, "Aria Fidianti, SKM\nNIP.  19810909 200501 2 009", 0, 'C');
+        $pdf->Cell(30, 5, 'Diperiksa Oleh', 0, 0, 'L');
+        $pdf->Cell(3, 5, ':', 0, 0, 'L');
+        // $pdf->Cell(100, 5, 'Tujuan Perjalanan Dinas :', 0, 1, 'L');
+        $pdf->MultiCell(50, 5, 'PPK SKPD', 0, 'C');
+        $pdf->Cell(10, 15, '', 0, 1, 'L');
+        $pdf->Cell(33, 5, '', 0, 0, 'L');
+        $pdf->MultiCell(50, 5, "{$bendahara['nama']}\nNIP.  " . format_nip($bendahara['nip']), 0, 'C');
 
-            $y3 = $pdf->GetY();
-            $w1 = 85;
-            $pdf->SetY($y2);
-            $pdf->Cell($w1, 5, '', 0, 0, 'L');
-            $pdf->Cell(30, 5, 'Sudah Terima Dari', 0, 0, 'L');
-            $pdf->Cell(3, 5, ':', 0, 0, 'L');
-            $pdf->MultiCell(83, 5, "Bendahara Pengeluaran Pembantu SKPD \nDinas Kesehatan Kabupaten Bangka", 0, 'L');
+        $y3 = $pdf->GetY();
+        $w1 = 85;
+        $pdf->SetY($y2);
+        $pdf->Cell($w1, 5, '', 0, 0, 'L');
+        $pdf->Cell(30, 5, 'Sudah Terima Dari', 0, 0, 'L');
+        $pdf->Cell(3, 5, ':', 0, 0, 'L');
+        // echo json_encode($data_satuan);
+        // die();
+        $pdf->MultiCell(83, 5, "Bendahara Pengeluaran Pembantu SKPD \n" . $data_satuan['nama_satuan'], 0, 'L');
 
-            $pdf->Cell(10, 5, '', 0, 1, 'L');
-            $pdf->Cell($w1, 5, '', 0, 0, 'L');
-            $pdf->Cell(30, 5, 'Tebilang', 0, 0, 'L');
-            $pdf->Cell(3, 5, ':', 0, 0, 'L');
-            $pdf->MultiCell(83, 5, terbilang(!empty($pegawai) ? $pegawai['honorarium'] : $laporan['honorarium']) . ' Rupiah', 0, 'L');
+        $pdf->Cell(10, 5, '', 0, 1, 'L');
+        $pdf->Cell($w1, 5, '', 0, 0, 'L');
+        $pdf->Cell(30, 5, 'Tebilang', 0, 0, 'L');
+        $pdf->Cell(3, 5, ':', 0, 0, 'L');
+        $pdf->MultiCell(83, 5, terbilang(!empty($pegawai) ? $pegawai['honorarium'] : $laporan['honorarium']) . ' Rupiah', 0, 'L');
 
-            $pdf->Cell(10, 5, '', 0, 1, 'L');
-            $pdf->Cell($w1, 5, '', 0, 0, 'L');
-            $pdf->Cell(30, 5, 'Yaitu Untuk', 0, 0, 'L');
-            $pdf->Cell(3, 5, ':', 0, 0, 'L');
-            if ($data['jenis'] == 3)
-                $pdf->MultiCell(83, 5, "Pembayaran lembur dalam rangka " . $data['maksud'], 0, 'L');
-            else if ($data['jenis'] == 2)
-                $pdf->MultiCell(83, 5, "Pembayaran perjalanan dinas dalam rangka " . $data['maksud'], 0, 'L');
-            $pdf->Cell(10, 10, '', 0, 1, 'L');
-            $pdf->SetFont('Arial', 'BI', 14);
-            $pdf->Cell($w1, 5, '', 0, 0, 'L');
-            $pdf->Line($pdf->GetX(), $pdf->GetY(), $pdf->GetX() + 70, $pdf->GetY());
-            // $pdf->Cell(10, 5, '                                                  ', 0, 1, 'L');
-            // $pdf->Cell($w1, 5, '', 0, 0, 'L');
-            $pdf->Cell(70, 8, 'RP. ' . number_format(!empty($pegawai) ? $pegawai['honorarium'] : $laporan['honorarium'], 2, ',', '.'), 0, 1, 'C');
-            $pdf->Cell($w1, 5, '', 0, 0, 'L');
-            $pdf->Line($pdf->GetX(), $pdf->GetY(), $pdf->GetX() + 70, $pdf->GetY());
-            $y4 = $pdf->GetY();
-            $pdf->SetFont('Arial', '', 7.5);
+        $pdf->Cell(10, 5, '', 0, 1, 'L');
+        $pdf->Cell($w1, 5, '', 0, 0, 'L');
+        $pdf->Cell(30, 5, 'Yaitu Untuk', 0, 0, 'L');
+        $pdf->Cell(3, 5, ':', 0, 0, 'L');
+        if ($data['jenis'] == 3)
+            $pdf->MultiCell(83, 5, "Pembayaran lembur dalam rangka " . $data['maksud'], 0, 'L');
+        else if ($data['jenis'] == 2)
+            $pdf->MultiCell(83, 5, "Pembayaran perjalanan dinas dalam rangka " . $data['maksud'], 0, 'L');
+        $pdf->Cell(10, 10, '', 0, 1, 'L');
+        $pdf->SetFont('Arial', 'BI', 14);
+        $pdf->Cell($w1, 5, '', 0, 0, 'L');
+        $pdf->Line($pdf->GetX(), $pdf->GetY(), $pdf->GetX() + 70, $pdf->GetY());
+        // $pdf->Cell(10, 5, '                                                  ', 0, 1, 'L');
+        // $pdf->Cell($w1, 5, '', 0, 0, 'L');
+        $pdf->Cell(70, 8, 'RP. ' . number_format(!empty($pegawai) ? $pegawai['honorarium'] : $laporan['honorarium'], 2, ',', '.'), 0, 1, 'C');
+        $pdf->Cell($w1, 5, '', 0, 0, 'L');
+        $pdf->Line($pdf->GetX(), $pdf->GetY(), $pdf->GetX() + 70, $pdf->GetY());
+        $y4 = $pdf->GetY();
+        $pdf->SetFont('Arial', '', 7.5);
 
-            if ($y4 > $y3) $fy = $y4;
-            else $fy = $y3;
-            $pdf->Line($w1 + 5, $y2, $w1 + 5, $fy);
+        if ($y4 > $y3) $fy = $y4 + 3;
+        else $fy = $y3 + 3;
+        $pdf->Line($w1 + 5, $y2, $w1 + 5, $fy);
 
-            $pdf->SetY($fy);
-            $pdf->Line(3, $fy, 212, $fy);
+        $pdf->SetY($fy);
+        $pdf->Line(3, $fy, 212, $fy);
 
-            $pdf->Cell(50, 4, 'Mengetahui :', 0, 0, 'C');
-            $pdf->Cell(55, 4, 'Mengetahui :', 0, 0, 'C');
-            $pdf->Cell(50, 4, 'Tanggal,                            ' . substr($data['tgl_pengajuan'], 0, 4), 0, 0, 'C');
+        $pdf->Cell(50, 4, 'Mengetahui :', 0, 0, 'C');
+        $pdf->Cell(55, 4, 'Mengetahui :', 0, 0, 'C');
+        $pdf->Cell(50, 4, 'Tanggal,                            ' . substr($data['tgl_pengajuan'], 0, 4), 0, 0, 'C');
 
-            $pdf->Cell(50, 4, '', 0, 1, 'C');
-            $y5 = $pdf->GetY();
-            $pdf->MultiCell(50, 4, "Kuasa Pengguna Anggaran\nDinas Kesehatan\nKabupaten Bangka", 0, 'C');
-            $pdf->SetY($y5);
-            $pdf->Cell(50, 4, '', 0, 0, 'C');
-            $pdf->MultiCell(55, 4, "Pejabat Pelaksana Teknis Kegiatan\nPPTK", 0, 'C');
-            $pdf->SetY($y5);
-            $pdf->Cell(105, 4, '', 0, 0, 'C');
-            $pdf->MultiCell(50, 4, "Bendahara Pengeluaran Pembantu", 0, 'C');
-            $pdf->SetY($y5);
-            $pdf->Cell(155, 4, '', 0, 0, 'C');
-            $pdf->MultiCell(50, 4, "Tanda Tangan Penerima ", 0, 'C');
-            $pdf->SetY($y5 + 30);
-            $pdf->MultiCell(50, 4, $data['nama_ppk'], 0, 'C');
-            $pdf->MultiCell(50, 4, 'NIP. ' . format_nip($data['nip_ppk']), 0, 'C');
+        $pdf->Cell(50, 4, '', 0, 1, 'C');
+        $y5 = $pdf->GetY();
+        $pdf->MultiCell(50, 4, "Kuasa Pengguna Anggaran\nDinas Kesehatan\nKabupaten Bangka", 0, 'C');
+        $pdf->SetY($y5);
+        $pdf->Cell(50, 4, '', 0, 0, 'C');
+        $pdf->MultiCell(55, 4, "Pejabat Pelaksana Teknis Kegiatan\nPPTK", 0, 'C');
+        $pdf->SetY($y5);
+        $pdf->Cell(105, 4, '', 0, 0, 'C');
+        $pdf->MultiCell(50, 4, "Bendahara Pengeluaran Pembantu", 0, 'C');
+        $pdf->SetY($y5);
+        $pdf->Cell(155, 4, '', 0, 0, 'C');
+        $pdf->MultiCell(50, 4, "Tanda Tangan Penerima ", 0, 'C');
+        $pdf->SetY($y5 + 30);
+        $pdf->MultiCell(50, 4, $sign_ppk['sign_name'], 0, 'C');
+        $pdf->MultiCell(50, 4, 'NIP. ' . format_nip($sign_ppk['sign_nip']), 0, 'C');
+        $y6 = $pdf->GetY();
+        $pdf->SetXY(57, $y5 + 30);
+        // echo json_encode($sign_pptk);
+        // die();
+        $pdf->MultiCell(55, 4, $sign_pptk['sign_name'], 0, 'C');
+        $pdf->SetX(57);
+        $pdf->MultiCell(55, 4, 'NIP. ' . format_nip($sign_pptk['sign_nip']), 0, 'C');
+        if ($y6 < $pdf->GetY())
             $y6 = $pdf->GetY();
-            $pdf->SetXY(57, $y5 + 30);
-            $pdf->MultiCell(55, 4, $sign_pptk['nama'], 0, 'C');
-            $pdf->SetX(57);
-            $pdf->MultiCell(55, 4, 'NIP. ' . format_nip($sign_pptk['nip']), 0, 'C');
-            if ($y6 < $pdf->GetY())
-                $y6 = $pdf->GetY();
-            $pdf->SetXY(112, $y5 + 30);
-            $pdf->MultiCell(50, 4, $sign_bendahara['nama'], 0, 'C');
-            $pdf->SetX(112);
-            $pdf->MultiCell(50, 4, 'NIP. ' . format_nip($sign_bendahara['nip']), 0, 'C');
-            if ($y6 < $pdf->GetY())
-                $y6 = $pdf->GetY();
-            $pdf->SetXY(162, $y5 + 30);
-            $pdf->MultiCell(50, 4, !empty($pegawai) ? $pegawai['nama'] : $data['nama_pegawai'], 0, 'C');
-            $pdf->SetX(162);
-            $pdf->MultiCell(50, 4, 'NIP. ' . format_nip(!empty($pegawai) ? $pegawai['nip'] : $data['nip_pegawai']), 0, 'C');
-            if ($y6 < $pdf->GetY())
-                $y6 = $pdf->GetY();
-            $pdf->Line(57, $fy, 57, $y6);
-            $pdf->Line(112, $fy, 112, $y6);
-            $pdf->Line(162, $fy, 162, $y6);
-            $pdf->cell(1, 20, '', 0, 1);
-        }
+        $pdf->SetXY(112, $y5 + 30);
+        $pdf->MultiCell(50, 4, $bendahara_pem['nama'], 0, 'C');
+        $pdf->SetX(112);
+        $pdf->MultiCell(50, 4, 'NIP. ' . format_nip($bendahara_pem['nip']), 0, 'C');
+        if ($y6 < $pdf->GetY())
+            $y6 = $pdf->GetY();
+        $pdf->SetXY(162, $y5 + 30);
+        $pdf->MultiCell(50, 4, !empty($pegawai) ? $pegawai['nama'] : $data['nama_pegawai'], 0, 'C');
+        $pdf->SetX(162);
+        $pdf->MultiCell(50, 4, 'NIP. ' . format_nip(!empty($pegawai) ? $pegawai['nip'] : $data['nip_pegawai']), 0, 'C');
+        if ($y6 < $pdf->GetY())
+            $y6 = $pdf->GetY();
+        $pdf->Line(57, $fy, 57, $y6);
+        $pdf->Line(112, $fy, 112, $y6);
+        $pdf->Line(162, $fy, 162, $y6);
+        $pdf->cell(1, 20, '', 0, 1);
     }
+
     function print_pencairan($data)
     {
         $laporan = $this->SPPDModel->getLaporan(array('id_spt' => $data['id_spt']));
@@ -544,7 +548,8 @@ class Spt extends CI_Controller
         else {
             throw new UserException('Maaf, Dasar tidak ditemukan.');
         }
-        // echo json_encode($dasar);
+        // echo json_encode($data);
+        // die();
         require('assets/fpdf/mc_table.php');
 
         $pdf = new PDF_MC_Table('P', 'mm', array(215.9, 355.6));
@@ -556,9 +561,13 @@ class Spt extends CI_Controller
         $pdf->SetMargins(7, 5, 7, 5);
         $pdf->AddPage();
         $data_satuan =  $this->GeneralModel->getSatuan(['id_satuan' => $data['id_satuan']])[0];
-        $sign_pptk = $this->GeneralModel->getSingnature($data['approve_kabid'])[$data['approve_kabid']];
-        $sign_bendahara = $this->GeneralModel->getSingnature(2427)[2427];
-        $this->template_kwitansi($pdf, $dasar, $sign_pptk, $sign_bendahara, $laporan, $data);
+        $sign_pptk = $this->GeneralModel->getSign(['id' => $data['sign_pptk']])[0];
+        $sign_ppk = $this->GeneralModel->getSign(['id' => $data['sign_ppk']])[0];
+        // die();
+
+        $bendahara = $this->GeneralModel->getSingnature($data_satuan['bendahara'])[$data_satuan['bendahara']];
+        $bendahara_pem = $this->GeneralModel->getSingnature($data_satuan['bendahara_pem'])[$data_satuan['bendahara_pem']];
+        $this->template_kwitansi($pdf, $dasar,  $laporan, $data, $sign_ppk, $sign_pptk, $bendahara, $bendahara_pem, $data_satuan);
         $pdf->SetDash(4, 2);
         $pdf->Line(3, $pdf->GetY(), 212, $pdf->GetY());
         $pdf->SetDash();
@@ -571,7 +580,7 @@ class Spt extends CI_Controller
         $i = 2;
         foreach ($data['pengikut'] as $p) {
             $pdf->cell(1, 10, '', 0, 1);
-            $this->template_kwitansi($pdf, $dasar, $sign_pptk, $sign_bendahara, $laporan, $data, $p);
+            $this->template_kwitansi($pdf, $dasar,  $laporan, $data, $sign_ppk, $sign_pptk, $bendahara, $bendahara_pem, $data_satuan, $p);
             if ($i == 1) {
                 $pdf->cell(1, 10, '', 0, 1);
                 $pdf->SetDash(4, 2);

@@ -97,7 +97,24 @@ class Absensi extends CI_Controller
     public function record()
     {
         try {
-            $res_data['location'] = $this->AbsenModel->getLocation();
+            $this->load->library('user_agent');
+            $mobile = $this->agent->is_mobile();
+            if (!$mobile) {
+                $data = array(
+                    'page' => 'error_page2',
+                    'title' => 'Error',
+                    'redirect' => 'absensi',
+                    'message' => 'Maaf halaman ini hanya dapat diaksess melalui Hand Phone',
+                );
+                $this->load->view('error_page2', $data);
+                return;
+            } else {
+                // echo 'galse';
+            }
+            // die();
+            $res_data['location'] = $this->AbsenModel->getLocation([
+                'id_satuan' => $this->session->userdata()['id_satuan']
+            ]);
             $data = array(
                 'page' => 'my/absen_record',
                 'title' => 'Record Absen',
