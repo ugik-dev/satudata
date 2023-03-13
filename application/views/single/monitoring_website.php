@@ -7,16 +7,16 @@
                         <div class="row g-3">
                             <div class="col-md-3">
                                 <label class="form-label" for="tahun">Tahun</label>
-                                <select class="form-control mr-2" name="tahun" id="tahun">
+                                <!-- <select class="form-control mr-2" name="tahun" id="tahun">
                                     <option value="">Semua Tahun</option>
                                     <option value="2023">2023</option>
                                     <option value="2022">2022</option>
-                                </select>
+                                </select> -->
                             </div>
                             <div class="col-md-7">
                                 <label class="form-label" for="pkm">Puskesmas</label>
                                 <select class='form-control select2 ' name="pkm" id="pkm">
-                                    <option value=""></option>
+                                    <option value="">Semua</option>
 
                                     <option value="bakam">Bakam</option>
                                     <option value="baturusa">Baturusa</option>
@@ -63,7 +63,7 @@
             'form': $('#toolbar_form'),
             'id_ref': $('#toolbar_form').find('#id_ref'),
             'tahun': $('#toolbar_form').find('#tahun'),
-            'layanan': $('#toolbar_form').find('#layanan'),
+            'pkm': $('#toolbar_form').find('#pkm'),
             'newBtn': $('#new_btn'),
         }
 
@@ -108,7 +108,7 @@
         toolbar.tahun.on('change', function() {
             getAllUser();
         })
-        toolbar.layanan.on('change', function() {
+        toolbar.pkm.on('change', function() {
             getAllUser();
         })
 
