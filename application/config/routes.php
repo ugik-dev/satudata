@@ -52,6 +52,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $route['default_controller'] = 'Login';
 $route['login-process'] = 'Login/loginProcess';
 $route['logout'] = 'Login/logout';
+$route['panduan'] = 'Dashboard/panduan';
 $route['aktifitas-harian'] = 'aktifitas';
 $route['aktifitas-harian/add'] = 'user/add_aktifitas';
 $route['perjalanan-dinas'] = 'user/perjadin';

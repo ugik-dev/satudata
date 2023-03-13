@@ -148,9 +148,7 @@ class SuratIzin extends CI_Controller
                     } else {
                         $data['status_izin'] = 50;
                     }
-                    // }
-                    // echo json_encode($data);
-                    // die();
+
                     $this->SuratIzinModel->approve_pelimpahan($data, $sign);
                     // $this->SPPDModel->addLogs($logs);
                     echo json_encode(array('error' => false, 'data' => $data));
@@ -305,25 +303,29 @@ class SuratIzin extends CI_Controller
             $data['id_pegawai'] = $ses['id'];
             if (empty($data['id_pengganti'])) {
                 // jika tidak ada pengganti maka
-                if (!empty($ses['id_seksi'])) {
-                    $data['id_seksi'] = $ses['id_seksi'];
-                }
-                if ($ses['level'] == 6) {
+                if ($ses['jen_satker'] == 1) {
                     if (!empty($ses['id_seksi'])) {
-                        $data['status_izin'] = 1;
-                    } else {
-                        $data['status_izin'] = 2;
+                        $data['id_seksi'] = $ses['id_seksi'];
                     }
-                } else if ($ses['level'] == 5) {
-                    if (!empty($ses['id_seksi'])) {
-                        $data['status_izin'] = 2;
+                    if ($ses['level'] == 6 && $ses['id_satuan'] == 1) {
+                        if (!empty($ses['id_seksi'])) {
+                            $data['status_izin'] = 1;
+                        } else {
+                            $data['status_izin'] = 2;
+                        }
+                    } else if ($ses['level'] == 5) {
+                        if (!empty($ses['id_seksi'])) {
+                            $data['status_izin'] = 2;
+                        }
+                    } else if ($ses['level'] == 4 || $ses['level'] == 3) {
+                        $data['status_izin'] = 5;
+                    } else if ($ses['level'] == 2) {
+                        $data['status_izin'] = 6;
+                    } else if ($ses['level'] == 1) {
+                        $data['status_izin'] = 10;
                     }
-                } else if ($ses['level'] == 4 || $ses['level'] == 3) {
-                    $data['status_izin'] = 5;
-                } else if ($ses['level'] == 2) {
-                    $data['status_izin'] = 6;
-                } else if ($ses['level'] == 1) {
-                    $data['status_izin'] = 10;
+                } else {
+                    $data['status_izin'] = 50;
                 }
             } else {
                 $data['status_izin'] = 0;
@@ -407,7 +409,7 @@ class SuratIzin extends CI_Controller
             $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
             $pdf->SetLineWidth(0.2);
         } else
-        if ($data['jen_satker'] == 2) {
+        if ($data['jen_satker'] == 2 || $data['jen_satker'] == 3) {
             // echo json_encode($data);
             $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);
             $pdf->SetFont('Arial', '', 13);
@@ -590,7 +592,7 @@ class SuratIzin extends CI_Controller
         $pdf->SetLineWidth(0.2);
         $pdf->Cell(195, 5, 'SURAT PEMBERIAN ' . strtoupper($data['nama_izin']), 0, 1, 'C', 0);
         $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(195, 5, 'Nomor : ' . $data['no_surat_izin'], 0, 1, 'C', 0);
+        $pdf->Cell(195, 5, 'Nomor : ' . $data['no_spc'], 0, 1, 'C', 0);
 
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(25, 5, ' ', 0, 1, 'L', 0);
@@ -711,7 +713,7 @@ class SuratIzin extends CI_Controller
         $pdf->AddPage();
         $pdf->SetFont('Arial', '', 10);
         $pdf->Cell(190, 6, 'FORMULIR PERMINTAAN DAN PEMBERIAN CUTI', 0, 1, 'C');
-        $pdf->Cell(190, 3, 'Nomor:       /     /               /2022', 0, 1, 'C');
+        // $pdf->Cell(190, 3, 'Nomor:       /     /               /2022', 0, 1, 'C');
         $pdf->Cell(190, 2, '', 0, 1, 'C');
         $pdf->SetFont('Arial', '', 9.5);
 
@@ -729,7 +731,7 @@ class SuratIzin extends CI_Controller
         $row_a4 =  42;
         $pdf->SetFont('Arial', '', 9.5);
 
-        $pdf->row_cuti_head('Nama', $data['nama_pegawai'], 'NIP', $data['nip_pegawai']);
+        $pdf->row_cuti_head('Nama', $data['nama_pegawai'], 'NIP', format_nip($data['nip_pegawai']));
         $datetime1 = date_create($data['tmt_kerja']);
         $datetime2 = date_create($data['tanggal_pengajuan']);
 
@@ -768,7 +770,7 @@ class SuratIzin extends CI_Controller
         $pdf->Cell(15, 5, '', 1, 1, 'L');
 
         $centang = base_url('assets/img/centang.png');
-        $data['jenis_izin'] = 15;
+        // $data['jenis_izin'] = 15;
         if ($data['jenis_izin'] == 11)
             $pdf->Image($centang, $p1x + 5, $p1y + 0, 4);
         else if ($data['jenis_izin'] == 15)
@@ -868,7 +870,7 @@ class SuratIzin extends CI_Controller
         $pdf->Cell(70, 5, $data['nama_pegawai'], 0, 1, 'C');
 
         $pdf->Cell(120, 5);
-        $pdf->Cell(70, 5, $data['nip_pegawai'], 0, 1, 'C');
+        $pdf->Cell(70, 5, format_nip($data['nip_pegawai']), 0, 1, 'C');
         if (!empty($data['signature_pegawai']))
             $pdf->Image(base_url('uploads/signature/' . $data['signature_pegawai']), 149, $pdf->getY() - 30, 40);
         $c2x = $pdf->getX();
@@ -893,14 +895,19 @@ class SuratIzin extends CI_Controller
         $pdf->Cell(70, 44, "", 1, 1);
         $pdf->SetXY($c1x, $c1y);
         $pdf->Cell(120, 6);
-        $pdf->Cell(70, 6, $sign_atasan['sign_title'], 0, 1, 'C');
-        $pdf->Cell(120, 2);
-        $pdf->Cell(70, 2, 'Dinas Kesehatan Kabupaten Bangka', 0, 1, 'C');
+        if ($data['id_satuan'] == 1) {
+            $pdf->MultiCell(70, 5, $sign_atasan['sign_title'], 0, 'C');
+            $pdf->Cell(120, 2);
+            $pdf->Cell(70, 2, 'Dinas Kesehatan Kabupaten Bangka', 0, 1, 'C');
+        } else {
+            $pdf->MultiCell(70, 5, $sign_atasan['sign_title'], 0, 'C');
+        }
+        $pdf->SetXY($c1x, $c1y + 9);
         $pdf->Cell(120, 27, '', 0, 1);
         $pdf->Cell(120, 5);
         $pdf->Cell(70, 5,  $sign_atasan['sign_name'], 0, 1, 'C');
         $pdf->Cell(120, 2);
-        $pdf->Cell(70, 2, 'NIP. ' .  $sign_atasan['sign_nip'], 0, 1, 'C');
+        $pdf->Cell(70, 2, 'NIP. ' .  format_nip($sign_atasan['sign_nip']), 0, 1, 'C');
         $pdf->Image(base_url('uploads/signature/' . $sign_atasan['sign_signature']), 149, $pdf->getY() - 35, 40);
 
 
@@ -959,7 +966,7 @@ class SuratIzin extends CI_Controller
             $pdf->Cell(120, 3);
             $pdf->Cell(70, 3, $sign_kadin['sign_pangkat'], 0, 1, 'C');
             $pdf->Cell(120, 5);
-            $pdf->Cell(70, 5, "NIP. " . $sign_kadin['sign_nip'], 0, 1, 'C');
+            $pdf->Cell(70, 5, "NIP. " . format_nip($sign_kadin['sign_nip']), 0, 1, 'C');
             $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 149, $pdf->getY() - 40, 40);
         }
         $pdf->SetXY($c1x, $c1y);
@@ -984,17 +991,17 @@ class SuratIzin extends CI_Controller
         $pdf->Cell(7, 7, "", 1, 0, 'L');
         $pdf->Cell(20, 7, "Tidak disetujui", 0, 0, 'L');
         $pdf->SetXY($c1x + 6, $c1y + 20);
-        $pdf->MultiCell(114, 6, '________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________', 0, 'L', 0);
-        $pdf->SetFont('Arial', '', 8);
-        $pdf->MultiCell(170, 3, '
-        Catatan :
-        * Coret yang tidak perlu
-        ** Pilih salah satu dengan memberi tanda centang ( )
-        *** diisi oleh pejabat yang menangani bidang kepegawaian sebelum PNS mengajukan cuti
-        **** diberi tanda centang dan alasannya
-        N = Cuti tahun berjalan
-        N-1 = Sisa cuti 1 tahun sebelumnya
-        N-2 = Sisa cuti 2 tahun sebelumnya', 0, 'L', 0);
+        // $pdf->MultiCell(114, 6, '________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________', 0, 'L', 0);
+        // $pdf->SetFont('Arial', '', 8);
+        // $pdf->MultiCell(170, 3, '
+        // Catatan :
+        // * Coret yang tidak perlu
+        // ** Pilih salah satu dengan memberi tanda centang ( )
+        // *** diisi oleh pejabat yang menangani bidang kepegawaian sebelum PNS mengajukan cuti
+        // **** diberi tanda centang dan alasannya
+        // N = Cuti tahun berjalan
+        // N-1 = Sisa cuti 1 tahun sebelumnya
+        // N-2 = Sisa cuti 2 tahun sebelumnya', 0, 'L', 0);
 
 
         $filename = 'Form Permohonan Cuti ' . $data['id_surat_izin'];

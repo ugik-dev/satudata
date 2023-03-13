@@ -20,7 +20,7 @@
                     <!-- <div class="ibox"> -->
                     <!-- <div class="ibox-content"> -->
                     <div class="table-responsive">
-                        <table id="FDataTable" class="table table-bordered table-hover" style="padding:0px">
+                        <table id="FDataTable" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th style="width: 7%; text-align:center!important">ID</th>
@@ -153,6 +153,8 @@
             'dasar_status': $('#dasar_modal').find('#dasar_status'),
             'id_ppk2': $('#dasar_modal').find('#id_ppk2'),
             'id_pptk': $('#dasar_modal').find('#id_pptk'),
+            'jen_ppk': $('#dasar_modal').find('#jen_ppk'),
+
 
         }
 
@@ -304,6 +306,7 @@
             DasarModal.dasar_status.val(currentData['dasar_status']);
             DasarModal.kode_rekening.val(currentData['kode_rekening']);
             DasarModal.nama_dasar.val(currentData['nama_dasar']);
+            DasarModal.jen_ppk.val(currentData['jen_ppk']);
             DasarModal.pembebanan_anggaran.val(currentData['pembebanan_anggaran']);
 
             var $newOption = $("<option selected='selected'></option>").val(currentData['id_ppk2']).text(currentData['nama_ppk2']);

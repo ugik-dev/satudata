@@ -75,9 +75,9 @@ class SuratIzinModel extends CI_Model
             if (!empty($filter['chk-surat-izin']) or !empty($filter['chk-surat-cuti']) or !empty($filter['chk-lembur'])) {
                 $jen = [];
                 if (!empty($filter['chk-surat-izin']))
-                    $jen[] = 1;
-                if (!empty($filter['chk-surat-cuti']))
                     $jen[] = 2;
+                if (!empty($filter['chk-surat-cuti']))
+                    $jen[] = 1;
                 // if (!empty($filter['chk-lembur']))
                 //     $jen[] = 3;
                 $this->db->where_in('r.jen_izin', $jen);

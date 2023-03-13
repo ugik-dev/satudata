@@ -85,8 +85,8 @@
             'Kepala Bidang',
             'Kepala Seksi',
             'Pegawai',
-            'Kepala Puskesmas',
-            'Kasubag Puskesmas',
+            'Kepala Puskesmas / Direktur Rumah Sakit',
+            'Kasubag Puskesmas / Rumah Sakit',
             'Pegawai Puskesmas',
         ]
         var dataSatKer = [

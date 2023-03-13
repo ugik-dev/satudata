@@ -191,13 +191,13 @@ function statusSPT(status, unnaprove) {
   else if (status == "5")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv PPTK</b></i> `;
   else if (status == "50")
-    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kasubag Puskesmas</b></i> `;
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kasubag Puskesmas / Rumah Sakit</b></i> `;
   else if (status == "51")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv PPTK</b></i> `;
   else if (status == "52")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv PPK</b></i> `;
   else if (status == "59")
-    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kepala Puskesmas</b></i> `;
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kepala Puskesmas / Direktur Rumah Sakit </b></i> `;
   else if (status == "6")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv PPK</b></i> `;
   else if (status == "11")
@@ -243,7 +243,7 @@ function statusIzin(status, unnaprove = null) {
   else if (status == "50")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Kasubag </b></i> `; //pkm
   else if (status == "51")
-    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approve Kepala Puskesmas </b></i> `; //pkm
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approve Kepala Puskesmas / Direktur Rumah Sakit </b></i> `; //pkm
   else if (status == "15")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kepala Dinas </b></i> `;
   else if (status == "99")

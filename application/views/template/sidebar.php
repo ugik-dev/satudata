@@ -65,6 +65,10 @@
                             echo '</ul> </li>';
                         }
                     ?>
+                    <!-- </li> -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>panduan"><i data-feather="help-circle"> </i><span>Panduan</span></a>
+                    </li>
                 </ul>
             </div>
             <div class="right-arrow" id="right-arrow">

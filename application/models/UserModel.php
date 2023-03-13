@@ -166,6 +166,7 @@ class UserModel extends CI_Model
         if (empty($data['nip'])) $data['nip'] = null;
         else $data['nip'] = preg_replace("/[^0-9]/", "", $data['nip']);
         if (!empty($data['nik'])) $data['nik'] = preg_replace("/[^0-9]/", "", $data['nik']);
+        else $data['nik'] = null;
         if (empty($data['email'])) $data['email'] = null;
         $this->db->set(DataStructure::slice($data, [
             'username', 'nama', 'email', 'nip', 'alamat', 'nik', 'nama_bank', 'no_bank',
