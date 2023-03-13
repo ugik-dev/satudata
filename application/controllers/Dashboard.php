@@ -5,21 +5,24 @@ class Dashboard extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->model(array('SecurityModel', 'UserModel'));
+        $this->load->model(array('SecurityModel', 'UserModel', 'GeneralModel'));
         // $this->load->helper(array('DataStructure'));
-        $this->db->db_debug = TRUE;
+        $this->db->db_debug = false;
     }
+
+    public function berita_puskesmas()
+    {
+        $filter = $this->input->get();
+        $this->GeneralModel->test_cross($filter);
+    }
+
     public function index()
     {
         try {
             $this->SecurityModel->userOnlyGuard();
-            // $filter = $this->input->get();
-            // $data = $this->AdministrationModel->getJenisDokumen($filter);
-            // $data = $this->UserModel->getNotification();
-            // echo json_encode(array("data" => $data));
             $data = array(
                 'page' => 'dashboard',
-                'title' => 'Dashboard'
+                'title' => 'Dashboard',
             );
             // echo json_encode($this->session->userdata());
             // echo json_encode(User_Access(1));

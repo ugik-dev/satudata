@@ -22699,7 +22699,7 @@ footer {
   -webkit-box-shadow: 0 0 37px rgba(8, 21, 66, 0.05);
   box-shadow: 0 0 37px rgba(8, 21, 66, 0.05);
   margin: 0 auto;
-  background-color: #fff;
+  background-color: rgba(228, 228, 228, 0.5);
 }
 .login-card .login-main .theme-form h4 {
   margin-bottom: 5px;

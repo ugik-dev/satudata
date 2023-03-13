@@ -22,7 +22,7 @@ class Ikm extends CI_Controller
 
             $data = array(
                 'page' => 'single/ikm',
-                'title' => 'Absensi Saya',
+                'title' => 'Index Kepuasan Masyarakat',
             );
 
             $this->load->view('page', $data);
