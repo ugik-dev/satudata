@@ -615,7 +615,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-4 xl-50 appointment box-col-6">
+    <!-- <div class="col-xl-4 xl-50 appointment box-col-6">
       <div class="card">
         <div class="card-header">
           <div class="header-top">
@@ -640,7 +640,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="col-md-12 box-col-12">
       <div class="card o-hidden">
