@@ -695,16 +695,18 @@
     xaxis: {
       type: "datetime",
     },
-    responsive: [{
-      breakpoint: 576,
-      options: {
-        title: {
-          style: {
-            fontSize: "16px",
+    responsive: [
+      {
+        breakpoint: 576,
+        options: {
+          title: {
+            style: {
+              fontSize: "16px",
+            },
           },
         },
       },
-    }]
+    ],
   };
   var chartannotation = new ApexCharts(
     document.querySelector("#crypto-annotation"),
@@ -1132,25 +1134,25 @@
     plotOptions: {
       candlestick: {
         colors: {
-          upward: '#FF474A',
-          downward: '#6540D1'
-        }
-      }
+          upward: "#FF474A",
+          downward: "#6540D1",
+        },
+      },
     },
     legend: {
       show: false,
     },
     fill: {
-      type: 'gradient',
+      type: "gradient",
       gradient: {
-          shade: 'dark',
-          type: 'vertical',
-          shadeIntensity: 0.2,
-          inverseColors: true,
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [0, 100],
-      }
+        shade: "dark",
+        type: "vertical",
+        shadeIntensity: 0.2,
+        inverseColors: true,
+        opacityFrom: 1,
+        opacityTo: 1,
+        stops: [0, 100],
+      },
     },
     chart: {
       height: 450,
@@ -1160,7 +1162,7 @@
       },
     },
     stroke: {
-      curve: 'smooth',
+      curve: "smooth",
       width: [1, 1],
     },
     tooltip: {
@@ -1181,22 +1183,22 @@
     xaxis: {
       type: "datetime",
       axisBorder: {
-        show: false
+        show: false,
       },
       axisTicks: {
-        show: false
-      }
+        show: false,
+      },
     },
     grid: {
       strokeDashArray: 3,
-      position: 'back', 
+      position: "back",
       row: {
-          opacity: 0.5
-      },  
+        opacity: 0.5,
+      },
       column: {
-          opacity: 0.5
-      },  
-    }
+        opacity: 0.5,
+      },
+    },
   };
 
   var chartcandlestickchart = new ApexCharts(
@@ -1253,7 +1255,7 @@
   var optionsColumn = {
     chart: {
       height: 350,
-      type: 'line',
+      type: "line",
       // animations: {
       //   enabled: true,
       //   easing: "linear",
@@ -1306,7 +1308,7 @@
     series: [
       {
         name: "Load Average",
-        type: 'column',
+        type: "column",
         data: generateMinuteWiseTimeSeries(
           new Date("12/12/2016 00:20:00").getTime(),
           12,
@@ -1317,10 +1319,10 @@
         ),
       },
       {
-        name: 'Social Media',
-        type: 'line',
-        data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16]
-      }
+        name: "Social Media",
+        type: "line",
+        data: [23, 42, 35, 27, 43, 22, 17, 31, 22, 22, 12, 16],
+      },
     ],
     title: {
       text: "Average",
@@ -1362,27 +1364,28 @@
     legend: {
       show: true,
     },
-    responsive: [{
-      breakpoint: 1366,
-      options: {
-        subtitle: {
-          style: {
-            fontSize: "18px",
+    responsive: [
+      {
+        breakpoint: 1366,
+        options: {
+          subtitle: {
+            style: {
+              fontSize: "18px",
+            },
           },
         },
       },
-    },
-    {
-      breakpoint: 992,
-      options: {
-        subtitle: {
-          style: {
-            fontSize: "16px",
+      {
+        breakpoint: 992,
+        options: {
+          subtitle: {
+            style: {
+              fontSize: "16px",
+            },
           },
         },
       },
-    }
-    ]
+    ],
   };
 
   var chartColumn = new ApexCharts(
@@ -1509,27 +1512,28 @@
       offsetY: -33,
       offsetX: 60,
     },
-    responsive: [{
-      breakpoint: 1366,
-      options: {
-        title: {
-          style: {
-            fontSize: "18px",
+    responsive: [
+      {
+        breakpoint: 1366,
+        options: {
+          title: {
+            style: {
+              fontSize: "18px",
+            },
           },
         },
       },
-    },
-    {
-      breakpoint: 992,
-      options: {
-        title: {
-          style: {
-            fontSize: "16px",
+      {
+        breakpoint: 992,
+        options: {
+          title: {
+            style: {
+              fontSize: "16px",
+            },
           },
         },
       },
-    }
-    ]
+    ],
   };
 
   var chartLine = new ApexCharts(
@@ -1580,16 +1584,18 @@
       },
     },
     colors: [CubaAdminConfig.secondary, CubaAdminConfig.primary, "#51bb25"],
-    responsive: [{
-      breakpoint: 767,
-      options: {
-        title: {
-          style: {
-            fontSize: "16px",
+    responsive: [
+      {
+        breakpoint: 767,
+        options: {
+          title: {
+            style: {
+              fontSize: "16px",
+            },
           },
         },
       },
-    }]
+    ],
   };
 
   var chartCircle = new ApexCharts(
@@ -1666,16 +1672,18 @@
     fill: {
       opacity: 1,
     },
-    responsive: [{
-      breakpoint: 767,
-      options: {
-        title: {
-          style: {
-            fontSize: "16px",
+    responsive: [
+      {
+        breakpoint: 767,
+        options: {
+          title: {
+            style: {
+              fontSize: "16px",
+            },
           },
         },
       },
-    }]
+    ],
   };
 
   var chartProgress1 = new ApexCharts(
@@ -1751,16 +1759,18 @@
         gradientToColors: [CubaAdminConfig.secondary],
       },
     },
-    responsive: [{
-      breakpoint: 767,
-      options: {
-        title: {
-          style: {
-            fontSize: "16px",
+    responsive: [
+      {
+        breakpoint: 767,
+        options: {
+          title: {
+            style: {
+              fontSize: "16px",
+            },
           },
         },
       },
-    }]
+    ],
   };
 
   var chartProgress2 = new ApexCharts(
@@ -1835,16 +1845,18 @@
     yaxis: {
       max: 100,
     },
-    responsive: [{
-      breakpoint: 767,
-      options: {
-        title: {
-          style: {
-            fontSize: "16px",
+    responsive: [
+      {
+        breakpoint: 767,
+        options: {
+          title: {
+            style: {
+              fontSize: "16px",
+            },
           },
         },
       },
-    }]
+    ],
   };
 
   var chartProgress3 = new ApexCharts(
@@ -1919,16 +1931,18 @@
     yaxis: {
       max: 100,
     },
-    responsive: [{
-      breakpoint: 767,
-      options: {
-        title: {
-          style: {
-            fontSize: "16px",
+    responsive: [
+      {
+        breakpoint: 767,
+        options: {
+          title: {
+            style: {
+              fontSize: "16px",
+            },
           },
         },
       },
-    }]
+    ],
   };
 
   var chartProgress4 = new ApexCharts(
@@ -2003,16 +2017,18 @@
     yaxis: {
       max: 100,
     },
-    responsive: [{
-      breakpoint: 767,
-      options: {
-        title: {
-          style: {
-            fontSize: "16px",
+    responsive: [
+      {
+        breakpoint: 767,
+        options: {
+          title: {
+            style: {
+              fontSize: "16px",
+            },
           },
         },
       },
-    }]
+    ],
   };
 
   var chartProgress5 = new ApexCharts(

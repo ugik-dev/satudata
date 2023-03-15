@@ -461,7 +461,7 @@
                         <div class="media-body">
                             <span><?= $userdata['nama'] ?></span>
                             <p class="mb-0 font-roboto">
-                                <?= $userdata['level'] . '-' . $userdata['nama_role'] ?> <i class="middle fa fa-angle-down"></i>
+                                <?= $userdata['nama_role'] ?> <i class="middle fa fa-angle-down"></i>
                             </p>
                         </div>
                     </div>

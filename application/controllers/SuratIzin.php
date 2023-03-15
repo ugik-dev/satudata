@@ -85,6 +85,8 @@ class SuratIzin extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
+
+
     public function edit($id)
     {
         try {
@@ -109,6 +111,32 @@ class SuratIzin extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
+    public function delete()
+    {
+        try {
+            $id = $this->input->get('id');
+            $data = $this->SuratIzinModel->getAll(array('id_surat_izin' => $id, 'id_pegawai' => $this->session->userdata('id')));
+
+            // if (empty($data[$id])) {
+            //     throw new UserException('Data tidak ditemukan!');
+            // } else {
+            //     $data = $data[$id];
+            //     if ($data['status_izin'] != 99) {
+            //         throw new UserException('Data sudah di approve tidak dapat dihapus!');
+            //     } else
+            //         $this->SuratIzinModel->delete($data);
+            // }
+            // $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
+            // $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
+            // $cur_user = $this->session->userdata();
+            // $logs['id_si'] = $id;
+            // $logs['id_user'] = $cur_user['id'];
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
     public function action($action, $id)
     {
         try {

@@ -197,8 +197,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Lembur -->
+                <!-- Daftar Pengajuan -->
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0">
@@ -222,7 +221,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Lembur -->
+                <!-- Detail SPT -->
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0">
@@ -246,8 +245,39 @@
                     </div>
                 </div>
 
-            </div>
+                <div class="faq-title">
+                    <h6>Panduan Surat Izin / Surat Cuti</h6>
+                </div>
+                <!-- Surat Izin -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed ps-0" data-bs-toggle="collapse" data-bs-target="#collapseicon_surat_izin" aria-expanded="false" aria-controls="collapseicon2">
+                                <i data-feather="help-circle"></i> Entri Surat Izin
+                            </button>
+                        </h5>
+                    </div>
+                    <div class="collapse" id="collapseicon_surat_izin" data-bs-parent="#accordionoc">
+                        <div class="card-body">
+                            <ol>
+                                <li>
+                                    Untuk melihat daftar Surat Izin terdapat pada menu "Surat Izin"
+                                </li>
+                                <li>
+                                    Untuk menambahkan surat izin baru user dapat menekan tombol "+ Tambah"
+                                    <img width="100%" src="<?= base_url() ?>assets/img/panduan/12.png" />
+                                </li>
+                                <li>
+                                    Lalu akan muncul form Surat Izin, jika sudah yakin benar tekan "Simpan".
+                                    <img width="100%" src="<?= base_url() ?>assets/img/panduan/13.png" />
+                                </li>
+                            </ol>
 
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>

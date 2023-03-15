@@ -40,6 +40,8 @@
   <script src="<?= base_url() ?>assets/js/datepicker/date-picker/datepicker.en.js"></script>
   <script src="<?= base_url() ?>assets/js/datepicker/date-picker/datepicker.custom.js"></script>
   <!-- <script src="<?= base_url() ?>assets/js/sweet-alert/sweetalert.min.js"></script> -->
+  <!-- <script src="<?= base_url() ?>assets/js/chart-widget.js"></script> -->
+
 
   <script src="<?= base_url() ?>assets/js/typeahead/handlebars.js"></script>
   <script src="<?= base_url() ?>assets/js/typeahead/typeahead.bundle.js"></script>

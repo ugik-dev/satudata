@@ -221,12 +221,14 @@ class SuratIzinModel extends CI_Model
         $this->db->update('surat_izin');
     }
 
-    public function delete_approv($data)
+    public function delete($data)
     {
         // $this->db->set('status', $st);
         // echo $data['id_surat_izin'];
         $this->db->where('id_surat_izin', $data['id_surat_izin']);
-        $this->db->delete('surat_izin_approv');
+        $this->db->where('id_pegawai', $data['id_pegawai']);
+        $this->db->where('status <> 99');
+        $this->db->delete('surat_izin');
     }
 
     public function deleteMySKP($data)

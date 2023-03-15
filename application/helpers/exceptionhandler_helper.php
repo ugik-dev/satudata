@@ -15,6 +15,8 @@ class ExceptionHandler
     switch ($e['code']) {
       case 0:
         return;
+      case 2002:
+        throw new UserException("Gagal menghubungkan ke server " . $resourceName . "!", $e['code']);
       case 1062:
         throw new UserException($aksi . " gagal! " . $e['message'], $e['code']);
       case 1451:
