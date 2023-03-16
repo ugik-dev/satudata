@@ -644,8 +644,12 @@ class SPPDModel extends CI_Model
             $this->db->set('approve_kasi', $ses['id']);
             if ($data_spt['jenis'] == '1') {
                 $this->db->set('status', '59');
-            } else
-                $this->db->set('status', '51');
+            } else {
+                if ($ap_pptk) {
+                    $this->db->set('status', '52');
+                } else
+                    $this->db->set('status', '51');
+            }
         } else if ($data_spt['status'] == '59' && $ses['level'] == 7) {
             $nomor = $this->cek_nomor($data_spt);
             $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
