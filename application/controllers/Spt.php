@@ -978,12 +978,14 @@ class Spt extends CI_Controller
         $pdf->Cell(30, 19, "", 0, 1);
         // $pdf->Cell(30, 1, "", 1, 1);
         $pdf->SetX($cur_x + 108);
-        $pdf->Cell(80, 5, $sign_kadin['sign_name'], 0, 1);
-        $pdf->Cell(108, 5, "", 0);
-        $pdf->Cell(80, 5, 'NIP. ' . format_nip($sign_kadin['sign_nip']), 0, 1);
-        // $pdf->Cell(108, 5, "", 0);
-        // $pdf->Cell(80, 5, 'NIPs.' . $sign_kadin['sign_nip'], 1);
-        if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 120, $pdf->getY() - 33, 40,);
+        if (!empty($sign_kadin)) {
+            $pdf->Cell(80, 5, $sign_kadin['sign_name'], 0, 1);
+            $pdf->Cell(108, 5, "", 0);
+            $pdf->Cell(80, 5, 'NIP. ' . format_nip($sign_kadin['sign_nip']), 0, 1);
+            // $pdf->Cell(108, 5, "", 0);
+            // $pdf->Cell(80, 5, 'NIPs.' . $sign_kadin['sign_nip'], 1);
+            if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 120, $pdf->getY() - 33, 40,);
+        }
 
 
         $pdf->SetXY($cur_x + 1, 71);
@@ -1052,15 +1054,16 @@ class Spt extends CI_Controller
         $pdf->Cell(30, 25, "", 0, 1);
 
         $pdf->Cell(10, 5, '', 0, 0);
-        $pdf->Cell(80, 5, $sign_kadin['sign_name'], 0, 1);
-        $pdf->Cell(10, 5, '', 0, 0);
-        $pdf->Cell(80, 5, $sign_kadin['sign_pangkat'], 0, 1);
-        $pdf->Cell(10, 5, "", 0);
-        $pdf->Cell(80, 5, 'NIP. ' . format_nip($sign_kadin['sign_nip']), 0, 1);
-        // $pdf->Cell(108, 5, "", 0);
-        // $pdf->Cell(80, 5, 'NIPs.' . $sign_kadin['sign_nip'], 1);
-        if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 17, $pdf->getY() - 40, 40,);
-
+        if (!empty($sign_kadin)) {
+            $pdf->Cell(80, 5, $sign_kadin['sign_name'], 0, 1);
+            $pdf->Cell(10, 5, '', 0, 0);
+            $pdf->Cell(80, 5, $sign_kadin['sign_pangkat'], 0, 1);
+            $pdf->Cell(10, 5, "", 0);
+            $pdf->Cell(80, 5, 'NIP. ' . format_nip($sign_kadin['sign_nip']), 0, 1);
+            // $pdf->Cell(108, 5, "", 0);
+            // $pdf->Cell(80, 5, 'NIPs.' . $sign_kadin['sign_nip'], 1);
+            if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 17, $pdf->getY() - 40, 40,);
+        }
 
         // ppk
 
@@ -1072,14 +1075,17 @@ class Spt extends CI_Controller
         $pdf->MultiCell(80, 5, "Pejabat Pembuat Komitmen", 0, 'L');
         $pdf->Cell(30, 25, "", 0, 1);
         $pdf->Cell(106, 5, '', 0, 0);
-        $pdf->Cell(80, 5, $sign_ppk['sign_name'], 0, 1);
+        // if (!empty($sign_ppk)) {
+
+        $pdf->Cell(80, 5, !empty($sign_ppk) ? $sign_ppk['sign_name'] : '', 0, 1);
         $pdf->Cell(106, 5, '', 0, 0);
-        $pdf->Cell(80, 5, $sign_ppk['sign_pangkat'], 0, 1);
+        $pdf->Cell(80, 5,  !empty($sign_ppk) ? $sign_ppk['sign_pangkat'] : '', 0, 1);
         $pdf->Cell(106, 5, "", 0);
-        $pdf->Cell(80, 5, 'NIP. ' . format_nip($sign_ppk['sign_nip']), 0, 1);
+        $pdf->Cell(80, 5, 'NIP. ' .  (!empty($sign_ppk) ? format_nip($sign_ppk['sign_nip']) : ''), 0, 1);
         // $pdf->Cell(108, 5, "", 0);
         // $pdf->Cell(80, 5, 'NIPs.' . $sign_kadin['sign_nip'], 1);
         if (!empty($sign_ppk['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_ppk['sign_signature']), 117, $pdf->getY() - 40, 40,);
+        // }
 
         $pdf->Cell(1, 5, '', 0, 0);
         $pdf->Cell(194, 5, 'VII  CATATAN LAIN-LAIN ', 1, 1);
