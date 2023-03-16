@@ -369,23 +369,24 @@ class Spt extends CI_Controller
         } else
         if ($data['jen_satker'] == 2) {
             // echo json_encode($data);
-            $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);
+            $pdf->Image(base_url('assets/img/kab_bangka.png'), 10, 5, 20, 27);
+            $pdf->Image(base_url('assets/img/logo_puskesmas.png'), 180, 5, 27, 27);
             $pdf->SetFont('Arial', '', 13);
             $pdf->SetFont('Arial', 'B', 15);
-            $pdf->Cell(15, 6, '', 0, 0, 'C');
-            $pdf->Cell(185, 6, 'PEMERINTAH KABUPATEN BANGKA', 0, 1, 'C');
-            $pdf->Cell(15, 6, '', 0, 0, 'C');
-            $pdf->Cell(185, 6, 'DINAS KESEHATAN', 0, 1, 'C');
-            $pdf->Cell(15, 6, '', 0, 0, 'C');
+            $pdf->Cell(20, 6, '', 0, 0, 'C');
+            $pdf->Cell(155, 6, 'PEMERINTAH KABUPATEN BANGKA', 0, 1, 'C');
+            $pdf->Cell(20, 6, '', 0, 0, 'C');
+            $pdf->Cell(155, 6, 'DINAS KESEHATAN', 0, 1, 'C');
+            $pdf->Cell(20, 6, '', 0, 0, 'C');
             $pdf->SetFont('Arial', 'B', 20);
-            $pdf->Cell(185, 7, $data['nama_satuan'], 0, 1, 'C');
+            $pdf->Cell(155, 7, $data['nama_satuan'], 0, 1, 'C');
             $pdf->SetFont('Arial', '', 10);
-            $pdf->Cell(15, 4, '', 0, 0, 'C');
-            $pdf->Cell(185, 4, 'Jalan : ' . $data['alamat_lengkap'], 0, 1, 'C');
-            $pdf->Cell(15, 4, '', 0, 0, 'C');
-            $pdf->Cell(185, 4, (!empty($data['kode_pos']) ? 'Kode Pos : ' . $data['kode_pos'] . ' ' : '') . (!empty($data['no_tlp']) ? 'Telp. ' . $data['no_tlp'] : ''), 0, 1, 'C');
-            $pdf->Cell(15, 4, '', 0, 0, 'C');
-            $pdf->Cell(185, 4, (!empty($data['email']) ? ' Email : ' . $data['email'] : '') . (!empty($data['website']) ? ' Website : ' . $data['website'] : ''), 0, 1, 'C');
+            $pdf->Cell(20, 4, '', 0, 0, 'C');
+            $pdf->Cell(155, 4, 'Jalan : ' . $data['alamat_lengkap'], 0, 1, 'C');
+            $pdf->Cell(20, 4, '', 0, 0, 'C');
+            $pdf->Cell(155, 4, (!empty($data['kode_pos']) ? 'Kode Pos : ' . $data['kode_pos'] . ' ' : '') . (!empty($data['no_tlp']) ? 'Telp. ' . $data['no_tlp'] : ''), 0, 1, 'C');
+            $pdf->Cell(20, 4, '', 0, 0, 'C');
+            $pdf->Cell(155, 4, (!empty($data['email']) ? ' Email : ' . $data['email'] : '') . (!empty($data['website']) ? ' Website : ' . $data['website'] : ''), 0, 1, 'C');
             $pdf->Line($pdf->GetX(), $pdf->GetY() + 3, $pdf->GetX() + 195, $pdf->GetY() + 3);
             $pdf->SetLineWidth(0.4);
             $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
