@@ -974,7 +974,10 @@ class Spt extends CI_Controller
 
         $pdf->Cell(30, 1, "", 0, 1);
         $pdf->SetX($cur_x + 108);
-        $pdf->MultiCell(80, 5, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
+        if ($data_satuan['jen_satker'] == 1)
+            $pdf->MultiCell(80, 5, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
+        if ($data_satuan['jen_satker'] == 2)
+            $pdf->MultiCell(80, 5, "Kepala Puskesmas\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
         $pdf->Cell(30, 19, "", 0, 1);
         // $pdf->Cell(30, 1, "", 1, 1);
         $pdf->SetX($cur_x + 108);
