@@ -690,8 +690,8 @@ class SPPDModel extends CI_Model
 
         $this->db->where('id_spt', $data_spt['id_spt']);
         $this->db->update('spt',);
-        echo $this->db->last_query();
-        die();
+        // echo $this->db->last_query();
+        // die();
         ExceptionHandler::handleDBError($this->db->error(), "Approv Gagal", "Approv");
     }
 
