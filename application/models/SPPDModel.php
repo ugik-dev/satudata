@@ -664,7 +664,7 @@ class SPPDModel extends CI_Model
             $this->db->set('approve_kabid', $ses['id']);
             $this->db->set('status', '99');
         } else if ($ap_ppk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3)) {
-            $this->db->set('status', 59);
+            // $this->db->set('status', 59);
             if ($ses['level'] == 7) {
                 $nomor = $this->cek_nomor($data_spt);
                 $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
@@ -690,6 +690,8 @@ class SPPDModel extends CI_Model
 
         $this->db->where('id_spt', $data_spt['id_spt']);
         $this->db->update('spt',);
+        echo $this->db->last_query();
+        die();
         ExceptionHandler::handleDBError($this->db->error(), "Approv Gagal", "Approv");
     }
 
