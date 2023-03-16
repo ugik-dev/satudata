@@ -10,7 +10,7 @@ class DashboardModel extends CI_Model
         $this->db->select('count(*) as jml, sat.nama_satuan');
         $this->db->from('spt as s');
         $this->db->join('satuan as sat', 's.id_satuan = sat.id_satuan');
-        $this->db->where('status', 99);
+        // $this->db->where('status', 99);
         $this->db->group_by('s.id_satuan');
         $res = $this->db->get();
         ExceptionHandler::handleDBError($this->db->error(), "Edit Dasar", "Dasar");
