@@ -593,6 +593,31 @@
         </div>
       </div>
     </div>
+    <!-- Info SPT -->
+    <div class="col-xl-6 xl-50 appointment box-col-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="header-top">
+            <h5 class="m-0">SPT / SPT / Lembur</h5>
+            <div class="card-header-right-icon">
+              <select name="tahun" id="tahun_spt">
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2021">2020</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card-Body">
+          <div class="radar-chart">
+            <div id="info_spt"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Monitor Web -->
+
     <div class="col-xl-6 xl-50 appointment box-col-6">
       <div class="card">
         <div class="card-header">
@@ -641,7 +666,7 @@
         </div>
       </div>
     </div> -->
-
+    <!-- Monitor Web -->
     <div class="col-md-12 box-col-12">
       <div class="card o-hidden">
         <div class="card-header">
@@ -851,6 +876,31 @@
         </div>
       </div>
     </div>
+    <div class="col-xl-4 xl-50 news box-col-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="header-top">
+            <h5 class="m-0">Berita Puskesmas</h5>
+            <div class="card-header-right-icon">
+              <!-- <div class="dropdown">
+                <button class="btn dropdown-toggle" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Today
+                </button>
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Today</a><a class="dropdown-item" href="#">Tomorrow</a><a class="dropdown-item" href="#">Yesterday</a>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0" id="layout_berita_pkm">
+        </div>
+        <!-- <div class="card-footer">
+          <div class="bottom-btn"><a href="#">Lihat Semua</a></div>
+        </div> -->
+      </div>
+    </div>
+
     <div class="col-xl-4 xl-50 news box-col-6">
       <div class="card">
         <div class="card-header">
@@ -1131,6 +1181,9 @@
   $(document).ready(function() {
 
     var tahun_monitor_website = $('#tahun_monitor_website');
+    var layout_berita_pkm = $('#layout_berita_pkm');
+    var info_spt = $('#info_spt');
+
     var primary = localStorage.getItem("primary") || "#7366ff";
     var secondary = localStorage.getItem("secondary") || "#f73164";
     var options = {
@@ -1241,288 +1294,6 @@
       },
     };
 
-    // var chart = new ApexCharts(document.querySelector("#chart-currently"), options);
-    // chart.render();
-
-    //small chart-1
-
-    // new Chartist.Bar(
-    //   ".small-chart", {
-    //     labels: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7"],
-    //     series: [
-    //       [400, 900, 800, 1000, 700, 1200, 300],
-    //       [1000, 500, 600, 400, 700, 200, 1100],
-    //     ],
-    //   }, {
-    //     plugins: [
-    //       Chartist.plugins.tooltip({
-    //         appendToBody: false,
-    //         className: "ct-tooltip",
-    //       }),
-    //     ],
-    //     stackBars: true,
-    //     axisX: {
-    //       showGrid: false,
-    //       showLabel: false,
-    //       offset: 0,
-    //     },
-    //     axisY: {
-    //       low: 0,
-    //       showGrid: false,
-    //       showLabel: false,
-    //       offset: 0,
-    //       labelInterpolationFnc: function(value) {
-    //         return value / 1000 + "k";
-    //       },
-    //     },
-    //   }
-    // ).on("draw", function(data) {
-    //   if (data.type === "bar") {
-    //     data.element.attr({
-    //       style: "stroke-width: 3px",
-    //     });
-    //   }
-    // });
-
-    //small-2
-
-    // new Chartist.Bar(
-    //   ".small-chart1", {
-    //     labels: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7"],
-    //     series: [
-    //       [400, 600, 900, 800, 1000, 1200, 500],
-    //       [1000, 800, 500, 600, 400, 200, 900],
-    //     ],
-    //   }, {
-    //     plugins: [
-    //       Chartist.plugins.tooltip({
-    //         appendToBody: false,
-    //         className: "ct-tooltip",
-    //       }),
-    //     ],
-    //     stackBars: true,
-    //     axisX: {
-    //       showGrid: false,
-    //       showLabel: false,
-    //       offset: 0,
-    //     },
-    //     axisY: {
-    //       low: 0,
-    //       showGrid: false,
-    //       showLabel: false,
-    //       offset: 0,
-    //       labelInterpolationFnc: function(value) {
-    //         return value / 1000 + "k";
-    //       },
-    //     },
-    //   }
-    // ).on("draw", function(data) {
-    //   if (data.type === "bar") {
-    //     data.element.attr({
-    //       style: "stroke-width: 3px",
-    //     });
-    //   }
-    // });
-    // small-3
-
-    // new Chartist.Bar(
-    //   ".small-chart2", {
-    //     labels: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7"],
-    //     series: [
-    //       [1100, 900, 600, 1000, 700, 1200, 300],
-    //       [300, 500, 800, 400, 700, 200, 1100],
-    //     ],
-    //   }, {
-    //     plugins: [
-    //       Chartist.plugins.tooltip({
-    //         appendToBody: false,
-    //         className: "ct-tooltip",
-    //       }),
-    //     ],
-    //     stackBars: true,
-    //     axisX: {
-    //       showGrid: false,
-    //       showLabel: false,
-    //       offset: 0,
-    //     },
-    //     axisY: {
-    //       low: 0,
-    //       showGrid: false,
-    //       showLabel: false,
-    //       offset: 0,
-    //       labelInterpolationFnc: function(value) {
-    //         return value / 1000 + "k";
-    //       },
-    //     },
-    //   }
-    // ).on("draw", function(data) {
-    //   if (data.type === "bar") {
-    //     data.element.attr({
-    //       style: "stroke-width: 3px",
-    //     });
-    //   }
-    // });
-    // small-4
-    // new Chartist.Bar(
-    //   ".small-chart3", {
-    //     labels: ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7"],
-    //     series: [
-    //       [400, 600, 800, 1000, 700, 1100, 300],
-    //       [1000, 500, 600, 300, 700, 200, 1100],
-    //     ],
-    //   }, {
-    //     plugins: [
-    //       Chartist.plugins.tooltip({
-    //         appendToBody: false,
-    //         className: "ct-tooltip",
-    //       }),
-    //     ],
-    //     stackBars: true,
-    //     axisX: {
-    //       showGrid: false,
-    //       showLabel: false,
-    //       offset: 0,
-    //     },
-    //     axisY: {
-    //       low: 0,
-    //       showGrid: false,
-    //       showLabel: false,
-    //       offset: 0,
-    //       labelInterpolationFnc: function(value) {
-    //         return value / 1000 + "k";
-    //       },
-    //     },
-    //   }
-    // ).on("draw", function(data) {
-    //   if (data.type === "bar") {
-    //     data.element.attr({
-    //       style: "stroke-width: 3px",
-    //     });
-    //   }
-    // });
-
-    // right-side-small-chart
-
-    // (function($) {
-    //   "use strict";
-    //   $(".knob1").knob({
-    //     width: 65,
-    //     height: 65,
-    //     max: 100,
-
-    //     change: function(value) {
-    //       //console.log("change : " + value);
-    //     },
-    //     release: function(value) {
-    //       //console.log(this.$.attr('value'));
-    //       console.log("release : " + value);
-    //     },
-    //     cancel: function() {
-    //       console.log("cancel : ", this);
-    //     },
-    //     format: function(value) {
-    //       return value + "%";
-    //     },
-    //     draw: function() {
-    //       // "tron" case
-    //       if (this.$.data("skin") == "tron") {
-    //         this.cursorExt = 1;
-
-    //         var a = this.arc(this.cv), // Arc
-    //           pa, // Previous arc
-    //           r = 1;
-
-    //         this.g.lineWidth = this.lineWidth;
-
-    //         if (this.o.displayPrevious) {
-    //           pa = this.arc(this.v);
-    //           this.g.beginPath();
-    //           this.g.strokeStyle = this.pColor;
-    //           this.g.arc(
-    //             this.xy,
-    //             this.xy,
-    //             this.radius - this.lineWidth,
-    //             pa.s,
-    //             pa.e,
-    //             pa.d
-    //           );
-    //           this.g.stroke();
-    //         }
-
-    //         this.g.beginPath();
-    //         this.g.strokeStyle = r ? this.o.fgColor : this.fgColor;
-    //         this.g.arc(
-    //           this.xy,
-    //           this.xy,
-    //           this.radius - this.lineWidth,
-    //           a.s,
-    //           a.e,
-    //           a.d
-    //         );
-    //         this.g.stroke();
-
-    //         this.g.lineWidth = 2;
-    //         this.g.beginPath();
-    //         this.g.strokeStyle = this.o.fgColor;
-    //         this.g.arc(
-    //           this.xy,
-    //           this.xy,
-    //           this.radius - this.lineWidth + 1 + (this.lineWidth * 2) / 3,
-    //           0,
-    //           2 * Math.PI,
-    //           false
-    //         );
-    //         this.g.stroke();
-
-    //         return false;
-    //       }
-    //     },
-    //   });
-    //   // Example of infinite knob, iPod click wheel
-    //   var v,
-    //     up = 0,
-    //     down = 0,
-    //     i = 0,
-    //     $idir = $("div.idir"),
-    //     $ival = $("div.ival"),
-    //     incr = function() {
-    //       i++;
-    //       $idir.show().html("+").fadeOut();
-    //       $ival.html(i);
-    //     },
-    //     decr = function() {
-    //       i--;
-    //       $idir.show().html("-").fadeOut();
-    //       $ival.html(i);
-    //     };
-    //   $("input.infinite").knob({
-    //     min: 0,
-    //     max: 20,
-    //     stopper: false,
-    //     change: function() {
-    //       if (v > this.cv) {
-    //         if (up) {
-    //           decr();
-    //           up = 0;
-    //         } else {
-    //           up = 1;
-    //           down = 0;
-    //         }
-    //       } else {
-    //         if (v < this.cv) {
-    //           if (down) {
-    //             incr();
-    //             down = 0;
-    //           } else {
-    //             down = 1;
-    //             up = 0;
-    //           }
-    //         }
-    //       }
-    //       v = this.cv;
-    //     },
-    //   });
-    // })(jQuery);
 
     var options1 = {
       chart: {
@@ -1586,7 +1357,6 @@
         },
       },
     };
-    // getKehadiran()
 
     function getKehadiran() {
       Swal.fire({
@@ -1623,11 +1393,161 @@
     var cartTahunan;
 
     getMonitorWebsite(false)
+    getBeritaPkm(false)
+    getInfoSPT(false)
 
     // toolbar.tahun.trigger('change');
     tahun_monitor_website.on('change', function() {
       getMonitorWebsite(true);
     })
+
+    function getInfoSPT(update) {
+      if (update) {
+        Swal.fire({
+          title: 'Loading!',
+          allowOutsideClick: false,
+        });
+        Swal.showLoading()
+      }
+      return $.ajax({
+        url: `<?php echo base_url('dashboard/getInfoSPT') ?>`,
+        'type': 'get',
+        data: {},
+        success: function(data) {
+          Swal.close();
+          var json = JSON.parse(data);
+          if (json['error']) {
+            Swal.fire("Error", json['message'], "error");
+
+            return;
+          }
+          dataSPT = json['data'];
+          renderSPT(dataSPT)
+          // if (update) {
+          //   renderWebUpdate(dataWeb);
+          // } else {
+          //   renderWeb(dataWeb);
+          //   renderWebTahunan(dataWeb);
+          // }
+        },
+        error: function(e) {}
+      });
+    }
+
+    function renderSPT(data) {
+      console.log(data['jml']);
+      console.log(data['nama']);
+      var options1 = {
+        chart: {
+          height: 380,
+          type: "radar",
+          toolbar: {
+            show: false,
+          },
+        },
+        series: [{
+          name: "Jumlah Postingan",
+          data: data['jml'],
+        }, ],
+        stroke: {
+          width: 3,
+          curve: "smooth",
+        },
+        labels: data['nama'],
+        plotOptions: {
+          radar: {
+            size: 140,
+            polygons: {
+              fill: {
+                colors: ["#fcf8ff", "#f7eeff"],
+              },
+            },
+          },
+        },
+        colors: [CubaAdminConfig.primary],
+        markers: {
+          size: 6,
+          colors: ["#fff"],
+          strokeColor: CubaAdminConfig.primary,
+          strokeWidth: 3,
+        },
+        tooltip: {
+          y: {
+            formatter: function(val) {
+              return val;
+            },
+          },
+        },
+        yaxis: {
+          tickAmount: 7,
+          labels: {
+            formatter: function(val, i) {
+              if (i % 2 === 0) {
+                return val;
+              } else {
+                return "";
+              }
+            },
+          },
+        },
+      };
+
+      cartInfoSPT = new ApexCharts(document.querySelector("#info_spt"), options1);
+
+      cartInfoSPT.render();
+
+    }
+
+    function getBeritaPkm(update) {
+      if (update) {
+        Swal.fire({
+          title: 'Loading!',
+          allowOutsideClick: false,
+        });
+        Swal.showLoading()
+      }
+      return $.ajax({
+        url: `<?php echo base_url('MonitoringWebsite/getAll') ?>`,
+        'type': 'get',
+        data: {
+          limit: 3,
+          tahun: tahun_monitor_website.val()
+        },
+        success: function(data) {
+          Swal.close();
+          var json = JSON.parse(data);
+          if (json['error']) {
+            Swal.fire("Error", json['message'], "error");
+
+            return;
+          }
+          dataBeritaPkm = json['data'];
+          renderBeritaPKM(dataBeritaPkm)
+          // if (update) {
+          //   renderWebUpdate(dataWeb);
+          // } else {
+          //   renderWeb(dataWeb);
+          //   renderWebTahunan(dataWeb);
+          // }
+        },
+        error: function(e) {}
+      });
+    }
+
+    function renderBeritaPKM(data) {
+      Object.values(data).forEach((b) => {
+        html = `
+        <a href="http://${b['pkm']}.puskesmas.bangka.go.id/${b['tulisan_jenis'].toLowerCase()}/${b['tulisan_slug']}"> <div class="news-update media" >
+            <img class="img-fluid me-3 b-r-10" width=100px src="http://${b['pkm']}.puskesmas.bangka.go.id/upload/images/${b['tulisan_gambar']}" alt="" />
+            <div class="media-body">
+              <h6>${b['tulisan_judul']}</h6>
+              <span>${b['pkm']} </span><span class="time-detail d-block"><i data-feather="clock"></i>${b['tulisan_tanggal']}</span>
+            </div>
+          </div>
+          </a>`;
+        layout_berita_pkm.append(html)
+      })
+    };
 
     function getMonitorWebsite(update) {
       if (update) {

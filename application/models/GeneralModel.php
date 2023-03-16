@@ -136,8 +136,10 @@ class GeneralModel extends CI_Model
         if (!empty($filter['id_dasar']))
             $this->db->where('id_dasar', $filter['id_dasar']);
 
-        if (!empty($this->session->userdata('id_bagian'))) $this->db->where('d.id_bagian', $this->session->userdata('id_bagian'));
-        $this->db->where('d.id_satuan', $this->session->userdata('id_satuan'));
+        if ($this->session->userdata('id_role') != 1) {
+            if (!empty($this->session->userdata('id_bagian'))) $this->db->where('d.id_bagian', $this->session->userdata('id_bagian'));
+            $this->db->where('d.id_satuan', $this->session->userdata('id_satuan'));
+        }
         $res = $this->db->get();
         // echo $this->db->last_query();
         // die();
