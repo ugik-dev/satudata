@@ -129,6 +129,12 @@
                         <hr class="mt-2">
                         <div class="col-lg-6">
                             <div class="form-group">
+                                <label for="verif_cuti">Verifikator Cuti</label>
+                                <select class="select2 col-sm-12" id="verif_cuti" name="verif_cuti"></select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
                                 <label for="bendahara">Bendahara</label>
                                 <select class="select2 col-sm-12" id="bendahara" name="bendahara"></select>
                             </div>
@@ -141,8 +147,8 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="verif_cuti">Verifikator Cuti</label>
-                                <select class="select2 col-sm-12" id="verif_cuti" name="verif_cuti"></select>
+                                <label for="bendahara_pem">Bendahara Pembantu BLUD</label>
+                                <select class="select2 col-sm-12" id="bendahara_pem_blud" name="bendahara_pem_blud"></select>
                             </div>
                         </div>
                     </div>
@@ -201,6 +207,7 @@
             'no_tlp': $('#satuan_modal').find('#no_tlp'),
             'bendahara': $('#satuan_modal').find('#bendahara'),
             'bendahara_pem': $('#satuan_modal').find('#bendahara_pem'),
+            'bendahara_pem_blud': $('#satuan_modal').find('#bendahara_pem_blud'),
             'verif_cuti': $('#satuan_modal').find('#verif_cuti'),
         }
 
@@ -253,6 +260,26 @@
             }
         });
         $("#bendahara_pem").select2({
+            dropdownParent: $('#satuan_modal .modal-content'),
+            ajax: {
+                url: '<?= base_url() ?>Search/Pegawai',
+                type: "get",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        searchTerm: params.term // search term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
+        $("#bendahara_pem_blud").select2({
             dropdownParent: $('#satuan_modal .modal-content'),
             ajax: {
                 url: '<?= base_url() ?>Search/Pegawai',
@@ -347,6 +374,7 @@
             var $blankOption2 = $("<option selected='selected'></option>").val('').text('-');
             SatuanModal.bendahara.append($blankOption2).trigger('change');
             SatuanModal.bendahara_pem.append($blankOption2).trigger('change');
+            SatuanModal.bendahara_pem_blud.append($blankOption2).trigger('change');
             SatuanModal.verif_cuti.append($blankOption2).trigger('change');
             // SatuanModal.no_tlp.val(toolbar.no_tlp.val());
             // SatuanModal.alamat.val("");
@@ -385,6 +413,8 @@
             SatuanModal.bendahara.append($blankOption2).trigger('change');
             var $blankOption2 = $("<option selected='selected'></option>").val(currentData['bendahara_pem']).text(currentData['nama_bendahara_pem']);
             SatuanModal.bendahara_pem.append($blankOption2).trigger('change');
+            var $blankOption2 = $("<option selected='selected'></option>").val(currentData['bendahara_pem_blud']).text(currentData['nama_bendahara_pem_blud']);
+            SatuanModal.bendahara_pem_blud.append($blankOption2).trigger('change');
             var $blankOption2 = $("<option selected='selected'></option>").val(currentData['verif_cuti']).text(currentData['nama_verif_cuti']);
             SatuanModal.verif_cuti.append($blankOption2).trigger('change');
         });

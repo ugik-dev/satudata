@@ -62,13 +62,13 @@
                                 <textarea class="form-control" id="nama_dasar" name="nama_dasar"></textarea>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 <label for="kode_rekening">Kode Rekening</label>
-                                <input type="text" placeholder="ex. Dinas Kesehatan" class="form-control" id="kode_rekening" name="kode_rekening" required="required">
+                                <input type="text" placeholder="" class="form-control" id="kode_rekening" name="kode_rekening" required="required">
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 <label for="pembebanan_anggaran">Pembeban Anggaran</label>
                                 <input type="text" placeholder="" class="form-control" id="pembebanan_anggaran" name="pembebanan_anggaran" required="required">
@@ -76,14 +76,14 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="nip">PPK</label>
+                                <label for="nip">Nama PPK / Pimpinan BLUD</label>
                                 <select class="select2 col-sm-12" id="id_ppk2" name="id_ppk2"></select>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="nip">Jenis PPK / BLUD</label>
-                                <select class="form-control" id="jen_ppk" name="jen_ppk">
+                                <select class="form-control" id="jen_ppk" name="jen_ppk" required>
                                     <option value="-">-</option>
                                     <option value="1">PPK</option>
                                     <option value="2">BLUD</option>

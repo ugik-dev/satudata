@@ -146,8 +146,12 @@
                         <h6>Hak Aksess</h6>
                         <div class="col-lg-4">
                             <div class="col-form-label">Instansi</div>
-                            <select class="select2 col-sm-12" id="id_satuan" name="id_satuan" <?= $this->session->userdata()['id_role'] != 1 ? 'disabled' : '' ?>>
+                            <select class="select2 col-sm-12" id="id_satuan" name="id_satuan" <?= $this->session->userdata()['id_role'] != 1 ? '' : '' ?>>
                             </select>
+                            <!-- 
+                            HIDDEN    
+                            <select class="select2 col-sm-12" id="id_satuan" name="id_satuan" <?= $this->session->userdata()['id_role'] != 1 ? 'disabled' : '' ?>>
+                            </select> -->
                         </div>
                         <div class="col-lg-4" <?= $this->session->userdata()['id_satuan'] != 1 ? 'hidden' : '' ?>>
                             <div class="col-form-label"> Bagian

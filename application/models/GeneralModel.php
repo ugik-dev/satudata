@@ -171,9 +171,9 @@ class GeneralModel extends CI_Model
         $this->db->join('bagian bg', 'u.id_bagian = bg.id_bagian', 'LEFT');
         $this->db->where('u.deleted_user', 0);
         if (!empty($filter['id'])) $this->db->where('u.id', $filter['id']);
-        if ($this->session->userdata()['id_role'] != 1) {
-            $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
-        }
+        // if ($this->session->userdata()['id_role'] != 1) {
+        //     $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
+        // }
         $res = $this->db->get();
         return DataStructure::keyValue($res->result_array(), 'id');
     }
@@ -181,11 +181,12 @@ class GeneralModel extends CI_Model
 
     public function getAllSatuan($filter = [])
     {
-        $this->db->select('u.* , b.nama as nama_bendahara, c.nama as nama_bendahara_pem, d.nama as nama_verif_cuti');
+        $this->db->select('u.* , b.nama as nama_bendahara, c.nama as nama_bendahara_pem,e.nama as nama_bendahara_pem_blud, d.nama as nama_verif_cuti');
         $this->db->from('satuan u ');
         $this->db->join('users b', 'u.bendahara = b.id', 'LEFT');
         $this->db->join('users c', 'u.bendahara_pem = c.id', 'LEFT');
         $this->db->join('users d', 'u.verif_cuti = d.id', 'LEFT');
+        $this->db->join('users e', 'u.bendahara_pem_blud = e.id', 'LEFT');
         if (!empty($filter['id_satuan'])) $this->db->where('id_satuan', $filter['id_satuan']);
         $res = $this->db->get();
         return DataStructure::keyValue($res->result_array(), 'id_satuan');

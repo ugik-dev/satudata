@@ -573,7 +573,7 @@ class Spt extends CI_Controller
         else {
             throw new UserException('Maaf, Dasar tidak ditemukan.');
         }
-        // echo json_encode($data);
+        // echo json_encode($dasar);
         // die();
         require('assets/fpdf/mc_table.php');
 
@@ -591,7 +591,10 @@ class Spt extends CI_Controller
         // die();
 
         $bendahara = $this->GeneralModel->getSingnature($data_satuan['bendahara'])[$data_satuan['bendahara']];
-        $bendahara_pem = $this->GeneralModel->getSingnature($data_satuan['bendahara_pem'])[$data_satuan['bendahara_pem']];
+        if ($dasar['jen_ppk'] == 1)
+            $bendahara_pem = $this->GeneralModel->getSingnature($data_satuan['bendahara_pem'])[$data_satuan['bendahara_pem']];
+        else
+            $bendahara_pem = $this->GeneralModel->getSingnature($data_satuan['bendahara_pem_blud'])[$data_satuan['bendahara_pem_blud']];
         $this->template_kwitansi($pdf, $dasar,  $laporan, $data, $sign_ppk, $sign_pptk, $bendahara, $bendahara_pem, $data_satuan);
         $pdf->SetDash(4, 2);
         $pdf->Line(3, $pdf->GetY(), 212, $pdf->GetY());
@@ -791,6 +794,9 @@ class Spt extends CI_Controller
         $pdf->SetMargins(10, 5, 15, 10, 'C');
         $pdf->AddPage();
         $data_satuan =  $this->GeneralModel->getSatuan(['id_satuan' => $data['id_satuan']])[0];
+        $dasar = $this->SPPDModel->getDasarSppd(array('id_dasar' => $data['id_dasar']));
+        if (!empty($dasar))
+            $dasar = $dasar[$data['id_dasar']];
 
         $this->kop($pdf,  $data_satuan);
 
@@ -855,7 +861,10 @@ class Spt extends CI_Controller
         //     $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1);
         // }
 
-        $pdf->RowSPPD('1.', 'Pejabat Pembuat Komitmen', $data['nama_ppk'] . ' / ' . $data['nip_ppk']);
+        if ($dasar['jen_ppk'] == 1)
+            $pdf->RowSPPD('1.', 'Pejabat Pembuat Komitmen', $data['nama_ppk'] . ' / ' . $data['nip_ppk']);
+        else
+            $pdf->RowSPPD('1.', 'Pimpinan BLUD', $data['nama_ppk'] . ' / ' . $data['nip_ppk']);
         $pdf->RowSPPD('2.', 'Nama/NIP Pegawai yang melaksanakan perjalanan dinas ', $data['nama_pegawai'] . ' / ' . $data['nip_pegawai']);
         $pdf->RowSPPD('3.', 'a. Pangkat dan Golongan', 'a. ' . $data['pangkat_gol_pegawai']);
         $pdf->RowSPPD('', 'b. Jabatan / Instansi', 'b. ' . $data['jabatan_pegawai'] . ' / ' . $data['pangkat_gol_pegawai']);
@@ -881,7 +890,12 @@ class Spt extends CI_Controller
         // echo json_encode($dasar);
         // die();
         $pdf->RowSPPD('9.', 'Pembebanan anggaran ', $dasar['pembebanan_anggaran']);
-        $pdf->RowSPPD('', 'a. SKPD', 'Dinas Kesehatan Kabupaten Bangka');
+        if ($data_satuan['jen_satker'] == 1)
+            $pdf->RowSPPD('', 'a. SKPD', 'Dinas Kesehatan Kabupaten Bangka');
+        else
+            $pdf->RowSPPD('', 'a. SKPD', ucwords(strtolower($data_satuan['nama_satuan'])));
+
+        // }
         $pdf->RowSPPD('', 'b. Akun', $dasar['kode_rekening']);
         $pdf->RowSPPD('10.', "Keterangan lain-lain ", '');
 
