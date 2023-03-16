@@ -665,6 +665,21 @@ class SPPDModel extends CI_Model
             $this->db->set('status', '99');
         } else if ($ap_ppk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3)) {
             $this->db->set('status', 59);
+            if ($ses['level'] == 7) {
+                $nomor = $this->cek_nomor($data_spt);
+                $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
+                if (!empty($nomor['spt'])) {
+                    $this->db->set('no_spt', $nomor['spt']);
+                }
+                if (!empty($nomor['sppd'])) {
+                    $this->db->set('no_sppd', $nomor['sppd']);
+                }
+                $this->db->set('sign_kadin', $id_sign_kadin);
+                $this->db->set('approve_kabid', $ses['id']);
+                $this->db->set('status', '99');
+            } else {
+                $this->db->set('status', 59);
+            }
         } else if ($ap_pptk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3)) {
             $this->db->set('status', 52);
         } else if ($continue) {
