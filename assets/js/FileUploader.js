@@ -1,5 +1,12 @@
-class FileUploader{
-  constructor(el, currentFile, filename, accept, showLabel = true, required = false){
+class FileUploader {
+  constructor(
+    el,
+    currentFile,
+    filename,
+    accept,
+    showLabel = true,
+    required = false
+  ) {
     this.currentFile = currentFile;
     this.el = el;
     this.filename = filename;
@@ -10,10 +17,14 @@ class FileUploader{
     this.render();
     this.init();
     this.assignControl();
-  }  
+  }
 
-  render(){
-    var label = this.showLabel ? `<label for="${this.filename}Filename">Dokumen ${capFirstLetter(this.filename.replace(/_/g, ' '))}</label>` : '';
+  render() {
+    var label = this.showLabel
+      ? `<label for="${this.filename}Filename">Dokumen ${capFirstLetter(
+          this.filename.replace(/_/g, " ")
+        )}</label>`
+      : "";
     this.el.html(`
       <div class="form-group">
         ${label}
@@ -33,32 +44,40 @@ class FileUploader{
     this.el.find('[data-toggle="tooltip"]').tooltip();
   }
 
-  init(){
-    this.file = this.el.find('#file');
+  init() {
+    this.file = this.el.find("#file");
     this.fileFilename = this.el.find(`#${this.filename}Filename`);
-    this.fileFilename.attr('required', this.required);
-    this.downloadFileButton = this.el.find('#downloadFileButton');
-    this.browseFileButton = this.el.find('#browseFileButton');
-    this.deleteFileButton = this.el.find('#deleteFileButton');
-    this.cancelFileButton = this.el.find('#cancelFileButton');
-    this.deleteFile = this.el.find('#delete_file');
+    this.fileFilename.attr("required", this.required);
+    this.downloadFileButton = this.el.find("#downloadFileButton");
+    this.browseFileButton = this.el.find("#browseFileButton");
+    this.deleteFileButton = this.el.find("#deleteFileButton");
+    this.cancelFileButton = this.el.find("#cancelFileButton");
+    this.deleteFile = this.el.find("#delete_file");
     this.resetState();
   }
 
-  assignControl(){
+  assignControl() {
     var context = this;
-    
-    this.downloadFileButton.on('click', function(){
-      var base_url = window.location.href.replace(new RegExp('index.php.*'), '');
-      window.open(`${base_url}uploads/${context.filename}/` + context.fileFilename.val() + '?ver=' + Date.now());
+
+    this.downloadFileButton.on("click", function () {
+      var base_url = window.location.href.replace(
+        new RegExp("index.php.*"),
+        ""
+      );
+      window.open(
+        `${base_url}uploads/${context.filename}/` +
+          context.fileFilename.val() +
+          "?ver=" +
+          Date.now()
+      );
     });
 
-    this.browseFileButton.on('click', function(){
+    this.browseFileButton.on("click", function () {
       context.file.click();
     });
 
-    this.file.on('change', function(){
-      if(this.files.length >= 1){
+    this.file.on("change", function () {
+      if (this.files.length >= 1) {
         context.fileFilename.val(this.files[0].name);
         context.cancelFileButton.show();
         context.deleteFileButton.hide();
@@ -68,7 +87,7 @@ class FileUploader{
       }
     });
 
-    this.deleteFileButton.on('click', function(){
+    this.deleteFileButton.on("click", function () {
       context.cancelFileButton.show();
       context.fileFilename.val("File akan di delete");
       context.deleteFile.val(context.currentFile);
@@ -78,10 +97,10 @@ class FileUploader{
       context.file.val(null);
     });
 
-    this.cancelFileButton.on('click', function(){
+    this.cancelFileButton.on("click", function () {
       context.cancelFileButton.hide();
       context.file.val(null);
-      if(context.currentFile != null && context.currentFile != ""){
+      if (context.currentFile != null && context.currentFile != "") {
         context.fileFilename.val(context.currentFile);
         context.deleteFile.val(null);
         context.deleteFileButton.show();
@@ -93,7 +112,7 @@ class FileUploader{
     });
   }
 
-  resetState(){
+  resetState() {
     this.fileFilename.val(this.defaultFileName);
     this.deleteFileButton.hide();
     this.cancelFileButton.hide();
@@ -103,9 +122,9 @@ class FileUploader{
     this.file.val(null);
   }
 
-  updateCurrentFile(currentFile){
+  updateCurrentFile(currentFile) {
     this.currentFile = currentFile;
-    if(this.currentFile == null || this.currentFile == ""){
+    if (this.currentFile == null || this.currentFile == "") {
       this.resetState();
       return;
     }
@@ -115,27 +134,26 @@ class FileUploader{
     this.downloadFileButton.show();
   }
 
-  isNoFile(){
-    return this.fileFilename.val() == this.defaultFileName; 
+  isNoFile() {
+    return this.fileFilename.val() == this.defaultFileName;
   }
 
-  setEditable(editable = true){
-    if(editable == true){
-      this.browseFileButton.removeClass("notEditableHide")
-      this.deleteFileButton.removeClass("notEditableHide")
+  setEditable(editable = true) {
+    if (editable == true) {
+      this.browseFileButton.removeClass("notEditableHide");
+      this.deleteFileButton.removeClass("notEditableHide");
     } else {
-      this.browseFileButton.addClass("notEditableHide")
-      this.deleteFileButton.addClass("notEditableHide")
+      this.browseFileButton.addClass("notEditableHide");
+      this.deleteFileButton.addClass("notEditableHide");
     }
   }
 
-  setRequired(required = true){
+  setRequired(required = true) {
     this.required = required;
-    this.fileFilename.attr('required', this.required);
+    this.fileFilename.attr("required", this.required);
   }
 
-  getContainer(){
+  getContainer() {
     return this.el;
   }
-
 }

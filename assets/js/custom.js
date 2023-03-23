@@ -225,6 +225,8 @@ function statusIzin(status, unnaprove = null) {
       return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Verifikasi Admin Kepegawaian</b></i> `;
     else if (status == "11")
       return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Kasubag Kepegawaian </b></i> `;
+    else if (status == "14")
+      return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Sekretaris </b></i> `;
     return `<i class='fa fa-times text-danger'></i> <b class="text-danger"> Approv Ditolak </b>`;
   } else if (status == "0")
     return ` <i class='fa fa-edit text-warning'> </i> <b class="text-warning"> Menunggu Persetujuan Pengganti </b> `;
@@ -244,6 +246,8 @@ function statusIzin(status, unnaprove = null) {
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Kasubag </b></i> `; //pkm
   else if (status == "51")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approve Kepala Puskesmas / Direktur Rumah Sakit </b></i> `; //pkm
+  else if (status == "14")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Sekretaris Dinas </b></i> `;
   else if (status == "15")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kepala Dinas </b></i> `;
   else if (status == "99")

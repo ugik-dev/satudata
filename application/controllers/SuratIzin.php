@@ -192,20 +192,20 @@ class SuratIzin extends CI_Controller
             if (($cur_user['level'] == 3 || $cur_user['level'] == 4) && $data['status_izin'] == 2 && ($cur_user['id_bagian'] = $data['id_bagian'])) {
                 $logs['deskripsi'] =  'Menyetujui';
                 $logs['label'] = 'success';
-                $data['status_izin'] = 3;
+                $data['status_izin'] = 10;
                 if ($data['level_pegawai'] == 6) {
                     $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
                     $this->SuratIzinModel->approv($data, $sign);
                 } else
                     $this->SuratIzinModel->approv($data);
                 $this->SuratIzinModel->addLogs($logs);
-            } else if ($cur_user['level'] == 2 && $data['status_izin'] == 3) {
+            } else if ($cur_user['level'] == 2 && $data['status_izin'] == 14) {
                 $logs['deskripsi'] =  'Menyetujui';
                 $logs['label'] = 'success';
-                if ($data['jen_izin'] == 1)
-                    $data['status_izin'] = 10;
-                else
-                    $data['status_izin'] = 15;
+                // if ($data['jen_izin'] == 1)
+                //     $data['status_izin'] = 10;
+                // else
+                $data['status_izin'] = 15;
 
                 if ($data['level_pegawai'] != 6) {
                     $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
@@ -226,7 +226,7 @@ class SuratIzin extends CI_Controller
             } else if ($cur_user['level'] == 3 && $cur_user['id_bagian'] == 2 && $data['status_izin'] == 11) {
                 $logs['deskripsi'] =  'Menyetujui Kasubag Kepegawaian';
                 $logs['label'] = 'success';
-                $data['status_izin'] = 15;
+                $data['status_izin'] = 14;
                 $this->SuratIzinModel->approv($data);
                 $this->SuratIzinModel->addLogs($logs);
             } else if ($cur_user['level'] == 8 && $cur_user['id_satuan'] == $data['id_satuan'] && $data['status_izin'] == 50) {
@@ -655,21 +655,23 @@ class SuratIzin extends CI_Controller
         }
 
         $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
+
         if ($data['periode_start'] == $data['periode_end']) {
             $tanggal_ct = 'pada tanggal ' . tanggal_indonesia($data['periode_start']);
         } else {
             $tanggal_ct = 'mulai tanggal ' . tanggal_indonesia($data['periode_start']) . ' sampai dengan ' . tanggal_indonesia($data['periode_end']);
         }
+
         $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
         $pdf->MultiCell(177, 5, 'Selama ' . $data['lama_izin'] . ' hari kerja ' . $tanggal_ct . ' dengan ketentuan sebagai berikut : ', 0, 'J');
 
         $pdf->Cell(15, 5, '', 0, 1, 'L', 0);
         $pdf->Cell(15, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(5, 5, 'a. ', 0, 0, 'L', 0);
-        $pdf->MultiCell(169, 5, 'Sebelum menjalankan Cuti Tahunan, wajib menyerahkan pekerjaannya kepada atasan langsung.', 0, 'J');
+        $pdf->MultiCell(169, 5, 'Sebelum menjalankan ' . $data['nama_izin'] . ', wajib menyerahkan pekerjaannya kepada atasan langsung.', 0, 'J');
         $pdf->Cell(15, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(5, 5, 'b. ', 0, 0, 'L', 0);
-        $pdf->MultiCell(169, 5, 'Setelah menjalankan Cuti Tahunan wajib melaporkan diri kepada atasan langsungnya dan bekerja kembali sebagaimana biasa.', 0, 'J');
+        $pdf->MultiCell(169, 5, 'Setelah menjalankan ' . $data['nama_izin'] . ' wajib melaporkan diri kepada atasan langsungnya dan bekerja kembali sebagaimana biasa.', 0, 'J');
 
         $pdf->Cell(15, 5, '', 0, 1, 'L', 0);
         $pdf->Cell(5, 5, '', 0, 0, 'L', 0);

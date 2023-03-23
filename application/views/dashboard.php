@@ -1,11 +1,10 @@
-<!-- Container-fluid starts-->
-<!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/calendar.css" /> -->
 <div class="container-fluid">
   <div class="page-title">
     <div class="row">
       <div class="col-6">
         <h3>Dashboard</h3>
       </div>
+
       <div class="col-6">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html" data-bs-original-title="" title=""> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
@@ -13,62 +12,11 @@
                 <polyline points="9 22 9 12 15 12 15 22"></polyline>
               </svg></a></li>
           <li class="breadcrumb-item">Sistem Informasi Administrasi dan Umum</li>
-          <!-- <li class="breadcrumb-item active">Calender Basic</li> -->
         </ol>
       </div>
     </div>
   </div>
 </div>
-<!-- <div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-12">
-      <div class="card box-shadow-title">
-        <div class="card-header">
-          <h5>Basic</h5>
-        </div>
-        <div class="d-flex event-calendar">
-          <div id="lnb">
-            <div class="lnb-new-schedule text-center">
-              <button class="btn btn-primary" id="btn-new-schedule" type="button" data-bs-toggle="modal">
-                New schedule
-              </button>
-            </div>
-            <div class="lnb-calendars" id="lnb-calendars">
-              <div>
-                <div class="lnb-calendars-item">
-                  <label>
-                    <input class="tui-full-calendar-checkbox-square" type="checkbox" value="all" checked="" /><span></span><strong>View all</strong>
-                  </label>
-                </div>
-              </div>
-              <div class="lnb-calendars-d1" id="calendarList"></div>
-            </div>
-          </div>
-          <div id="right">
-            <div id="menu">
-              <div class="dropdown d-inline">
-                <button hidden class="btn btn-default btn-sm dropdown-toggle" id="dropdownMenu-calendarType" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  <i class="calendar-icon ic_view_month" id="calendarTypeIcon" style="margin-right: 4px"></i><span id="calendarTypeName">Dropdown</span><i class="calendar-icon tui-full-calendar-dropdown-arrow"></i>
-                </button>
-
-              </div>
-              <span id="menu-navi">
-                <button class="btn btn-default btn-sm move-today" type="button" data-action="move-today">
-                  Today
-                </button>
-                <button class="btn btn-default btn-sm move-day" type="button" data-action="move-prev">
-                  <i class="calendar-icon ic-arrow-line-left" data-action="move-prev"></i>
-                </button>
-                <button class="btn btn-default btn-sm move-day" type="button" data-action="move-next">
-                  <i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i></button></span><span class="render-range" id="renderRange"></span>
-            </div>
-            <div id="calendar"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
 
 <!-- <script src="<?= base_url() ?>assets/js/calendar/tui-code-snippet.min.js"></script>
 <script src="<?= base_url() ?>assets/js/calendar/tui-time-picker.min.js"></script>
@@ -593,6 +541,38 @@
         </div>
       </div>
     </div>
+
+    <!-- livechat -->
+    <div class="col-xl-4 xl-50 chat-sec box-col-6">
+      <div class="card chat-default">
+        <div class="card-header card-no-border">
+          <div class="media media-dashboard">
+            <div class="media-body">
+              <h5 class="mb-0">Live Chat</h5>
+            </div>
+            <div class="icon-box">
+              <i data-feather="more-horizontal"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-body chat-box">
+          <div class="chat" id="layout_live_chat">
+
+            <!-- <div class="media right-side-chat">
+              <div class="media-body text-end">
+                <div class="message-main pull-right">
+                  <span class="loader-span mb-0 text-start" id="wave"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div class="input-group">
+            <input class="form-control" id="text_live_chat" name="text_live_chat" type="text" placeholder="Tulis pesan disini..." name="text" />
+            <div class="send-msg"><i class="fa fa-send" id="send_live_chat"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Info SPT -->
     <div class="col-xl-6 xl-50 appointment box-col-6">
       <div class="card">
@@ -918,102 +898,15 @@
             </div>
           </div>
         </div>
-        <div class="card-body p-0">
-          <div class="news-update media">
-            <img class="img-fluid me-3 b-r-10" src="<?= base_url() ?>assets/images/dashboard/update/1.jpg" alt="" />
-            <div class="media-body">
-              <h6>Pengikinian Data Diri</h6>
-              <span>Seluruh Pegawai di harapkan melalukan update data diri pada menu profile..</span><span class="time-detail d-block"><i data-feather="clock"></i>10 Minutes Ago</span>
-            </div>
-          </div>
-          <div class="news-update media">
-            <img class="img-fluid me-3 b-r-10" src="<?= base_url() ?>assets/images/dashboard/update/2.jpg" alt="" />
-            <div class="media-body">
-              <h6>Manual Book</h6>
-              <span>
-                Petunjuk penggunaan aplikasi... </span><span class="time-detail d-block"><i data-feather="clock"></i>1 Hour Ago</span>
-            </div>
-          </div>
-          <div class="news-update media">
-            <img class="img-fluid me-3 b-r-10" src="<?= base_url() ?>assets/images/dashboard/update/3.jpg" alt="" />
-            <div class="media-body">
-              <h6>Jadwal Apel Februari 2023.</h6>
-              <span>apalah...</span><span class="time-detail d-block"><i data-feather="clock"></i>8 Hours Ago</span>
-            </div>
-          </div>
+        <div class="card-body p-0" id="layout_pengumuman">
+
         </div>
         <div class="card-footer">
           <div class="bottom-btn"><a href="#">Lihat Semua</a></div>
         </div>
       </div>
     </div>
-    <div class="col-xl-4 xl-50 chat-sec box-col-6">
-      <div class="card chat-default">
-        <div class="card-header card-no-border">
-          <div class="media media-dashboard">
-            <div class="media-body">
-              <h5 class="mb-0">Live Chat</h5>
-            </div>
-            <div class="icon-box">
-              <i data-feather="more-horizontal"></i>
-            </div>
-          </div>
-        </div>
-        <div class="card-body chat-box">
-          <div class="chat">
-            <div class="media left-side-chat">
-              <div class="media-body d-flex">
-                <div class="img-profile">
-                  <img class="img-fluid" src="<?= base_url() ?>assets/images/user.jpg" alt="Profile" />
-                </div>
-                <div class="main-chat">
-                  <div class="message-main">
-                    <span class="mb-0">Hi deo, Please send me link.</span>
-                  </div>
-                  <div class="sub-message message-main">
-                    <span class="mb-0">Right Now</span>
-                  </div>
-                </div>
-              </div>
-              <p class="f-w-400">7:28 PM</p>
-            </div>
-            <div class="media right-side-chat">
-              <p class="f-w-400">7:28 PM</p>
-              <div class="media-body text-end">
-                <div class="message-main pull-right">
-                  <span class="mb-0 text-start">How can do for you</span>
-                  <div class="clearfix"></div>
-                </div>
-              </div>
-            </div>
-            <div class="media left-side-chat">
-              <div class="media-body d-flex">
-                <div class="img-profile">
-                  <img class="img-fluid" src="<?= base_url() ?>assets/images/user.jpg" alt="Profile" />
-                </div>
-                <div class="main-chat">
-                  <div class="sub-message message-main mt-0">
-                    <span>It's argently</span>
-                  </div>
-                </div>
-              </div>
-              <p class="f-w-400">7:28 PM</p>
-            </div>
-            <div class="media right-side-chat">
-              <div class="media-body text-end">
-                <div class="message-main pull-right">
-                  <span class="loader-span mb-0 text-start" id="wave"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-                </div>
-              </div>
-            </div>
-            <div class="input-group">
-              <input class="form-control" id="mail" type="text" placeholder="Type Your Message..." name="text" />
-              <div class="send-msg"><i data-feather="send"></i></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
     <!-- <div class="col-xl-4 xl-50 appointment-sec box-col-6">
       <div class="row">
         <div class="col-xl-12 appointment">
@@ -1174,6 +1067,8 @@
     </div> -->
   </div>
 </div>
+<script src="<?= base_url() ?>assets/js/dashboard/default.js"></script>
+
 <!-- Container-fluid Ends-->
 <!-- </div> -->
 <!-- footer start-->
@@ -1182,6 +1077,11 @@
 
     var tahun_monitor_website = $('#tahun_monitor_website');
     var layout_berita_pkm = $('#layout_berita_pkm');
+    var layout_pengumuman = $('#layout_pengumuman');
+    var layout_live_chat = $('#layout_live_chat');
+    var send_live_chat = $('#send_live_chat');
+    var text_live_chat = $('#text_live_chat');
+
     var info_spt = $('#info_spt');
 
     var primary = localStorage.getItem("primary") || "#7366ff";
@@ -1389,9 +1289,22 @@
     chart1.render();
 
 
+    var lastChat = 0;
     var chartBulanan;
     var cartTahunan;
 
+    getLiveChat(false)
+
+    function getRealTimeLiveChat() {
+      let timerId = setTimeout(function tick() {
+        getLiveChat(true)
+        timerId = setTimeout(tick, 5000); // (*)
+      }, 5000);
+    }
+    // setTimeout(
+    //   getLiveChat(false), 10000);
+
+    getPengumuman(false)
     getMonitorWebsite(false)
     getBeritaPkm(false)
     getInfoSPT(false)
@@ -1400,6 +1313,123 @@
     tahun_monitor_website.on('change', function() {
       getMonitorWebsite(true);
     })
+
+
+    send_live_chat.on('click', function(ev) {
+      cur_text = text_live_chat.val();
+      text_live_chat.val('');
+      return $.ajax({
+        url: `<?php echo base_url('Dashboard/send_live_chat') ?>`,
+        'type': 'get',
+        data: {
+          text: cur_text
+        },
+        success: function(data) {
+          Swal.close();
+          var json = JSON.parse(data);
+          if (json['error']) {
+            Swal.fire("Error", json['message'], "error");
+            return;
+          }
+        },
+        error: function(e) {}
+      })
+    })
+
+    function getLiveChat(update) {
+      // if (update) {
+      //   Swal.fire({
+      //     title: 'Loading!',
+      //     allowOutsideClick: false,
+      //   });
+      //   Swal.showLoading()
+      // }
+      return $.ajax({
+        url: `<?php echo base_url('Dashboard/getLiveChat') ?>`,
+        'type': 'get',
+        data: {
+          last_id: lastChat
+        },
+        success: function(data) {
+          Swal.close();
+          var json = JSON.parse(data);
+          if (json['error']) {
+            Swal.fire("Error", json['message'], "error");
+
+            return;
+          }
+          dataChat = json['data'];
+          renderLiveChat(dataChat)
+          if (!update) getRealTimeLiveChat()
+        },
+        error: function(e) {}
+      });
+    }
+
+
+    function renderLiveChat(data) {
+      cur_id = '<?= $this->session->userdata('id') ?>';
+      Object.values(data).forEach((b) => {
+        time = b['time_chat'].substr(11, 5);
+        if (b['id_user'] == cur_id) {
+          html = `
+        <div class="media right-side-chat">
+              <p class="f-w-400">${time}</p>
+              <div class="media-body text-end">
+                <div class="message-main pull-right">
+                  <span class="mb-0 text-start">${b['text']}</span>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+            `;
+        } else {
+          html = `<div class="media left-side-chat">
+              <div class="media-body d-flex">
+                <div class="img-profile" title="${b['nama']}">
+                  <img class="img-fluid" src="<?= base_url() ?>uploads/foto_profil/${b['photo_user']}" alt="Profile" />
+                </div>
+                <div class="main-chat">
+                  <div class="sub-message message-main mt-0">
+                    <span>${b['text']}</span>
+                  </div>
+                </div>
+              </div>
+              <p class="f-w-400">${time}</p>
+            </div>`;
+        }
+        lastChat = b['id_chat'];
+        console.log(lastChat);
+        layout_live_chat.append(html)
+      })
+    }
+
+    function getPengumuman(update) {
+      if (update) {
+        Swal.fire({
+          title: 'Loading!',
+          allowOutsideClick: false,
+        });
+        Swal.showLoading()
+      }
+      return $.ajax({
+        url: `<?php echo base_url('informasi/getAllPengumuman') ?>`,
+        'type': 'get',
+        data: {},
+        success: function(data) {
+          Swal.close();
+          var json = JSON.parse(data);
+          if (json['error']) {
+            Swal.fire("Error", json['message'], "error");
+
+            return;
+          }
+          dataPengumuman = json['data'];
+          renderPengumuman(dataPengumuman)
+        },
+        error: function(e) {}
+      });
+    }
 
     function getInfoSPT(update) {
       if (update) {
@@ -1533,6 +1563,27 @@
         error: function(e) {}
       });
     }
+
+    function renderPengumuman(data) {
+      Object.values(data).forEach((b) => {
+
+        if (b['sampul']) {
+          sampul = b['sampul'];
+        } else {
+          sampul = "default.jpg";
+        }
+        html = `
+        <a href="<?= base_url('pengumuman/') ?>${b['id_pengumuman']}"> <div class="news-update media" >
+            <img class="img-fluid me-3 b-r-10" width=100px src="<?= base_url('uploads/pengumuman_sampul/') ?>${sampul}" alt="" />
+            <div class="media-body">
+              <h6>${b['judul']}</h6>
+              <span>${b['nama_satuan']} </span><span class="time-detail d-block"><i data-feather="clock"></i>${b['tanggal']}</span>
+            </div>
+          </div>
+          </a>`;
+        layout_pengumuman.append(html)
+      })
+    };
 
     function renderBeritaPKM(data) {
       Object.values(data).forEach((b) => {

@@ -291,6 +291,7 @@
                 cache: true
             }
         });
+
         RefSatker = <?= json_encode($ref_satker) ?>;
         $("#id_satuan").on('change', function() {
             console.log('change satyab')
@@ -321,6 +322,7 @@
                 $("#id_seksi").prop('disabled', false)
             }
         })
+
         $("#id_bagian").select2({
             ajax: {
                 url: '<?= base_url() ?>Search/bagian',

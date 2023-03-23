@@ -525,7 +525,7 @@
                           <a class="deapprov dropdown-item " data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
                     `;
                 }
-                if (d['status_izin'] == '3' && curLevel == 2) {
+                if (d['status_izin'] == '14' && curLevel == 2) {
                     aksiBtn =
                         `<a class="approv dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
                           <a class="deapprov dropdown-item " data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
@@ -779,6 +779,7 @@
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         };
+
         FDataTable.on('click', '.verif_cuti', function() {
             // var jenis = $(this).data('jenis');
             curData = dataSKP['surat_izin'][$(this).data('id')];
@@ -871,6 +872,7 @@
                 LihatModal.layout_lampiran.html('<b>tidak ada lampiran</b>');
 
         });
+
         VerifModal.form.submit(function(event) {
             console.log('sub');
             event.preventDefault();
@@ -947,9 +949,9 @@
                         var d = json['data']
                         if (jenis == 'spt')
                             dataSKP[jenis][d['id_spt']] = d;
-                        else if (jenis == 'suratizin')
+                        else if (jenis == 'SuratIzin')
                             dataSKP['surat_izin'][d['id_surat_izin']] = d;
-                        console.log(jenis);
+                        console.log(dataSKP['surat_izin'][d['id_surat_izin']]);
                         Swal.fire("Approv Berhasil", "", "success");
                         renderSKP(dataSKP);
                     },

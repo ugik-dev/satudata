@@ -14,13 +14,34 @@ class Dashboard extends CI_Controller
     {
         try {
             $this->SecurityModel->userOnlyGuard();
-            // $data = array(
-            //     'page' => 'dashboard',
-            //     'title' => 'Dashboard',
-            // );
-            // // echo json_encode($this->session->userdata());
-            // // echo json_encode(User_Access(1));
             $data = $this->DashboardModel->getInfoSPT();
+            echo json_encode(['error' => false, 'data' => $data]);
+            // $this->load->view('theme/sweet-alert2');
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+    public function getLiveChat()
+    {
+        try {
+            $this->SecurityModel->userOnlyGuard();
+            $filter = $this->input->get();
+            $data = $this->DashboardModel->getLiveChat($filter);
+            echo json_encode(['error' => false, 'data' => $data]);
+            // $this->load->view('theme/sweet-alert2');
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+    public function send_live_chat()
+    {
+        try {
+            $this->SecurityModel->userOnlyGuard();
+            $mess['id_user'] = $this->session->userdata('id');
+            $mess['text'] = $this->input->get('text');
+            $data = $this->DashboardModel->send_live_chat($mess);
             echo json_encode(['error' => false, 'data' => $data]);
             // $this->load->view('theme/sweet-alert2');
         } catch (Exception $e) {

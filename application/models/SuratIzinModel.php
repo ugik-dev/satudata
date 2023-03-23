@@ -37,11 +37,22 @@ class SuratIzinModel extends CI_Model
             }
             if ($penilai['level'] == 4 || $penilai['level'] == 3)
                 if ($penilai['id_bagian'] == 2)
-                    $this->db->where("((si.id_bagian =  {$penilai['id_bagian']} and si.status_izin in (2,3,4,5,6)) OR status_izin = 11)");
+                    $this->db->where("(si.status_izin in (11,14,15,6,99) OR status_izin = 11)");
                 else
-                    $this->db->where("si.id_bagian =  {$penilai['id_bagian']} and si.status_izin in (2,3,4,5,6)");
+                    $this->db->where("si.id_bagian =  {$penilai['id_bagian']} and si.status_izin in (11,14,15,6,99)");
             if ($penilai['level'] == 2)
-                $this->db->where("si.status_izin in (3,10,15,6,99) ");
+                $this->db->where("si.status_izin in (11,14,15,6,99) ");
+            if (!empty($filter['status_permohonan'])) {
+                if ($filter['status_permohonan'] == 'menunggu-saya') {
+                    $this->db->where("(si.status_izin = 14 and si.unapprove IS NULL)");
+                } else if ($filter['status_permohonan'] == 'my-approv') {
+                    $this->db->where("si.status_izin > 14 ");
+                    // } else if ($filter['status_permohonan'] == 'ditolak') {
+                    //     $this->db->where('u.status = 98');
+                } else if ($filter['status_permohonan'] == 'selesai') {
+                    $this->db->where('u.status = 99');
+                }
+            }
             if ($penilai['level'] == 1)
                 $this->db->where("si.status_izin in (15,6,99)");
             if ($penilai['level'] == 8) {

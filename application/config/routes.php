@@ -63,6 +63,7 @@ $route['monitoring-website/(:any)'] = 'MonitoringWebsite/$1';
 $route['surat-izin/print/(:num)/(:num)'] = 'SuratIzin/print/$1/$2';
 $route['profil'] = 'user/my_profil';
 $route['qrcode/(:any)'] = 'PublicController/scan_qrcode/$1';
+$route['pengumuman/(:any)'] = 'informasi/lihat_pengumuman/$1';
 $route['404_override'] = 'login';
 $route['inv/(:any)/(:num)'] = 'Api/inv/$1/$2';
 $route['translate_uri_dashes'] = FALSE;

@@ -422,8 +422,12 @@
                 dataType: 'json',
                 delay: 250,
                 data: function(params) {
+                    cur_bagian = $("#id_bagian").val();
+
                     return {
-                        searchTerm: params.term // search term
+                        searchTerm: params.term, // search term
+                        bagian: cur_bagian
+
                     };
                 },
                 processResults: function(response) {
@@ -461,6 +465,38 @@
                 error: function(e) {}
             });
         }
+
+        RefSatker = <?= json_encode($ref_satker) ?>;
+        $("#id_satuan").on('change', function() {
+            console.log('change satyab')
+            cur_satuan = $("#id_satuan").val();
+            // dinkesvar = [1, 2, 3, 4, 5]
+            if (RefSatker['satuan'][cur_satuan]['jenis'] != 1) {
+                $('#layout_bagian , #layout_seksi').hide();
+                $("#null_bagian , #null_seksi").prop('disabled', false)
+                $("#id_bagian , #id_seksi").prop('disabled', true)
+                // $("#null_seksi").prop('disabled', false)
+                // $("#id_seksi").prop('disabled', true)
+            } else {
+                $('#layout_bagian , #layout_seksi').show();
+                $("#null_bagian , #null_seksi").prop('disabled', true)
+                $("#id_bagian , #id_seksi").prop('disabled', false)
+            }
+        });
+        $("#id_bagian").on('change', function() {
+            cur_bagian = $("#id_bagian").val();
+            // dinkesvar = [1, 2, 3, 4, 5]
+            if (RefSatker['bagian'][cur_bagian]['jenis'] != 4) {
+                $('#layout_seksi').hide();
+                $("#id_seksi").prop('disabled', true)
+                $("#null_seksi").prop('disabled', false)
+            } else {
+                $('#layout_seksi').show();
+                $("#null_seksi").prop('disabled', true)
+                $("#id_seksi").prop('disabled', false)
+            }
+        })
+
 
         function renderUser(data) {
             if (data == null || typeof data != "object") {
@@ -568,14 +604,23 @@
             <?php
             if ($this->session->userdata()['id_role'] != 1) {
             } ?>
+            var $blankOption = $("<option selected='selected'></option>").val('').text('');
             var $newOption = $("<option selected='selected'></option>").val(currentData['id_satuan']).text(currentData['nama_satuan']);
             UserModal.id_satuan.append($newOption).trigger('change');
+            if (currentData['id_bagian']) {
+                var $newOption3 = $("<option selected='selected'></option>").val(currentData['id_bagian']).text(currentData['nama_bag']);
+                UserModal.id_bagian.append($newOption3).trigger('change');
+            } else {
+                UserModal.id_bagian.append($blankOption).trigger('change');
 
-            var $newOption2 = $("<option selected='selected'></option>").val(currentData['id_seksi']).text(currentData['nama_seksi']);
-            UserModal.id_seksi.append($newOption2).trigger('change');
-
-            var $newOption3 = $("<option selected='selected'></option>").val(currentData['id_bagian']).text(currentData['nama_bag']);
-            UserModal.id_bagian.append($newOption3).trigger('change');
+            }
+            if (currentData['id_seksi']) {
+                var $newOption2 = $("<option selected='selected'></option>").val(currentData['id_seksi']).text(currentData['nama_seksi']);
+                UserModal.id_seksi.append($newOption2).trigger('change');
+            } else {
+                UserModal.id_seksi.append($blankOption).trigger('change');
+            }
+            console.log('ss')
 
             var $newOption4 = $("<option selected='selected'></option>").val(currentData['id_role']).text(currentData['nama_role']);
             UserModal.id_role.append($newOption4).trigger('change');

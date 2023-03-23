@@ -16,9 +16,13 @@ class Master extends CI_Controller
             // echo json_encode($this->session->userdata());
             // die();
             $this->SecurityModel->multiRole('Master', 'Pegawai');
+            $ref  = $this->GeneralModel->getAllRefSaker();
+
             $data = array(
                 'page' => 'master/users',
-                'title' => 'Users & Hak Aksess'
+                'title' => 'Users & Hak Aksess',
+                'ref_satker' => $ref
+
             );
             $this->load->view('page', $data);
         } catch (Exception $e) {
