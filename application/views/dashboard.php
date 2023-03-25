@@ -846,10 +846,11 @@
             </div>`;
 
           } else {
+            photo_user = (b['photo_user'] == '' || b['photo_user'] == null ? 'default.jpg' : b['photo_user']);
             html = `<div class="media left-side-chat">
               <div class="media-body d-flex">
                 <div class="img-profile" style="width: 50px !important" title="${b['nama']}">
-                  <img class="img-fluid img-profile" style="width: 50px !important" src="<?= base_url() ?>uploads/foto_profil/${b['photo_user']}" alt="Profile" />
+                  <img class="img-fluid img-profile" style="width: 50px !important" src="<?= base_url() ?>uploads/foto_profil/${photo_user}" alt="Profile" />
                 </div>
                 <div style="width: 70% !important" class="main-chat">
                   <small> <b>${b['nama']}</b></small>
@@ -894,11 +895,13 @@
             </div>
             `;
         } else {
-          if (tmp_id != b['id_user'])
+          if (tmp_id != b['id_user']) {
+
+            photo_user = (b['photo_user'] == '' || b['photo_user'] == null ? 'default.jpg' : b['photo_user']);
             html += `<div class="media left-side-chat">
                <div class="media-body d-flex">
                 <div class="img-profile" style="width: 50px !important" title="${b['nama']}">
-                  <img class="img-fluid img-profile" style="width: 50px !important" src="<?= base_url() ?>uploads/foto_profil/${b['photo_user']?b['photo_user']:'default.jpg'}" alt="Profile" />
+                  <img class="img-fluid img-profile" style="width: 50px !important" src="<?= base_url() ?>uploads/foto_profil/${photo_user}" alt="Profile" />
                 </div>
                 <div style="width: 70% !important" class="main-chat">
                   <small> <b>${b['nama']}</b></small>
@@ -907,10 +910,10 @@
                   ${b['text']}</span>
                   </div>
                 </div>
-              </div>
-              <p class="f-w-400">${time}</p>
-            </div>`;
-          else
+                </div>
+                <p class="f-w-400">${time}</p>
+                </div>`;
+          } else
             html += `<div class="media left-side-chat">
                <div class="media-body d-flex">
                 <div class="img-profile" style="width: 50px !important" title="${b['nama']}">
