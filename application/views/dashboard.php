@@ -75,7 +75,7 @@
           </div>
         </div>
         <div class="card-body chat-box">
-          <div class="btn-download btn btn-gradient f-w-400" id="load_more" style="width: 100% !important">Muat lebih banyak ..</div>
+          <button class="btn-download btn btn-gradient f-w-400" id="load_more" style="width: 100% !important"><i class="fa fa-cloud-download"></i> Muat lebih banyak ..</button>
           <div class="chat" id="layout_live_chat">
           </div>
           <div class="input-group">
@@ -696,12 +696,13 @@
     var lastLoadMore = 0;
     var chartBulanan;
     var cartTahunan;
+    var loadingLiveChat = false;
 
     getLiveChat(false)
 
     function getRealTimeLiveChat() {
       let timerId = setTimeout(function tick() {
-        getLiveChat(true)
+        if (!loadingLiveChat) getLiveChat(true)
         timerId = setTimeout(tick, 5000); // (*)
       }, 5000);
     }
@@ -753,6 +754,8 @@
     }
 
     load_more.on('click', function(ev) {
+      load_more.html('<i class="fa fa-spinner fa-spin"></i> Sedang memuat chat..')
+      load_more.prop('disabled', true)
       return $.ajax({
         url: `<?php echo base_url('Dashboard/getLiveChat') ?>`,
         'type': 'get',
@@ -769,35 +772,41 @@
           }
           dataChat = json['data'];
           renderLoadMoreLiveChat(dataChat)
-          // if (!update) getRealTimeLiveChat()
-          console.log(lastLoadMore);
+          load_more.html('<i class="fa fa-cloud-download"></i> Muat lebih banyak..')
+          load_more.prop('disabled', false)
         },
         error: function(e) {}
       });
     })
 
     function getLiveChat(update) {
-      return $.ajax({
-        url: `<?php echo base_url('Dashboard/getLiveChat') ?>`,
-        'type': 'get',
-        data: {
-          last_id: lastChat,
-          limit: 5
-        },
-        success: function(data) {
-          Swal.close();
-          var json = JSON.parse(data);
-          if (json['error']) {
-            Swal.fire("Error", json['message'], "error");
-            return;
-          }
-          dataChat = json['data'];
-          renderLiveChat(dataChat, update)
-          if (!update) getRealTimeLiveChat()
-          console.log(lastLoadMore);
-        },
-        error: function(e) {}
-      });
+      if (!loadingLiveChat) {
+        loadingLiveChat = true;
+        return $.ajax({
+          url: `<?php echo base_url('Dashboard/getLiveChat') ?>`,
+          'type': 'get',
+          data: {
+            last_id: lastChat,
+            limit: 5
+          },
+          success: function(data) {
+            Swal.close();
+            var json = JSON.parse(data);
+            if (json['error']) {
+              Swal.fire("Error", json['message'], "error");
+              return;
+            }
+            dataChat = json['data'];
+            renderLiveChat(dataChat, update)
+            if (!update) getRealTimeLiveChat()
+            console.log(lastLoadMore);
+            loadingLiveChat = false;
+
+          },
+          error: function(e) {}
+        });
+      }
+
     }
 
 
