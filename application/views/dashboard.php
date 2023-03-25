@@ -790,16 +790,14 @@
             limit: 5
           },
           success: function(data) {
-            Swal.close();
             var json = JSON.parse(data);
             if (json['error']) {
-              Swal.fire("Error", json['message'], "error");
+              loadingLiveChat = false;
               return;
             }
             dataChat = json['data'];
             renderLiveChat(dataChat, update)
             if (!update) getRealTimeLiveChat()
-            console.log(lastLoadMore);
             loadingLiveChat = false;
 
           },
@@ -900,7 +898,7 @@
             html += `<div class="media left-side-chat">
                <div class="media-body d-flex">
                 <div class="img-profile" style="width: 50px !important" title="${b['nama']}">
-                  <img class="img-fluid img-profile" style="width: 50px !important" src="<?= base_url() ?>uploads/foto_profil/${b['photo_user']}" alt="Profile" />
+                  <img class="img-fluid img-profile" style="width: 50px !important" src="<?= base_url() ?>uploads/foto_profil/${b['photo_user']?b['photo_user']:'default.jpg'}" alt="Profile" />
                 </div>
                 <div style="width: 70% !important" class="main-chat">
                   <small> <b>${b['nama']}</b></small>
@@ -981,20 +979,12 @@
           }
           dataSPT = json['data'];
           renderSPT(dataSPT)
-          // if (update) {
-          //   renderWebUpdate(dataWeb);
-          // } else {
-          //   renderWeb(dataWeb);
-          //   renderWebTahunan(dataWeb);
-          // }
         },
         error: function(e) {}
       });
     }
 
     function renderSPT(data) {
-      console.log(data['jml']);
-      console.log(data['nama']);
       var options1 = {
         chart: {
           height: 380,
