@@ -1,3 +1,16 @@
+<style>
+  .img-profile {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .span-message {
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 20px !important;
+    margin-bottom: 2px !important;
+  }
+</style>
+
 <div class="container-fluid">
   <div class="page-title">
     <div class="row">
@@ -17,500 +30,6 @@
     </div>
   </div>
 </div>
-
-<!-- <script src="<?= base_url() ?>assets/js/calendar/tui-code-snippet.min.js"></script>
-<script src="<?= base_url() ?>assets/js/calendar/tui-time-picker.min.js"></script>
-<script src="<?= base_url() ?>assets/js/calendar/tui-date-picker.min.js"></script>
-<script src="<?= base_url() ?>assets/js/calendar/moment.min.js"></script>
-<script src="<?= base_url() ?>assets/js/calendar/chance.min.js"></script>
-<script src="<?= base_url() ?>assets/js/calendar/tui-calendar.js"></script>
-<script src="<?= base_url() ?>assets/js/calendar/calendars.js"></script>
-<script src="<?= base_url() ?>assets/js/calendar/schedules.js"></script> -->
-<!-- <script src="<?= base_url() ?>assets/js/calendar/app.js"></script> -->
-
-<!-- <script src="<?= base_url() ?>assets/js/tooltip-init.js"></script> -->
-<!-- <script>
-  "use strict";
-
-  /* eslint-disable */
-  /* eslint-env jquery */
-  /* global moment, tui, chance */
-  /* global findCalendar, CalendarList, ScheduleList, generateSchedule */
-
-  (function(window, Calendar) {
-    var cal, resizeThrottled;
-    var useCreationPopup = true;
-    var useDetailPopup = true;
-    var datePicker, selectedCalendar;
-
-    cal = new Calendar("#calendar", {
-      // options.month.visibleWeeksCount = 0;
-      // viewName = "month";
-      defaultView: "month",
-      useCreationPopup: useCreationPopup,
-      useDetailPopup: useDetailPopup,
-      calendars: CalendarList,
-      template: {
-        milestone: function(model) {
-          return (
-            '<span class="calendar-font-icon ic-milestone-b"></span> <span style="background-color: ' +
-            model.bgColor +
-            '">' +
-            model.title +
-            "</span>"
-          );
-        },
-        allday: function(schedule) {
-          // console.log('calendarlist' + CalendarList);
-          console.log('line 150')
-          return getTimeTemplate(schedule, true);
-        },
-        time: function(schedule) {
-          console.log('line 154')
-          return getTimeTemplate(schedule, false);
-        },
-      },
-    });
-
-    // event handlers
-    cal.on({
-      clickMore: function(e) {
-        console.log("clickMore", e);
-      },
-      clickSchedule: function(e) {
-        console.log("clickSchedule", e);
-      },
-      clickDayname: function(date) {
-        console.log("clickDayname", date);
-      },
-      beforeCreateSchedule: function(e) {
-        console.log("beforeCreateSchedule", e);
-        saveNewSchedule(e);
-      },
-      beforeUpdateSchedule: function(e) {
-        var schedule = e.schedule;
-        var changes = e.changes;
-
-        console.log("beforeUpdateSchedule", e);
-
-        if (changes && !changes.isAllDay && schedule.category === "allday") {
-          changes.category = "time";
-        }
-
-        cal.updateSchedule(schedule.id, schedule.calendarId, changes);
-        refreshScheduleVisibility();
-      },
-      beforeDeleteSchedule: function(e) {
-        // console.log("beforeDeleteSchedule", e);
-        cal.deleteSchedule(e.schedule.id, e.schedule.calendarId);
-      },
-      afterRenderSchedule: function(e) {
-        var schedule = e.schedule;
-        // var element = cal.getElement(schedule.id, schedule.calendarId);
-        // console.log('afterRenderSchedule', element);
-      },
-      clickTimezonesCollapseBtn: function(timezonesCollapsed) {
-        // console.log("timezonesCollapsed", timezonesCollapsed);
-
-        if (timezonesCollapsed) {
-          cal.setTheme({
-            "week.daygridLeft.width": "77px",
-            "week.timegridLeft.width": "77px",
-          });
-        } else {
-          cal.setTheme({
-            "week.daygridLeft.width": "60px",
-            "week.timegridLeft.width": "60px",
-          });
-        }
-
-        return true;
-      },
-    });
-
-    /**
-     * Get time template for time and all-day
-     * @param {Schedule} schedule - schedule
-     * @param {boolean} isAllDay - isAllDay or hasMultiDates
-     * @returns {string}
-     */
-    function getTimeTemplate(schedule, isAllDay) {
-      // console.log('ini schedule dari getTimeTemplate')
-      // return;
-      var html = [];
-      var start = moment(schedule.start.toUTCString());
-      // console.log(start)
-      if (!isAllDay) {
-        html.push("<strong> ini waktu" + start.format("HH:mm") + "</strong> ");
-      }
-      if (schedule.isPrivate) {
-        html.push('<span class="calendar-font-icon ic-lock-b"></span>');
-        html.push(" Private");
-      } else {
-        if (schedule.isReadOnly) {
-          html.push('<span class="calendar-font-icon ic-readonly-b"></span>');
-        } else if (schedule.recurrenceRule) {
-          html.push('<span class="calendar-font-icon ic-repeat-b"></span>');
-        } else if (schedule.attendees.length) {
-          html.push('<span class="calendar-font-icon ic-user-b"></span>');
-        } else if (schedule.location) {
-          html.push('<span class="calendar-font-icon ic-location-b"></span>');
-        }
-        html.push("Ini Judul");
-      }
-      // console.log(html.join(""))
-
-      return html.join("");
-    }
-
-    /**
-     * A listener for click the menu
-     * @param {Event} e - click event
-     */
-    function onClickMenu(e) {
-      var target = $(e.target).closest('a[role="menuitem"]')[0];
-      var action = getDataAction(target);
-      var options = cal.getOptions();
-      var viewName = "";
-
-      // console.log(target);
-      // console.log(action);
-      switch (action) {
-        case "toggle-daily":
-          viewName = "day";
-          break;
-        case "toggle-weekly":
-          viewName = "week";
-          break;
-        case "toggle-monthly":
-          options.month.visibleWeeksCount = 0;
-          viewName = "month";
-          break;
-        case "toggle-weeks2":
-          options.month.visibleWeeksCount = 2;
-          viewName = "month";
-          break;
-        case "toggle-weeks3":
-          options.month.visibleWeeksCount = 3;
-          viewName = "month";
-          break;
-        case "toggle-narrow-weekend":
-          options.month.narrowWeekend = !options.month.narrowWeekend;
-          options.week.narrowWeekend = !options.week.narrowWeekend;
-          viewName = cal.getViewName();
-
-          target.querySelector("input").checked = options.month.narrowWeekend;
-          break;
-
-        case "toggle-start-day-1":
-          options.month.startDayOfWeek = options.month.startDayOfWeek ? 0 : 1;
-          options.week.startDayOfWeek = options.week.startDayOfWeek ? 0 : 1;
-          viewName = cal.getViewName();
-
-          target.querySelector("input").checked = options.month.startDayOfWeek;
-          break;
-        case "toggle-workweek":
-          options.month.workweek = !options.month.workweek;
-          options.week.workweek = !options.week.workweek;
-          viewName = cal.getViewName();
-
-          target.querySelector("input").checked = !options.month.workweek;
-          break;
-        default:
-          break;
-      }
-
-      cal.setOptions(options, true);
-      cal.changeView(viewName, true);
-
-      setDropdownCalendarType();
-      setRenderRangeText();
-      setSchedules();
-    }
-
-    function onClickNavi(e) {
-      var action = getDataAction(e.target);
-
-      switch (action) {
-        case "move-prev":
-          cal.prev();
-          break;
-        case "move-next":
-          cal.next();
-          break;
-        case "move-today":
-          cal.today();
-          break;
-        default:
-          return;
-      }
-
-      setRenderRangeText();
-      setSchedules();
-    }
-
-    function onNewSchedule() {
-      var title = $("#new-schedule-title").val();
-      var location = $("#new-schedule-location").val();
-      var isAllDay = document.getElementById("new-schedule-allday").checked;
-      var start = datePicker.getStartDate();
-      var end = datePicker.getEndDate();
-      var calendar = selectedCalendar ? selectedCalendar : CalendarList[0];
-
-      if (!title) {
-        return;
-      }
-
-      cal.createSchedules([{
-        id: String(chance.guid()),
-        calendarId: calendar.id,
-        title: "title",
-        isAllDay: isAllDay,
-        start: start,
-        end: end,
-        category: isAllDay ? "allday" : "time",
-        dueDateClass: "",
-        color: calendar.color,
-        bgColor: calendar.bgColor,
-        dragBgColor: calendar.bgColor,
-        borderColor: calendar.borderColor,
-        raw: {
-          location: location,
-        },
-        state: "Busy",
-      }, ]);
-
-      $("#modal-new-schedule").modal("hide");
-    }
-
-    function onChangeNewScheduleCalendar(e) {
-      var target = $(e.target).closest('a[role="menuitem"]')[0];
-      var calendarId = getDataAction(target);
-      changeNewScheduleCalendar(calendarId);
-    }
-
-    function changeNewScheduleCalendar(calendarId) {
-      var calendarNameElement = document.getElementById("calendarName");
-      var calendar = findCalendar(calendarId);
-      var html = [];
-
-      html.push(
-        '<span class="calendar-bar" style="background-color: ' +
-        calendar.bgColor +
-        "; border-color:" +
-        calendar.borderColor +
-        ';"></span>'
-      );
-      html.push('<span class="calendar-name">' + calendar.name + "</span>");
-
-      calendarNameElement.innerHTML = html.join("");
-
-      selectedCalendar = calendar;
-    }
-
-    function createNewSchedule(event) {
-      var start = event.start ? new Date(event.start.getTime()) : new Date();
-      var end = event.end ?
-        new Date(event.end.getTime()) :
-        moment().add(1, "hours").toDate();
-
-      if (useCreationPopup) {
-        cal.openCreationPopup({
-          start: start,
-          end: end,
-        });
-      }
-    }
-
-
-    function onChangeCalendars(e) {
-      var calendarId = e.target.value;
-      var checked = e.target.checked;
-      var viewAll = document.querySelector(".lnb-calendars-item input");
-      var calendarElements = Array.prototype.slice.call(
-        document.querySelectorAll("#calendarList input")
-      );
-      var allCheckedCalendars = true;
-
-      if (calendarId === "all") {
-        allCheckedCalendars = checked;
-
-        calendarElements.forEach(function(input) {
-          var span = input.parentNode;
-          input.checked = checked;
-          span.style.backgroundColor = checked ?
-            span.style.borderColor :
-            "transparent";
-        });
-
-        CalendarList.forEach(function(calendar) {
-          calendar.checked = checked;
-        });
-      } else {
-        findCalendar(calendarId).checked = checked;
-
-        allCheckedCalendars = calendarElements.every(function(input) {
-          return input.checked;
-        });
-
-        if (allCheckedCalendars) {
-          viewAll.checked = true;
-        } else {
-          viewAll.checked = false;
-        }
-      }
-      refreshScheduleVisibility();
-    }
-
-    function refreshScheduleVisibility() {
-      var calendarElements = Array.prototype.slice.call(
-        document.querySelectorAll("#calendarList input")
-      );
-
-      CalendarList.forEach(function(calendar) {
-        cal.toggleSchedules(calendar.id, !calendar.checked, false);
-      });
-
-      cal.render(true);
-
-      calendarElements.forEach(function(input) {
-        var span = input.nextElementSibling;
-        span.style.backgroundColor = input.checked ?
-          span.style.borderColor :
-          "transparent";
-      });
-    }
-
-    function setDropdownCalendarType() {
-      var calendarTypeName = document.getElementById("calendarTypeName");
-      var calendarTypeIcon = document.getElementById("calendarTypeIcon");
-      var options = cal.getOptions();
-      var type = cal.getViewName();
-      var iconClassName;
-
-      if (type === "day") {
-        type = "Daily";
-        iconClassName = "calendar-icon ic_view_day";
-      } else if (type === "week") {
-        type = "Weekly";
-        iconClassName = "calendar-icon ic_view_week";
-      } else if (options.month.visibleWeeksCount === 2) {
-        type = "2 weeks";
-        iconClassName = "calendar-icon ic_view_week";
-      } else if (options.month.visibleWeeksCount === 3) {
-        type = "3 weeks";
-        iconClassName = "calendar-icon ic_view_week";
-      } else {
-        type = "Monthly";
-        iconClassName = "calendar-icon ic_view_month";
-      }
-
-      calendarTypeName.innerHTML = type;
-      calendarTypeIcon.className = iconClassName;
-    }
-
-    function currentCalendarDate(format) {
-      var currentDate = moment([
-        cal.getDate().getFullYear(),
-        cal.getDate().getMonth(),
-        cal.getDate().getDate(),
-      ]);
-
-      return currentDate.format(format);
-    }
-
-    function setRenderRangeText() {
-      var renderRange = document.getElementById("renderRange");
-      var options = cal.getOptions();
-      var viewName = cal.getViewName();
-
-      var html = [];
-      if (viewName === "day") {
-        html.push(currentCalendarDate("YYYY.MM.DD"));
-      } else if (
-        viewName === "month" &&
-        (!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)
-      ) {
-        html.push(currentCalendarDate("YYYY.MM"));
-      } else {
-        html.push(moment(cal.getDateRangeStart().getTime()).format("YYYY.MM.DD"));
-        html.push(" ~ ");
-        html.push(moment(cal.getDateRangeEnd().getTime()).format(" MM.DD"));
-      }
-      renderRange.innerHTML = html.join("");
-    }
-
-    function setSchedules() {
-      cal.clear();
-      generateSchedule(
-        cal.getViewName(),
-        cal.getDateRangeStart(),
-        cal.getDateRangeEnd()
-      );
-
-      cal.createSchedules(ScheduleList);
-
-      refreshScheduleVisibility();
-    }
-
-    function setEventListener() {
-      $("#menu-navi").on("click", onClickNavi);
-      $('.dropdown-menu a[role="menuitem"]').on("click", onClickMenu);
-      $("#lnb-calendars").on("change", onChangeCalendars);
-
-      $("#btn-save-schedule").on("click", onNewSchedule);
-      $("#btn-new-schedule").on("click", createNewSchedule);
-
-      $("#dropdownMenu-calendars-list").on("click", onChangeNewScheduleCalendar);
-
-      window.addEventListener("resize", resizeThrottled);
-    }
-
-    function getDataAction(target) {
-      return target.dataset ?
-        target.dataset.action :
-        target.getAttribute("data-action");
-    }
-
-    resizeThrottled = tui.util.throttle(function() {
-      cal.render();
-    }, 50);
-
-    window.cal = cal;
-
-    setDropdownCalendarType();
-    setRenderRangeText();
-    setSchedules();
-    setEventListener();
-  })(window, tui.Calendar);
-
-  // set calendars
-  (function() {
-    var calendarList = document.getElementById("calendarList");
-    var html = [];
-    CalendarList.forEach(function(calendar) {
-      html.push(
-        '<div class="lnb-calendars-item"><label>' +
-        '<input type="checkbox" class="tui-full-calendar-checkbox-round" value="' +
-        calendar.id +
-        '" checked>' +
-        '<span style="border-color: ' +
-        calendar.borderColor +
-        "; background-color: " +
-        calendar.borderColor +
-        ';"></span>' +
-        "<span>" +
-        calendar.name +
-        "</span>" +
-        "</label></div>"
-      );
-    });
-    calendarList.innerHTML = html.join("\n");
-  })();
-</script> -->
-<!-- Plugins JS Ends-->
-<!-- Theme js-->
-<!-- <script src="<?= base_url() ?>assets/js/script.js"></script> -->
 
 <div class="container-fluid">
   <div class="row second-chart-list third-news-update">
@@ -556,19 +75,12 @@
           </div>
         </div>
         <div class="card-body chat-box">
+          <div class="btn-download btn btn-gradient f-w-400" id="load_more" style="width: 100% !important">Muat lebih banyak ..</div>
           <div class="chat" id="layout_live_chat">
-
-            <!-- <div class="media right-side-chat">
-              <div class="media-body text-end">
-                <div class="message-main pull-right">
-                  <span class="loader-span mb-0 text-start" id="wave"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
-                </div>
-              </div>
-            </div> -->
           </div>
           <div class="input-group">
             <input class="form-control" id="text_live_chat" name="text_live_chat" type="text" placeholder="Tulis pesan disini..." name="text" />
-            <div class="send-msg"><i class="fa fa-send" id="send_live_chat"></i></div>
+            <div class="send-msg" id="send_live_chat"><i class="fa fa-send"></i></div>
           </div>
         </div>
       </div>
@@ -1081,182 +593,12 @@
     var layout_live_chat = $('#layout_live_chat');
     var send_live_chat = $('#send_live_chat');
     var text_live_chat = $('#text_live_chat');
+    var load_more = $('#load_more');
 
     var info_spt = $('#info_spt');
 
     var primary = localStorage.getItem("primary") || "#7366ff";
     var secondary = localStorage.getItem("secondary") || "#f73164";
-    var options = {
-      series: [{
-          name: "Online",
-          data: [6, 20, 15, 40, 18, 20, 18, 23, 18, 35, 30, 55, 0],
-        },
-        {
-          name: "Store",
-          data: [2, 22, 35, 32, 40, 25, 50, 38, 42, 28, 20, 45, 0],
-        },
-      ],
-      chart: {
-        height: 254,
-        type: "area",
-        toolbar: {
-          show: false,
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: "smooth",
-      },
-      xaxis: {
-        type: "category",
-        low: 0,
-        offsetX: 0,
-        offsetY: 0,
-        show: false,
-        categories: [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec",
-          "Jan",
-        ],
-        labels: {
-          low: 0,
-          offsetX: 0,
-          show: false,
-        },
-        axisBorder: {
-          low: 0,
-          offsetX: 0,
-          show: false,
-        },
-      },
-      markers: {
-        strokeWidth: 3,
-        colors: "#ffffff",
-        strokeColors: ["#7366ff", "#f73164"],
-        hover: {
-          size: 6,
-        },
-      },
-      yaxis: {
-        low: 0,
-        offsetX: 0,
-        offsetY: 0,
-        show: false,
-        labels: {
-          low: 0,
-          offsetX: 0,
-          show: false,
-        },
-        axisBorder: {
-          low: 0,
-          offsetX: 0,
-          show: false,
-        },
-      },
-      grid: {
-        show: false,
-        padding: {
-          left: 0,
-          right: 0,
-          bottom: -15,
-          top: -40,
-        },
-      },
-      colors: [primary, secondary],
-      fill: {
-        type: "gradient",
-        gradient: {
-          shadeIntensity: 1,
-          opacityFrom: 0.7,
-          opacityTo: 0.5,
-          stops: [0, 80, 100],
-        },
-      },
-      legend: {
-        show: false,
-      },
-      tooltip: {
-        x: {
-          format: "MM",
-        },
-      },
-    };
-
-
-    var options1 = {
-      chart: {
-        height: 380,
-        type: "radar",
-        toolbar: {
-          show: false,
-        },
-      },
-      series: [{
-        name: "Market value",
-        data: [20, 100, 40, 30, 50, 80, 33],
-      }, ],
-      stroke: {
-        width: 3,
-        curve: "smooth",
-      },
-      labels: [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-      ],
-      plotOptions: {
-        radar: {
-          size: 140,
-          polygons: {
-            fill: {
-              colors: ["#fcf8ff", "#f7eeff"],
-            },
-          },
-        },
-      },
-      colors: [CubaAdminConfig.primary],
-      markers: {
-        size: 6,
-        colors: ["#fff"],
-        strokeColor: CubaAdminConfig.primary,
-        strokeWidth: 3,
-      },
-      tooltip: {
-        y: {
-          formatter: function(val) {
-            return val;
-          },
-        },
-      },
-      yaxis: {
-        tickAmount: 7,
-        labels: {
-          formatter: function(val, i) {
-            if (i % 2 === 0) {
-              return val;
-            } else {
-              return "";
-            }
-          },
-        },
-      },
-    };
 
     function getKehadiran() {
       Swal.fire({
@@ -1280,16 +622,78 @@
         error: function(e) {}
       });
     }
+    renderKehadiran()
 
-
-
-
-    var chart1 = new ApexCharts(document.querySelector("#kehadiranchart"), options1);
-
-    chart1.render();
-
+    function renderKehadiran() {
+      var options1 = {
+        chart: {
+          height: 380,
+          type: "radar",
+          toolbar: {
+            show: false,
+          },
+        },
+        series: [{
+          name: "Market value",
+          data: [20, 100, 40, 30, 50, 80, 33],
+        }, ],
+        stroke: {
+          width: 3,
+          curve: "smooth",
+        },
+        labels: [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        plotOptions: {
+          radar: {
+            size: 140,
+            polygons: {
+              fill: {
+                colors: ["#fcf8ff", "#f7eeff"],
+              },
+            },
+          },
+        },
+        colors: [CubaAdminConfig.primary],
+        markers: {
+          size: 6,
+          colors: ["#fff"],
+          strokeColor: CubaAdminConfig.primary,
+          strokeWidth: 3,
+        },
+        tooltip: {
+          y: {
+            formatter: function(val) {
+              return val;
+            },
+          },
+        },
+        yaxis: {
+          tickAmount: 7,
+          labels: {
+            formatter: function(val, i) {
+              if (i % 2 === 0) {
+                return val;
+              } else {
+                return "";
+              }
+            },
+          },
+        },
+      };
+      var chart1 = new ApexCharts(document.querySelector("#kehadiranchart"), options1);
+      chart1.render();
+    }
 
     var lastChat = 0;
+    var lastChatUser = 0;
+    var lastLoadMore = 0;
     var chartBulanan;
     var cartTahunan;
 
@@ -1314,8 +718,20 @@
       getMonitorWebsite(true);
     })
 
+    text_live_chat.on("keydown", function search(e) {
+      // console.log(e.keyCode);
+      if (e.keyCode == 13) {
+        sending_livechat()
+      }
+    });
+
 
     send_live_chat.on('click', function(ev) {
+      sending_livechat()
+
+    })
+
+    function sending_livechat() {
       cur_text = text_live_chat.val();
       text_live_chat.val('');
       return $.ajax({
@@ -1334,48 +750,71 @@
         },
         error: function(e) {}
       })
-    })
+    }
 
-    function getLiveChat(update) {
-      // if (update) {
-      //   Swal.fire({
-      //     title: 'Loading!',
-      //     allowOutsideClick: false,
-      //   });
-      //   Swal.showLoading()
-      // }
+    load_more.on('click', function(ev) {
       return $.ajax({
         url: `<?php echo base_url('Dashboard/getLiveChat') ?>`,
         'type': 'get',
         data: {
-          last_id: lastChat
+          loadmore_id: lastLoadMore,
+          limit: 5
         },
         success: function(data) {
           Swal.close();
           var json = JSON.parse(data);
           if (json['error']) {
             Swal.fire("Error", json['message'], "error");
-
             return;
           }
           dataChat = json['data'];
-          renderLiveChat(dataChat)
+          renderLoadMoreLiveChat(dataChat)
+          // if (!update) getRealTimeLiveChat()
+          console.log(lastLoadMore);
+        },
+        error: function(e) {}
+      });
+    })
+
+    function getLiveChat(update) {
+      return $.ajax({
+        url: `<?php echo base_url('Dashboard/getLiveChat') ?>`,
+        'type': 'get',
+        data: {
+          last_id: lastChat,
+          limit: 5
+        },
+        success: function(data) {
+          Swal.close();
+          var json = JSON.parse(data);
+          if (json['error']) {
+            Swal.fire("Error", json['message'], "error");
+            return;
+          }
+          dataChat = json['data'];
+          renderLiveChat(dataChat, update)
           if (!update) getRealTimeLiveChat()
+          console.log(lastLoadMore);
         },
         error: function(e) {}
       });
     }
 
 
-    function renderLiveChat(data) {
+    function renderLiveChat(data, update) {
       cur_id = '<?= $this->session->userdata('id') ?>';
+      i = 0;
       Object.values(data).forEach((b) => {
+        if (!update && i == 0) {
+          lastLoadMore = b['id_chat'];
+        }
+        i++;
         time = b['time_chat'].substr(11, 5);
         if (b['id_user'] == cur_id) {
           html = `
         <div class="media right-side-chat">
               <p class="f-w-400">${time}</p>
-              <div class="media-body text-end">
+              <div style="width: 70% !important" class="media-body text-end">
                 <div class="message-main pull-right">
                   <span class="mb-0 text-start">${b['text']}</span>
                   <div class="clearfix"></div>
@@ -1384,24 +823,104 @@
             </div>
             `;
         } else {
-          html = `<div class="media left-side-chat">
+          if (lastChatUser == b['id_user']) {
+            html = `<div class="media left-side-chat">
               <div class="media-body d-flex">
-                <div class="img-profile" title="${b['nama']}">
-                  <img class="img-fluid" src="<?= base_url() ?>uploads/foto_profil/${b['photo_user']}" alt="Profile" />
+                <div class="img-profile" style="width: 50px !important" title="${b['nama']}">
                 </div>
-                <div class="main-chat">
+                <div style="width: 70% !important" class="main-chat">
                   <div class="sub-message message-main mt-0">
-                    <span>${b['text']}</span>
+                    <span class="span-message">
+                  ${b['text']}</span>
+                  </div>
+                </div>
+              </div>
+              <p class="f-w-400">${time}</p>
+            </div>`;
+
+          } else {
+            html = `<div class="media left-side-chat">
+              <div class="media-body d-flex">
+                <div class="img-profile" style="width: 50px !important" title="${b['nama']}">
+                  <img class="img-fluid img-profile" style="width: 50px !important" src="<?= base_url() ?>uploads/foto_profil/${b['photo_user']}" alt="Profile" />
+                </div>
+                <div style="width: 70% !important" class="main-chat">
+                  <small> <b>${b['nama']}</b></small>
+                  <div class="sub-message message-main mt-0">
+                    <span class="span-message">
+                  ${b['text']}</span>
+                  </div>
+                </div>
+              </div>
+              <p class="f-w-400">${time}</p>
+            </div>`;
+
+          }
+        }
+        lastChatUser = b['id_user']
+        lastChat = b['id_chat'];
+        console.log(lastChat);
+        layout_live_chat.append(html)
+      })
+    }
+
+    function renderLoadMoreLiveChat(data) {
+      cur_id = '<?= $this->session->userdata('id') ?>';
+      html = '';
+      i = 0;
+      tmp_id = 0;
+      Object.values(data).forEach((b) => {
+        if (i == 0)
+          lastLoadMore = b['id_chat'];
+        i++;
+        time = b['time_chat'].substr(11, 5);
+        if (b['id_user'] == cur_id) {
+          html += `
+             <div class="media right-side-chat">
+              <p class="f-w-400">${time}</p>
+              <div style="width: 70% !important" class="media-body text-end">
+                <div class="message-main pull-right">
+                  <span class="mb-0 text-start">${b['text']}</span>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+            `;
+        } else {
+          if (tmp_id != b['id_user'])
+            html += `<div class="media left-side-chat">
+               <div class="media-body d-flex">
+                <div class="img-profile" style="width: 50px !important" title="${b['nama']}">
+                  <img class="img-fluid img-profile" style="width: 50px !important" src="<?= base_url() ?>uploads/foto_profil/${b['photo_user']}" alt="Profile" />
+                </div>
+                <div style="width: 70% !important" class="main-chat">
+                  <small> <b>${b['nama']}</b></small>
+                  <div class="sub-message message-main mt-0">
+                    <span class="span-message">
+                  ${b['text']}</span>
+                  </div>
+                </div>
+              </div>
+              <p class="f-w-400">${time}</p>
+            </div>`;
+          else
+            html += `<div class="media left-side-chat">
+               <div class="media-body d-flex">
+                <div class="img-profile" style="width: 50px !important" title="${b['nama']}">
+                </div>
+                <div style="width: 70% !important" class="main-chat">
+                  <div class="sub-message message-main mt-0">
+                    <span class="span-message">
+                  ${b['text']}</span>
                   </div>
                 </div>
               </div>
               <p class="f-w-400">${time}</p>
             </div>`;
         }
-        lastChat = b['id_chat'];
-        console.log(lastChat);
-        layout_live_chat.append(html)
+        tmp_id = b['id_user'];
       })
+      layout_live_chat.prepend(html)
     }
 
     function getPengumuman(update) {

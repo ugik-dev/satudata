@@ -11,10 +11,31 @@ class DashboardModel extends CI_Model
         $this->db->from('live_chat as lc');
         $this->db->join('users as u', 'lc.id_user = u.id');
         // if (!empty($filter['last_id']))
-        $this->db->where('id_chat > ', $filter['last_id']);
+        if (isset($filter['last_id'])) {
+            if ($filter['last_id'] == 0) {
+                $this->db->where('id_chat > ', $filter['last_id']);
+                $this->db->order_by('id_chat', 'DESC');
+                $this->db->limit('5');
+                // $this->db->offside('5');
+            } else {
+                $this->db->where('id_chat > ', $filter['last_id']);
+            }
+        }
+        if (isset($filter['loadmore_id'])) {
+            // if ($filter['last_id'] == 0) {
+            $this->db->where('id_chat <', $filter['loadmore_id']);
+            $this->db->order_by('id_chat', 'desc');
+            $this->db->limit('5');
+            // $this->db->offside('5');
+            // } else {
+            //     $this->db->where('id_chat > ', $filter['last_id']);
+            // }
+        }
         $res = $this->db->get();
         ExceptionHandler::handleDBError($this->db->error(), "Edit Dasar", "Dasar");
+
         $res = $res->result_array();
+        $res =   DataStructure::keyValue($res, 'id_chat');
         return $res;
     }
     public function getInfoSPT($filter = [])

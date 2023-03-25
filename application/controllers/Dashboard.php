@@ -41,8 +41,10 @@ class Dashboard extends CI_Controller
             $this->SecurityModel->userOnlyGuard();
             $mess['id_user'] = $this->session->userdata('id');
             $mess['text'] = $this->input->get('text');
-            $data = $this->DashboardModel->send_live_chat($mess);
-            echo json_encode(['error' => false, 'data' => $data]);
+            if (!empty($mess['text'])) {
+                $data = $this->DashboardModel->send_live_chat($mess);
+                echo json_encode(['error' => false, 'data' => $data]);
+            }
             // $this->load->view('theme/sweet-alert2');
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
