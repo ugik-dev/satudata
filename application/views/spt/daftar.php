@@ -161,7 +161,7 @@
         <a class="dropdown-item" href='<?= base_url() ?>spt/detail/${spt['id_spt']}'><i class='fa fa-eye'></i> Lihat Detail</a>
       `;
                 var deleteButton = `
-        <a class="delete dropdown-item" data-id='${spt['id']}'><i class='fa fa-trash'></i> Hapus Spt</a>
+        <a class="delete dropdown-item" data-id='${spt['id_spt']}'><i class='fa fa-trash'></i> Hapus Spt</a>
       `;
                 var button = `
                            <div class="dropdown-basic">
@@ -197,24 +197,25 @@
         FDataTable.on('click', '.delete', function() {
             event.preventDefault();
             var id = $(this).data('id');
-            swal(swalDeleteConfigure).then((result) => {
+            Swal.fire(swalDeleteConfigure).then((result) => {
                 if (!result.value) {
                     return;
                 }
+                swalLoading();
                 $.ajax({
-                    url: "<?= site_url('SppdController/deleteSppd') ?>",
-                    'type': 'POST',
+                    url: "<?= site_url('spt/delete') ?>",
+                    'type': 'get',
                     data: {
-                        'id': id
+                        'id_spt': id
                     },
                     success: function(data) {
                         var json = JSON.parse(data);
                         if (json['error']) {
-                            swal("Delete Gagal", json['message'], "error");
+                            Swal.fire("Delete Gagal", json['message'], "error");
                             return;
                         }
                         delete dataSppd[id];
-                        swal("Delete Berhasil", "", "success");
+                        Swal.fire("Delete Berhasil", "", "success");
                         renderSppd(dataSppd);
                     },
                     error: function(e) {}

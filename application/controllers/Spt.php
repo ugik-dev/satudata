@@ -314,6 +314,29 @@ class Spt extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
+    public function delete()
+    {
+        try {
+            $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
+            $id = $this->input->get()['id_spt'];
+            $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id));
+            if (!empty($data[$id])) {
+                if ($data[$id]['user_input'] == $this->session->userdata('id')) {
+                    $this->SPPDModel->delete(['id_spt' => $data[$id]['id_spt']]);
+                    // echo json_encode($data[$id]);
+                } else {
+                    throw new UserException('Tidak diperbolehkan untuk dihapus');
+                }
+            } else {
+                throw new UserException('Data tidak ditemukan');
+            }
+            // $this->SPPDModel->deleteDasarTambahan($data);
+            echo json_encode(array('error' => false, 'data' => $id));
+            // $this->load->view('page', $data);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
     public function addFoto()
     {
         try {

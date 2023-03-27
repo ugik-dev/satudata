@@ -792,6 +792,12 @@ class SPPDModel extends CI_Model
 
         ExceptionHandler::handleDBError($this->db->error(), "Hapus Dasar Tambahan", "Tambahan");
     }
+    public function delete($data)
+    {
+        $this->db->where('id_spt', $data['id_spt']);
+        $this->db->delete('spt');
+        ExceptionHandler::handleDBError($this->db->error(), "Hapus SPT", "SPT");
+    }
 
     public function addFoto($data)
     {

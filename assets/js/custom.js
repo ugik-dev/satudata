@@ -164,6 +164,14 @@ function swalLoading() {
   });
   Swal.showLoading();
 }
+
+function swal(text, message, icon) {
+  Swal.fire({
+    title: text,
+    text: message,
+    type: icon,
+  });
+}
 function coloriseRealisasi(realisasi) {
   var realisasi = parseFloat(realisasi);
   if (realisasi <= 25)
