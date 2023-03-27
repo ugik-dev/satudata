@@ -189,7 +189,7 @@
                     i++;
 
                 })
-                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], spt['no_sppd'], spt['jenis'] == 2 ? spt['no_spt'] : '-', spt['nama_pegawai'], tujuan, statusSPT(spt['status']), button]);
+                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], spt['no_spt'], spt['jenis'] == 2 ? spt['no_sppd'] : '-', spt['nama_pegawai'], tujuan, statusSPT(spt['status']), button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }
