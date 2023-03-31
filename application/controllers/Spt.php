@@ -894,7 +894,7 @@ class Spt extends CI_Controller
         $pdf->RowSPPD('', 'c. Tingkat Biaya Perjalanan Dinas', 'c. ');
         $pdf->RowSPPD('4.', 'Maksud Perjalanan Dinas', $data['maksud']);
         $pdf->RowSPPD('5.', 'Alat angkut yang dipergunakan ', $data['nama_transport']);
-        $pdf->RowSPPD('6.', 'a. Tempat berangkat', 'a. ' . (empty($data['berangkat_dari']) ? $data_satuan['satuan_tempat'] : $data['berangkat_dari']));
+        $pdf->RowSPPD('6.', 'a. Tempat berangkat', 'a. ' . (empty($data['berangkat_dari']) ? $data_satuan['nama_satuan'] : $data['berangkat_dari']));
         $pdf->RowSPPD('', 'b. Tempat Tujuan', $tujuan_text);
         $pdf->RowSPPD('7.', 'a. Lamanya perjalanan dinas', 'a. ' . $data['lama_dinas'] . ' hari');
         $pdf->RowSPPD('', 'b. Tanggal berangkat', 'b. ' . tanggal_indonesia($d1));
