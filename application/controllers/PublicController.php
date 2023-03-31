@@ -10,9 +10,43 @@ class PublicController extends CI_Controller
         if ($code == 10) {
             $this->printSKP($keys);
         }
+        if ($code == 20) {
+            $this->load->model('SPPDModel');
+            $data = $this->SPPDModel->getAllSPPD(['qrcode' => $keys]);
+            $newData = [];
+            foreach ($data as $d) {
+                $newData[] = $d;
+            }
+            $this->detail($newData[0]);
+            echo json_encode($newData[0]);
+            // $this->printSKP($keys);
+        }
     }
 
-    public function printSKP($key)
+    private function detail($data)
+    {
+        try {
+            // $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
+            // $res_data['return_data'] = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
+            // $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
+            // $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
+            // $res_data['return_data']['logs'] = $this->SPPDModel->getLogs(array('id_spt' => $id));
+            // $laporan = $this->SPPDModel->getLaporan(array('id_spt' => $id));
+            // if (!empty($laporan))
+            //     $res_data['laporan'] = $laporan[$id];
+            $data = array(
+                'page' => 'spt/detail',
+                'title' => 'Form SPT',
+                'dataContent' => ['return_data' => $data]
+            );
+            // $this->load->view('page', $data);
+            $this->load->view('scanner_result', $data);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+    function printSKP($key)
     {
         try {
             $res_data['form_url'] = 'skp/edit_process';

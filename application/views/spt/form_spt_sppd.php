@@ -42,6 +42,9 @@
                             }
                             ?>
                         </select>
+
+
+
                         <a class="btn btn-light my-1" type="" id="add_dasar" data-loading-text="Loading..."><strong>Tambah Dasar</strong></a>
                         <div class="col-lg-12" id="layout_dasar_tambahan">
                             <?php
@@ -97,6 +100,11 @@
                     <div class="col-lg-6">
                         <div class="col-form-label">Lama Perjalanan</div>
                         <input class="form-control" id="lama_dinas" name="lama_dinas" type="number" value="<?= !empty($dataContent['return_data']['lama_dinas']) ? $dataContent['return_data']['lama_dinas'] : '' ?>">
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="col-form-label">Berangkat Dari</div>
+                        <input class="form-control" id="berangkat_dari" name="berangkat_dari" type="text" value="<?= !empty($dataContent['return_data']['berangkat_dari']) ? $dataContent['return_data']['lama_dinas'] : (!empty($this->session->userdata('satuan_tempat')) ? $this->session->userdata('satuan_tempat') : '') ?>">
                     </div>
                     <div class="col-lg-6">
                         <div class="col-form-label">Transportasi</div>
@@ -218,8 +226,6 @@
         });
         last_dasar = 2;
         UserModal.add_dasar.on('click', (ev) => {
-            // console.log('render')
-
             htmlDasarTambahan = `<div class="mb-3 row" id='new_row_dasar_${last_dasar}'>
                                 <label class="col-sm-1 col-form-label">${last_dasar}. </label>
                                 <div class="col-sm-10">
@@ -388,11 +394,6 @@
         }
         ?>
 
-        // addTujuan()
-        // addTujuan()
-        // addTujuan()
-        // addTujuan()
-
         function addTujuan(id = '', tj = '', dj = '', tk = '', dk = '') {
             htmlTujuan = ` <hr>
             <div class="row">
@@ -414,7 +415,6 @@
             <input class="form-control" id="date_kembali[]" name="date_kembali[]" type="date" value="${dk}">
             </div>
             </div>`;
-
             $('#layout_tujuan').append(htmlTujuan)
             last_tujuan++;
         }

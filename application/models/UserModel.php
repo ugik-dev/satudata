@@ -6,7 +6,7 @@ class UserModel extends CI_Model
 
     public function getAllUser($filter = [])
     {
-        $this->db->select("u.*,r.*, nama_bag, nama_seksi, nama_satuan,s.jen_satker, jabatan, pangkat_gol");
+        $this->db->select("u.*,r.*,s.satuan_tempat, nama_bag, nama_seksi, nama_satuan,s.jen_satker, jabatan, pangkat_gol");
         $this->db->from('users as u');
         $this->db->join('roles r', 'u.id_role = r.id_role');
         $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');

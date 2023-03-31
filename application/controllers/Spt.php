@@ -441,13 +441,13 @@ class Spt extends CI_Controller
         }
     }
 
-    public function print($id, $tipe)
+    public function print($id, $tipe, $qr = 1)
     {
         $filter = $this->input->get();
         $data = $this->SPPDModel->getAllSPPD(['id_spt' => $id])[$id];
 
         if ($tipe == 1)
-            $this->print_spt($data);
+            $this->print_spt($data, $qr);
         if ($tipe == 2)
             $this->print_sppd($data);
         if ($tipe == 3)
@@ -894,7 +894,7 @@ class Spt extends CI_Controller
         $pdf->RowSPPD('', 'c. Tingkat Biaya Perjalanan Dinas', 'c. ');
         $pdf->RowSPPD('4.', 'Maksud Perjalanan Dinas', $data['maksud']);
         $pdf->RowSPPD('5.', 'Alat angkut yang dipergunakan ', $data['nama_transport']);
-        $pdf->RowSPPD('6.', 'a. Tempat berangkat', 'a. ' . $data_satuan['satuan_tempat']);
+        $pdf->RowSPPD('6.', 'a. Tempat berangkat', 'a. ' . (empty($data['berangkat_dari']) ? $data_satuan['satuan_tempat'] : $data['berangkat_dari']));
         $pdf->RowSPPD('', 'b. Tempat Tujuan', $tujuan_text);
         $pdf->RowSPPD('7.', 'a. Lamanya perjalanan dinas', 'a. ' . $data['lama_dinas'] . ' hari');
         $pdf->RowSPPD('', 'b. Tanggal berangkat', 'b. ' . tanggal_indonesia($d1));
@@ -1141,7 +1141,7 @@ class Spt extends CI_Controller
         $pdf->Output('', $filename, false);
     }
 
-    function print_spt($data)
+    function print_spt($data, $qr)
     {
         require('assets/fpdf/mc_table.php');
 
@@ -1310,7 +1310,19 @@ class Spt extends CI_Controller
             $pdf->MultiCell(70, 5,  $sign_kadin['sign_pangkat'], 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  'NIP. ' . $sign_kadin['sign_nip'], 0, 'L', 0);
-            $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 140, $pdf->getY() - 40, 40);
+            if ($qr == 1)
+                $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 140, $pdf->getY() - 40, 40);
+            else {
+                if (empty($data['qrcode'])) {
+                    $key = md5($data['no_spt'] . time());
+                    $this->SPPDModel->addQRCode(['qrcode' => $key, 'id_spt' => $data['id_spt']]);
+                    $this->addQRCode($key, 20);
+                } else {
+                    $pdf->Image(base_url('uploads/qrcode/20' . $data['qrcode'] . '.png'), 140, $pdf->getY() - 41, 25);
+                }
+                // echo json_encode($key);
+                // die();
+            }
         } else {
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Ditetapkan di', 0, 0, 'L', 0);
@@ -1333,5 +1345,28 @@ class Spt extends CI_Controller
         $filename = 'SPT ' . $data['id_spt'];
 
         $pdf->Output('', $filename, false);
+    }
+
+    private function addQRCode($key, $code)
+    {
+
+        $this->load->library('ciqrcode');
+        $config['cacheable']    = false; //boolean, the default is true
+        $config['cachedir']     = './uploads/qrcode/'; //string, the default is application/cache/
+        $config['errorlog']     = './uploads/qrcode/'; //string, the default is application/logs/
+        $config['imagedir']     = './uploads/qrcode/'; //direktori penyimpanan qr code
+        $config['quality']      = true; //boolean, the default is true
+        $config['size']         = '50'; //interger, the default is 1024
+        $config['black']        = array(224, 255, 255); // array, default is array(255,255,255)
+        $config['white']        = array(70, 130, 180); // array, default is array(0,0,0)
+        $this->ciqrcode->initialize($config);
+
+        $image_name = $code . $key . '.png'; //buat name dari qr code sesuai dengan nim
+
+        $params['data'] = base_url() . 'qrcode/' . $code . $key; //data yang akan di jadikan QR CODE
+        $params['level'] = 'S'; //H=High
+        $params['size'] = 5;
+        $params['savename'] = FCPATH . $config['imagedir'] . $image_name; //simpan image QR CODE ke folder assets/images/
+        $this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
     }
 }

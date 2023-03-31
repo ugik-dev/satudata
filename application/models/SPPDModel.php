@@ -190,14 +190,14 @@ class SPPDModel extends CI_Model
                 $this->db->where_in('u.jenis', $jen);
             }
         }
-
-        if ($this->session->userdata('jen_satker') != 1)
-            $this->db->where('u.id_satuan', $ses['id_satuan']);
+        if (empty($filter['qrcode'])) {
+            if ($this->session->userdata('jen_satker') != 1)
+                $this->db->where('u.id_satuan', $ses['id_satuan']);
+        } else {
+            $this->db->where('u.qrcode', $filter['qrcode']);
+        }
 
         $res = $this->db->get()->result_array();
-        // echo ($this->db->last_query());
-        // die();
-        // die();
         $res_id = [];
         foreach ($res as $rid) {
             array_push($res_id, $rid['id_spt']);
@@ -209,7 +209,6 @@ class SPPDModel extends CI_Model
             $this->db->join('users u', 'u.id = p.id_pegawai');
             $this->db->where_in('id_spt', $res_id);
             $pengikut = DataStructure::groupingByParent($this->db->get()->result_array(), 'id_spt');
-
             $this->db->from('tujuan');
             $this->db->order_by('ke', 'ASC');
             $this->db->where_in('id_spt', $res_id);
@@ -712,6 +711,12 @@ class SPPDModel extends CI_Model
         ExceptionHandler::handleDBError($this->db->error(), "Batalkan Aksi", "Batal");
     }
 
+    public function addQRCode($data)
+    {
+        $this->db->set('qrcode', $data['qrcode']);
+        $this->db->where('id_spt', $data['id_spt']);
+        $this->db->update('spt');
+    }
 
     public function undo($data)
     {
