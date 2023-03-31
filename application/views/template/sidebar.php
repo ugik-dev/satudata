@@ -49,10 +49,24 @@
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>perjalanan-dinas"><i data-feather="box"> </i><span>Perjalanan Dinas Saya</span></a>
                     </li>
-                    <!-- </li> -->
-                    <!-- <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>cuti"><i data-feather="box"> </i><span>Cuti</span></a>
-                    </li> -->
+
+                    <li class="sidebar-list">
+                        <label class="badge badge-light-primary"></label><a class="sidebar-link sidebar-title active" id="menu_2" href="#" data-bs-original-title="" title=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag">
+                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                <line x1="7" y1="7" x2="7" y2="7"></line>
+                            </svg><span class="">SPT / SPPD </span>
+                            <div class="according-menu"><i class="fa fa-angle-right"></i></div>
+                        </a>
+                        <ul class="sidebar-submenu" id="opmenu_2" style="">
+                            <li><a id="submenu_5" href="<?= base_url() ?>spt/daftar_pengajuan" class="active" data-bs-original-title="" title="">Daftar Pengajuan</a></li>
+                            <li><a id="submenu_6" href="<?= base_url() ?>spt/create/spt" data-bs-original-title="" title="">Entri SPT</a></li>
+                            <li><a id="submenu_8" href="<?= base_url() ?>spt/create/spt_sppd" data-bs-original-title="" title="">Entri SPT SPPD</a></li>
+                            <?php if (in_array($this->session->userdata('id_bagian'), [1, 2, 3, 8, 9])) {
+                                echo '<li><a id="submenu_9" href="' . base_url() . 'spt/create/lembur" data-bs-original-title="" title="">Entri Lembur</a></li>';
+                            } ?>
+                        </ul>
+                    </li>
+
                     <?php $menu = User_Access($this->session->userdata('id_role'));
                     if (!empty($menu))
                         foreach ($menu as $m) {

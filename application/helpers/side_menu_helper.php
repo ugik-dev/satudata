@@ -13,6 +13,7 @@ if (!function_exists('User_Access')) {
 		$CI->db->join('hak_aksess', "hak_aksess.id_menulist = menulist.id_menulist", 'LEFT');
 		// $CI->db->join('hak_aksess', "mp_menulist.id = hak_aksess.id_menulist");
 		$CI->db->where('hak_aksess.id_role ', $para_user_id);
+		$CI->db->where('menu.active_menu ', 1);
 		// $CI->db->where('mp_menulist.active ', 1);
 		// $CI->db->order_by('mp_menu.order_number');
 		$res = $CI->db->get();
