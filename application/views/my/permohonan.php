@@ -184,29 +184,29 @@
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Tahun N</div>
+                                    <div class="col-form-label">Tahun <span class="c_label_n">N</span></div>
                                     <input type="number" name="c_n" id="c_n" class="form-control" readonly />
                                 </div>
                                 <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Tahun N-1</div>
+                                    <div class="col-form-label">Tahun <span class="c_label_n1">N</span></div>
                                     <input type="number" name="c_n1" id="c_n1" class="form-control" readonly />
                                 </div>
                                 <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Tahun N-2</div>
+                                    <div class="col-form-label">Tahun <span class="c_label_n2">N</span></div>
                                     <input type="number" name="c_n2" id="c_n2" class="form-control" readonly />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun N</div>
+                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n">N</span></div>
                                     <input type="number" name="c_sisa_n" id="c_sisa_n" class="form-control" readonly />
                                 </div>
                                 <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun N-1</div>
+                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n1">N</span></div>
                                     <input type="number" name="c_sisa_n1" id="c_sisa_n1" class="form-control" readonly />
                                 </div>
                                 <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun N-2</div>
+                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n2">N</span></div>
                                     <input type="number" name="c_sisa_n2" id="c_sisa_n2" class="form-control" readonly />
                                 </div>
                             </div>
@@ -253,12 +253,10 @@
                                 <option value="2">Ditolak</option>
                             </select>
                         </div>
-
                         <div class="col-lg-6">
                             <div class="col-form-label">Catatan Verifikator Cuti</div>
                             <input id="cttn_verif" name="cttn_verif" class="form-control"></input>
                         </div>
-
                     </div>
                     <div class="hr-line-dashed"></div>
                     <hr>
@@ -317,29 +315,15 @@
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Tahun N</div>
-                                    <input type="number" name="c_n" id="c_n" class="form-control" required />
-                                </div>
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Tahun N-1</div>
-                                    <input type="number" name="c_n1" id="c_n1" class="form-control" required />
-                                </div>
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Tahun N-2</div>
-                                    <input type="number" name="c_n2" id="c_n2" class="form-control" required />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun N</div>
+                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n">N</span></div>
                                     <input type="number" name="c_sisa_n" id="c_sisa_n" class="form-control" required />
                                 </div>
                                 <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun N-1</div>
+                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n1">N-1</span></div>
                                     <input type="number" name="c_sisa_n1" id="c_sisa_n1" class="form-control" required />
                                 </div>
                                 <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun N-2</div>
+                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n2">N-2</span></div>
                                     <input type="number" name="c_sisa_n2" id="c_sisa_n2" class="form-control" required />
                                 </div>
                             </div>
@@ -395,9 +379,9 @@
             'c_sisa_n': $('#verif_modal').find('#c_sisa_n'),
             'c_sisa_n1': $('#verif_modal').find('#c_sisa_n1'),
             'c_sisa_n2': $('#verif_modal').find('#c_sisa_n2'),
-            'c_n': $('#verif_modal').find('#c_n'),
-            'c_n1': $('#verif_modal').find('#c_n1'),
-            'c_n2': $('#verif_modal').find('#c_n2'),
+            'c_label_n': $('#verif_modal').find('#c_label_n'),
+            'c_label_n1': $('#verif_modal').find('#c_label_n1'),
+            'c_label_n2': $('#verif_modal').find('#c_label_n2'),
             'alasan': $('#verif_modal').find('#alasan'),
             'alamat_izin': $('#verif_modal').find('#alamat_izin'),
             'nama_izin': $('#verif_modal').find('#nama_izin'),
@@ -797,25 +781,32 @@
             VerifModal.alasan.val(curData['alasan']);
             VerifModal.alamat_izin.val(curData['alamat_izin']);
             if (curData['jenis_izin'] == '11') {
-                VerifModal.c_n.prop('required', true)
-                VerifModal.c_n1.prop('required', true)
-                VerifModal.c_n2.prop('required', true)
+                // VerifModal.c_n.prop('required', true)
+                // VerifModal.c_n1.prop('required', true)
+                // VerifModal.c_n2.prop('required', true)
                 VerifModal.c_sisa_n.prop('required', true)
                 VerifModal.c_sisa_n1.prop('required', true)
                 VerifModal.c_sisa_n2.prop('required', true)
+
                 $('.layout_c_tahunan').show();
             } else {
-                VerifModal.c_n.prop('required', false)
-                VerifModal.c_n1.prop('required', false)
-                VerifModal.c_n2.prop('required', false)
+                // VerifModal.c_n.prop('required', false)
+                // VerifModal.c_n1.prop('required', false)
+                // VerifModal.c_n2.prop('required', false)
                 VerifModal.c_sisa_n.prop('required', false)
                 VerifModal.c_sisa_n1.prop('required', false)
                 VerifModal.c_sisa_n2.prop('required', false)
                 $('.layout_c_tahunan').hide();
             }
-            VerifModal.c_n.val(curData['c_n']);
-            VerifModal.c_n1.val(curData['c_n1']);
-            VerifModal.c_n2.val(curData['c_n2']);
+            cur_tahun = curData['periode_start'].split('-')[0];
+            $('.c_label_n').html(cur_tahun);
+            $('.c_label_n1').html(cur_tahun - 1);
+            $('.c_label_n2').html(cur_tahun - 2);
+            // VerifModal.c_label_n.html(cur_tahun);
+            // VerifModal.c_label_n1.html(cur_tahun - 1);
+            // VerifModal.c_label_n2.html(cur_tahun - 2);
+            // VerifModal.c_label_n.val(curData['c_n1']);
+            // VerifModal.c_label_n.val(curData['c_n2']);
             VerifModal.c_sisa_n.val(curData['c_sisa_n']);
             VerifModal.c_sisa_n1.val(curData['c_sisa_n1']);
             VerifModal.c_sisa_n2.val(curData['c_sisa_n2']);
@@ -856,6 +847,13 @@
             LihatModal.c_n.val(curData['c_n']);
             LihatModal.c_n1.val(curData['c_n1']);
             LihatModal.c_n2.val(curData['c_n2']);
+            LihatModal.c_sisa_n.val(curData['c_sisa_n']);
+            LihatModal.c_sisa_n1.val(curData['c_sisa_n1']);
+            LihatModal.c_sisa_n2.val(curData['c_sisa_n2']);
+            cur_tahun = curData['periode_start'].split('-')[0];
+            $('.c_label_n').html(cur_tahun);
+            $('.c_label_n1').html(cur_tahun - 1);
+            $('.c_label_n2').html(cur_tahun - 2);
             LihatModal.status_izin.html(statusIzin(curData['status_izin'], curData['unapprove']))
             if (curData['lampiran'] != null && curData['lampiran'] != '') {
                 file_lampiran = curData['lampiran'].split(".");

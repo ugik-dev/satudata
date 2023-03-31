@@ -47,18 +47,18 @@
                                     } ?>
                                 </select>
                             </div>
-                            <div class="col-lg-4 layout_c_tahunan">
+                            <!-- <div class="col-lg-4 layout_c_tahunan">
                                 <div class="col-form-label">Tahun N</div>
-                                <input type="number" name="c_n" id="c_n" class="form-control" required />
+                                <input type="number" name="c_n" id="c_n" class="form-control" />
                             </div>
                             <div class="col-lg-4 layout_c_tahunan">
                                 <div class="col-form-label">Tahun N-1</div>
-                                <input type="number" name="c_n1" id="c_n1" class="form-control" required />
+                                <input type="number" name="c_n1" id="c_n1" class="form-control" />
                             </div>
                             <div class="col-lg-4 layout_c_tahunan">
                                 <div class="col-form-label">Tahun N-2</div>
-                                <input type="number" name="c_n2" id="c_n2" class="form-control" required />
-                            </div>
+                                <input type="number" name="c_n2" id="c_n2" class="form-control" />
+                            </div> -->
                         </div>
                     </div>
 
@@ -150,24 +150,21 @@
         $.when().then((e) => {}).fail((e) => {
             // console.log(e)
         });
-        last_dasar = 2;
 
-        last_ku = 1;
-        last_kt = 1;
-        UserModal.jenis_izin.on('change', function() {
-            if (UserModal.jenis_izin.val() == '11') {
-                $('.layout_c_tahunan').show();
-                UserModal.c_n.prop('disabled', false);
-                UserModal.c_n1.prop('disabled', false);
-                UserModal.c_n2.prop('disabled', false);
-            } else {
-                $('.layout_c_tahunan').hide();
-                UserModal.c_n.prop('disabled', true);
-                UserModal.c_n1.prop('disabled', true);
-                UserModal.c_n2.prop('disabled', true);
+        // UserModal.jenis_izin.on('change', function() {
+        //     if (UserModal.jenis_izin.val() == '11') {
+        //         $('.layout_c_tahunan').show();
+        //         UserModal.c_n.prop('disabled', false);
+        //         UserModal.c_n1.prop('disabled', false);
+        //         UserModal.c_n2.prop('disabled', false);
+        //     } else {
+        //         $('.layout_c_tahunan').hide();
+        //         UserModal.c_n.prop('disabled', true);
+        //         UserModal.c_n1.prop('disabled', true);
+        //         UserModal.c_n2.prop('disabled', true);
 
-            }
-        })
+        //     }
+        // })
         UserModal.jenis_izin.trigger('change');
         $("#id_pengganti").select2({
             ajax: {

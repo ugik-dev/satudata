@@ -156,10 +156,12 @@
                         <div class="col-lg-4" <?= $this->session->userdata()['id_satuan'] != 1 ? 'hidden' : '' ?>>
                             <div class="col-form-label"> Bagian
                             </div>
+                            <input type="hidden" id="null_bagian" name="null_bagian" value="true" disabled>
                             <select class="select2 col-sm-12" id="id_bagian" name="id_bagian"></select>
                         </div>
                         <div class="col-lg-4" <?= $this->session->userdata()['id_satuan'] != 1 ? 'hidden' : '' ?>>
                             <div class="col-form-label">Seksi</div>
+                            <input type="hidden" id="null_seksi" name="null_seksi" value="true" disabled>
                             <select class="select2 col-sm-12" id="id_seksi" name="id_seksi"></select>
                         </div>
                         <div class="col-lg-4" <?= $this->session->userdata()['id_satuan'] != 1 ? 'hidden' : '' ?>>
@@ -475,8 +477,6 @@
                 $('#layout_bagian , #layout_seksi').hide();
                 $("#null_bagian , #null_seksi").prop('disabled', false)
                 $("#id_bagian , #id_seksi").prop('disabled', true)
-                // $("#null_seksi").prop('disabled', false)
-                // $("#id_seksi").prop('disabled', true)
             } else {
                 $('#layout_bagian , #layout_seksi').show();
                 $("#null_bagian , #null_seksi").prop('disabled', true)
@@ -486,10 +486,17 @@
         $("#id_bagian").on('change', function() {
             cur_bagian = $("#id_bagian").val();
             // dinkesvar = [1, 2, 3, 4, 5]
-            if (RefSatker['bagian'][cur_bagian]['jenis'] != 4) {
-                $('#layout_seksi').hide();
-                $("#id_seksi").prop('disabled', true)
-                $("#null_seksi").prop('disabled', false)
+            console.log(RefSatker)
+            if (cur_bagian) {
+                if (RefSatker['bagian'][cur_bagian]['jenis'] != 4) {
+                    $('#layout_seksi').hide();
+                    $("#id_seksi").prop('disabled', true)
+                    $("#null_seksi").prop('disabled', false)
+                } else {
+                    $('#layout_seksi').show();
+                    $("#null_seksi").prop('disabled', true)
+                    $("#id_seksi").prop('disabled', false)
+                }
             } else {
                 $('#layout_seksi').show();
                 $("#null_seksi").prop('disabled', true)
@@ -607,12 +614,11 @@
             var $blankOption = $("<option selected='selected'></option>").val('').text('');
             var $newOption = $("<option selected='selected'></option>").val(currentData['id_satuan']).text(currentData['nama_satuan']);
             UserModal.id_satuan.append($newOption).trigger('change');
-            if (currentData['id_bagian']) {
+            if (currentData['id_bagian'] != 'null') {
                 var $newOption3 = $("<option selected='selected'></option>").val(currentData['id_bagian']).text(currentData['nama_bag']);
                 UserModal.id_bagian.append($newOption3).trigger('change');
             } else {
                 UserModal.id_bagian.append($blankOption).trigger('change');
-
             }
             if (currentData['id_seksi']) {
                 var $newOption2 = $("<option selected='selected'></option>").val(currentData['id_seksi']).text(currentData['nama_seksi']);
@@ -620,10 +626,19 @@
             } else {
                 UserModal.id_seksi.append($blankOption).trigger('change');
             }
-            console.log('ss')
 
             var $newOption4 = $("<option selected='selected'></option>").val(currentData['id_role']).text(currentData['nama_role']);
             UserModal.id_role.append($newOption4).trigger('change');
+
+            if (RefSatker['satuan'][currentData['id_satuan']]['jenis'] != 1) {
+                $('#layout_bagian , #layout_seksi').hide();
+                $("#null_bagian , #null_seksi").prop('disabled', false)
+                $("#id_bagian , #id_seksi").prop('disabled', true)
+            } else {
+                $('#layout_bagian , #layout_seksi').show();
+                $("#null_bagian , #null_seksi").prop('disabled', true)
+                $("#id_bagian , #id_seksi").prop('disabled', false)
+            }
         });
 
         UserModal.form.submit(function(event) {
@@ -632,7 +647,6 @@
             var url = "<?= base_url('Master/') ?>";
             url += isAdd ? "addUser" : "editUser";
             var button = isAdd ? UserModal.addBtn : UserModal.saveEditBtn;
-            console.log('sub')
             Swal.fire({
                 title: "Apakah anda Yakin?",
                 text: "Data Disimpan!",
@@ -650,6 +664,7 @@
                 if (!result.isConfirmed) {
                     return;
                 }
+                swalLoading();
                 $.ajax({
                     url: url,
                     'type': 'POST',

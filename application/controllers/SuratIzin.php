@@ -260,11 +260,26 @@ class SuratIzin extends CI_Controller
             $id = $data_post['id_surat_izin'];
             $data = $this->SuratIzinModel->getAll(array('id_surat_izin' => $id))[$id];
             $cur_user = $this->session->userdata();
-            // $logs['id_si'] = $id;
-            // $logs['id_user'] = $cur_user['id'];
+            $total_c = (int) $data_post['c_sisa_n'] + (int)$data_post['c_sisa_n1'] + (int) $data_post['c_sisa_n2'];
+            if ($data['jenis_izin'] == 11)
+                if ($total_c < $data['lama_izin']) {
+                    throw new UserException('Sisa cuti tidak cukup!!!!', UNAUTHORIZED_CODE);
+                } else {
+                    if ($data_post['c_sisa_n2'] >= $data['lama_izin']) {
+                        $data_post['c_n2'] = $data['lama_izin'];
+                        $data_post['c_n1'] = '0';
+                        $data_post['c_n'] = '0';
+                    } else if (($data_post['c_sisa_n2'] + $data_post['c_sisa_n1']) >= $data['lama_izin']) {
+                        $data_post['c_n2'] = $data_post['c_sisa_n2'];
+                        $data_post['c_n1'] = $data['lama_izin'] - $data_post['c_sisa_n2'];
+                        $data_post['c_n'] = '0';
+                    } else {
+                        $data_post['c_n2'] = $data_post['c_sisa_n2'];
+                        $data_post['c_n1'] = $data_post['c_sisa_n1'];
+                        $data_post['c_n'] =  $data['lama_izin'] - $data_post['c_sisa_n2'] - $data_post['c_sisa_n1'];
+                    }
+                }
             if ($data['verif_cuti'] == $cur_user['id'] && in_array($data['status_izin'], [10, 11])) {
-                // echo "as";
-                // die();
                 $this->SuratIzinModel->approv_verif($data_post);
             }
             $data = $this->SuratIzinModel->getAll(array('id_surat_izin' => $id))[$id];
@@ -869,9 +884,9 @@ class SuratIzin extends CI_Controller
         $pdf->Cell(37, 7, '', 1, 1, 'L');
 
         $pdf->Cell(7, 7, '', 1, 0, 'C');
-        $pdf->Cell(20, 7, '', 1, 0, 'C');
-        $pdf->Cell(15, 7, "", 1, 0, 'C');
-        $pdf->Cell(53, 7, '', 1, 0, 'C');
+        $pdf->Cell(20, 7, explode('-', $data['periode_start'])[0] - 2, 1, 0, 'C');
+        $pdf->Cell(15, 7, $data['c_sisa_n2'], 1, 0, 'C');
+        $pdf->Cell(53, 7, $data['c_n2'], 1, 0, 'C');
         $pdf->Cell(7, 7, '6.', 1, 0, 'C');
         $pdf->Cell(51, 7, 'Cuti di Luar Tanggungan Negara', 1, 0, 'L');
         $pdf->Cell(37, 7, '', 1, 1, 'L');
