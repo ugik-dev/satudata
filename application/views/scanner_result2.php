@@ -4,7 +4,7 @@
 <style>
     .login-card .qrcode-result {
         width: 100%;
-        padding: 40px;
+        /* padding: 40px; */
         border-radius: 10px;
         -webkit-box-shadow: 0 0 37px rgba(8, 21, 66, 0.95);
         box-shadow: 0 0 37px rgba(8, 21, 66, 0.6);
@@ -87,49 +87,60 @@
                         <div class="qrcode-result" style="">
                             <form class="theme-form" id="loginForm">
                                 <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <label class="col-sm-2 col-form-label"><strong>No SPT</strong></label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="no_spt" required="" value="<?= !empty($dataContent['return_data']['no_spt']) ? $dataContent['return_data']['no_spt'] : '' ?>" readonly="">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+
+                                            <div class="col-lg-6">
+                                                <div class="row">
+                                                    <label class="col-sm-2 col-form-label"><strong>No SPT</strong></label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" name="no_spt" required="" value="<?= !empty($dataContent['return_data']['no_spt']) ? $dataContent['return_data']['no_spt'] : '' ?>" readonly="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+
+                                                <div class="row">
+
+                                                    <label class="col-sm-3 col-form-label"><strong>No SPPD</strong></label>
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" name="no_sppd" required="" readonly="" value="<?= !empty($dataContent['return_data']['no_sppd']) ? $dataContent['return_data']['no_sppd'] : '' ?>">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
-
-                                            <div class="row">
-
-                                                <label class="col-sm-3 col-form-label"><strong>No SPPD</strong></label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" name="no_sppd" required="" readonly="" value="<?= !empty($dataContent['return_data']['no_sppd']) ? $dataContent['return_data']['no_sppd'] : '' ?>">
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <!-- <br>
                                         <br>
                                         <br>
-                                        <br>
+                                    -->
                                         <hr>
                                         <div class="col-lg-12">
                                             <div class="col-form-label"><strong>Dasar</strong></div>
                                             <div class="row">
-                                                <div class="col-sm-1">1. </div>
-                                                <div class="col-sm-11">
-
-                                                    <?php
-                                                    if (!empty($dataContent['return_data']['id_dasar'])) {
-                                                        echo $dataContent['return_data']['nama_dasar'];
-                                                    }
-                                                    ?>
+                                                <div class=" col-sm-1 col-lg-1">1. </div>
+                                                <div class=" col-sm-11 col-lg-11">
+                                                    <p>
+                                                        <?php
+                                                        if (!empty($dataContent['return_data']['id_dasar'])) {
+                                                            echo $dataContent['return_data']['nama_dasar'];
+                                                        }
+                                                        ?>
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="row">
-
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-4">
+                                                    <div class="col-form-label"><strong>Disetujui Oleh</strong></div>
+                                                    <?= $dataContent['return_data']['sign']['sign_title'] . '<br>' .
+                                                        $dataContent['return_data']['sign']['sign_name'] . '<br> NIP. ' .
+                                                        $dataContent['return_data']['sign']['sign_nip']
+                                                    ?>
+                                                </div>
+                                                <div class="col-lg-4">
                                                     <div class="col-form-label"><strong>PPK</strong></div>
                                                     <?= $dataContent['return_data']['nama_ppk'] ?>
                                                 </div>
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-4">
                                                     <div class="col-form-label"><strong>PPTK</strong></div>
                                                     <?= $dataContent['return_data']['nama_pptk'] ?>
                                                 </div>
@@ -169,143 +180,65 @@
                                                 <hr>
                                             </div>
                                         <?php } ?>
-
-
-
-                                        <div class="col-lg-12">
-                                            <div class="row">
-                                                <div class="col-sm-2"><strong>Pegawai</strong></div>
-                                                <div class="col-sm-9">
-                                                    <div class="row">
-                                                        <div class="col-sm-3">Nama : </div>
-                                                        <div class="col-sm-9">
-                                                            <?= $dataContent['return_data']['nama_pegawai'] ?>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">NIP : </div>
-                                                        <div class="col-sm-9">
-                                                            <?= $dataContent['return_data']['nip_pegawai'] ?>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">Jabatan : </div>
-                                                        <div class="col-sm-9">
-                                                            <?= $dataContent['return_data']['jabatan_pegawai'] ?>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">Pangkat / Golongan : </div>
-                                                        <div class="col-sm-9">
-                                                            <?= $dataContent['return_data']['pangkat_gol_pegawai'] ?>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="col-lg-12">
-                                            <!-- <div class="row"> -->
-                                            <!-- <div class="col-lg-2"><strong>Pengikut</strong></div> -->
-                                            <!-- <div class="col-lg-4" style=""> -->
-                                            <table class="table table-sm table-dashboard data-table no-wrap mb-0 fs--1 w-100" id="tb-pengikut">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Nama</th>
-                                                        <th>NIP</th>
-                                                        <!-- <th>Jabatan</th>
-                                                        <th>Pangkat / Gol</th> -->
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    if (!empty($dataContent['return_data']['pengikut'])) {
-                                                        foreach ($dataContent['return_data']['pengikut'] as $p) {
-                                                    ?>
-                                                            <tr>
-                                                                <td><?= $p['nama_pengikut'] ?></td>
-                                                                <td><?= $p['nip_pengikut'] ?></td>
-                                                                <!-- <td><?= $p['jabatan_pengikut'] ?></td> -->
-                                                                <!-- <td><?= $p['pangkat_gol_pengikut'] ?></td> -->
-                                                            </tr>
-                                                    <?php
-                                                        }
-                                                    } ?>
-                                                </tbody>
-                                            </table>
-
-
-                                            <!-- </div> -->
-                                            <!-- </div> -->
-                                            <!-- <hr> -->
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12" id="layout_tujuan">
-                                        <?php if ($dataContent['return_data']['jenis'] == 3) { ?>
-                                            <div class="col-sm-2"><strong>Tempat & Waktu</strong></div>
-                                        <?php } else { ?>
-                                            <div class="col-sm-2"><strong>Tujuan</strong></div>
-                                        <?php } ?>
-                                        <table class="table" id="tb-tujuan">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <?php if ($dataContent['return_data']['jenis'] == 3) { ?>
-                                                        <th>Tempat</th>
-                                                        <th>Tanggal Lembur</th>
-                                                        <th>Dari</th>
-                                                        <th>Sampai</th>
-                                                        <th>Total Jam</th>
-                                                    <?php } else { ?>
-                                                        <th>Tempat Tujuan</th>
-                                                        <th>Tanggal Berangkat</th>
-                                                        <th>Temmpat Kembali</th>
-                                                        <th>Tanggal Kembali</th>
-                                                    <?php } ?>
-
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+                                        <?php if (!empty($dataContent['return_data']['pengikut'])) {
+                                        ?>
+                                            <div class="col-lg-12">
+                                                <div class="col-lg-2"><strong>Tujuan</strong></div>
+                                                <!-- <div class="row"> -->
                                                 <?php
-                                                if (!empty($dataContent['return_data']['tujuan'])) {
-                                                    $i = 1;
-                                                    foreach ($dataContent['return_data']['tujuan'] as $t) {
-                                                        if ($dataContent['return_data']['jenis'] == 3) {
-                                                            $first  = new DateTime($t['dari']);
-                                                            $second = new DateTime($t['sampai']);
-                                                            $diff = $first->diff($second);
-                                                            $cur_jam =  $diff->format('%h');
+                                                $i = 0;
+                                                foreach ($dataContent['return_data']['tujuan'] as $t) {
+                                                    $i++;
                                                 ?>
-                                                            <tr>
-                                                                <td><?= to_romawi($i) ?></td>
-                                                                <td><?= $t['tempat_tujuan'] ?></td>
-                                                                <td><?= $t['date_berangkat'] ?></td>
-                                                                <td><?= substr($t['dari'], 0, 5) ?></td>
-                                                                <td><?= substr($t['sampai'], 0, 5)  ?></td>
-                                                                <td><?= $cur_jam ?> jam</td>
-                                                            </tr>
-                                                        <?php
+                                                    <div class="col-lg-12">
+                                                        <div class="row">
 
-                                                        } else { ?>
-                                                            <tr>
-                                                                <td><?= to_romawi($i) ?></td>
-                                                                <td><?= $t['tempat_tujuan'] ?></td>
-                                                                <td><?= $t['date_berangkat'] ?></td>
-                                                                <td><?= $t['tempat_kembali'] ?></td>
-                                                                <td><?= $t['date_kembali'] ?></td>
-                                                            </tr>
-                                                        <?php } ?>
+                                                            <div class="col-sm-1"><?= $i ?>. </div>
+                                                            <div class="col-sm-12">Tempat Tujuan : <?= $t['tempat_tujuan'] ?> </div>
+                                                            <div class="col-sm-12">Tanggal Berangkat : <?= $t['date_berangkat'] ?></div>
+                                                            <div class="col-sm-12">Tanggal Kembali : <?= $t['date_kembali'] ?></div>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+
+                                                <hr>
+                                            </div>
+                                        <?php } ?>
 
 
+                                        <div class="col-lg-12">
+                                            <div class="col-lg-2"><strong>Pegawai</strong></div>
+                                            <div class="col-sm-12">Nama &nbsp: <?= $dataContent['return_data']['nama_pegawai'] ?></div>
+                                            <div class="col-sm-12">NIP &nbsp&nbsp&nbsp&nbsp: <?= $dataContent['return_data']['nip_pegawai']  ?> </div>
+                                            <div class="col-sm-12">Jabatan : <?= $dataContent['return_data']['jabatan_pegawai'] ?></div>
+                                            <div class="col-sm-12">Pangkat / Golongan : <?= $dataContent['return_data']['pangkat_gol_pegawai'] ?> </div>
+                                        </div>
+                                        <?php if (!empty($dataContent['return_data']['pengikut'])) {
+                                        ?>
+                                            <div class="col-lg-12">
+                                                <hr>
+                                                <div class="col-lg-2"><strong>Pengikut</strong></div>
+                                                <!-- <div class="row"> -->
                                                 <?php
-                                                        $i++;
-                                                    }
-                                                } ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                $i = 0;
+                                                foreach ($dataContent['return_data']['pengikut'] as $p) {
+                                                    $i++;
+                                                ?>
+                                                    <div class="col-lg-12">
+                                                        <div class="col-sm-3"><?= $i ?>. </div>
+                                                        <div class="col-sm-12">Nama &nbsp: <?= $p['nama'] ?></div>
+                                                        <div class="col-sm-12">NIP &nbsp&nbsp&nbsp&nbsp: <?= $p['nip'] ?> </div>
+                                                        <div class="col-sm-12">Jabatan : <?= $p['jabatan'] ?></div>
+                                                        <div class="col-sm-12">Pangkat / Golongan : <?= $p['pangkat_gol'] ?> </div>
+                                                    </div>
+                                                    <br>
+                                                    <!-- <br> -->
+                                                <?php } ?>
 
+                                                <!-- </div> -->
+                                            </div>
+                                        <?php } ?>
+                                    </div>
                                 </div>
                             </form>
                         </div>

@@ -71,10 +71,23 @@ class Spt extends CI_Controller
 
             $res_data['form_url'] = 'spt/edit_process';
             $data = array(
-                'page' => 'spt/form',
                 'title' => 'Form SPT SPT',
                 'dataContent' => $res_data
             );
+            if (!empty($res_data['return_data']['sign_kadin'])) {
+                // $this->load->view('error_page');
+                $data['page'] = 'error_page2';
+                $data['message'] = 'Maaf, SPT ini sudah di approve tahap akhir, tidak dapat dirubah  lagi..';
+                $data['redirect'] = 'spt/detail/' . $res_data['return_data']['id_spt'];
+                // echo json_encode($data);
+                // die();
+                // return;
+                // return;
+            } else            if ($res_data['return_data']['jenis'] == 1) {
+                $data['page'] = 'spt/form_spt';
+            } else if ($res_data['return_data']['jenis'] == 2) {
+                $data['page'] = 'spt/form_spt_sppd';
+            }
             $this->load->view('page', $data);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -898,7 +911,7 @@ class Spt extends CI_Controller
         $pdf->RowSPPD('', 'b. Tempat Tujuan', $tujuan_text);
         $pdf->RowSPPD('7.', 'a. Lamanya perjalanan dinas', 'a. ' . $data['lama_dinas'] . ' hari');
         $pdf->RowSPPD('', 'b. Tanggal berangkat', 'b. ' . tanggal_indonesia($d1));
-        $pdf->RowSPPD('', 'c. Tanggal harus kembali', '. ' . tanggal_indonesia($d2));
+        $pdf->RowSPPD('', 'c. Tanggal harus kembali', 'c. ' . tanggal_indonesia($d2));
         $i = 1;
         $pdf->RowSPPD('8.', 'Pengikut', 'Tanggal Lahir', 'Keterangan');
         if (!empty($data['pengikut']))
@@ -944,11 +957,11 @@ class Spt extends CI_Controller
             $sign_ppk =  $this->GeneralModel->getSign(['id' => $data['sign_ppk']])[0];
             $pdf->Cell(120, 5, '', 0, 1, 'C', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
-            $pdf->MultiCell(75, 5,  ucwords(strtolower($sign_ppk['sign_title'])), 0, 'L', 0);
+            $pdf->MultiCell(75, 5,  $sign_ppk['sign_title'], 0, 'L', 0);
 
             $pdf->Cell(120, 25, '', 0, 1, 'C', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
-            $pdf->MultiCell(75, 5,  ucwords(strtolower($sign_ppk['sign_name'])), 0, 'L', 0);
+            $pdf->MultiCell(75, 5,  $sign_ppk['sign_name'], 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(45, 5,  $sign_ppk['sign_pangkat'], 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
@@ -1317,11 +1330,10 @@ class Spt extends CI_Controller
                     $key = md5($data['no_spt'] . time());
                     $this->SPPDModel->addQRCode(['qrcode' => $key, 'id_spt' => $data['id_spt']]);
                     $this->addQRCode($key, 20);
+                    $pdf->Image(base_url('uploads/qrcode/20' .  $key . '.png'), 140, $pdf->getY() - 40.5, 25);
                 } else {
-                    $pdf->Image(base_url('uploads/qrcode/20' . $data['qrcode'] . '.png'), 140, $pdf->getY() - 41, 25);
+                    $pdf->Image(base_url('uploads/qrcode/20' . $data['qrcode'] . '.png'), 140, $pdf->getY() - 40.5, 25);
                 }
-                // echo json_encode($key);
-                // die();
             }
         } else {
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);

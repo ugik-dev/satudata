@@ -228,39 +228,39 @@
                         </div>
                         <hr>
                         <div class="col-lg-12">
-                            <!-- <div class="row"> -->
-                            <!-- <div class="col-lg-2"><strong>Pengikut</strong></div> -->
-                            <!-- <div class="col-lg-4" style=""> -->
-                            <table class="table table-sm table-dashboard data-table no-wrap mb-0 fs--1 w-100" id="tb-pengikut">
-                                <thead>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>NIP</th>
-                                        <!-- <th>Jabatan</th>
-                                                        <th>Pangkat / Gol</th> -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    if (!empty($dataContent['return_data']['pengikut'])) {
-                                        foreach ($dataContent['return_data']['pengikut'] as $p) {
-                                    ?>
+                            <div class="row">
+                                <div class="col-lg-2"><strong>Pengikut</strong></div>
+                                <div class="col-lg-4" style="">
+                                    <table class="table table-sm table-dashboard data-table no-wrap mb-0 fs--1 w-100" id="tb-pengikut">
+                                        <thead>
                                             <tr>
-                                                <td><?= $p['nama'] ?></td>
-                                                <td><?= $p['nip'] ?></td>
-                                                <!-- <td><?= $p['jabatan'] ?></td> -->
-                                                <!-- <td><?= $p['pangkat_gol'] ?></td> -->
+                                                <th>Nama</th>
+                                                <th>NIP</th>
+                                                <th>Jabatan</th>
+                                                <th>Pangkat / Gol</th>
                                             </tr>
-                                    <?php
-                                        }
-                                    } ?>
-                                </tbody>
-                            </table>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            if (!empty($dataContent['return_data']['pengikut'])) {
+                                                foreach ($dataContent['return_data']['pengikut'] as $p) {
+                                            ?>
+                                                    <tr>
+                                                        <td><?= $p['nama'] ?></td>
+                                                        <td><?= $p['nip'] ?></td>
+                                                        <td><?= $p['jabatan'] ?></td>
+                                                        <td><?= $p['pangkat_gol'] ?></td>
+                                                    </tr>
+                                            <?php
+                                                }
+                                            } ?>
+                                        </tbody>
+                                    </table>
 
 
-                            <!-- </div> -->
-                            <!-- </div> -->
-                            <!-- <hr> -->
+                                </div>
+                            </div>
+                            <hr>
                         </div>
                     </div>
                     <div class="col-lg-12" id="layout_tujuan">

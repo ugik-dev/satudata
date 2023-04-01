@@ -18,7 +18,7 @@ class PublicController extends CI_Controller
                 $newData[] = $d;
             }
             $this->detail($newData[0]);
-            echo json_encode($newData[0]);
+            // echo json_encode($newData[0]);
             // $this->printSKP($keys);
         }
     }
@@ -26,21 +26,16 @@ class PublicController extends CI_Controller
     private function detail($data)
     {
         try {
-            // $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
-            // $res_data['return_data'] = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
-            // $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
-            // $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
-            // $res_data['return_data']['logs'] = $this->SPPDModel->getLogs(array('id_spt' => $id));
-            // $laporan = $this->SPPDModel->getLaporan(array('id_spt' => $id));
-            // if (!empty($laporan))
-            //     $res_data['laporan'] = $laporan[$id];
+            $this->load->model('GeneralModel');
+
+            $data['sign'] = $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
             $data = array(
                 'page' => 'spt/detail',
                 'title' => 'Form SPT',
                 'dataContent' => ['return_data' => $data]
             );
             // $this->load->view('page', $data);
-            $this->load->view('scanner_result', $data);
+            $this->load->view('scanner_result2', $data);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }

@@ -324,11 +324,19 @@
                                             <td>Surat Perintah Tugas</td>
                                             <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/1') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
                                         </tr>
+                                        <tr>
+                                            <td>Surat Perintah Tugas dengan QR Code</td>
+                                            <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/1/2') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
+                                        </tr>
                                         <?php if ($dataContent['return_data']['jenis'] == 2) {
                                         ?>
                                             <tr>
                                                 <td>Surat Perintah Perjalanan Dinas</td>
                                                 <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/2') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Surat Perintah Perjalanan Dinas dengan QR Code</td>
+                                                <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/2/2') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
                                             </tr>
                                         <?php } else if ($dataContent['return_data']['jenis'] == 3) {
                                         ?>
@@ -948,6 +956,8 @@
                         `;
             }
             var lihatButton = `
+          
+                      <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/print/${spt['id_spt']}/1/2'><i class='fa fa-eye'></i> PDF SPT  </a>
                      <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/print/${spt['id_spt']}/1'><i class='fa fa-eye'></i> PDF SPT  </a>
                      <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/print/${spt['id_spt']}/2'><i class='fa fa-eye'></i> PDF SPPD </a>
                      <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/print/${spt['id_spt']}/3'><i class='fa fa-eye'></i> PDF SPT Barcode </a>
