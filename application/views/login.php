@@ -173,6 +173,9 @@
     <!-- Plugins JS Ends-->
     <!-- Theme js-->
     <script src="<?= base_url() ?>assets/js/script.js"></script>
+    <?php
+    $this->load->view('myads');
+    ?>
     <!-- login js-->
     <!-- Plugin used-->
   </div>

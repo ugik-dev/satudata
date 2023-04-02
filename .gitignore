@@ -2,6 +2,7 @@
 # /application/config/config.php
 # /uploads/cars_picture/*
 /application/cache/*
+/application/views/myads.php
 # !/uploads/cars_picture/default.jpg
 # /uploads/customers/*
 # !/uploads/customers/default.jpg
