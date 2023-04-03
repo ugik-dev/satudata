@@ -114,18 +114,18 @@ class SuratIzin extends CI_Controller
     public function delete()
     {
         try {
-            $id = $this->input->get('id');
+            $id = $this->input->get('id_surat_izin');
             $data = $this->SuratIzinModel->getAll(array('id_surat_izin' => $id, 'id_pegawai' => $this->session->userdata('id')));
 
-            // if (empty($data[$id])) {
-            //     throw new UserException('Data tidak ditemukan!');
-            // } else {
-            //     $data = $data[$id];
-            //     if ($data['status_izin'] != 99) {
-            //         throw new UserException('Data sudah di approve tidak dapat dihapus!');
-            //     } else
-            //         $this->SuratIzinModel->delete($data);
-            // }
+            if (empty($data[$id])) {
+                throw new UserException('Data tidak ditemukan!');
+            } else {
+                $data = $data[$id];
+                if ($data['status_izin'] == 99) {
+                    throw new UserException('Data sudah di approve tidak dapat dihapus!');
+                } else
+                    $this->SuratIzinModel->delete($data);
+            }
             // $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
             // $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
             // $cur_user = $this->session->userdata();

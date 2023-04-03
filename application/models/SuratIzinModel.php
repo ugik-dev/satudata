@@ -280,7 +280,7 @@ class SuratIzinModel extends CI_Model
         // echo $data['id_surat_izin'];
         $this->db->where('id_surat_izin', $data['id_surat_izin']);
         $this->db->where('id_pegawai', $data['id_pegawai']);
-        $this->db->where('status <> 99');
+        $this->db->where('status_izin <> 99');
         $this->db->delete('surat_izin');
     }
 
