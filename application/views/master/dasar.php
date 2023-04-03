@@ -251,8 +251,10 @@
         toolbar.newBtn.on('click', (e) => {
             resetDasarModal();
             DasarModal.self.modal('show');
+            DasarModal.form.trigger('reset');
             DasarModal.addBtn.show();
             DasarModal.saveEditBtn.hide();
+            DasarModal.idDasar.val('');
         });
         $("#id_ppk2").select2({
             dropdownParent: $('#dasar_modal .modal-content'),
