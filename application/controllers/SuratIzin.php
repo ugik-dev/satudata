@@ -117,6 +117,7 @@ class SuratIzin extends CI_Controller
             $id = $this->input->get('id_surat_izin');
             $data = $this->SuratIzinModel->getAll(array('id_surat_izin' => $id, 'id_pegawai' => $this->session->userdata('id')));
 
+
             if (empty($data[$id])) {
                 throw new UserException('Data tidak ditemukan!');
             } else {
