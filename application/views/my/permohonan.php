@@ -40,7 +40,7 @@
                                                 ?>
                                                 <label class="col-sm-3 col-form-label">Dari</label>
                                                 <div class="col-sm-8">
-                                                    <input class="form-control m-input digits" type="date" value="<?= date("Y-m-d", strtotime("-1 months")); ?>" data-bs-original-title="" title="">
+                                                    <input class="form-control m-input digits" id="dari" name="dari" type="date" value="<?= date("Y-m-d", strtotime("-1 months")); ?>" data-bs-original-title="" title="">
                                                 </div>
 
                                             </div>
@@ -50,7 +50,7 @@
                                             <div class="mb-3 row">
                                                 <label class="col-sm-3 col-form-label">Sampai</label>
                                                 <div class="col-sm-8">
-                                                    <input class="form-control m-input digits" type="date" value="<?= date('Y-m-d') ?>" data-bs-original-title="" title="">
+                                                    <input class="form-control m-input digits" id="sampai" name="sampai" type="date" value="<?= date('Y-m-d') ?>" data-bs-original-title="" title="">
                                                 </div>
                                             </div>
                                         </div>
@@ -758,7 +758,7 @@
                     i++;
                 })
 
-                dfix = d1.split(" ")[0] + ' s.d ' + d1.split(" ")[0];
+                dfix = d1.split(" ")[0] + ' s.d ' + d2.split(" ")[0];
                 renderData.push([spt['nama_ref_jen_spt'], dfix, pegawai, tmpt, statusSPT(spt['status'], spt['unapprove_oleh']), spt['id_spt'], button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');

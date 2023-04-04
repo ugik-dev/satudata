@@ -82,6 +82,15 @@ class SPPDModel extends CI_Model
         $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
         $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
         $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
+        $this->db->join('tujuan tj', 'tj.id_spt = u.id_spt', 'LEFT');
+        $this->db->group_by('id_spt');
+
+        if (!empty($filter['dari']) && !empty($filter['sampai'])) $this->db->where(' (
+            (tj.date_berangkat BETWEEN "' . $filter['dari'] . '" AND "' . $filter['sampai'] . '" ) OR
+            (tj.date_berangkat BETWEEN "' . $filter['dari'] . '" AND "' . $filter['sampai'] . '" )
+        )
+        ');
+        // else if (!empty($filter['sampai'])) $this->db->where('tj.date_kembali <= ', $filter['sampai']);
         if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
         // $this->db->where('u.id_spt', 24);
         if (!empty($filter['id_bagian'])) $this->db->where('u.id_bagian', $filter['id_bagian']);

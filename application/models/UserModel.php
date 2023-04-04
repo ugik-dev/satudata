@@ -127,7 +127,13 @@ class UserModel extends CI_Model
     {
         $data['password'] = md5($data['password']);
 
-        $this->db->insert('users', DataStructure::slice($data, ['username', 'password', 'nama', 'email', 'nip', 'alamat', 'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_seksi', 'pangkat_gol', 'jabatan'], TRUE));
+        $this->db->insert('users', DataStructure::slice($data, [
+            // 'username', 'password', 'nama', 'email', 'nip', 'alamat', 'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_seksi', 'pangkat_gol', 'jabatan'
+            'username', 'password',  'nama', 'email', 'nip', 'alamat', 'nik', 'nama_bank', 'no_bank',
+            'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_seksi', 'pangkat_gol', 'jabatan', 'signature', 'photo',
+            'pend_jenjang',  'pend_jurusan', 'j_k', 'tempat_lahir', 'tanggal_lahir', 'tmt_kerja', 'jenis_pegawai'
+
+        ], TRUE));
 
         // $this->db->set(DataStructure::slice($data, ['username', 'nama', 'email', 'nip', 'alamat', 'no_hp', 'status', 'id_role']));
         ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");

@@ -104,7 +104,7 @@
 
                     <div class="col-lg-6">
                         <div class="col-form-label">Berangkat Dari</div>
-                        <input class="form-control" id="berangkat_dari" name="berangkat_dari" type="text" value="<?= !empty($dataContent['return_data']['berangkat_dari']) ? $dataContent['return_data']['lama_dinas'] : (!empty($this->session->userdata('satuan_tempat')) ? $this->session->userdata('satuan_tempat') : '') ?>">
+                        <input class="form-control" id="berangkat_dari" name="berangkat_dari" type="text" value="<?= !empty($dataContent['return_data']['berangkat_dari']) ? $dataContent['return_data']['berangkat_dari'] : (!empty($this->session->userdata('nama_satuan')) ? $this->session->userdata('nama_satuan') : '') ?>">
                     </div>
                     <div class="col-lg-6">
                         <div class="col-form-label">Transportasi</div>
