@@ -1034,7 +1034,7 @@ class Spt extends CI_Controller
             $pdf->Cell(80, 4, 'NIP. ' . format_nip($sign_kadin['sign_nip']), 0, 1);
             // $pdf->Cell(108, 5, "", 0);
             // $pdf->Cell(80, 5, 'NIPs.' . $sign_kadin['sign_nip'], 1);
-            if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 120, $pdf->getY() - 35, 40);
+            if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 120, $pdf->getY() - 35, 0, 25);
         }
 
 
@@ -1116,7 +1116,7 @@ class Spt extends CI_Controller
             $pdf->Cell(80, 4, 'NIP. ' . format_nip($sign_kadin['sign_nip']), 0, 1);
             // $pdf->Cell(108, 4, "", 0);
             // $pdf->Cell(80, 4, 'NIPs.' . $sign_kadin['sign_nip'], 1);
-            // if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 17, $pdf->getY() - 40, 40);
+            if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 17, $pdf->getY() - 40, 0, 25);
         }
 
         // ppk
@@ -1138,7 +1138,7 @@ class Spt extends CI_Controller
         $pdf->Cell(80, 4, 'NIP. ' .  (!empty($sign_ppk) ? format_nip($sign_ppk['sign_nip']) : ''), 0, 1);
         // $pdf->Cell(108, 4, "", 0);
         // $pdf->Cell(80, 4, 'NIPs.' . $sign_kadin['sign_nip'], 1);
-        if (!empty($sign_ppk['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_ppk['sign_signature']), 117, $pdf->getY() - 40, 40);
+        if (!empty($sign_ppk['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_ppk['sign_signature']), 117, $pdf->getY() - 39, 0, 25);
         // }
 
         $pdf->Cell(1, 4, '', 0, 0);
@@ -1317,6 +1317,8 @@ class Spt extends CI_Controller
                 $pdf->MultiCell(45, 5,  "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L', 0);
             if ($data_satuan['jen_satker'] == 2)
                 $pdf->MultiCell(45, 5,  "Kepala " . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L', 0);
+            if ($data_satuan['jen_satker'] == 3)
+                $pdf->MultiCell(45, 5,  "Direktur " . $data_satuan['nama_satuan'], 0, 'L', 0);
             $pdf->Cell(120, 25, '', 0, 1, 'C', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  $sign_kadin['sign_name'], 0, 'L', 0);
@@ -1325,7 +1327,7 @@ class Spt extends CI_Controller
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  'NIP. ' . $sign_kadin['sign_nip'], 0, 'L', 0);
             if ($qr == 1)
-                $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 140, $pdf->getY() - 40, 40);
+                $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 140, $pdf->getY() - 40, 0, 25);
             else {
                 if (empty($data['qrcode'])) {
                     $key = md5($data['no_spt'] . time());
