@@ -1313,11 +1313,13 @@ class Spt extends CI_Controller
             $pdf->Cell(40, 5, tanggal_indonesia(date('Y-m-d')), 0, 1, 'L', 0);
             $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
-            $pdf->MultiCell(45, 5,  ucwords(strtolower($sign_kadin['sign_title'])), 0, 'L', 0);
-
+            if ($data_satuan['jen_satker'] == 1)
+                $pdf->MultiCell(45, 5,  "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L', 0);
+            if ($data_satuan['jen_satker'] == 2)
+                $pdf->MultiCell(45, 5,  "Kepala " . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L', 0);
             $pdf->Cell(120, 25, '', 0, 1, 'C', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
-            $pdf->MultiCell(70, 5,  ucwords(strtolower($sign_kadin['sign_name'])), 0, 'L', 0);
+            $pdf->MultiCell(70, 5,  $sign_kadin['sign_name'], 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  $sign_kadin['sign_pangkat'], 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
