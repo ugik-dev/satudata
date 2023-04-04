@@ -859,11 +859,7 @@ class Spt extends CI_Controller
         $pdf->SetFont('Arial', 'B', 11);
         $pdf->Cell(195, 5, 'SURAT PERJALANAN DINAS (SPD)', 0, 1, 'C', 0);
         $pdf->SetFont('Arial', '', 11);
-        // $pdf->Cell(195, 5, 'Nomor : ' . $data['no_spt'], 0, 1, 'C', 0);
-        // $pdf->Cell(195, 5, 'BULAN ' . strtoupper(bulan_indo(explode('-', $bulan)[1])) . ' ' . explode('-', $bulan)[0], 0, 1, 'C', 0);
-
         $pdf->SetFont('Arial', '', 11);
-        // $pdf->Cell(25, 5, ' ', 0, 1, 'L', 0);
 
         $r1 = 5;
         $r2 = 6;
@@ -1007,37 +1003,38 @@ class Spt extends CI_Controller
         $pdf->Rect($cur_x + 1 + 97, $cur_y, 97, 70);
 
         $pdf->SetX($cur_x + 100);
-        $pdf->Cell(4, 5, "I", 0, 0, 'L');
-        $pdf->Cell(30, 5, "Berangkat dari", 0, 0, 'L');
-        $pdf->Cell(3, 5, ":", 0, 0, 'L');
-        $pdf->MultiCell(58, 5, $data_satuan['satuan_tempat'] . "\n(Tempat Berkedudukan)", 0,  'L');
+        $pdf->Cell(4, 4, "I", 0, 0, 'L');
+        $pdf->Cell(30, 4, "Berangkat dari", 0, 0, 'L');
+        $pdf->Cell(3, 4, ":", 0, 0, 'L');
+        $pdf->MultiCell(58, 4, $data_satuan['satuan_tempat'] . "\n(Tempat Berkedudukan)", 0,  'L');
 
         $pdf->SetX($cur_x + 104);
-        $pdf->Cell(30, 5, "Ke", 0, 0, 'L');
-        $pdf->Cell(3, 5, ":", 0, 0, 'L');
-        $pdf->MultiCell(58, 5, $data['tujuan'][0]['tempat_tujuan'], 0,  'L');
+        $pdf->Cell(30, 4, "Ke", 0, 0, 'L');
+        $pdf->Cell(3, 4, ":", 0, 0, 'L');
+        $pdf->MultiCell(58, 4, $data['tujuan'][0]['tempat_tujuan'], 0,  'L');
 
         $pdf->SetX($cur_x + 104);
-        $pdf->Cell(30, 5, "Pada Tanggal", 0, 0, 'L');
-        $pdf->Cell(3, 5, ":", 0, 0, 'L');
-        $pdf->MultiCell(58, 5, $data['tujuan'][0]['date_berangkat'], 0,  'L');
+        $pdf->Cell(30, 4, "Pada Tanggal", 0, 0, 'L');
+        $pdf->Cell(3, 4, ":", 0, 0, 'L');
+        $pdf->MultiCell(58, 4, $data['tujuan'][0]['date_berangkat'], 0,  'L');
 
         $pdf->Cell(30, 1, "", 0, 1);
         $pdf->SetX($cur_x + 108);
         if ($data_satuan['jen_satker'] == 1)
-            $pdf->MultiCell(80, 5, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
+            $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
         if ($data_satuan['jen_satker'] == 2)
-            $pdf->MultiCell(80, 5, "Kepala Puskesmas\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
+            $pdf->MultiCell(80, 4, "Kepala\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
         $pdf->Cell(30, 19, "", 0, 1);
         // $pdf->Cell(30, 1, "", 1, 1);
-        $pdf->SetX($cur_x + 108);
+        // $pdf->SetY(50);
+        $pdf->SetXY($cur_x + 108, 62);
         if (!empty($sign_kadin)) {
-            $pdf->Cell(80, 5, $sign_kadin['sign_name'], 0, 1);
-            $pdf->Cell(108, 5, "", 0);
-            $pdf->Cell(80, 5, 'NIP. ' . format_nip($sign_kadin['sign_nip']), 0, 1);
+            $pdf->Cell(80, 4, $sign_kadin['sign_name'], 0, 1);
+            $pdf->Cell(108, 4, "", 0);
+            $pdf->Cell(80, 4, 'NIP. ' . format_nip($sign_kadin['sign_nip']), 0, 1);
             // $pdf->Cell(108, 5, "", 0);
             // $pdf->Cell(80, 5, 'NIPs.' . $sign_kadin['sign_nip'], 1);
-            if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 120, $pdf->getY() - 33, 60, 28);
+            if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 120, $pdf->getY() - 35, 40);
         }
 
 
@@ -1048,76 +1045,78 @@ class Spt extends CI_Controller
         $tanggal_akhir = '';
         for ($i = 0; $i < 4; $i++) {
             $pdf->SetXY($star_x, 72 + ($i * 40));
-            $pdf->Cell(5, 5, to_romawi($i + 2), 0, 'C');
-            $pdf->Cell(24, 5, 'Tiba di', 0);
-            $pdf->Cell(3, 5, ':', 0, 0);
+            $pdf->Cell(5, 4, to_romawi($i + 2), 0, 'C');
+            $pdf->Cell(24, 4, 'Tiba di', 0);
+            $pdf->Cell(3, 4, ':', 0, 0);
             if (!empty($data['tujuan'][$i])) {
-                $pdf->MultiCell(64, 5, $data['tujuan'][$i]['tempat_tujuan'], 0, 1);
-                $pdf->Cell(7, 5, '', 0, 'C');
-                $pdf->Cell(24, 5, 'Pada tanggal', 0, 0);
-                $pdf->Cell(3, 5, ':', 0, 0);
-                $pdf->Cell(3, 5, tanggal_indonesia($data['tujuan'][$i]['date_berangkat']), 0, 'L');
+                $pdf->MultiCell(64, 4, $data['tujuan'][$i]['tempat_tujuan'], 0, 1);
+                $pdf->Cell(7, 4, '', 0, 'C');
+                $pdf->Cell(24, 4, 'Pada tanggal', 0, 0);
+                $pdf->Cell(3, 4, ':', 0, 0);
+                $pdf->Cell(3, 4, tanggal_indonesia($data['tujuan'][$i]['date_berangkat']), 0, 'L');
 
                 $pdf->SetXY($star_x + 98, 72 + ($i * 40));
-                $pdf->Cell(24, 5, 'Berangkat dari ', 0, 'L');
-                $pdf->Cell(3, 5, ':', 0, 'C');
-                $pdf->MultiCell(66, 5, $data['tujuan'][$i]['tempat_tujuan'], 0, 'L');
+                $pdf->Cell(24, 4, 'Berangkat dari ', 0, 'L');
+                $pdf->Cell(3, 4, ':', 0, 'C');
+                $pdf->MultiCell(66, 4, $data['tujuan'][$i]['tempat_tujuan'], 0, 'L');
                 $pdf->SetX($star_x + 98);
-                $pdf->Cell(24, 5, 'Ke ', 0, 'L');
-                $pdf->Cell(3, 5, ':', 0, 'C');
-                $pdf->MultiCell(66, 5, $data['tujuan'][$i]['tempat_kembali'], 0, 'L');
+                $pdf->Cell(24, 4, 'Ke ', 0, 'L');
+                $pdf->Cell(3, 4, ':', 0, 'C');
+                $pdf->MultiCell(66, 4, $data['tujuan'][$i]['tempat_kembali'], 0, 'L');
                 $pdf->SetX($star_x + 98);
-                $pdf->Cell(24, 5, 'Pada tanggal', 0, 'L');
-                $pdf->Cell(3, 5, ':', 0, 'C');
+                $pdf->Cell(24, 4, 'Pada tanggal', 0, 'L');
+                $pdf->Cell(3, 4, ':', 0, 'C');
                 $tanggal_akhir = tanggal_indonesia($data['tujuan'][$i]['date_kembali']);
-                $pdf->Cell(3, 5, tanggal_indonesia($data['tujuan'][$i]['date_kembali']), 0, 'L', 1);
+                $pdf->Cell(3, 4, tanggal_indonesia($data['tujuan'][$i]['date_kembali']), 0, 'L', 1);
             } else {
-                $pdf->MultiCell(64, 5, '', 0, 'L');
-                $pdf->Cell(7, 5, '', 0, 'C');
-                $pdf->Cell(24, 5, 'Pada tanggal', 0, 'L');
-                $pdf->Cell(3, 5, ':', 0, 1);
+                $pdf->MultiCell(64, 4, '', 0, 'L');
+                $pdf->Cell(7, 4, '', 0, 'C');
+                $pdf->Cell(24, 4, 'Pada tanggal', 0, 'L');
+                $pdf->Cell(3, 4, ':', 0, 1);
 
                 $pdf->SetXY($star_x + 98, 72 + ($i * 40));
-                $pdf->Cell(24, 5, 'Berangkat dari ', 0, 'L');
-                $pdf->Cell(3, 5, ':', 0, 1, 1);
+                $pdf->Cell(24, 4, 'Berangkat dari ', 0, 'L');
+                $pdf->Cell(3, 4, ':', 0, 1, 1);
                 $pdf->SetX($star_x + 98);
-                $pdf->Cell(24, 5, 'Ke ', 0, 'L');
-                $pdf->Cell(3, 5, ':', 0, 1, 1);
+                $pdf->Cell(24, 4, 'Ke ', 0, 'L');
+                $pdf->Cell(3, 4, ':', 0, 1, 1);
                 $pdf->SetX($star_x + 98);
-                $pdf->Cell(24, 5, 'Pada tanggal', 0, 'L');
-                $pdf->Cell(3, 5, ':', 0, 'C');
+                $pdf->Cell(24, 4, 'Pada tanggal', 0, 'L');
+                $pdf->Cell(3, 4, ':', 0, 'C');
             }
         }
 
 
         //last kolom
         $pdf->SetXY($star_x, 72 + ($i * 40));
-        $pdf->Cell(5, 5, to_romawi(6), 0, 'C');
-        $pdf->Cell(24, 5, 'Tiba kembali di', 0);
-        $pdf->Cell(3, 5, ':', 0, 0);
-        $pdf->MultiCell(58, 5, $data_satuan['satuan_tempat'] . "\n(Tempat Berkedudukan)", 0,  'L');
-        $pdf->Cell(7, 5, '', 0, 0);
-        $pdf->Cell(24, 5, ' Pada tanggal', 0);
-        $pdf->Cell(3, 5, ':', 0, 0);
-        $pdf->Cell(58, 5, $tanggal_akhir, 0,  1);
+        $pdf->Cell(5, 4, to_romawi(6), 0, 'C');
+        $pdf->Cell(24, 4, 'Tiba kembali di', 0);
+        $pdf->Cell(3, 4, ':', 0, 0);
+        $pdf->MultiCell(58, 4, $data_satuan['satuan_tempat'] . "\n(Tempat Berkedudukan)", 0,  'L');
+        $pdf->Cell(7, 4, '', 0, 0);
+        $pdf->Cell(24, 4, ' Pada tanggal', 0);
+        $pdf->Cell(3, 4, ':', 0, 0);
+        $pdf->Cell(58, 4, $tanggal_akhir, 0,  1);
         $pdf->Cell(10, 3, '', 0, 1);
-        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(10, 4, '', 0, 0);
         if ($data_satuan['jen_satker'] == 1)
-            $pdf->MultiCell(80, 5, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
+            $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
         if ($data_satuan['jen_satker'] == 2)
-            $pdf->MultiCell(80, 5, "Kepala Puskesmas\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
-        $pdf->Cell(30, 25, "", 0, 1);
+            $pdf->MultiCell(80, 4, "Kepala\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
+        $pdf->Cell(30, 28, "", 0, 1);
+        $pdf->Cell(10, 4, '', 0, 0);
 
-        $pdf->Cell(10, 5, '', 0, 0);
+        // $pdf->SetXY($star_x + 30, 72 + ($i * 40) + 30);
+
         if (!empty($sign_kadin)) {
-            $pdf->Cell(80, 5, $sign_kadin['sign_name'], 0, 1);
-            $pdf->Cell(10, 5, '', 0, 0);
-            $pdf->Cell(80, 5, $sign_kadin['sign_pangkat'], 0, 1);
-            $pdf->Cell(10, 5, "", 0);
-            $pdf->Cell(80, 5, 'NIP. ' . format_nip($sign_kadin['sign_nip']), 0, 1);
-            // $pdf->Cell(108, 5, "", 0);
-            // $pdf->Cell(80, 5, 'NIPs.' . $sign_kadin['sign_nip'], 1);
-            if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 17, $pdf->getY() - 40, 60, 28);
+            $pdf->Cell(80, 4, $sign_kadin['sign_name'], 0, 1);
+            $pdf->Cell(10, 4, '', 0, 0);
+            $pdf->Cell(80, 4, $sign_kadin['sign_pangkat'], 0, 1);
+            $pdf->Cell(10, 4, "", 0);
+            $pdf->Cell(80, 4, 'NIP. ' . format_nip($sign_kadin['sign_nip']), 0, 1);
+            // $pdf->Cell(108, 4, "", 0);
+            // $pdf->Cell(80, 4, 'NIPs.' . $sign_kadin['sign_nip'], 1);
+            // if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 17, $pdf->getY() - 40, 60, 28);
         }
 
         // ppk
@@ -1125,29 +1124,29 @@ class Spt extends CI_Controller
         $pdf->SetXY($star_x + 97, 75 + ($i * 40));
         $pdf->MultiCell(96, 4, "Telah diperiksa, dengan keterangan bahwa perjalanan tersebut atas perintahnya dan semata-mata untuk kepentingan jabatan dalam waktu yang sesingkat-singkatnya. ");
         $pdf->Cell(99, 4, "", 0, 1);
-        $pdf->Cell(106, 5, "",);
+        $pdf->Cell(106, 4, "",);
 
-        $pdf->MultiCell(80, 5, "Pejabat Pembuat Komitmen", 0, 'L');
+        $pdf->MultiCell(80, 4, "Pejabat Pembuat Komitmen", 0, 'L');
         $pdf->Cell(30, 25, "", 0, 1);
-        $pdf->Cell(106, 5, '', 0, 0);
+        $pdf->Cell(106, 4, '', 0, 0);
         // if (!empty($sign_ppk)) {
 
-        $pdf->Cell(80, 5, !empty($sign_ppk) ? $sign_ppk['sign_name'] : '', 0, 1);
-        $pdf->Cell(106, 5, '', 0, 0);
-        $pdf->Cell(80, 5,  !empty($sign_ppk) ? $sign_ppk['sign_pangkat'] : '', 0, 1);
-        $pdf->Cell(106, 5, "", 0);
-        $pdf->Cell(80, 5, 'NIP. ' .  (!empty($sign_ppk) ? format_nip($sign_ppk['sign_nip']) : ''), 0, 1);
-        // $pdf->Cell(108, 5, "", 0);
-        // $pdf->Cell(80, 5, 'NIPs.' . $sign_kadin['sign_nip'], 1);
+        $pdf->Cell(80, 4, !empty($sign_ppk) ? $sign_ppk['sign_name'] : '', 0, 1);
+        $pdf->Cell(106, 4, '', 0, 0);
+        $pdf->Cell(80, 4,  !empty($sign_ppk) ? $sign_ppk['sign_pangkat'] : '', 0, 1);
+        $pdf->Cell(106, 4, "", 0);
+        $pdf->Cell(80, 4, 'NIP. ' .  (!empty($sign_ppk) ? format_nip($sign_ppk['sign_nip']) : ''), 0, 1);
+        // $pdf->Cell(108, 4, "", 0);
+        // $pdf->Cell(80, 4, 'NIPs.' . $sign_kadin['sign_nip'], 1);
         if (!empty($sign_ppk['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_ppk['sign_signature']), 117, $pdf->getY() - 40, 60, 28);
         // }
 
-        $pdf->Cell(1, 5, '', 0, 0);
-        $pdf->Cell(194, 5, 'VII  CATATAN LAIN-LAIN ', 1, 1);
-        $pdf->Cell(1, 5, '', 0, 0);
+        $pdf->Cell(1, 4, '', 0, 0);
+        $pdf->Cell(194, 4, 'VII  CATATAN LAIN-LAIN ', 1, 1);
+        $pdf->Cell(1, 4, '', 0, 0);
         $pdf->Rect($pdf->GetX(), $pdf->GetY(), 194, 20);
-        $pdf->Cell(194, 5, 'VIII PERHATIAN', 0, 1);
-        $pdf->Cell(7, 5, '', 0, 0);
+        $pdf->Cell(194, 4, 'VIII PERHATIAN', 0, 1);
+        $pdf->Cell(7, 4, '', 0, 0);
         $pdf->MultiCell(187, 4, "Pejabat yang berwenang menerbitkan SPPD, pegawai yang melakukan perjalanan dinas, para pejabat yang mengesahkan tanggal berangkat/tiba serta Bendaharawan bertanggung jawab berdasarkan peraturan-peraturan Keuangan Negara apabila Negara mendapat rugi akibat kesalahan, kealpaanya.");
 
 
