@@ -128,7 +128,7 @@ class User extends CI_Controller
             // if (!empty($_FILES['filefoto'])) {
             // }
             if (!empty($data['fl_signatureFilename'])) {
-                $s =  FileIO::upload2('fl_signature', 'signature', '', 'jpg|png');
+                $s =  FileIO::upload2('fl_signature', 'signature', '', 'png');
                 if (!empty($s['filename']))
                     $data['signature'] = $s['filename'];
             }

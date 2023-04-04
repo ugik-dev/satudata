@@ -1,63 +1,64 @@
 <?php
+
 /**
  * CodeIgniter
  *
- * An open source application development framework for PHP
+ * Kerangka pengembangan aplikasi open source untuk PHP
  *
- * This content is released under the MIT License (MIT)
+ * Konten ini dirilis di bawah Lisensi MIT (MIT)
  *
- * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
+ * Hak Cipta (c) 2014 - 2017, Institut Teknologi British Columbia
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Izin dengan ini diberikan, gratis, kepada siapa pun yang mendapatkan salinannya
+ * perangkat lunak ini dan file dokumentasi terkait ("Perangkat Lunak"), untuk menangani
+ * dalam Perangkat Lunak tanpa batasan, termasuk tanpa batasan hak
+ * untuk menggunakan, menyalin, memodifikasi, menggabungkan, menerbitkan, mendistribusikan, mensublisensikan, dan/atau menjual
+ * salinan Perangkat Lunak, dan untuk mengizinkan orang yang menerima Perangkat Lunak tersebut
+ * diperlengkapi untuk itu, tunduk pada ketentuan-ketentuan berikut:
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan
+ * semua salinan atau sebagian besar dari Perangkat Lunak.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN Actions OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APAPUN, TERSURAT ATAU
+ * TERSIRAT, TERMASUK NAMUN TIDAK TERBATAS PADA GARANSI DAGANG,
+ * KESESUAIAN UNTUK TUJUAN TERTENTU DAN TANPA PELANGGARAN. DALAM HAL APAPUN AKAN
+ * PENULIS ATAU PEMEGANG HAK CIPTA BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU LAINNYA
+ * TANGGUNG JAWAB, BAIK DALAM PERBUATAN KONTRAK, KERUGIAN ATAU LAINNYA, YANG TIMBUL DARI,
+ * KELUAR DARI ATAU SEHUBUNGAN DENGAN PERANGKAT LUNAK ATAU PENGGUNAAN ATAU HUBUNGAN LAIN DALAM
+ * PERANGKAT LUNAK.
  *
- * @package	CodeIgniter
- * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	https://codeigniter.com
- * @since	Version 1.0.0
- * @filesource
+ * @paket CodeIgniter
+ * @penulis EllisLab Dev Team
+ * @copyright Hak Cipta (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @copyright Hak Cipta (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
+ * @lisensi http://opensource.org/licenses/Lisensi MIT MIT
+ * @tautan https://codeigniter.com
+ * @sejak Versi 1.0.0
+ * @sumber file
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('Tidak ada akses skrip langsung yang diizinkan');
 
-$lang['db_invalid_connection_str'] = 'Unable to determine the database settings based on the connection string you submitted.';
-$lang['db_unable_to_connect'] = 'Unable to connect to your database server using the provided settings.';
-$lang['db_unable_to_select'] = 'Unable to select the specified database: %s';
-$lang['db_unable_to_create'] = 'Unable to create the specified database: %s';
-$lang['db_invalid_query'] = 'The query you submitted is not valid.';
-$lang['db_must_set_table'] = 'You must set the database table to be used with your query.';
-$lang['db_must_use_set'] = 'You must use the "set" method to update an entry.';
-$lang['db_must_use_index'] = 'You must specify an index to match on for batch updates.';
-$lang['db_batch_missing_index'] = 'One or more rows submitted for batch updating is missing the specified index.';
-$lang['db_must_use_where'] = 'Updates are not allowed unless they contain a "where" clause.';
-$lang['db_del_must_use_where'] = 'Deletes are not allowed unless they contain a "where" or "like" clause.';
-$lang['db_field_param_missing'] = 'To fetch fields requires the name of the table as a parameter.';
-$lang['db_unsupported_function'] = 'This feature is not available for the database you are using.';
-$lang['db_transaction_failure'] = 'Transaction failure: Rollback performed.';
-$lang['db_unable_to_drop'] = 'Unable to drop the specified database.';
-$lang['db_unsupported_feature'] = 'Unsupported feature of the database platform you are using.';
-$lang['db_unsupported_compression'] = 'The file compression format you chose is not supported by your server.';
-$lang['db_filepath_error'] = 'Unable to write data to the file path you have submitted.';
-$lang['db_invalid_cache_path'] = 'The cache path you submitted is not valid or writable.';
-$lang['db_table_name_required'] = 'A table name is required for that operation.';
-$lang['db_column_name_required'] = 'A column name is required for that operation.';
-$lang['db_column_definition_required'] = 'A column definition is required for that operation.';
-$lang['db_unable_to_set_charset'] = 'Unable to set client connection character set: %s';
-$lang['db_error_heading'] = 'A Database Error Occurred';
+$lang['db_invalid_connection_str'] = 'Tidak dapat menentukan pengaturan basis data berdasarkan string koneksi yang Anda kirimkan.';
+$lang['db_unable_to_connect'] = 'Tidak dapat terhubung ke server basis data Anda menggunakan pengaturan yang disediakan.';
+$lang['db_unable_to_select'] = 'Tidak dapat memilih database yang ditentukan: %s';
+$lang['db_unable_to_create'] = 'Tidak dapat membuat database yang ditentukan: %s';
+$lang['db_invalid_query'] = 'Kueri yang Anda kirimkan tidak valid.';
+$lang['db_must_set_table'] = 'Anda harus menyetel tabel database untuk digunakan dengan kueri Anda.';
+$lang['db_must_use_set'] = 'Anda harus menggunakan metode "set" untuk memperbarui entri.';
+$lang['db_must_use_index'] = 'Anda harus menentukan indeks yang cocok untuk pembaruan batch.';
+$lang['db_batch_missing_index'] = 'Satu atau lebih baris yang dikirimkan untuk pemutakhiran batch tidak memiliki indeks yang ditentukan.';
+$lang['db_must_use_where'] = 'Pembaruan tidak diperbolehkan kecuali mengandung klausa "di mana".';
+$lang['db_del_must_use_where'] = 'Penghapusan tidak diperbolehkan kecuali mengandung klausa "di mana" atau "suka".';
+$lang['db_field_param_missing'] = 'Untuk mengambil bidang memerlukan nama tabel sebagai parameter.';
+$lang['db_unsupported_function'] = 'Fitur ini tidak tersedia untuk database yang Anda gunakan.';
+$lang['db_transaction_failure'] = 'Transaksi gagal: Pembalikan dilakukan.';
+$lang['db_unable_to_drop'] = 'Tidak dapat membuang database yang ditentukan.';
+$lang['db_unsupported_feature'] = 'Fitur platform database yang Anda gunakan tidak didukung.';
+$lang['db_unsupported_compression'] = 'Format kompresi berkas yang Anda pilih tidak didukung oleh server Anda.';
+$lang['db_filepath_error'] = 'Tidak dapat menulis data ke path file yang telah Anda kirimkan.';
+$lang['db_invalid_cache_path'] = 'Jalur cache yang Anda kirim tidak valid atau tidak dapat ditulis.';
+$lang['db_table_name_required'] = 'Nama tabel diperlukan untuk operasi tersebut.';
+$lang['db_column_name_required'] = 'Nama kolom diperlukan untuk operasi tersebut.';
+$lang['db_column_definition_required'] = 'Definisi kolom diperlukan untuk operasi tersebut.';
+$lang['db_unable_to_set_charset'] = 'Tidak dapat menyetel rangkaian karakter koneksi klien: %s';
+$lang['db_error_heading'] = 'Terjadi kesalahan database';

@@ -184,8 +184,7 @@ class SuratIzin extends CI_Controller
                     return;
                 }
             }
-            // echo json_encode($data);
-            // die();
+
             if ($cur_user['level'] == 5 && $data['status_izin'] == 1) {
                 // approve kasi
             }
@@ -193,10 +192,6 @@ class SuratIzin extends CI_Controller
                 $logs['deskripsi'] =  'Menyetujui';
                 $logs['label'] = 'success';
                 $data['status_izin'] = 2;
-                // if ($data['level_pegawai'] == 6) {
-                //     $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
-                //     $this->SuratIzinModel->approv($data, $sign);
-                // } else
                 $this->SuratIzinModel->approv($data);
                 $this->SuratIzinModel->addLogs($logs);
             } else
@@ -602,9 +597,9 @@ class SuratIzin extends CI_Controller
         $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
 
         if (!empty(!empty($sign_pelimpahan['sign_signature'])))
-            $pdf->Image(base_url('uploads/signature/' . $sign_pelimpahan['sign_signature']), 40, $pdf->getY() - 45, 50);
+            $pdf->Image(base_url('uploads/signature/' . $sign_pelimpahan['sign_signature']), 40, $pdf->getY() - 45, 0, 25);
         if (!empty(!empty($data['signature_pegawai'])))
-            $pdf->Image(base_url('uploads/signature/' . $data['signature_pegawai']), 130, $pdf->getY() - 45, 50);
+            $pdf->Image(base_url('uploads/signature/' . $data['signature_pegawai']), 130, $pdf->getY() - 45, 0, 25);
 
         $pdf->Cell(169, 5, 'Mengetahui,', 0, 1, 'C', 0);
         $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
@@ -616,7 +611,7 @@ class SuratIzin extends CI_Controller
             $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(169, 5, 'NIP. ' . $sign_atasan['sign_nip'], 0, 1, 'C', 0);
             if (!empty(!empty($sign_atasan['sign_signature'])))
-                $pdf->Image(base_url('uploads/signature/' . $sign_atasan['sign_signature']), 85, $pdf->getY() - 39, 50);
+                $pdf->Image(base_url('uploads/signature/' . $sign_atasan['sign_signature']), 85, $pdf->getY() - 39, 0, 31);
         }
         $filename = 'SPW ' . $data['id_surat_izin'];
 
@@ -702,7 +697,7 @@ class SuratIzin extends CI_Controller
         $pdf->Cell(15, 5, '', 0, 1, 'L', 0);
         $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(5, 5, '2.', 0, 0, 'L', 0);
-        $pdf->MultiCell(169, 5, 'Demikian surat pemberian Cuti Tahunan ini dibuat untuk dapat dipergunakan sebagaimana mestinya.', 0, 'J');
+        $pdf->MultiCell(169, 5, 'Demikian surat pemberian ' . $data['nama_izin'] . ' ini dibuat untuk dapat dipergunakan sebagaimana mestinya.', 0, 'J');
 
         $pdf->Cell(3, 5, "", 0, 1, 'L', 0);
         $cur_x = $pdf->getX();
@@ -737,7 +732,7 @@ class SuratIzin extends CI_Controller
             $pdf->MultiCell(70, 5,  $sign_kadin['sign_pangkat'], 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  'NIP. ' . $sign_kadin['sign_nip'], 0, 'L', 0);
-            $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 140, $pdf->getY() - 40, 40);
+            $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 140, $pdf->getY() - 40, 0, 30);
         }
         $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(10, 15, '', 0, 1, 'L', 0);

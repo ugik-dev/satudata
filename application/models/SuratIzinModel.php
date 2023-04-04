@@ -149,6 +149,24 @@ class SuratIzinModel extends CI_Model
     }
     function cek_nomor($data)
     {
+        $s1 = 0;
+        if ($data['jen_izin'] == 2) {
+            $s1 =  858;
+        } else {
+            if ($data['jenis_izin'] == 11) {
+                $s1 =  851;
+            } else  if ($data['jenis_izin'] == 12) {
+                $s1 =  853;
+            } else  if ($data['jenis_izin'] == 13) {
+                $s1 =  854;
+            } else  if ($data['jenis_izin'] == 14) {
+                $s1 =  857;
+            } else  if ($data['jenis_izin'] == 15) {
+                $s1 =  852;
+            }
+        }
+        // echo json_encode($data);
+        // die();
         // $this->db->where('id_satuan', $data['id_satuan']);
         // $satuan = $this->db->get('satuan')->result_array()[0]['kode_surat'];
         $s3 = 'Dinkes/' . substr($data['tanggal_pengajuan'], 0, 4);
@@ -157,16 +175,16 @@ class SuratIzinModel extends CI_Model
         $this->db->from('surat_izin');
         // $this->db->where('no_spt <> ""');
         $this->db->where('SUBSTRING_INDEX(no_spc,"/",-2)', $s3);
-        $this->db->where('SUBSTRING_INDEX(no_spc,"/",1)', '910');
+        $this->db->where('SUBSTRING_INDEX(no_spc,"/",1)', $s1);
         $this->db->order_by('CAST(x AS UNSIGNED INTEGER)', 'DESC');
         $this->db->limit(1);
         $res = $this->db->get()->result_array();
         // echo json_encode($res);
         // die();
         if (!empty($res)) {
-            $num['spc'] = '910/' . ($res[0]['x'] + 1) . '/' . $s3;
+            $num['spc'] = $s1 . '/' . ($res[0]['x'] + 1) . '/' . $s3;
         } else {
-            $num['spc'] = '910/1/' . $s3;
+            $num['spc'] = $s1 . '/' . '1/' . $s3;
         }
         return $num;
         // echo json_encode($num);
