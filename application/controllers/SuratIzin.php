@@ -189,7 +189,17 @@ class SuratIzin extends CI_Controller
             if ($cur_user['level'] == 5 && $data['status_izin'] == 1) {
                 // approve kasi
             }
-
+            if ($cur_user['level'] == 5 && $data['status_izin'] == 1 && ($cur_user['id_seksi'] = $data['id_seksi'])) {
+                $logs['deskripsi'] =  'Menyetujui';
+                $logs['label'] = 'success';
+                $data['status_izin'] = 2;
+                // if ($data['level_pegawai'] == 6) {
+                //     $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
+                //     $this->SuratIzinModel->approv($data, $sign);
+                // } else
+                $this->SuratIzinModel->approv($data);
+                $this->SuratIzinModel->addLogs($logs);
+            } else
             if (($cur_user['level'] == 3 || $cur_user['level'] == 4) && $data['status_izin'] == 2 && ($cur_user['id_bagian'] = $data['id_bagian'])) {
                 $logs['deskripsi'] =  'Menyetujui';
                 $logs['label'] = 'success';
