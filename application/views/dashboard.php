@@ -86,11 +86,11 @@
       </div>
     </div>
     <!-- Info SPT -->
-    <div class="col-xl-6 xl-50 appointment box-col-6">
+    <div class="col-xl-12 col-lg-12 xl-100 appointment box-col-12">
       <div class="card">
         <div class="card-header">
           <div class="header-top">
-            <h5 class="m-0">SPT / SPT / Lembur</h5>
+            <h5 class="m-0">Monitoring SPT / SPPD</h5>
             <div class="card-header-right-icon">
               <select name="tahun" id="tahun_spt">
                 <option value="2023">2023</option>
@@ -110,7 +110,7 @@
     </div>
     <!-- Monitor Web -->
 
-    <div class="col-xl-6 xl-50 appointment box-col-6">
+    <div class="col-xl-12 xl-100 appointment box-col-6">
       <div class="card">
         <div class="card-header">
           <div class="header-top">
