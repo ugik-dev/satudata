@@ -120,6 +120,8 @@ class UserModel extends CI_Model
         $user = $this->getUserByUsername($loginData['username']);
         if (md5($loginData['password']) !== $user['password'])
             throw new UserException("Password yang kamu masukkan salah.", WRONG_PASSWORD_CODE);
+        if ($user['id_role'] == 99)
+            throw new UserException("Kader tidak diperbolehkan login.", WRONG_PASSWORD_CODE);
         return $user;
     }
 

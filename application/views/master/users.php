@@ -75,6 +75,7 @@
                                     <option value="1">PNS</option>
                                     <option value="3">PPPK</option>
                                     <option value="2">Honorer</option>
+                                    <option value="4">Kader</option>
                                     <!-- <option value="3">Out Sourcing</option> -->
                                 </select>
                                 <!-- <input class="form-control" name="jenis_pegawai" type="text" value="<?= $data_profile['tempat_lahir'] ?>" /> -->
