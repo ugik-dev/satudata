@@ -965,7 +965,7 @@ class Spt extends CI_Controller
             $pdf->MultiCell(45, 5,  $sign_ppk['sign_pangkat'], 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(75, 5,  'NIP. ' . $sign_ppk['sign_nip'], 0, 'L', 0);
-            if (!empty($sign_ppk['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_ppk['sign_signature']), 140, $pdf->getY() - 40, 40);
+            if (!empty($sign_ppk['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_ppk['sign_signature']), 140, $pdf->getY() - 40, 0, 25);
         } else {
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Ditetapkan di', 0, 0, 'L', 0);
