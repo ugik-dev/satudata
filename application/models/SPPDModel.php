@@ -101,8 +101,6 @@ class SPPDModel extends CI_Model
 
                 if ($penilai['level'] == 1) {
                     $this->db->where("(u.status in (12,99,98) OR unapprove_oleh = {$penilai['id']} OR d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
-                    // $this->db->where('u.status > 10');
-
                     if (!empty($filter['status_permohonan'])) {
                         if ($filter['status_permohonan'] == 'menunggu-saya') {
                             $this->db->where("(u.status = 12 AND u.unapprove_oleh IS NULL) OR (d.id_ppk2 = {$penilai['id']} AND  u.status = 6)");
@@ -614,7 +612,7 @@ class SPPDModel extends CI_Model
                     $this->db->set('status', '11');
                 } else {
                     if (!empty($data_spt['sign_pptk']) && !empty($data_spt['sign_ppk']))
-                        $this->db->set('status', '10');
+                        $this->db->set('status', '11');
                     else if (empty($data_spt['sign_pptk']))
                         $this->db->set('status', '5');
                     else if (empty($data_spt['sign_ppk']))
@@ -729,30 +727,9 @@ class SPPDModel extends CI_Model
 
     public function undo($data)
     {
-
-        // echo json_encode($data);
-        // die();
         $ses = $this->session->userdata();
-        // $data_approv = array(
-        //     'approval_title' => $ses['jabatan'],
-        //     'approval_name' => $ses['nama'],
-        //     'approval_nip' => $ses['nip'],
-        //     'approval_pangkat' => $ses['pangkat_gol'],
-        //     'approval_id_user' => $ses['id'],
-        //     'approval_signature	' => $ses['signature'],
-        //     'id_spt	' => $data['id_spt'],
-        //     'aksi	' => 'Pembatalan Approval',
-        // );
-        // $this->db->set($data_approv);
-        // $this->db->insert('approval');
         $id = $this->db->insert_id();
-        // if ($ses['level'] == 5) {
-        //     $this->db->set('approve_kasi', NULL);
-        //     $this->db->set('unapprove_oleh', NULL);
-        //     $this->db->set('status', '1');
-        // }
-        // echo ($data['status'] == '10') && ($ses['level'] == 3 || $ses['level'] == 4) && ($data['approv_kabid'] == $ses['id']);
-        if (($data['status'] == '10')  && ($ses['level'] == 3 || $ses['level'] == 4) && ($data['approve_kabid'] == $ses['id'])) {
+        if (($data['status'] == '11')  && ($ses['level'] == 3 || $ses['level'] == 4) && ($data['approve_kabid'] == $ses['id'])) {
             // echo "true";
             $this->db->set('approve_kabid', NULL);
             $this->db->set('unapprove_oleh', NULL);   // if ($data_spt['id_bagian'] == $ses['id_bagian']) {
