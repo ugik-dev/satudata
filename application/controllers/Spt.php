@@ -1019,7 +1019,7 @@ class Spt extends CI_Controller
         $pdf->SetX($cur_x + 104);
         $pdf->Cell(30, 4, "Pada Tanggal", 0, 0, 'L');
         $pdf->Cell(3, 4, ":", 0, 0, 'L');
-        $pdf->MultiCell(58, 4, $data['tujuan'][0]['date_berangkat'], 0,  'L');
+        $pdf->MultiCell(58, 4, tanggal_indonesia($data['tujuan'][0]['date_berangkat']), 0,  'L');
 
         $pdf->Cell(30, 1, "", 0, 1);
         $pdf->SetX($cur_x + 108);
@@ -1319,9 +1319,9 @@ class Spt extends CI_Controller
             if ($data_satuan['jen_satker'] == 1)
                 $pdf->MultiCell(45, 5,  "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L', 0);
             if ($data_satuan['jen_satker'] == 2)
-                $pdf->MultiCell(45, 5,  "Kepala " . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L', 0);
+                $pdf->MultiCell(72, 5,  "Kepala " . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L', 0);
             if ($data_satuan['jen_satker'] == 3)
-                $pdf->MultiCell(45, 5,  "Direktur " . $data_satuan['nama_satuan'], 0, 'L', 0);
+                $pdf->MultiCell(72, 5,  "Direktur " . $data_satuan['nama_satuan'], 0, 'L', 0);
             $pdf->Cell(120, 25, '', 0, 1, 'C', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  $sign_kadin['sign_name'], 0, 'L', 0);
