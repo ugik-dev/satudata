@@ -168,9 +168,9 @@ class SuratIzin extends CI_Controller
                                 $data['status_izin'] = 2;
                             }
                         } else if ($pegawai['level'] == 4 || $pegawai['level'] == 3) {
-                            $data['status_izin'] = 5;
+                            $data['status_izin'] = 10;
                         } else if ($pegawai['level'] == 2) {
-                            $data['status_izin'] = 6;
+                            $data['status_izin'] = 10;
                         } else if ($pegawai['level'] == 1) {
                             $data['status_izin'] = 10;
                         }

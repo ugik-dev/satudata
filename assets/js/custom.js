@@ -253,7 +253,7 @@ function statusIzin(status, unnaprove = null) {
   else if (status == "50")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Kasubag </b></i> `; //pkm
   else if (status == "51")
-    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approve Kepala Puskesmas / Direktur Rumah Sakit </b></i> `; //pkm
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approve Kepala UPT / Direktur </b></i> `; //pkm
   else if (status == "14")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Sekretaris Dinas </b></i> `;
   else if (status == "15")
