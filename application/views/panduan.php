@@ -75,6 +75,13 @@
                                 <li>Tanda tangan ditulis dengan bolpoin berwarna biru</li>
                                 <li>Tanda tangan tidak menggunakan latar belakar / transparan, atau dapat menggunakan fitur pada website <a href="https://www.remove.bg/upload">https://www.remove.bg/upload</a> untuk membantu user agar lebih mudah menghapus background agar transparan</li>
                             </ol>
+                            Berikut Video Tutorialnya
+                            <br>
+                            <video width="100%" height="auto" controls>
+                                <source src="<?= base_url() ?>assets/video/remove_bg.mp4" type="video/mp4">
+                                <!-- <source src="movie.ogg" type="video/ogg"> -->
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
                     </div>
                 </div>
