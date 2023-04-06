@@ -134,9 +134,25 @@ class SPPDModel extends CI_Model
                     $this->db->where('u.status > 1');
                     if (!empty($filter['status_permohonan'])) {
                         if ($filter['status_permohonan'] == 'menunggu-saya') {
-                            $this->db->where('u.status = 2 and u.unapprove_oleh IS NULL');
+                            $this->db->where("((u.status = 2 AND u.id_bagian = {$penilai['id_bagian']} ) OR ( d.id_ppk2 = {$penilai['id']} AND u.status = 6) OR ( d.id_pptk = {$penilai['id']} AND u.status = 5)) and u.unapprove_oleh IS NULL");
                         } else if ($filter['status_permohonan'] == 'my-approv') {
                             $this->db->where('u.status > 2');
+                            // $this->db->where('u.status <> 98');
+                        } else if ($filter['status_permohonan'] == 'ditolak') {
+                            // $this->db->where('u.unapprove_oleh IS NOT NULL');
+                        } else if ($filter['status_permohonan'] == 'selesai') {
+                            // $this->db->where('u.unapprove_oleh is not null');
+                            $this->db->where('u.status = 99');
+                        }
+                    }
+                } else if ($penilai['level'] == 5) {
+                    $this->db->where("((u.id_seksi = {$penilai['id_seksi']} AND u.id_bagian = {$penilai['id_bagian']} ) OR d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
+                    $this->db->where('u.status >= 1');
+                    if (!empty($filter['status_permohonan'])) {
+                        if ($filter['status_permohonan'] == 'menunggu-saya') {
+                            $this->db->where("((u.status = 1 AND u.id_seksi = {$penilai['id_seksi']}) OR ( d.id_pptk = {$penilai['id']} AND u.status = 5)) and u.unapprove_oleh IS NULL");
+                        } else if ($filter['status_permohonan'] == 'my-approv') {
+                            $this->db->where('u.status > 1');
                             // $this->db->where('u.status <> 98');
                         } else if ($filter['status_permohonan'] == 'ditolak') {
                             // $this->db->where('u.unapprove_oleh IS NOT NULL');
@@ -627,7 +643,15 @@ class SPPDModel extends CI_Model
         else if ($data_spt['status'] == '1' && $ses['level'] == 5) {
             if ($data_spt['id_seksi'] == $ses['id_seksi'] && $data_spt['id_bagian'] == $ses['id_bagian']) {
                 $this->db->set('approve_kasi', $ses['id']);
-                $this->db->set('status', '2');
+                if ($data_spt['jenis'] == '1') {
+                    $this->db->set('status', '2');
+                } else {
+                    if ($ap_pptk) {
+                        $this->db->set('status', '2');
+                    } else {
+                        $this->db->set('status', '5');
+                    }
+                }
             } else {
                 throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
             }
@@ -670,7 +694,6 @@ class SPPDModel extends CI_Model
             $this->db->set('approve_kabid', $ses['id']);
             $this->db->set('status', '99');
         } else if ($ap_ppk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3)) {
-            // $this->db->set('status', 59);
             if ($ses['level'] == 7) {
                 $nomor = $this->cek_nomor($data_spt);
                 $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
@@ -688,6 +711,19 @@ class SPPDModel extends CI_Model
             }
         } else if ($ap_pptk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3)) {
             $this->db->set('status', 52);
+        } else if ($ap_pptk && $data_spt['jen_satker'] == 1) {
+            if (empty($data_spt['approve_kabid']))
+                $this->db->set('status', 2);
+            else {
+                $this->db->set('status', 6);
+            }
+        } else if ($ap_ppk && $data_spt['jen_satker'] == 1) {
+            if ($ses['level'] == 2) {
+                $this->db->set('approve_sekdin', $ses['id']);
+                $this->db->set('status', '12');
+            } else {
+                $this->db->set('status', 11);
+            }
         } else if ($continue) {
             $this->db->set('id_spt', $data_spt['id_spt']);
         } else {

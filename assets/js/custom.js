@@ -198,6 +198,8 @@ function statusSPT(status, unnaprove) {
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kabid / Kasubag </b></i> `;
   else if (status == "5")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv PPTK</b></i> `;
+  else if (status == "6")
+    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv PPK</b></i> `;
   else if (status == "50")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kasubag Puskesmas / Rumah Sakit</b></i> `;
   else if (status == "51")
@@ -206,8 +208,6 @@ function statusSPT(status, unnaprove) {
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv PPK</b></i> `;
   else if (status == "59")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Kepala Puskesmas / Direktur Rumah Sakit </b></i> `;
-  else if (status == "6")
-    return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv PPK</b></i> `;
   else if (status == "11")
     return `<i class='fa fa-hourglass-start text-primary'>  <b class="text-primary"> Menunggu Approv Sekretaris Dinas </b></i> `;
   else if (status == "12")
