@@ -30,8 +30,8 @@ class Rekap extends CI_Controller
     {
         try {
             $filter = $this->input->get();
-            $filter['search_approval']['data_penilai'] = $data_penilai = $this->session->userdata();
-            $filter['id_penilai'] = $data_penilai['id'];
+            // $filter['search_approval']['data_penilai'] = $data_penilai = $this->session->userdata();
+            // $filter['id_penilai'] = $data_penilai['id'];
             $filter['detail'] = true;
             $data = $this->SuratIzinModel->getAll($filter);
             echo json_encode(array('error' => false, 'data' => $data));
