@@ -26,6 +26,19 @@ class Rekap extends CI_Controller
     }
 
 
+    public function getAllCuti()
+    {
+        try {
+            $filter = $this->input->get();
+            $filter['search_approval']['data_penilai'] = $data_penilai = $this->session->userdata();
+            $filter['id_penilai'] = $data_penilai['id'];
+            $filter['detail'] = true;
+            $data = $this->SuratIzinModel->getAll($filter);
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
     public function spt()
     {
         try {
@@ -34,6 +47,22 @@ class Rekap extends CI_Controller
             $data = array(
                 'page' => 'rekap/spt',
                 'title' => 'Rekap SPT & SPPD',
+            );
+
+            $this->load->view('page', $data);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+    public function cuti()
+    {
+        try {
+            $this->SecurityModel->multiRole('Rekap', 'Rekap Cuti', true);
+
+            $data = array(
+                'page' => 'rekap/cuti',
+                'title' => 'Rekap Cuti',
             );
 
             $this->load->view('page', $data);

@@ -952,7 +952,7 @@ class Spt extends CI_Controller
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Pada Tanggal', 0, 0, 'L', 0);
             $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
-            $pdf->Cell(40, 5, tanggal_indonesia(date('Y-m-d')), 0, 1, 'L', 0);
+            $pdf->Cell(40, 5, tanggal_indonesia($data['tgl_pengajuan']), 0, 1, 'L', 0);
             $sign_ppk =  $this->GeneralModel->getSign(['id' => $data['sign_ppk']])[0];
             $pdf->Cell(120, 5, '', 0, 1, 'C', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
@@ -1313,7 +1313,7 @@ class Spt extends CI_Controller
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Pada Tanggal', 0, 0, 'L', 0);
             $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
-            $pdf->Cell(40, 5, tanggal_indonesia(date('Y-m-d')), 0, 1, 'L', 0);
+            $pdf->Cell(40, 5, tanggal_indonesia($data['tgl_pengajuan']), 0, 1, 'L', 0);
             $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             if ($data_satuan['jen_satker'] == 1)

@@ -9,7 +9,7 @@ class SuratIzinModel extends CI_Model
         $ses = $this->session->userdata();
         // echo json_encode($filter);
         // die();
-        $this->db->select("si.*, r.nama_izin,s.verif_cuti,s.jen_satker, r.jen_izin,ro.level level_pegawai, p.nama as nama_pegawai, pg.nama as nama_pengganti");
+        $this->db->select("si.*, s.nama_satuan, r.nama_izin,s.verif_cuti,s.jen_satker, r.jen_izin,ro.level level_pegawai, p.nama as nama_pegawai, pg.nama as nama_pengganti");
         if (!empty($filter['detail'])) {
             $this->db->select('p.nip nip_pegawai,
             p.pangkat_gol pangkat_gol_pegawai,
@@ -17,10 +17,9 @@ class SuratIzinModel extends CI_Model
             p.signature signature_pegawai,
             p.tmt_kerja,
             p.no_hp,
-             pg.nip nip_pengganti,
-             p.pangkat_gol pangkat_gol_pengganti,
-             p.jabatan jabatan_pengganti
-             ');
+            pg.nip nip_pengganti,
+            p.pangkat_gol pangkat_gol_pengganti,
+            p.jabatan jabatan_pengganti');
         }
         $this->db->from('surat_izin as si');
         $this->db->join('ref_jen_izin r', 'si.jenis_izin = r.id_ref_jen_izin');

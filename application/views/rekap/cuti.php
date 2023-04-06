@@ -54,27 +54,8 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <!-- <div class="job-filter mb-2">
-                                            <div class="faq-form">
-                                                <input class="form-control" type="text" placeholder="Search.." /><i class="search-icon" data-feather="search"></i>
-                                            </div>
-                                        </div>
-                                        <div class="job-filter">
-                                            <div class="faq-form">
-                                                <input class="form-control" type="text" placeholder="location.." /><i class="search-icon" data-feather="map-pin"></i>
-                                            </div>
-                                        </div> -->
                                         <div class="checkbox-animated m-checkbox-inline">
-                                            <label class="form-check form-check-inline" for="chk-spt">
-                                                <input class="checkbox_animated" id="chk-spt" name="chk-spt" type="checkbox" checked />SPT
-                                            </label>
-                                            <label class="form-check form-check-inline" for="chk-sppd">
-                                                <input class="checkbox_animated" id="chk-sppd" name="chk-sppd" type="checkbox" checked />SPPD
-                                            </label>
-                                            <label class="form-check form-check-inline" for="chk-lembur">
-                                                <input class="checkbox_animated" id="chk-lembur" name="chk-lembur" type="checkbox" checked />Lembur
-                                            </label><label class="form-check form-check-inline" for="chk-surat-izin">
+                                            <label class="form-check form-check-inline" for="chk-surat-izin">
                                                 <input class="checkbox_animated" id="chk-surat-izin" name="chk-surat-izin" type="checkbox" checked />Surat Izin
                                             </label>
                                             <label class="form-check form-check-inline" for="chk-surat-cuti">
@@ -96,13 +77,23 @@
                         <table id="FDataTable" class="table table-border-horizontal" style="padding-bottom: 100px">
                             <thead>
                                 <tr>
-                                    <th style="width: 5%; text-align:center!important">Jenis</th>
-                                    <th style="width: 10%; text-align:center!important">TANGGAL</th>
-                                    <th style="width: 10%; text-align:center!important">PEGAWAI</th>
-                                    <th style="width: 20%; text-align:center!important">INFORMASI LAINNYA</th>
-                                    <th style="width: 5%; text-align:center!important">STATUS</th>
-                                    <th style="width: 2%; text-align:center!important">ID</th>
-                                    <th style="width: 5%; text-align:center!important">Action</th>
+                                    <th rowspan=2 style=" width: 5%; text-align:center!important">JENIS</th>
+                                    <th rowspan=2 style="width: 10%; text-align:center!important">TGL PENGAJUAN</th>
+                                    <th rowspan=2 style="width: 10%; text-align:center!important">DARI</th>
+                                    <th rowspan=2 style="width: 10%; text-align:center!important">SAMPAI</th>
+                                    <th rowspan=2 style="width: 10%; text-align:center!important">INSTANSI</th>
+                                    <th rowspan=2 style="width: 10%; text-align:center!important">PEGAWAI</th>
+                                    <th rowspan=2 style="width: 20%; text-align:center!important">PENGGANTI</th>
+                                    <th rowspan=2 style="width: 20%; text-align:center!important">LAMA (Hari)</th>
+                                    <th style="width: 5%; text-align:center!important" colspan="3">CUTI TAHUNAN</th>
+                                    <th rowspan=2 style="width: 5%; text-align:center!important">STATUS</th>
+                                    <th rowspan=2 style="width: 2%; text-align:center!important">ID</th>
+                                    <th rowspan=2 style="width: 5%; text-align:center!important">Action</th>
+                                </tr>
+                                <tr>
+                                    <td>N</td>
+                                    <td>N1</td>
+                                    <td>N2</td>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -348,8 +339,10 @@
 
 <script>
     $(document).ready(function() {
-        $('#sidebar_permohonan').addClass('active_c');
 
+        $('#menu_4').addClass('active');
+        $('#opmenu_4').show();
+        $('#submenu_12').addClass('active');
         var toolbar = {
             'form': $('#toolbar_form'),
             'jenis_permohonan': $('#toolbar_form').find('#jenis_permohonan'),
@@ -359,12 +352,13 @@
 
         var FDataTable = $('#FDataTable').DataTable({
             'columnDefs': [],
-            responsive: true,
+            // responsive: true,
             deferRender: true,
             "order": [
                 [1, "desc"]
             ]
         });
+
         var VerifModal = {
             'self': $('#verif_modal'),
             'info': $('#verif_modal').find('.info'),
@@ -410,7 +404,7 @@
             'layout_lampiran': $('#lihat_modal').find('#layout_lampiran'),
         }
         var dataRole = {}
-        var dataSKP = {}
+        var dataIzin = {}
         <?php $curUser = $this->session->userdata(); ?>
         var currentUser = <?= json_encode([
                                 'level' => $curUser['level'],
@@ -438,9 +432,7 @@
             confirmButtonText: "Ya, Hapus!",
         };
 
-        $.when(getAllPermohonan()).then((e) => {
-            // toolbar.newBtn.prop('disabled', false);
-        }).fail((e) => {
+        $.when(getAllPermohonan()).then((e) => {}).fail((e) => {
             console.log(e)
         });
 
@@ -458,12 +450,12 @@
 
         function getAllPermohonan() {
             Swal.fire({
-                title: 'Loading SPPD!',
+                title: 'Loading Cuti!',
                 allowOutsideClick: false,
             });
             Swal.showLoading()
             return $.ajax({
-                url: `<?php echo site_url('permohonan/getAll/') ?>`,
+                url: `<?php echo site_url('rekap/getAllCuti/') ?>`,
                 'type': 'get',
                 data: toolbar.form.serialize(),
                 success: function(data) {
@@ -472,8 +464,8 @@
                     if (json['error']) {
                         return;
                     }
-                    dataSKP = json['data'];
-                    renderSKP(dataSKP);
+                    dataIzin = json['data'];
+                    renderSKP(dataIzin);
                 },
                 error: function(e) {}
             });
@@ -493,7 +485,7 @@
             curSatuan = <?= $this->session->userdata()['id_satuan'] ?>;
             bagian = <?= $this->session->userdata()['id_bagian'] ? $this->session->userdata()['id_bagian']  : "''" ?>;
             seksi = <?= $this->session->userdata()['id_seksi'] ? $this->session->userdata()['id_seksi']  : "''" ?>;
-            Object.values(data['surat_izin']).forEach((d) => {
+            Object.values(data).forEach((d) => {
                 var aksiBtn = '';
                 console.log('pengganti :' +
                     d['id_pengganti'])
@@ -579,196 +571,33 @@
                         </div>`;
 
                 info = 'Pengganti : ' + (d['nama_pengganti'] ? d['nama_pengganti'] : '-');
-                info += ('<br>Instansi : ' + d['nama_satuan']);
-                console.log(d['unapprove']);
                 renderData.push([d['nama_izin'],
-                    d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
-                    d['nama_pegawai'], info, statusIzin(d['status_izin'], d['unapprove']), d['id_surat_izin'], button
+                    tgl_indo(d['tanggal_pengajuan']),
+                    tgl_indo(d['periode_start']),
+                    tgl_indo(d['periode_end']),
+                    // d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
+                    d['nama_satuan'],
+                    d['nama_pegawai'],
+                    d['nama_pengganti'],
+                    d['lama_izin'],
+                    d['c_n'],
+                    d['c_n1'],
+                    d['c_n2'],
+                    statusIzin(d['status_izin'], d['unapprove']), d['id_surat_izin'], button
                 ]);
-            });
-
-            Object.values(data['spt']).forEach((spt) => {
-                var aksiBtn = '';
-                <?php if ($this->session->userdata()['level'] == 3 or $this->session->userdata()['level'] == 4) { ?>
-                    console.log('ini level 3 KASUBAG / KABID');
-                    if (spt['status'] == 2) {
-                        var aksiBtn = `
-                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
-                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
-                    `;
-                    } else if (spt['status'] == 10) {
-                        var aksiBtn = `
-                    <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
-                    `;
-                    }
-                <?php } else if ($this->session->userdata()['level'] == 2) { ?>
-                    if (spt['status'] == 11) {
-                        var aksiBtn = `
-                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
-                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
-                    `;
-                    } else if (spt['status'] == 12 || spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>') {
-                        var aksiBtn = `
-                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
-                        `;
-                    }
-                <?php  } else if ($this->session->userdata()['level'] == 1) { ?>
-                    if (spt['status'] == 12) {
-                        var aksiBtn = `
-                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
-                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
-                    `;
-                    } else if (spt['status'] == 99 || spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>') {
-                        var aksiBtn = `
-                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
-                        `;
-                    }
-                <?php  } else if ($this->session->userdata()['level'] == 5) { ?>
-                    console.log(spt['status'])
-                    if (spt['status'] == 1 && spt['id_seksi'] == currentUser['id_seksi']) {
-                        var aksiBtn = `
-                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
-                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
-                    `;
-                    } else if ((spt['status'] == 2 || spt['unapprove_oleh'] == currentUser['id']) && spt['id_seksi'] == currentUser['id_seksi']) {
-                        var aksiBtn = `
-                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
-                        `;
-                    }
-                <?php  } else if ($this->session->userdata()['level'] == 8) { ?>
-                    console.log(spt['id_satuan'])
-                    if (spt['status'] == 50 && spt['id_satuan'] == currentUser['id_satuan']) {
-                        console.log("hereess23")
-                        var aksiBtn = `
-                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
-                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
-                    `;
-                    } else if ((spt['status'] == 51 || spt['unapprove_oleh'] == currentUser['id']) && spt['id_satuan'] == currentUser['id_satuan']) {
-                        var aksiBtn = `
-                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
-                        `;
-                    }
-                <?php  } else if ($this->session->userdata()['level'] == 7) { ?>
-                    console.log(spt['id_satuan'])
-                    if (spt['status'] == 59 && spt['id_satuan'] == currentUser['id_satuan']) {
-                        console.log("hereess23")
-                        var aksiBtn = `
-                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
-                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
-                    `;
-                    } else if ((spt['status'] == 51 || spt['unapprove_oleh'] == currentUser['id']) && spt['id_satuan'] == currentUser['id_satuan']) {
-                        var aksiBtn = `
-                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
-                        `;
-                    }
-                <?php  } else if ($this->session->userdata()['penomoran'] == 1) { ?>
-                    console.log('here')
-                    if (spt['status'] == 99) {
-                        var aksiBtn = `
-                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
-                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
-                    `;
-                    }
-                <?php  } ?>
-                if (spt['status'] == 6 && spt['id_ppk2'] == '<?= $this->session->userdata()['id'] ?>' && spt['id_ppk2'] != '') {
-                    var aksiBtn = `
-                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
-                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
-                    `;
-                } else if ((spt['status'] == 11 || spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>') && spt['id_ppk'] == '<?= $this->session->userdata()['id'] ?>' && spt['id_ppk'] != '') {
-                    var aksiBtn = `
-                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
-                        `;
-                } else if (
-                    (spt['status'] == 51 && spt['id_pptk'] == '<?= $this->session->userdata()['id'] ?>' && spt['id_pptk'] != '') ||
-                    (spt['status'] == 52 && spt['id_ppk2'] == '<?= $this->session->userdata()['id'] ?>' && spt['id_ppk'] != '')
-                ) {
-                    var aksiBtn = `
-                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
-                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
-                    `;
-                };
-                if ((spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>')) {
-                    var aksiBtn = `
-                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
-                        `;
-                }
-                var lihatButton = `
-                     <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/print/${spt['id_spt']}/1'><i class='fa fa-eye'></i> PDF SPT  </a>
-                         `;
-                if (spt['jenis'] == 2) {
-                    lihatButton = lihatButton +
-                        `
-                        <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/print/${spt['id_spt']}/2'><i class='fa fa-eye'></i> PDF SPPD </a>
-                `;
-
-                }
-                lihatButton = lihatButton +
-                    `
-                         <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/detail/${spt['id_spt']}'><i class='fa fa-eye'></i> Lihat </a>
-                 `;
-
-                var aprvButton = `
-                                `;
-                var deaprvButton = `
-                                `;
-                var button = `
-                           <div class="dropdown-basic">
-                            <div class="dropdown">
-                                <div class="btn-group mb-1">
-                                    <button class="dropbtn btn-square btn-sm btn-primary" style="width : 120px"  type="button">
-                                        Aksi
-                                        <span><i class="icofont icofont-arrow-down"> </i></span>
-                                    </button>
-                                    <div class="dropdown-content">
-                                        ${aksiBtn}
-                                        ${lihatButton}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
-                // console.log(button)
-                i = 1;
-                d1 = '';
-                d2 = '';
-                tmpt = 'Tujuan : ';
-                Object.values(spt['tujuan']).forEach((tj) => {
-                    if (i == 1) {
-                        d1 = tj['date_berangkat'];
-                        tmpt = tmpt + tj['tempat_tujuan'];
-                    } else {
-                        tmpt = tmpt + ', ' + tj['tempat_tujuan'];
-
-                    }
-                    d2 = tj['date_kembali'];
-
-                    i++;
-                })
-                if (spt['jenis'] == 2) {
-                    tmpt = tmpt + '<br>No SPT : ' + (spt['no_spt'] ? spt['no_spt'] : '') + '<br>No SPPD : ' + (spt['no_sppd'] ? spt['no_sppd'] : '');
-                } else {
-                    tmpt = tmpt + '<br>No SPT : ' + (spt['no_spt'] ? spt['no_spt'] : '');
-
-                }
-                pegawai = spt['nama_pegawai'];
-                i = 1;
-                Object.values(spt['pengikut']).forEach((p) => {
-                    if (i == 1)
-                        pegawai = pegawai + '<br> Pengikut : ';
-                    pegawai = pegawai + '<br>' + i + '. ' + p['nama'];
-                    // d2 = tj['date_kembali']
-                    i++;
-                })
-
-                dfix = d1.split(" ")[0] + ' s.d ' + d2.split(" ")[0];
-                renderData.push([spt['nama_ref_jen_spt'], dfix, pegawai, tmpt, statusSPT(spt['status'], spt['unapprove_oleh']), spt['id_spt'], button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         };
 
+        function tgl_indo(tgl) {
+            ex_tgl = tgl.split('-');
+            console.log(ex_tgl);
+            var bulan = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+            return ex_tgl[2] + ' ' + bulan[parseInt(ex_tgl[1])] + ' ' + ex_tgl[0]
+        }
+
         FDataTable.on('click', '.verif_cuti', function() {
-            // var jenis = $(this).data('jenis');
-            curData = dataSKP['surat_izin'][$(this).data('id')];
+            curData = dataIzin[$(this).data('id')];
             console.log('verf');
             console.log(curData);
             VerifModal.self.modal('show');
@@ -783,18 +612,11 @@
             VerifModal.alasan.val(curData['alasan']);
             VerifModal.alamat_izin.val(curData['alamat_izin']);
             if (curData['jenis_izin'] == '11') {
-                // VerifModal.c_n.prop('required', true)
-                // VerifModal.c_n1.prop('required', true)
-                // VerifModal.c_n2.prop('required', true)
                 VerifModal.c_sisa_n.prop('required', true)
                 VerifModal.c_sisa_n1.prop('required', true)
                 VerifModal.c_sisa_n2.prop('required', true)
-
                 $('.layout_c_tahunan').show();
             } else {
-                // VerifModal.c_n.prop('required', false)
-                // VerifModal.c_n1.prop('required', false)
-                // VerifModal.c_n2.prop('required', false)
                 VerifModal.c_sisa_n.prop('required', false)
                 VerifModal.c_sisa_n1.prop('required', false)
                 VerifModal.c_sisa_n2.prop('required', false)
@@ -809,10 +631,7 @@
             VerifModal.c_sisa_n2.val(curData['c_sisa_n2']);
             if (curData['lampiran'] != null && curData['lampiran'] != '') {
                 file_lampiran = curData['lampiran'].split(".");
-                // if (file_lampiran[1] == 'pdf')
-
                 lampHtml = `<a href='<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}'> Download </a>
-
                 `
                 lampHtml += `
                 <div class="col-lg-12">
@@ -830,7 +649,7 @@
 
         FDataTable.on('click', '.data_izin', function() {
             var jenis = $(this).data('jenis');
-            curData = dataSKP['surat_izin'][$(this).data('id')];
+            curData = dataIzin[$(this).data('id')];
             console.log(curData);
             LihatModal.self.modal('show');
             LihatModal.periode_start.val(curData['periode_start']);
@@ -890,9 +709,9 @@
                             return;
                         }
                         var d = json['data']
-                        dataSKP['surat_izin'][d['id_surat_izin']] = d;
+                        dataIzin[d['id_surat_izin']] = d;
                         Swal.fire("Simpan Berhasil", "", "success");
-                        renderSKP(dataSKP);
+                        renderSKP(dataIzin);
                         VerifModal.self.modal('hide');
                     },
                     error: function(e) {}
@@ -943,12 +762,12 @@
                         }
                         var d = json['data']
                         if (jenis == 'spt')
-                            dataSKP[jenis][d['id_spt']] = d;
+                            dataIzin[jenis][d['id_spt']] = d;
                         else if (jenis == 'SuratIzin')
-                            dataSKP['surat_izin'][d['id_surat_izin']] = d;
-                        console.log(dataSKP['surat_izin'][d['id_surat_izin']]);
+                            dataIzin[d['id_surat_izin']] = d;
+                        console.log(dataIzin[d['id_surat_izin']]);
                         Swal.fire("Approv Berhasil", "", "success");
-                        renderSKP(dataSKP);
+                        renderSKP(dataIzin);
                     },
                     error: function(e) {}
                 });
@@ -956,7 +775,7 @@
         })
 
         FDataTable.on('click', '.deapprov', function() {
-            var currentData = dataSKP[$(this).data('id')];
+            var currentData = dataIzin[$(this).data('id')];
             var jenis = $(this).data('jenis');
             Swal.fire({
                 title: "Konfrirmasi Penolakan",
@@ -1000,9 +819,9 @@
                             return;
                         }
                         var d = json['data']
-                        dataSKP[jenis][d['id_spt']] = d;
+                        dataIzin[jenis][d['id_spt']] = d;
                         Swal.fire("SKP Berhasil ditolak", "", "success");
-                        renderSKP(dataSKP);
+                        renderSKP(dataIzin);
                     },
                     error: function(e) {}
                 });
@@ -1010,7 +829,7 @@
         })
 
         FDataTable.on('click', '.batal_aksi', function() {
-            var currentData = dataSKP[$(this).data('id')];
+            var currentData = dataIzin[$(this).data('id')];
             var jenis = $(this).data('jenis');
             Swal.fire({
                 title: "Konfrirmasi Batal",
@@ -1055,9 +874,9 @@
                             return;
                         }
                         var d = json['data'];
-                        dataSKP[jenis][d['id_spt']] = d;
+                        dataIzin[jenis][d['id_spt']] = d;
                         Swal.fire("Pembatalan Berhasil", "", "success");
-                        renderSKP(dataSKP);
+                        renderSKP(dataIzin);
                     },
                     error: function(e) {}
                 });
