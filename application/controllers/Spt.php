@@ -902,7 +902,7 @@ class Spt extends CI_Controller
             $pdf->RowSPPD('1.', 'Pimpinan BLUD', $data['nama_ppk'] . ' / ' . $data['nip_ppk']);
         $pdf->RowSPPD('2.', 'Nama/NIP Pegawai yang melaksanakan perjalanan dinas ', $data['nama_pegawai'] . ' / ' . $data['nip_pegawai']);
         $pdf->RowSPPD('3.', 'a. Pangkat dan Golongan', 'a. ' . $data['pangkat_gol_pegawai']);
-        $pdf->RowSPPD('', 'b. Jabatan / Instansi', 'b. ' . $data['jabatan_pegawai'] . ' / ' . $data['pangkat_gol_pegawai']);
+        $pdf->RowSPPD('', 'b. Jabatan / Instansi', 'b. ' . $data['jabatan_pegawai'] . ' / ' . $data_satuan['nama_satuan']);
         $pdf->RowSPPD('', 'c. Tingkat Biaya Perjalanan Dinas', 'c. ');
         $pdf->RowSPPD('4.', 'Maksud Perjalanan Dinas', $data['maksud']);
         $pdf->RowSPPD('5.', 'Alat angkut yang dipergunakan ', $data['nama_transport']);

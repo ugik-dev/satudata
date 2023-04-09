@@ -651,12 +651,11 @@
                 <?php  } else if ($this->session->userdata()['level'] == 7) { ?>
                     console.log(spt['id_satuan'])
                     if (spt['status'] == 59 && spt['id_satuan'] == currentUser['id_satuan']) {
-                        console.log("hereess23")
                         var aksiBtn = `
                     <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
                     <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
                     `;
-                    } else if ((spt['status'] == 51 || spt['unapprove_oleh'] == currentUser['id']) && spt['id_satuan'] == currentUser['id_satuan']) {
+                    } else if ((spt['status'] == 11 || spt['status'] == 51 || spt['unapprove_oleh'] == currentUser['id']) && spt['id_satuan'] == currentUser['id_satuan']) {
                         var aksiBtn = `
                         <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
                         `;
