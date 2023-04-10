@@ -7,6 +7,8 @@
                     <form hidden class="form-inline" id="toolbar_form" onsubmit="return false;">
                         <!-- <div class="col-lg-2"> -->
                         <input type="hidden" id="is_not_self" name="is_not_self" value="1">
+                        <!-- <input type="hidden" id="id_seksi" name="id_seksi" value="1"> -->
+                        <!-- <input type="hidden" id="id_bidang" name="id_bidang" value="<?= $this->session->userdata() ?>"> -->
                         <!-- </div> -->
                         <div class="col-lg-2">
                             <select class="form-control mr-sm-2" name="tool_id_role" id="tool_id_role"></select>

@@ -97,6 +97,7 @@ class SPPDModel extends CI_Model
         if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
         // $this->db->where('u.id_spt', 24);
         if (!empty($filter['id_bagian'])) $this->db->where('u.id_bagian', $filter['id_bagian']);
+        if (!empty($filter['id_seksi'])) $this->db->where('u.id_seksi', $filter['id_seksi']);
         if (!empty($filter['my_perjadin'])) $this->db->where('u.id_pegawai', $this->session->userdata()['id']);
         if (!empty($filter['search_approval']['data_penilai'])) {
             $penilai =  $filter['search_approval']['data_penilai'];

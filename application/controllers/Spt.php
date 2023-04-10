@@ -23,8 +23,11 @@ class Spt extends CI_Controller
         try {
             $this->SecurityModel->multiRole('SPT / SPPD', 'Daftar Pengajuan');
             $filter = $this->input->get();
-            if ($this->session->userdata('id_role') != 1)
+            if ($this->session->userdata('id_role') != 1) {
+
                 $filter['id_bagian'] = $this->session->userdata('id_bagian');
+                $filter['id_seksi'] = $this->session->userdata('id_seksi');
+            }
 
             $data = $this->SPPDModel->getAllSPPD($filter);
             echo json_encode(array('error' => false, 'data' => $data));
