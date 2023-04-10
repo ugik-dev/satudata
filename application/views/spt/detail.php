@@ -290,6 +290,11 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <td>Mengajukan</td>
+                                <td><?= $dataContent['return_data']['nama_input'] ?></td>
+                                <td><?= $dataContent['return_data']['tgl_pengajuan'] ?></td>
+                            </tr>
                             <?php
                             foreach ($dataContent['return_data']['logs'] as $log) {
                                 echo "<tr>
@@ -299,11 +304,7 @@
                                 </tr>";
                             }
                             ?>
-                            <tr>
-                                <td>Mengajukan</td>
-                                <td><?= $dataContent['return_data']['nama_input'] ?></td>
-                                <td><?= $dataContent['return_data']['tgl_pengajuan'] ?></td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
