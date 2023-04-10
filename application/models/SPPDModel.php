@@ -228,8 +228,8 @@ class SPPDModel extends CI_Model
         }
 
         $res = $this->db->get()->result_array();
-        echo $this->db->last_query();
-        die();
+        // echo $this->db->last_query();
+        // die();
         $res_id = [];
         foreach ($res as $rid) {
             array_push($res_id, $rid['id_spt']);
