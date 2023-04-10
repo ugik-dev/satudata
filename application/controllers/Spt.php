@@ -1335,7 +1335,10 @@ class Spt extends CI_Controller
             $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Ditetapkan di', 0, 0, 'L', 0);
             $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
-            $pdf->Cell(40, 5, $data_satuan['satuan_tempat'], 0, 1, 'L', 0);
+            if ($data['level_pegawai'] == 7) {
+                $pdf->Cell(40, 5, 'Sungailiat', 0, 1, 'L', 0);
+            } else
+                $pdf->Cell(40, 5, $data_satuan['satuan_tempat'], 0, 1, 'L', 0);
 
             $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Pada Tanggal', 0, 0, 'L', 0);
