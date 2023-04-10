@@ -1374,10 +1374,13 @@ class Spt extends CI_Controller
             $pdf->Cell(40, 5, tanggal_indonesia($data['tgl_pengajuan']), 0, 1, 'L', 0);
             $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
             if ($data_satuan['jen_satker'] == 1 or $data['level_pegawai'] == 7) {
-                // if (!empty($data['sign_kadin2'])) {
-                $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin2']])[0];
-                $pdf->MultiCell(45, 5,  "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L', 0);
-                // }
+                if (!empty($data['sign_kadin2'])) {
+                    $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin2']])[0];
+                    $pdf->MultiCell(45, 5,  "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L', 0);
+                } else {
+                    $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
+                    $pdf->MultiCell(45, 5,  "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L', 0);
+                }
                 // else {
                 // }
                 // $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin2']])[0];
