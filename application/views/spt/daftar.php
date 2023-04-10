@@ -28,8 +28,8 @@
                                 <tr>
                                     <th style="width: 2%; text-align:center!important">ID</th>
                                     <th style="width: 10%; text-align:center!important">Jenis</th>
-                                    <th style="width: 10%; text-align:center!important">NO SPT</th>
-                                    <th style="width: 10%; text-align:center!important">NO SPPD</th>
+                                    <!-- <th style="width: 10%; text-align:center!important">NO SPT</th> -->
+                                    <th style="width: 10%; text-align:center!important">INFO</th>
                                     <th style="width: 24%; text-align:center!important">PEGAWAI</th>
                                     <th style="width: 10%; text-align:center!important">TUJUAN</th>
                                     <th style="width: 10%; text-align:center!important">Status</th>
@@ -191,7 +191,11 @@
                     i++;
 
                 })
-                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], spt['no_spt'], spt['jenis'] == 2 ? spt['no_sppd'] : '-', spt['nama_pegawai'], tujuan, statusSPT(spt['status']), button]);
+                info = `Petugas : ${spt['nama_input']}<br>
+                No SPT : ${ spt['no_spt']?spt['no_spt']:''}<br>
+                No SPPD : ${ spt['no_sppd']?spt['no_sppd']:''}
+                `;
+                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], info, spt['nama_pegawai'], tujuan, statusSPT(spt['status']), button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }
