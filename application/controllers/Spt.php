@@ -1314,14 +1314,19 @@ class Spt extends CI_Controller
             $pdf->Cell(30, 5, 'Pada Tanggal', 0, 0, 'L', 0);
             $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
             $pdf->Cell(40, 5, tanggal_indonesia($data['tgl_pengajuan']), 0, 1, 'L', 0);
-            $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
-            if ($data_satuan['jen_satker'] == 1)
+            if ($data_satuan['jen_satker'] == 1 or $data['level_pegawai'] == 7) {
+                $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin2']])[0];
                 $pdf->MultiCell(45, 5,  "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L', 0);
-            if ($data_satuan['jen_satker'] == 2)
+            } else if ($data_satuan['jen_satker'] == 2) {
+                $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
+
                 $pdf->MultiCell(72, 5,  "Kepala " . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L', 0);
-            if ($data_satuan['jen_satker'] == 3)
+            } else if ($data_satuan['jen_satker'] == 3) {
+                $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
+
                 $pdf->MultiCell(72, 5,  "Direktur " . $data_satuan['nama_satuan'], 0, 'L', 0);
+            }
             $pdf->Cell(120, 25, '', 0, 1, 'C', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  $sign_kadin['sign_name'], 0, 'L', 0);
