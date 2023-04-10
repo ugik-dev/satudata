@@ -517,7 +517,7 @@ class Spt extends CI_Controller
         if ($tipe == 1)
             $this->print_spt($data, $qr);
         if ($tipe == 2)
-            $this->print_sppd($data);
+            $this->print_sppd($data, $qr);
         if ($tipe == 3)
             $this->print_lpd($data);
         if ($tipe == 4)
@@ -872,7 +872,7 @@ class Spt extends CI_Controller
     {
         return preg_replace('#<li>#', '<li><tag>', $m[0]);
     }
-    function print_sppd($data)
+    function print_sppd($data, $qr = 1)
     {
         require('assets/fpdf/mc_table.php');
 
@@ -1018,6 +1018,17 @@ class Spt extends CI_Controller
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(75, 5,  'NIP. ' . $sign_ppk['sign_nip'], 0, 'L', 0);
             if (!empty($sign_ppk['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_ppk['sign_signature']), 140, $pdf->getY() - 40, 0, 26);
+
+            if ($qr == 2) {
+                if (empty($data['qrcode'])) {
+                    $key = md5($data['no_spt'] . time());
+                    $this->SPPDModel->addQRCode(['qrcode' => $key, 'id_spt' => $data['id_spt']]);
+                    $this->addQRCode($key, 20);
+                    $pdf->Image(base_url('uploads/qrcode/20' .  $key . '.png'), 40, $pdf->getY() - 40.5, 25);
+                } else {
+                    $pdf->Image(base_url('uploads/qrcode/20' . $data['qrcode'] . '.png'), 40, $pdf->getY() - 40.5, 25);
+                }
+            }
         } else {
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Ditetapkan di', 0, 0, 'L', 0);
@@ -1399,18 +1410,32 @@ class Spt extends CI_Controller
             $pdf->MultiCell(70, 5,  $sign_kadin['sign_pangkat'], 0, 'L', 0);
             $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  'NIP. ' . $sign_kadin['sign_nip'], 0, 'L', 0);
-            if ($qr == 1)
-                $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 118, $pdf->getY() - 40, 0, 25);
-            else {
+
+            // sementara
+            $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 120, $pdf->getY() - 40, 0, 25);
+            if ($qr == 2) {
                 if (empty($data['qrcode'])) {
                     $key = md5($data['no_spt'] . time());
                     $this->SPPDModel->addQRCode(['qrcode' => $key, 'id_spt' => $data['id_spt']]);
                     $this->addQRCode($key, 20);
-                    $pdf->Image(base_url('uploads/qrcode/20' .  $key . '.png'), 140, $pdf->getY() - 40.5, 25);
+                    $pdf->Image(base_url('uploads/qrcode/20' .  $key . '.png'), 40, $pdf->getY() - 40.5, 25);
                 } else {
-                    $pdf->Image(base_url('uploads/qrcode/20' . $data['qrcode'] . '.png'), 140, $pdf->getY() - 40.5, 25);
+                    $pdf->Image(base_url('uploads/qrcode/20' . $data['qrcode'] . '.png'), 40, $pdf->getY() - 40.5, 25);
                 }
             }
+
+            // if ($qr == 1)
+            //     $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 120, $pdf->getY() - 40, 0, 25);
+            // else {
+            //     if (empty($data['qrcode'])) {
+            //         $key = md5($data['no_spt'] . time());
+            //         $this->SPPDModel->addQRCode(['qrcode' => $key, 'id_spt' => $data['id_spt']]);
+            //         $this->addQRCode($key, 20);
+            //         $pdf->Image(base_url('uploads/qrcode/20' .  $key . '.png'), 140, $pdf->getY() - 40.5, 25);
+            //     } else {
+            //         $pdf->Image(base_url('uploads/qrcode/20' . $data['qrcode'] . '.png'), 140, $pdf->getY() - 40.5, 25);
+            //     }
+            // }
         } else {
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Ditetapkan di', 0, 0, 'L', 0);
