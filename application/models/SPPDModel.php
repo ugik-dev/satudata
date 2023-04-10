@@ -301,7 +301,7 @@ class SPPDModel extends CI_Model
         return DataStructure::SPPDStyle($res->result_array());
     }
 
-    public function CekJadwal($data = [], $start, $end)
+    public function CekJadwal($data = [], $start, $end, $ex_id = '')
     {
         $data['pengikut'][] = $data['id_pegawai'];
         $this->db->select('us.nama, r.tempat_tujuan, no_sppd ,r.date_berangkat,date_kembali');
@@ -310,6 +310,7 @@ class SPPDModel extends CI_Model
         $this->db->join('tujuan r', 'u.id_spt = r.id_spt');
         $this->db->where_in('id_pegawai', $data['pengikut']);
         $this->db->where('u.jenis', '2');
+        if (!empty($ex_id)) $this->db->where('u.id_spt <> ', $ex_id);
         $this->db->where('u.status <> 98');
         $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
 
@@ -326,6 +327,7 @@ class SPPDModel extends CI_Model
         $this->db->join('tujuan r', 'u.id_spt = r.id_spt');
         $this->db->where_in('p.id_pegawai', $data['pengikut']);
         $this->db->where('u.status <> 98');
+        if (!empty($ex_id)) $this->db->where('u.id_spt <> ', $ex_id);
         $this->db->where('u.jenis', '2');
         $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
 
@@ -443,8 +445,7 @@ class SPPDModel extends CI_Model
         $data['user_input'] = $ses['id'];
         $this->db->set(DataStructure::slice($data, [
             'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas',
-            'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk', 'berangkat_dari'
-
+            'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk', 'berangkat_dari', 'status'
         ], FALSE));
 
         $this->db->where('id_spt', $data['id_spt']);

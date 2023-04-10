@@ -310,6 +310,31 @@ class Spt extends CI_Controller
         try {
             $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
             $data = $this->input->post();
+            if ($data['jenis'] == '2') {
+                if (empty($data['date_berangkat'][0]) or empty($data['date_berangkat'][0]) or empty($data['tempat_tujuan'][0])) {
+                    throw new UserException('Tujuan belum lengkap!');
+                }
+                foreach ($data['id_tujuan'] as $key => $t) {
+                    // echo $data['date_berangkat'][$key];
+                    if (empty($hari_pertama) && !empty($data['date_berangkat'][$key])) {
+                        $hari_pertama = $data['date_berangkat'][$key];
+                    }
+                    if (!empty($data['date_kembali'][$key])) {
+                        $hari_terakhir = $data['date_kembali'][$key];
+                    }
+                }
+                $this->SPPDModel->CekJadwal($data, $hari_pertama, $hari_terakhir, $data['id_spt']);
+            }
+            if ($this->session->userdata('jen_satker') == 1) {
+                if (!empty($this->session->userdata('id_seksi')))
+                    $data['status'] = 1;
+                else
+                    $data['status'] = 2;
+            } else
+            if ($this->session->userdata('jen_satker') == 2 || $this->session->userdata('jen_satker') == 3) {
+                $data['status'] = 50;
+            }
+
             $id =  $this->SPPDModel->editSPPD($data);
             echo json_encode(array('error' => false, 'data' => $id));
             // $this->load->view('page', $data);
