@@ -507,7 +507,7 @@ class SuratIzin extends CI_Controller
         $pdf->SetLineWidth(0.2);
         $pdf->Cell(195, 5, 'SURAT PELIMPAHAN WEWENANG', 0, 1, 'C', 0);
         $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(195, 5, 'Nomor : ' . $data['no_surat_izin'], 0, 1, 'C', 0);
+        // $pdf->Cell(195, 5, 'Nomor : ' . $data['no_surat_izin'], 0, 1, 'C', 0);
 
         $pdf->SetFont('Arial', '', 11);
         $pdf->Cell(25, 5, ' ', 0, 1, 'L', 0);
