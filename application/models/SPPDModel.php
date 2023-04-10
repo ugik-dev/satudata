@@ -152,8 +152,8 @@ class SPPDModel extends CI_Model
                 } else if ($penilai['level'] == 5) {
                     $this->db->where("((u.id_seksi = {$penilai['id_seksi']} AND u.id_bagian = {$penilai['id_bagian']} ) OR d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
                     $this->db->where('u.status >= 1');
-                    echo json_encode($penilai);
-                    die();
+                    // echo json_encode($penilai);
+                    // die();
                     if (!empty($filter['status_permohonan'])) {
                         if ($filter['status_permohonan'] == 'menunggu-saya') {
                             $this->db->where("((u.status = 1 AND u.id_seksi = {$penilai['id_seksi']}) OR ( d.id_pptk = {$penilai['id']} AND u.status = 5)) and u.unapprove_oleh IS NULL");
