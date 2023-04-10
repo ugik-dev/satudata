@@ -152,6 +152,8 @@ class SPPDModel extends CI_Model
                 } else if ($penilai['level'] == 5) {
                     $this->db->where("((u.id_seksi = {$penilai['id_seksi']} AND u.id_bagian = {$penilai['id_bagian']} ) OR d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
                     $this->db->where('u.status >= 1');
+                    echo json_encode($penilai);
+                    die();
                     if (!empty($filter['status_permohonan'])) {
                         if ($filter['status_permohonan'] == 'menunggu-saya') {
                             $this->db->where("((u.status = 1 AND u.id_seksi = {$penilai['id_seksi']}) OR ( d.id_pptk = {$penilai['id']} AND u.status = 5)) and u.unapprove_oleh IS NULL");
@@ -217,6 +219,7 @@ class SPPDModel extends CI_Model
                 $this->db->where_in('u.jenis', $jen);
             }
         }
+
         if (empty($filter['qrcode'])) {
             if ($this->session->userdata('jen_satker') != 1)
                 $this->db->where('u.id_satuan', $ses['id_satuan']);
@@ -244,17 +247,6 @@ class SPPDModel extends CI_Model
             $tujuan = [];
             $pengikut = [];
         }
-        // echo json_encode($tujuan);
-
-        // die();
-        // var_dump($this->session->userdata()['level']);
-        // if ($this->session->userdata()['level'] == 2) {
-        //     $this->db->where('s.id_bagian', $this->session->userdata()['id_bagian']);
-        // }
-        // print($this->db->last_query());
-        // echo json_encode($res->result_array());
-        // die();
-
         return DataStructure::SPPDStyle2($res, $tujuan, $pengikut);
     }
     public function getAllSPPD2($filter = [])
