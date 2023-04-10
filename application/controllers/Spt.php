@@ -1400,7 +1400,7 @@ class Spt extends CI_Controller
             $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  'NIP. ' . $sign_kadin['sign_nip'], 0, 'L', 0);
             if ($qr == 1)
-                $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 115, $pdf->getY() - 40, 0, 25);
+                $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 118, $pdf->getY() - 40, 0, 25);
             else {
                 if (empty($data['qrcode'])) {
                     $key = md5($data['no_spt'] . time());
