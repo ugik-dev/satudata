@@ -20,17 +20,56 @@
                                             <div class="mb-3 row">
                                                 <label class="col-sm-3 col-form-label">Status </label>
                                                 <div class="col-sm-8">
-                                                    <select class="form-control " name="status_permohonan" id="status">
+                                                    <select class="form-control " name="status_rekap" id="status_rekap">
                                                         <option value=""> Semua </option>
-                                                        <option value="menunggu-saya" selected> Menunggu Saya</option>
-                                                        <option value="my-approv"> Sudah Saya Approve </option>
-                                                        <option value="ditolak"> Ditolak </option>
-                                                        <option value="selesai"> Selesai </option>
+                                                        <option value="ditolak" selected> Di Tolak </option>
+                                                        <option value="selesai" selected> Selesai </option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <div class="col-lg-4">
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label">Jenis Pegawai </label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control " name="jen_izin" id="jen_izin">
+                                                        <option value=""> Semua </option>
+                                                        <option value="1"> ASN</option>
+                                                        <option value="2"> Honorer </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label">Jenis Izin </label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control " name="jenis_izin" id="jenis_izin">
+                                                        <option value=""> Semua </option>
+                                                        <?php
+                                                        foreach ($dataContent['jenis_izin'] as $ji) {
+                                                            echo "<option value='{$ji['id_ref_jen_izin']}'> {$ji['nama_izin']} </option>    ";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label">Instansi </label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control " name="id_satuan" id="id_satuan">
+                                                        <option value=""> Semua </option>
+                                                        <?php
+                                                        foreach ($dataContent['instansi'] as $ji) {
+                                                            echo "<option value='{$ji['id_satuan']}'> {$ji['nama_satuan']} </option>    ";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="col-lg-4">
                                             <div class="mb-3 row">
                                                 <?php

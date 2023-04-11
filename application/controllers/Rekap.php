@@ -59,10 +59,12 @@ class Rekap extends CI_Controller
     {
         try {
             $this->SecurityModel->multiRole('Rekap', 'Rekap Cuti', true);
-
+            $dataContent['instansi'] = $this->GeneralModel->getAllSatuan();
+            $dataContent['jenis_izin'] = $this->GeneralModel->getJenisIzin();
             $data = array(
                 'page' => 'rekap/cuti',
                 'title' => 'Rekap Cuti',
+                'dataContent' => $dataContent
             );
 
             $this->load->view('page', $data);

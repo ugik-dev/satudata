@@ -410,6 +410,37 @@ class Spt extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
+    public function deleteFoto()
+    {
+        try {
+            $data =  $this->input->get();
+            $dataFoto['id_spt'] = $data['id_spt'];
+            $dataFoto['id_foto'] = $data['id_foto'];
+            $dataSPT = $this->SPPDModel->getAllSPPD(['id_spt' => $data['id_spt']]);
+            if (empty($dataSPT))
+                throw new UserException('Maaf, SPT tidak ditemukan.');
+            if ($this->session->userdata('id') != $dataSPT[$data['id_spt']]['user_input'])
+                throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
+            else if ($dataSPT[$data['id_spt']]['status'] != '99')
+                throw new UserException('Status SPT ini belum disetujui');
+
+            // $dataFoto['id_foto'] = $data['id_foto'];
+            // $dataFoto['deskripsi'] = $data['deskripsi'];
+            // if (!empty($_FILES['file_foto']['name'])) {
+            //     $s =  FileIO::upload2('file_foto', 'foto_sppd', '', 'jpg|png|jpeg');
+            //     if (!empty($s['filename'])) {
+
+            //         $dataFoto['file_foto'] = $s['filename'];
+            //     }
+            // }
+            $this->SPPDModel->deleteFoto($dataFoto);
+            // $data = $this->SPPDModel->getFoto(['id_foto' => $id])[$id];
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
     function kop($pdf, $data, $dinkes = false)
     {
         if ($data['jen_satker'] == 1 || $dinkes) {
@@ -482,6 +513,29 @@ class Spt extends CI_Controller
                 $pdf->Line($pdf->GetX(), $pdf->GetY() + 3, $pdf->GetX() + 195, $pdf->GetY() + 3);
                 $pdf->SetLineWidth(0.4);
                 $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
+                $pdf->SetLineWidth(0.2);
+            } else  if ($data['id_satuan'] == 18) {
+                $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);
+                $pdf->Image(base_url('assets/img/logo_sr2.jpg'), 174, 5, 27, 27);
+                $pdf->SetFont('Arial', '', 13);
+                $pdf->SetFont('Arial', 'B', 20);
+                $pdf->Cell(20, 6, '', 0, 0, 'C');
+                $pdf->Cell(155, 6, 'PEMERINTAH KABUPATEN BANGKA', 0, 1, 'C');
+                $pdf->Cell(20, 6, '', 0, 0, 'C');
+                $pdf->Cell(155, 6, 'DINAS KESEHATAN', 0, 1, 'C');
+                $pdf->Cell(20, 6, '', 0, 0, 'C');
+                $pdf->SetFont('Arial', 'B', 20);
+                $pdf->Cell(155, 7, $data['nama_satuan'], 0, 1, 'C');
+                $pdf->SetFont('Arial', '', 10);
+                $pdf->Cell(20, 4, '', 0, 0, 'C');
+                $pdf->Cell(155, 4,  $data['alamat_lengkap'], 0, 1, 'C');
+                $pdf->Cell(20, 4, '', 0, 0, 'C');
+                $pdf->Cell(155, 4, (!empty($data['kode_pos']) ? 'Kode Pos : ' . $data['kode_pos'] . ' ' : '') . (!empty($data['no_tlp']) ? 'Telp. ' . $data['no_tlp'] : ''), 0, 1, 'C');
+                $pdf->Cell(20, 4, '', 0, 0, 'C');
+                $pdf->Cell(155, 4, (!empty($data['email']) ? ' Email : ' . $data['email'] : '') . (!empty($data['website']) ? ' Website : ' . $data['website'] : ''), 0, 1, 'C');
+                $pdf->Line($pdf->GetX(), $pdf->GetY() + 2, $pdf->GetX() + 195, $pdf->GetY() + 2);
+                $pdf->SetLineWidth(0.7);
+                $pdf->Line($pdf->GetX(), $pdf->GetY() + 2.8, $pdf->GetX() + 195, $pdf->GetY() + 2.8);
                 $pdf->SetLineWidth(0.2);
             } else {
                 $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);

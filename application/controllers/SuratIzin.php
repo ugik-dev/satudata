@@ -185,73 +185,76 @@ class SuratIzin extends CI_Controller
                 }
             }
 
-            if ($cur_user['level'] == 5 && $data['status_izin'] == 1) {
-                // approve kasi
-            }
-            if ($cur_user['level'] == 5 && $data['status_izin'] == 1 && ($cur_user['id_seksi'] = $data['id_seksi'])) {
-                $logs['deskripsi'] =  'Menyetujui';
-                $logs['label'] = 'success';
-                $data['status_izin'] = 2;
-                $this->SuratIzinModel->approv($data);
-                $this->SuratIzinModel->addLogs($logs);
-            } else
-            if (($cur_user['level'] == 3 || $cur_user['level'] == 4) && $data['status_izin'] == 2 && ($cur_user['id_bagian'] = $data['id_bagian'])) {
-                $logs['deskripsi'] =  'Menyetujui';
-                $logs['label'] = 'success';
-                $data['status_izin'] = 10;
-                if ($data['level_pegawai'] == 6) {
-                    $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
-                    $this->SuratIzinModel->approv($data, $sign);
-                } else
+            // if ($cur_user['level'] == 5 && $data['status_izin'] == 1) {
+            //     // approve kasi
+            // }
+            if ($action == 'approv') {
+                if ($cur_user['level'] == 5 && $data['status_izin'] == 1 && ($cur_user['id_seksi'] = $data['id_seksi'])) {
+                    $logs['deskripsi'] =  'Menyetujui';
+                    $logs['label'] = 'success';
+                    $data['status_izin'] = 2;
                     $this->SuratIzinModel->approv($data);
-                $this->SuratIzinModel->addLogs($logs);
-            } else if ($cur_user['level'] == 2 && $data['status_izin'] == 14) {
-                $logs['deskripsi'] =  'Menyetujui';
-                $logs['label'] = 'success';
-                // if ($data['jen_izin'] == 1)
-                //     $data['status_izin'] = 10;
-                // else
-                $data['status_izin'] = 15;
-
-                if ($data['level_pegawai'] != 6) {
-                    $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
-                    $this->SuratIzinModel->approv($data, $sign);
-                } else
-                    $this->SuratIzinModel->approv($data);
-                $this->SuratIzinModel->addLogs($logs);
-            } else if ($cur_user['level'] == 1 && $data['status_izin'] == 15) {
-                $logs['deskripsi'] =  'Menyetuji Kepala Dinas';
-                $logs['label'] = 'success';
-                $data['status_izin'] = 99;
-                $sign['kadin'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
-                $data['no_spc'] = $this->SuratIzinModel->cek_nomor($data)['spc'];
-                // echo json_encode($data);
-                // die();
-                $this->SuratIzinModel->approv($data, $sign,);
-                $this->SuratIzinModel->addLogs($logs);
-            } else if ($cur_user['level'] == 3 && $cur_user['id_bagian'] == 2 && $data['status_izin'] == 11) {
-                $logs['deskripsi'] =  'Menyetujui Kasubag Kepegawaian';
-                $logs['label'] = 'success';
-                $data['status_izin'] = 14;
-                $this->SuratIzinModel->approv($data);
-                $this->SuratIzinModel->addLogs($logs);
-            } else if ($cur_user['level'] == 8 && $cur_user['id_satuan'] == $data['id_satuan'] && $data['status_izin'] == 50) {
-                $logs['deskripsi'] =  'Menyetujui Kasubag Puskesmas';
-                $logs['label'] = 'success';
-                $data['status_izin'] = 51;
-                $this->SuratIzinModel->approv($data);
-                $this->SuratIzinModel->addLogs($logs);
-            } else if ($cur_user['level'] == 7 && $cur_user['id_satuan'] == $data['id_satuan'] && $data['status_izin'] == 51) {
-                $logs['deskripsi'] =  'Menyetujui Kepala Puskesmas Puskesmas';
-                $logs['label'] = 'success';
-                if ($data['jen_izin'] == 1) {
+                    $this->SuratIzinModel->addLogs($logs);
+                } else if (($cur_user['level'] == 3 || $cur_user['level'] == 4) && $data['status_izin'] == 2 && ($cur_user['id_bagian'] = $data['id_bagian'])) {
+                    $logs['deskripsi'] =  'Menyetujui';
+                    $logs['label'] = 'success';
                     $data['status_izin'] = 10;
-                } else {
+                    if ($data['level_pegawai'] == 6) {
+                        $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
+                        $this->SuratIzinModel->approv($data, $sign);
+                    } else
+                        $this->SuratIzinModel->approv($data);
+                    $this->SuratIzinModel->addLogs($logs);
+                } else if ($cur_user['level'] == 2 && $data['status_izin'] == 14) {
+                    $logs['deskripsi'] =  'Menyetujui';
+                    $logs['label'] = 'success';
+                    // if ($data['jen_izin'] == 1)
+                    //     $data['status_izin'] = 10;
+                    // else
+                    $data['status_izin'] = 15;
+
+                    if ($data['level_pegawai'] != 6) {
+                        $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
+                        $this->SuratIzinModel->approv($data, $sign);
+                    } else
+                        $this->SuratIzinModel->approv($data);
+                    $this->SuratIzinModel->addLogs($logs);
+                } else if ($cur_user['level'] == 1 && $data['status_izin'] == 15) {
+                    $logs['deskripsi'] =  'Menyetuji Kepala Dinas';
+                    $logs['label'] = 'success';
                     $data['status_izin'] = 99;
+                    $sign['kadin'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
+                    $data['no_spc'] = $this->SuratIzinModel->cek_nomor($data)['spc'];
+                    // echo json_encode($data);
+                    // die();
+                    $this->SuratIzinModel->approv($data, $sign,);
+                    $this->SuratIzinModel->addLogs($logs);
+                } else if ($cur_user['level'] == 3 && $cur_user['id_bagian'] == 2 && $data['status_izin'] == 11) {
+                    $logs['deskripsi'] =  'Menyetujui Kasubag Kepegawaian';
+                    $logs['label'] = 'success';
+                    $data['status_izin'] = 14;
+                    $this->SuratIzinModel->approv($data);
+                    $this->SuratIzinModel->addLogs($logs);
+                } else if ($cur_user['level'] == 8 && $cur_user['id_satuan'] == $data['id_satuan'] && $data['status_izin'] == 50) {
+                    $logs['deskripsi'] =  'Menyetujui Kasubag Puskesmas';
+                    $logs['label'] = 'success';
+                    $data['status_izin'] = 51;
+                    $this->SuratIzinModel->approv($data);
+                    $this->SuratIzinModel->addLogs($logs);
+                } else if ($cur_user['level'] == 7 && $cur_user['id_satuan'] == $data['id_satuan'] && $data['status_izin'] == 51) {
+                    $logs['deskripsi'] =  'Menyetujui Kepala Puskesmas Puskesmas';
+                    $logs['label'] = 'success';
+                    if ($data['jen_izin'] == 1) {
+                        $data['status_izin'] = 10;
+                    } else {
+                        $sign['kadin'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
+                        $data['no_spc'] = $this->SuratIzinModel->cek_nomor($data)['spc'];
+                        $data['status_izin'] = 99;
+                    }
+                    $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
+                    $this->SuratIzinModel->approv($data, $sign);
+                    $this->SuratIzinModel->addLogs($logs);
                 }
-                $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
-                $this->SuratIzinModel->approv($data, $sign);
-                $this->SuratIzinModel->addLogs($logs);
             }
 
             echo json_encode(array('error' => false, 'data' => $data));
@@ -660,7 +663,10 @@ class SuratIzin extends CI_Controller
         $pdf->SetTitle('SPC ' . $data['id_surat_izin']);
         $pdf->SetMargins(10, 5, 15, 10, 'C');
         $pdf->AddPage();
-        $data_satuan =  $this->GeneralModel->getSatuan(['id_satuan' => $data['id_satuan']])[0];
+        if ($data['jen_izin'] == 1)
+            $data_satuan =  $this->GeneralModel->getSatuan(['id_satuan' => 1])[0];
+        else
+            $data_satuan =  $this->GeneralModel->getSatuan(['id_satuan' => $data['id_satuan']])[0];
 
         $this->kop($pdf, $data_satuan);
 

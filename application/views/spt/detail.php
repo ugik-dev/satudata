@@ -379,12 +379,13 @@
                         }
                         ?>
                     </div>
-                    <h5>Foto</h5>
                     <?php if ($dataContent['return_data']['user_input'] == $this->session->userdata('id')) {
                     ?>
                         <a class="btn btn-primary mb-2" href="<?= base_url() . 'spt/laporan/' . $dataContent['return_data']['id_spt'] ?>"><strong><i class="fa fa-pencil"></i> Form Laporan </strong></a>
                         <a class="btn btn-primary mb-2" id="addFoto"><strong><i class="fa fa-plus"></i> Tambah Foto </strong></a>
                     <?php } ?>
+                    <hr>
+                    <h5>Foto</h5>
                     <div class="gallery my-gallery row" id="layout_foto" itemscope="">
 
 
@@ -445,7 +446,7 @@
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="" id="id_spt" name="id_spt" value="<?= $dataContent['return_data']['id_spt'] ?>">
+                    <input type="hidden" id="id_spt" name="id_spt" value="<?= $dataContent['return_data']['id_spt'] ?>">
                     <input type="" id="id_foto" name="id_foto">
                     <div class="row">
                         <div class="col-lg-12">
@@ -670,6 +671,60 @@
                 console.log(currentData);
                 FotoModal.id_foto.val(currentData['id_foto']);
                 FotoModal.deskripsi.val(currentData['deskripsi']);
+            });
+
+            $('.delete_foto').on('click', function(event) {
+                event.preventDefault();
+                var currentData = dataFoto[$(this).data('id')];
+                console.log(currentData);
+                var url = "<?= base_url('Spt/deleteFoto') ?>";
+                Swal.fire({
+                    title: "Konfirmasi?",
+                    text: "Foto akan dihapus?",
+                    icon: "warning",
+                    allowOutsideClick: false,
+                    showCancelButton: true,
+                    buttons: {
+                        cancel: 'Batal !!',
+                        catch: {
+                            text: "Ya, Saya Hapus !!",
+                            value: true,
+                        },
+                    },
+                }).then((result) => {
+                    swalLoading();
+                    if (!result.isConfirmed) {
+                        return;
+                    }
+                    $.ajax({
+                        url: url,
+                        'type': 'get',
+                        data: {
+                            'id_foto': currentData['id_foto'],
+                            'id_spt': currentData['id_spt'],
+                        },
+                        //     // formProfile.form.serialize(),
+                        //     new FormData(FotoModal.form[0]),
+                        // contentType: false,
+                        // processData: false,
+                        success: function(data) {
+                            // buttonIdle(button);
+                            var json = JSON.parse(data);
+                            if (json['error']) {
+                                Swal.fire("Simpan Gagal", json['message'], "error");
+                                return;
+                            }
+                            var res = json['data']
+                            delete dataFoto[currentData['id_foto']];
+                            renderFoto(dataFoto);
+                            Swal.fire("Simpan Berhasil", "", "success");
+                            // location.reload();
+                            // renderUser(dataUser);
+                            // formProfile.self.modal('hide');
+                        },
+                        error: function(e) {}
+                    });
+                });
             });
         }
 

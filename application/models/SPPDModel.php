@@ -528,7 +528,8 @@ class SPPDModel extends CI_Model
     function cek_nomor($data, $sppd = false, $spt_lv7 = false)
     {
         $this->db->where('id_satuan', $data['id_satuan']);
-        $satuan = $this->db->get('satuan')->result_array()[0]['kode_surat'];
+        $dataSatuan = $this->db->get('satuan')->result_array()[0];
+        $satuan = $dataSatuan['kode_surat'];
         $s3b = $s3a = $satuan . '/' . substr($data['tgl_pengajuan'], 0, 4);
 
         if ($spt_lv7) {
@@ -550,7 +551,10 @@ class SPPDModel extends CI_Model
         if (!empty($res)) {
             $num['spt'] = '800/' . ($res[0]['x'] + 1) . '/' . $s3b;
         } else {
-            $num['spt'] = '800/1/' . $s3b;
+            if ($dataSatuan['id_satuan'] == 11) {
+                $num['spt'] = '800/918/' . $s3b;
+            } else
+                $num['spt'] = '800/1/' . $s3b;
         }
 
         if ($data['jenis'] == 2) {
@@ -565,7 +569,9 @@ class SPPDModel extends CI_Model
             if (!empty($res)) {
                 $num['sppd'] = '934/' . ($res[0]['x'] + 1) . '/' . $s3a;
             } else {
-                $num['sppd'] = '934/1/' . $s3a;
+                if ($dataSatuan['id_satuan'] == 11) {
+                    $num['spt'] = '934/857/' . $s3b;
+                } else   $num['sppd'] = '934/1/' . $s3a;
             }
         }
         return $num;
@@ -662,8 +668,6 @@ class SPPDModel extends CI_Model
             $this->db->set('approve_sekdin', $ses['id']);
             $this->db->set('status', '12');
         } else if ($data_spt['status'] == '12' && $ses['level'] == 1) {
-
-
             if ($data_spt['level_pegawai'] == 7) {
                 $nomor = $this->cek_nomor($data_spt, true, true);
                 $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin2', $ses, $ses['jabatan']);
@@ -723,17 +727,25 @@ class SPPDModel extends CI_Model
             }
         } else if ($ap_ppk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3)) {
             if ($ses['level'] == 7) {
-                $nomor = $this->cek_nomor($data_spt);
                 $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
-                if (!empty($nomor['spt'])) {
-                    $this->db->set('no_spt', $nomor['spt']);
-                }
-                if (!empty($nomor['sppd'])) {
-                    $this->db->set('no_sppd', $nomor['sppd']);
-                }
+
+
                 $this->db->set('sign_kadin', $id_sign_kadin);
                 $this->db->set('approve_kabid', $ses['id']);
-                $this->db->set('status', '99');
+
+                if ($data_spt['level_pegawai'] == 7) {
+                    $this->db->set('status', '11');
+                } else {
+                    $nomor = $this->cek_nomor($data_spt);
+                    $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
+                    if (!empty($nomor['spt'])) {
+                        $this->db->set('no_spt', $nomor['spt']);
+                    }
+                    if (!empty($nomor['sppd'])) {
+                        $this->db->set('no_sppd', $nomor['sppd']);
+                    }
+                    $this->db->set('status', '99');
+                }
             } else {
                 $this->db->set('status', 59);
             }
@@ -896,9 +908,23 @@ class SPPDModel extends CI_Model
             $data['id_foto'] = $this->db->insert_id();
         } else {
             $this->db->where('id_foto', $data['id_foto']);
+            $this->db->where('id_spt', $data['id_spt']);
             $this->db->update('spt_foto', $data);
         }
+
         ExceptionHandler::handleDBError($this->db->error(), "Simpan Foto", "Simpan Foto");
+
+        return $data['id_foto'];
+    }
+
+    public function deleteFoto($data)
+    {
+
+        $this->db->where('id_foto', $data['id_foto']);
+        $this->db->where('id_spt', $data['id_spt']);
+        $this->db->delete('spt_foto', $data);
+
+        ExceptionHandler::handleDBError($this->db->error(), "Delete Foto", "Foto");
 
         return $data['id_foto'];
     }

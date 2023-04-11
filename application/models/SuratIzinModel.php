@@ -135,6 +135,15 @@ class SuratIzinModel extends CI_Model
             }
         }
 
+        if (!empty($filter['jen_izin'])) $this->db->where('r.jen_izin', $filter['jen_izin']);
+        if (!empty($filter['jenis_izin'])) $this->db->where('si.jenis_izin', $filter['jenis_izin']);
+        if (!empty($filter['status_rekap'])) {
+            if ($filter['status_rekap'] == 'selesai') {
+                $this->db->where('si.status_izin', 99);
+            } else if ($filter['status_rekap'] == 'ditolak') {
+                $this->db->where('si.unapprove is not null');
+            }
+        }
         if (!empty($filter['id_pegawai'])) $this->db->where('si.id_pegawai', $filter['id_pegawai']);
         if (!empty($filter['id_pengganti'])) $this->db->where('si.id_pengganti', $filter['id_pengganti']);
         if (!empty($filter['id_surat_izin'])) $this->db->where('si.id_surat_izin', $filter['id_surat_izin']);
@@ -149,8 +158,13 @@ class SuratIzinModel extends CI_Model
     {
         $s1 = 0;
         if ($data['jen_izin'] == 2) {
+            $this->db->where('id_satuan', $data['id_satuan']);
+            $satuan = $this->db->get('satuan')->result_array()[0]['kode_surat'];
+            $s3 = $satuan . '/' . substr($data['tanggal_pengajuan'], 0, 4);
+
             $s1 =  858;
         } else {
+            $s3 = 'Dinkes/' . substr($data['tanggal_pengajuan'], 0, 4);
             if ($data['jenis_izin'] == 11) {
                 $s1 =  851;
             } else  if ($data['jenis_izin'] == 12) {
@@ -167,13 +181,18 @@ class SuratIzinModel extends CI_Model
         // die();
         // $this->db->where('id_satuan', $data['id_satuan']);
         // $satuan = $this->db->get('satuan')->result_array()[0]['kode_surat'];
-        $s3 = 'Dinkes/' . substr($data['tanggal_pengajuan'], 0, 4);
+        // $s3 = 'Dinkes/' . substr($data['tanggal_pengajuan'], 0, 4);
 
         $this->db->select('no_spc , SUBSTRING_INDEX(SUBSTRING_INDEX(no_spc,"/",2),"/",-1) as x, SUBSTRING_INDEX(no_spc,"/",1),SUBSTRING_INDEX(no_spc,"/",-2)');
         $this->db->from('surat_izin');
         // $this->db->where('no_spt <> ""');
         $this->db->where('SUBSTRING_INDEX(no_spc,"/",-2)', $s3);
-        $this->db->where('SUBSTRING_INDEX(no_spc,"/",1)', $s1);
+
+        if ($data['jen_izin'] == 2) {
+            $this->db->where('SUBSTRING_INDEX(no_spc,"/",1)', $s1);
+        } else {
+            $this->db->where('SUBSTRING_INDEX(no_spc,"/",1) in (831)', $s1);
+        }
         $this->db->order_by('CAST(x AS UNSIGNED INTEGER)', 'DESC');
         $this->db->limit(1);
         $res = $this->db->get()->result_array();
