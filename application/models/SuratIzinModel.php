@@ -101,7 +101,7 @@ class SuratIzinModel extends CI_Model
                 $this->db->where('si.id_satuan', $penilai['id_satuan']);
                 // die();
                 if (!empty($filter['status_permohonan'])) {
-                    if ($filter['status_permohonan'] == 'menunggu') {
+                    if ($filter['status_permohonan'] == 'menunggu-saya') {
                         $this->db->where('si.status_izin', 50);
                     } else if ($filter['status_permohonan'] == 'approv') {
                         $this->db->where('si.status_izin in ( 51, 10,11,14,15,99)');
