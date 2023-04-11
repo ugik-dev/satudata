@@ -267,6 +267,8 @@ class SuratIzin extends CI_Controller
             $data = $this->SuratIzinModel->getAll(array('id_surat_izin' => $id))[$id];
             $cur_user = $this->session->userdata();
             $total_c = (int) $data_post['c_sisa_n'] + (int)$data_post['c_sisa_n1'] + (int) $data_post['c_sisa_n2'];
+            $logs['id_si'] = $id;
+            $logs['id_user'] = $cur_user['id'];
             if ($data['jenis_izin'] == 11)
                 if ($total_c < $data['lama_izin']) {
                     throw new UserException('Sisa cuti tidak cukup!!!!', UNAUTHORIZED_CODE);
@@ -286,7 +288,38 @@ class SuratIzin extends CI_Controller
                     }
                 }
             if ($data['verif_cuti'] == $cur_user['id'] && in_array($data['status_izin'], [10, 11])) {
+                if ($data_post['verif'] == 1) {
+                    $data_post['verif'] = $cur_user['id'];
+                    $data_post['unapprove'] = NULL;
+                    $data_post['status_izin'] = 11;
+                } else {
+                    unset($data['verif']);
+                    $data_post['verif'] = NULL;
+                    $data_post['unapprove'] = $cur_user['id'];
+                    $data_post['status_izin'] = 10;
+                }
+
                 $this->SuratIzinModel->approv_verif($data_post);
+            } else if ($cur_user['level'] == 8 && $cur_user['id_satuan'] == $data['id_satuan'] && ($data['status_izin'] == 50 ||  $data['status_izin'] == 51)) {
+                $data_post['verif_sub'] = $data_post['verif'];
+                $data_post['cttn_verif_sub'] = $data_post['cttn_verif'];
+                unset($data['verif']);
+                unset($data['cttn_verif']);
+                if ($data_post['verif_sub'] == 1) {
+                    $logs['deskripsi'] =  'Menyetujui & Verifikasi Kasubag';
+                    $logs['label'] = 'success';
+                    $data_post['verif_sub'] = $cur_user['id'];
+                    $data_post['unapprove'] = NULL;
+                    $data_post['status_izin'] = 51;
+                } else {
+                    $logs['deskripsi'] =  'Ditolak Kasubag';
+                    $logs['label'] = 'success';
+                    $data_post['verif_sub'] = NULL;
+                    $data_post['unapprove'] = $cur_user['id'];
+                    $data_post['status_izin'] = 50;
+                }
+                $this->SuratIzinModel->approv_verif($data_post);
+                $this->SuratIzinModel->addLogs($logs);
             }
             $data = $this->SuratIzinModel->getAll(array('id_surat_izin' => $id))[$id];
             echo json_encode(array('error' => false, 'data' => $data));

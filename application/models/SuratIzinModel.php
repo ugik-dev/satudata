@@ -97,29 +97,28 @@ class SuratIzinModel extends CI_Model
             }
 
             if ($penilai['level'] == 8) {
-                $this->db->where('si.status_izin = 50');
+                $this->db->where('si.status_izin in ( 50, 51,10,11,14,15,99)');
                 $this->db->where('si.id_satuan', $penilai['id_satuan']);
                 // die();
                 if (!empty($filter['status_permohonan'])) {
                     if ($filter['status_permohonan'] == 'menunggu') {
-                        $this->db->where('u.status', 50);
+                        $this->db->where('si.status_izin', 50);
                     } else if ($filter['status_permohonan'] == 'approv') {
-                        $this->db->where('u.status > 51');
-                        $this->db->where('u.status <> 98');
+                        $this->db->where('si.status_izin in ( 51, 10,11,14,15,99)');
+                        $this->db->where('si.status_izin <> 98');
                     }
                 }
-            } else
-            if ($penilai['level'] == 7) {
+            } else if ($penilai['level'] == 7) {
                 // $this->db->where("(d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
-                $this->db->where('si.status_izin = 51');
+                $this->db->where('si.status_izin in (51, 52, 10, 11,14,15,99)');
                 $this->db->where('si.id_satuan', $penilai['id_satuan']);
                 // die();
                 if (!empty($filter['status_permohonan'])) {
-                    if ($filter['status_permohonan'] == 'menunggu') {
-                        $this->db->where('u.status', 51);
+                    if ($filter['status_permohonan'] == 'menunggu-saya') {
+                        $this->db->where('si.status_izin', 51);
                     } else if ($filter['status_permohonan'] == 'approv') {
-                        $this->db->where('u.status > 51');
-                        $this->db->where('u.status <> 98');
+                        $this->db->where('si.status_izin in ( 10, 11,14,15,99)');
+                        $this->db->where('si.status_izin <> 98');
                     }
                 }
             }
@@ -357,22 +356,11 @@ class SuratIzinModel extends CI_Model
     public function approv_verif($data)
     {
 
-        $id_user = $this->session->userdata()['id'];
-        if ($data['verif'] == 1) {
-            $data['verif'] = $id_user;
-            $data['unapprove'] = NULL;
 
-            $data['status_izin'] = 11;
-        } else {
-            unset($data['verif']);
-            $data['verif'] = NULL;
-            $data['unapprove'] = $id_user;
-            $data['status_izin'] = 10;
-        }
         // echo json_encode($data);
         // die();
         $this->db->set(DataStructure::slice($data, [
-            'periode_start', 'periode_end', 'status_izin', 'lama_izin', 'c_n', 'c_n1', 'c_n2', 'c_sisa_n', 'c_sisa_n1', 'c_sisa_n2', 'verif', 'cttn_verif', 'unapprove'
+            'periode_start', 'periode_end', 'status_izin', 'lama_izin', 'c_n', 'c_n1', 'c_n2', 'c_sisa_n', 'c_sisa_n1', 'c_sisa_n2', 'verif', 'cttn_verif', 'verif_sub', 'cttn_verif_sub', 'unapprove'
         ], FALSE));
 
         $this->db->where('id_surat_izin', $data['id_surat_izin']);

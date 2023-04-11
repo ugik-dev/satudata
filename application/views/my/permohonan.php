@@ -30,7 +30,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="col-lg-4">
                                             <div class="mb-3 row">
                                                 <?php
@@ -42,10 +41,8 @@
                                                 <div class="col-sm-8">
                                                     <input class="form-control m-input digits" id="dari" name="dari" type="date" value="<?= date("Y-m-d", strtotime("-1 months")); ?>" data-bs-original-title="" title="">
                                                 </div>
-
                                             </div>
                                         </div>
-
                                         <div class="col-lg-4">
                                             <div class="mb-3 row">
                                                 <label class="col-sm-3 col-form-label">Sampai</label>
@@ -539,13 +536,18 @@
                           <a class="deapprov dropdown-item " data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
                     `;
                 }
-                if ((d['status_izin'] == '50') && curLevel == 8) {
+                if ((d['status_izin'] == '50' ||
+                        d['status_izin'] == '51') && curLevel == 8) {
+                    // aksiBtn =
+                    //     `<a class="approv dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
+                    //       <a class="deapprov dropdown-item " data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                    // `;
                     aksiBtn =
-                        `<a class="approv dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
-                          <a class="deapprov dropdown-item " data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                        `<a class="verif_cuti dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv / Batal</a>
                     `;
                 }
                 if ((d['status_izin'] == '51') && curLevel == 7) {
+
                     aksiBtn =
                         `<a class="approv dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
                           <a class="deapprov dropdown-item " data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
