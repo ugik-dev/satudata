@@ -390,12 +390,22 @@
         }
 
         var FDataTable = $('#FDataTable').DataTable({
+            dom: 'Bfrtip',
             'columnDefs': [],
             // responsive: true,
             deferRender: true,
             "order": [
                 [1, "desc"]
-            ]
+            ],
+            buttons: [{
+                extend: 'excel',
+                text: 'Export Excel',
+                exportOptions: {
+                    modifier: {
+                        // page: 'current'
+                    }
+                }
+            }]
         });
 
         var VerifModal = {

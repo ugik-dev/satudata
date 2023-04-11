@@ -49,7 +49,6 @@
   <script src="<?= base_url() ?>assets/js/typeahead-search/handlebars.js"></script>
   <script src="<?= base_url() ?>assets/js/typeahead-search/typeahead-custom.js"></script>
   <script src="<?= base_url() ?>assets/js/tooltip-init.js"></script>
-  <!-- <script src="<?= base_url() ?>assets/js/datatable/datatables/datatable.min.js"></script> -->
   <script src="<?= base_url() ?>assets/js/photoswipe/photoswipe.min.js"></script>
   <script src="<?= base_url() ?>assets/js/photoswipe/photoswipe-ui-default.min.js"></script>
   <script src="<?= base_url() ?>assets/js/photoswipe/photoswipe.js"></script>
