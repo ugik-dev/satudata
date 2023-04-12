@@ -761,7 +761,7 @@ class SuratIzin extends CI_Controller
             $pdf->Cell(40, 5, tanggal_indonesia(date('Y-m-d')), 0, 1, 'L', 0);
             $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
-            $pdf->MultiCell(70, 5, $sign_kadin['sign_title'], 1, 'L', 0);
+            $pdf->MultiCell(60, 5, $sign_kadin['sign_title'], 0, 'L', 0);
 
             $pdf->Cell(120, 25, '', 0, 1, 'C', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
