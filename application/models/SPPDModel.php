@@ -616,12 +616,14 @@ class SPPDModel extends CI_Model
         $continue = false;
         $ap_pptk = false;
         $ap_ppk = false;
-        if ($data_spt['id_pptk'] == $ses['id'] && empty($data_spt['sign_pptk'])) {
+        // if ($data_spt['id_pptk'] == $ses['id'] && empty($data_spt['sign_pptk'])) {
+        if ($data_spt['id_pptk'] == $ses['id']) {
             $data_spt['sign_pptk'] = $this->sign($data_spt['id_spt'], 'sign_pptk', $ses, 'Pejabat Pelaksana Teknis Kegiatan');
             $continue = true;
             $ap_pptk = true;
         }
-        if ($data_spt['id_ppk2'] == $ses['id'] && empty($data_spt['sign_ppk'])) {
+        // if ($data_spt['id_ppk2'] == $ses['id'] && empty($data_spt['sign_ppk'])) {
+        if ($data_spt['id_ppk2'] == $ses['id']) {
             $data_spt['sign_ppk'] =  $this->sign($data_spt['id_spt'], 'sign_ppk', $ses, 'Pejabat Pembuat Komitmen');
             $continue = true;
             $ap_ppk = true;
