@@ -622,13 +622,13 @@ class SuratIzin extends CI_Controller
             $sign_atasan =  $this->GeneralModel->getSign(['id' => $data['sign_atasan']])[0];
         }
         $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
-        $pdf->Cell(80, 5, !empty($sign_pelimpahan['sign_name']) ? '( ' . ucwords(strtolower($sign_pelimpahan['sign_name'])) . ' )' : '( ' . ucwords(strtolower($data['nama_pengganti'])) . ' )', 0, 0, 'C', 0);
+        $pdf->Cell(80, 5, !empty($sign_pelimpahan['sign_name']) ? '( ' . $sign_pelimpahan['sign_name'] . ' )' : '( ' . $data['nama_pengganti'] . ' )', 0, 0, 'C', 0);
         $pdf->Cell(10, 5, '', 0, 0, 'C', 0);
-        $pdf->Cell(80, 5, '( ' . ucwords(strtolower($data['nama_pegawai'])) . ' )', 0, 1, 'C', 0);
+        $pdf->Cell(80, 5, '( ' . $data['nama_pegawai'] . ' )', 0, 1, 'C', 0);
         $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
-        $pdf->Cell(80, 5, 'NIP. ' . (!empty($sign_pelimpahan['sign_nip']) ? ucwords(strtolower($sign_pelimpahan['sign_nip'])) : ' - '), 0, 0, 'C', 0);
+        $pdf->Cell(80, 5, 'NIP. ' . (!empty($sign_pelimpahan['sign_nip']) ? $sign_pelimpahan['sign_nip'] : ' - '), 0, 0, 'C', 0);
         $pdf->Cell(10, 5, '', 0, 0, 'C', 0);
-        $pdf->Cell(80, 5, 'NIP. ' . (!empty($data['nip_pegawai']) ? ucwords(strtolower($data['nip_pegawai'])) : ' - '), 0, 0, 'C', 0);
+        $pdf->Cell(80, 5, 'NIP. ' . (!empty($data['nip_pegawai']) ? $data['nip_pegawai'] : ' - '), 0, 0, 'C', 0);
         $pdf->Cell(10, 15, '', 0, 1, 'C', 0);
         $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
 
@@ -761,12 +761,12 @@ class SuratIzin extends CI_Controller
             $pdf->Cell(40, 5, tanggal_indonesia(date('Y-m-d')), 0, 1, 'L', 0);
             $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
-            $pdf->MultiCell(45, 5,  ucwords(strtolower($sign_kadin['sign_title'])), 0, 'L', 0);
+            $pdf->MultiCell(45, 5, $sign_kadin['sign_title'], 0, 'L', 0);
 
             $pdf->Cell(120, 25, '', 0, 1, 'C', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->SetFont('Arial', 'B', 9.5);
-            $pdf->MultiCell(70, 5,  ucwords(strtolower($sign_kadin['sign_name'])), 0, 'L', 0);
+            $pdf->MultiCell(70, 5,  $sign_kadin['sign_name'], 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  $sign_kadin['sign_pangkat'], 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);

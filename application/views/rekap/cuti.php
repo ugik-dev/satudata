@@ -121,6 +121,7 @@
                                     <th rowspan=2 style="width: 10%; text-align:center!important">DARI</th>
                                     <th rowspan=2 style="width: 10%; text-align:center!important">SAMPAI</th>
                                     <th rowspan=2 style="width: 10%; text-align:center!important">INSTANSI</th>
+                                    <th rowspan=2 style="width: 10%; text-align:center!important">NOMOR</th>
                                     <th rowspan=2 style="width: 10%; text-align:center!important">PEGAWAI</th>
                                     <th rowspan=2 style="width: 20%; text-align:center!important">PENGGANTI</th>
                                     <th rowspan=2 style="width: 20%; text-align:center!important">LAMA (Hari)</th>
@@ -626,6 +627,7 @@
                     tgl_indo(d['periode_end']),
                     // d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
                     d['nama_satuan'],
+                    d['no_spc'],
                     d['nama_pegawai'],
                     d['nama_pengganti'],
                     d['lama_izin'],
