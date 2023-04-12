@@ -6,7 +6,7 @@ class Spt extends CI_Controller
     {
         parent::__construct();
         $this->load->model(array('SecurityModel', 'SPPDModel', 'GeneralModel'));
-        $this->db->db_debug = FALSE;
+        $this->db->db_debug = TRUE;
     }
     public function getFoto()
     {
