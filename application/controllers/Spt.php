@@ -15,7 +15,6 @@ class Spt extends CI_Controller
             $data = $this->SPPDModel->getFoto($filter);
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
-            ExceptionHandler::handle($e);
         }
     }
     public function getAllSPPD()
