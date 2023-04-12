@@ -731,15 +731,11 @@ class SPPDModel extends CI_Model
             if ($ses['level'] == 7) {
                 $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
 
-
-                $this->db->set('sign_kadin', $id_sign_kadin);
-                $this->db->set('approve_kabid', $ses['id']);
-
                 if ($data_spt['level_pegawai'] == 7) {
                     $this->db->set('status', '11');
                 } else {
                     $nomor = $this->cek_nomor($data_spt);
-                    $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
+                    // $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
                     if (!empty($nomor['spt'])) {
                         $this->db->set('no_spt', $nomor['spt']);
                     }
@@ -748,6 +744,8 @@ class SPPDModel extends CI_Model
                     }
                     $this->db->set('status', '99');
                 }
+                $this->db->set('sign_kadin', $id_sign_kadin);
+                $this->db->set('approve_kabid', $ses['id']);
             } else {
                 $this->db->set('status', 59);
             }
