@@ -156,13 +156,17 @@ class SuratIzinModel extends CI_Model
     }
     function cek_nomor($data)
     {
+        // die();
         $s1 = 0;
         if ($data['jen_izin'] == 2) {
             $this->db->where('id_satuan', $data['id_satuan']);
             $satuan = $this->db->get('satuan')->result_array()[0]['kode_surat'];
             $s3 = $satuan . '/' . substr($data['tanggal_pengajuan'], 0, 4);
-
             $s1 =  858;
+
+            if ($data['id_satuan'] == 120) {
+                $s3 = 'Dinkes/' . substr($data['tanggal_pengajuan'], 0, 4);
+            }
         } else {
             $s3 = 'Dinkes/' . substr($data['tanggal_pengajuan'], 0, 4);
             if ($data['jenis_izin'] == 11) {
@@ -177,6 +181,7 @@ class SuratIzinModel extends CI_Model
                 $s1 =  852;
             }
         }
+        $no_arr = [851, 853, 854, 857, 852, 858];
         // echo json_encode($data);
         // die();
         // $this->db->where('id_satuan', $data['id_satuan']);
@@ -188,14 +193,18 @@ class SuratIzinModel extends CI_Model
         // $this->db->where('no_spt <> ""');
         $this->db->where('SUBSTRING_INDEX(no_spc,"/",-2)', $s3);
 
-        if ($data['jen_izin'] == 2) {
-            $this->db->where('SUBSTRING_INDEX(no_spc,"/",1)', $s1);
-        } else {
-            $this->db->where('SUBSTRING_INDEX(no_spc,"/",1) in (831)', $s1);
-        }
-        $this->db->order_by('CAST(x AS UNSIGNED INTEGER)', 'DESC');
+        // if ($data['jen_izin'] == 2) {
+        //     if($data['id_satuan'])
+        //     $this->db->where('SUBSTRING_INDEX(no_spc,"/",1)', $s1);
+        // } else {
+        $this->db->where_in('SUBSTRING_INDEX(no_spc,"/",1)', $no_arr);
+        // }
+        $this->db->order_by('CAST( x AS UNSIGNED INTEGER)', 'DESC');
         $this->db->limit(1);
-        $res = $this->db->get()->result_array();
+        $res = $this->db->get();
+        // echo $this->db->last_query();
+        // die();
+        $res = $res->result_array();
         // echo json_encode($res);
         // die();
         if (!empty($res)) {

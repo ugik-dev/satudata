@@ -72,6 +72,7 @@ class SPPDModel extends CI_Model
         $this->db->select("un.approval_id_user as id_unapproval ,
                             t.nama_tr as nama_transport,
                             sa.jen_satker, 
+                            sa.nama_satuan, 
                             u.* ");
 
         $this->db->from('spt as u');

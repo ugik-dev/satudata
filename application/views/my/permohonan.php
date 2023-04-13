@@ -97,6 +97,7 @@
                                     <th style="width: 10%; text-align:center!important">TANGGAL</th>
                                     <th style="width: 10%; text-align:center!important">PEGAWAI</th>
                                     <th style="width: 20%; text-align:center!important">INFORMASI LAINNYA</th>
+                                    <th style="width: 5%; text-align:center!important">Instansi</th>
                                     <th style="width: 5%; text-align:center!important">STATUS</th>
                                     <th style="width: 2%; text-align:center!important">ID</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
@@ -492,9 +493,6 @@
             seksi = <?= $this->session->userdata()['id_seksi'] ? $this->session->userdata()['id_seksi']  : "''" ?>;
             Object.values(data['surat_izin']).forEach((d) => {
                 var aksiBtn = '';
-                console.log('pengganti :' +
-                    d['id_pengganti'])
-                console.log(d['status_izin'] + curUser + d['id_pengganti'])
                 if (d['status_izin'] == '0' && curUser == d['id_pengganti']) {
                     aksiBtn =
                         `<a class="approv dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-check'></i> Approv</a>
@@ -582,10 +580,12 @@
 
                 info = 'Pengganti : ' + (d['nama_pengganti'] ? d['nama_pengganti'] : '-');
                 info += ('<br>Instansi : ' + d['nama_satuan']);
+                info += ('<br>Nomor : ' + (d['no_spc'] ? d['no_spc'] : ''));
                 console.log(d['unapprove']);
                 renderData.push([d['nama_izin'],
                     d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
-                    d['nama_pegawai'], info, statusIzin(d['status_izin'], d['unapprove']), d['id_surat_izin'], button
+                    d['nama_pegawai'], info,
+                    d['nama_satuan'], statusIzin(d['status_izin'], d['unapprove']), d['id_surat_izin'], button
                 ]);
             });
 
@@ -768,7 +768,10 @@
                 })
 
                 dfix = d1.split(" ")[0] + ' s.d ' + d2.split(" ")[0];
-                renderData.push([spt['nama_ref_jen_spt'], dfix, pegawai, tmpt, statusSPT(spt['status'], spt['unapprove_oleh']), spt['id_spt'], button]);
+                renderData.push([spt['nama_ref_jen_spt'], dfix, pegawai, tmpt,
+                    spt['nama_satuan'], statusSPT(spt['status'],
+                        spt['unapprove_oleh']), spt['id_spt'], button
+                ]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         };
