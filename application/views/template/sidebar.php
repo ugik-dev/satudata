@@ -47,7 +47,7 @@
                         <a class="sidebar-link sidebar-title link-nav" id="sidebar_permohonan" href="<?= base_url() ?>permohonan"><i data-feather="monitor"> </i><span>Permohonan Approval</span></a>
                     </li>
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>perjalanan-dinas"><i data-feather="box"> </i><span>Perjalanan Dinas Saya</span></a>
+                        <a class="sidebar-link sidebar-title link-nav" id="sidebar_spt_saya" href="<?= base_url() ?>spt-saya"><i data-feather="box"> </i><span>SPT & SPPD Saya</span></a>
                     </li>
 
                     <li class="sidebar-list">

@@ -37,43 +37,53 @@ class SPPDModel extends CI_Model
         return DataStructure::keyValue($this->db->get()->result_array(), 'id_spt');
     }  // die();
 
-    public function getAllSPPD($filter = [], $sort = true)
+    public function getAllSPPD($filter = [], $sort = false)
     {
         $ses = $this->session->userdata();
-        // echo json_encode($filter);
-        // die();
+
         $this->db->select('rjs.nama_ref_jen_spt');
         $this->db->select('p2.nama as nama_input');
-
-        $this->db->select(' s.nama as nama_pegawai, 
-                            s.jabatan jabatan_pegawai, 
-                            s.pangkat_gol as pangkat_gol_pegawai,
-                            s.id_seksi as id_seksi_pegawai,
-                            s.id_bagian as id_bagian_pegawai, 
-                            s.nip nip_pegawai,
-                            ro.level level_pegawai
+        $this->db->select('s.nama as nama_pegawai,
+                            ptk.nama as nama_pptk, 
+                            p.nama as nama_ppk, 
+                            ro.level level_pegawai,
+                            d.id_ppk2, d.id_pptk,
+                            sa.nama_satuan
                             ');
+        if (!$sort) {
+            $this->db->select(' s.jabatan jabatan_pegawai, 
+            s.pangkat_gol as pangkat_gol_pegawai,
+            s.id_seksi as id_seksi_pegawai,
+            s.id_bagian as id_bagian_pegawai, 
+            s.nip nip_pegawai');
 
-        $this->db->select(' p.nama as nama_ppk, 
-                            p.jabatan jabatan_ppk, 
-                            p.pangkat_gol as pangkat_gol_ppk, 
-                            p.nip nip_ppk');
+            $this->db->select(' 
+            p.jabatan jabatan_ppk, 
+            p.pangkat_gol as pangkat_gol_ppk, 
+            p.nip nip_ppk');
 
-        $this->db->select(' ptk.nama as nama_pptk, 
-                            ptk.jabatan jabatan_pptk, 
-                            ptk.pangkat_gol as pangkat_gol_pptk, 
-                            ptk.nip nip_pptk');
-        $this->db->select(' d.id_dasar, 
-                            d.id_ppk2, 
-                            d.id_pptk, 
-                            d.kode_rekening,
-                            d.nama_dasar
-                            ');
-        $this->db->select("un.approval_id_user as id_unapproval ,
-                            t.nama_tr as nama_transport,
-                            sa.jen_satker, 
-                            sa.nama_satuan, 
-                            u.* ");
+            $this->db->select('  
+            ptk.jabatan jabatan_pptk, 
+            ptk.pangkat_gol as pangkat_gol_pptk, 
+            ptk.nip nip_pptk');
+            $this->db->select(' d.id_dasar, 
+             
+            d.kode_rekening,
+            d.nama_dasar
+            ');
+            $this->db->select("un.approval_id_user as id_unapproval ,
+            t.nama_tr as nama_transport,
+            sa.jen_satker, 
+     
+            u.*");
+        } else {
+            // $this->db->select('u.id_spt');
+            $this->db->select('u.id_spt, u.tgl_pengajuan,u.status, u.no_spt, u.no_sppd, u.unapprove_oleh');
+        }
+
+
+
+
 
         $this->db->from('spt as u');
         $this->db->join('satuan sa', 'sa.id_satuan = u.id_satuan');
@@ -97,6 +107,7 @@ class SPPDModel extends CI_Model
         // else if (!empty($filter['sampai'])) $this->db->where('tj.date_kembali <= ', $filter['sampai']);
         if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
         // $this->db->where('u.id_spt', 24);
+        if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
         if (!empty($filter['id_bagian'])) $this->db->where('u.id_bagian', $filter['id_bagian']);
         if (!empty($filter['id_seksi'])) $this->db->where('u.id_seksi', $filter['id_seksi']);
         if (!empty($filter['my_perjadin'])) $this->db->where('u.id_pegawai', $this->session->userdata()['id']);
@@ -221,6 +232,15 @@ class SPPDModel extends CI_Model
                 $this->db->where_in('u.jenis', $jen);
             }
         }
+        if (!empty($filter['status_rekap'])) {
+            if ($filter['status_rekap'] == 'selesai') {
+                $this->db->where('u.status', 99);
+            } else if ($filter['status_rekap'] == 'ditolak') {
+                $this->db->where('u.unapprove_oleh is not null');
+            } else if ($filter['status_rekap'] == 'menunggu') {
+                $this->db->where('u.unapprove_oleh is null AND u.status <> 99');
+            }
+        }
 
         if (empty($filter['qrcode'])) {
             if ($this->session->userdata('jen_satker') != 1)
@@ -230,19 +250,26 @@ class SPPDModel extends CI_Model
         }
 
         $res = $this->db->get()->result_array();
-        // echo $this->db->last_query();
-        // die();
         $res_id = [];
         foreach ($res as $rid) {
             array_push($res_id, $rid['id_spt']);
         }
         if (!empty($res_id)) {
+            if (!$sort) {
+                $this->db->select('p.*, u.nama, u.nip, u.jabatan,u.pangkat_gol, tanggal_lahir');
+            } else {
+                $this->db->select('p.id_spt, u.nama');
+            }
 
-            $this->db->select('p.*, u.nama, u.nip, u.jabatan,u.pangkat_gol, tanggal_lahir');
             $this->db->from('pengikut p ');
             $this->db->join('users u', 'u.id = p.id_pegawai');
             $this->db->where_in('id_spt', $res_id);
             $pengikut = DataStructure::groupingByParent($this->db->get()->result_array(), 'id_spt');
+            if (!$sort) {
+                $this->db->select('*');
+            } else {
+                $this->db->select('id_spt,date_berangkat,date_kembali,tempat_tujuan');
+            }
             $this->db->from('tujuan');
             $this->db->order_by('ke', 'ASC');
             $this->db->where_in('id_spt', $res_id);

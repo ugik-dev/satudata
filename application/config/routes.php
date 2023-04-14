@@ -56,6 +56,7 @@ $route['panduan'] = 'Dashboard/panduan';
 $route['aktifitas-harian'] = 'aktifitas';
 $route['aktifitas-harian/add'] = 'user/add_aktifitas';
 $route['perjalanan-dinas'] = 'user/perjadin';
+$route['spt-saya'] = 'user/perjadin';
 $route['surat-izin'] = 'SuratIzin';
 $route['surat-izin/(:any)'] = 'SuratIzin/$1';
 $route['monitoring-website'] = 'MonitoringWebsite';

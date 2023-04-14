@@ -39,13 +39,10 @@ class User extends CI_Controller
     public function perjadin()
     {
         try {
-            $this->SecurityModel->multiRole('SPPD', 'Daftar Pengajuan');
 
             $data = array(
                 'page' => 'my/perjadin',
                 'title' => 'SPPD',
-                // 'dataContent' => $res_data
-
             );
             $this->load->view('page', $data);
         } catch (Exception $e) {
