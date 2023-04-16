@@ -15,7 +15,7 @@ if (!function_exists('User_Access')) {
 		$CI->db->where('hak_aksess.id_role ', $para_user_id);
 		$CI->db->where('menu.active_menu ', 1);
 		// $CI->db->where('mp_menulist.active ', 1);
-		// $CI->db->order_by('mp_menu.order_number');
+		$CI->db->order_by('menu.menu_rank, menulist.id_menulist');
 		$res = $CI->db->get();
 		if ($res->num_rows() < 1) {
 			return NULL;
@@ -26,7 +26,7 @@ if (!function_exists('User_Access')) {
 			['id_menu'],
 			['id_menulist'],
 			[
-				['id_menu', 'label_menu', 'icon'],
+				['id_menu', 'label_menu', 'icon', 'menu_url', 'subs'],
 				['id_menulist', 'url', 'label_menulist']
 			],
 			['child'],

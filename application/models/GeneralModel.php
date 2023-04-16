@@ -189,7 +189,7 @@ class GeneralModel extends CI_Model
         $this->db->join('users c', 'u.bendahara_pem = c.id', 'LEFT');
         $this->db->join('users d', 'u.verif_cuti = d.id', 'LEFT');
         $this->db->join('users e', 'u.bendahara_pem_blud = e.id', 'LEFT');
-        if (!empty($filter['id_satuan'])) $this->db->where('id_satuan', $filter['id_satuan']);
+        if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
         $res = $this->db->get();
         return DataStructure::keyValue($res->result_array(), 'id_satuan');
     }

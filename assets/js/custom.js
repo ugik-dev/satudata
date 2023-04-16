@@ -187,7 +187,19 @@ function statusDasar(status) {
   if (status == "Y") return `<span class="label label-success">Aktif</span>`;
   else return `<span class="label label-danger">Non Aktif</span>`;
 }
+
+function nl2br(str, is_xhtml) {
+  var breakTag =
+    is_xhtml || typeof is_xhtml === "undefined" ? "<br " + "/>" : "<br>"; // Adjust comment to avoid issue on phpjs.org display
+
+  return (str + "").replace(
+    /([^>\r\n]?)(\r\n|\n\r|\r|\n)/g,
+    "$1" + breakTag + "$2"
+  );
+}
+
 function statusSPT(status, unnaprove) {
+  conso;
   if (unnaprove != null)
     return `<i class='fa fa-times text-danger'></i> <b class="text-danger"> Approv Ditolak </b>`;
   else if (status == "0")

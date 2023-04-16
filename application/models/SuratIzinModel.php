@@ -328,33 +328,20 @@ class SuratIzinModel extends CI_Model
         $this->db->delete('surat_izin');
     }
 
-    public function deleteMySKP($data)
+    public function delete_adm($data)
     {
-        // $this->db->set('status', $st);
-        // echo $data['id_surat_izin'];
         $this->db->where('id_surat_izin', $data['id_surat_izin']);
         $this->db->delete('surat_izin');
-
-        $this->db->where('id_surat_izin', $data['id_surat_izin']);
-        $this->db->delete('surat_izin_child');
-
-        $this->db->where('id_surat_izin', $data['id_surat_izin']);
-        $this->db->delete('surat_izin_approv');
     }
 
     public function add($data)
     {
-        // $data['data'] = $ses['id_satuan'];
-        // $data['id_seksi'] = $ses['id_seksi'];
         $data['tanggal_pengajuan'] = date('Y-m-d');
         $this->db->insert('surat_izin', DataStructure::slice($data, [
             'id_pegawai', 'id_pengganti', 'jenis_izin', 'alasan', 'tanggal_pengajuan', 'periode_start', 'periode_end', 'lama_izin', 'status_izin', 'alamat_izin',
             'c_sisa_n', 'c_sisa_n1', 'c_sisa_n2', 'c_n', 'c_n1', 'c_n2', 'lampiran',
             'id_seksi', 'id_bagian', 'id_satuan', 'atasan_1',  'atasan_2',  'atasan_3',  'atasan_4',
         ], FALSE));
-        // echo $this->db->last_query();
-        // // echo json_encode($data);
-        // die();
         ExceptionHandler::handleDBError($this->db->error(), "Tambah Surat Izin", "Surat Izin");
         return $this->db->insert_id();
     }
@@ -370,6 +357,24 @@ class SuratIzinModel extends CI_Model
         $res_data['id_user'] = $id_user;
         $this->db->set(DataStructure::slice($data, [
             'date', 'id_user', 'id_penilai', 'periode_start', 'periode_end', 'tgl_pengajuan', 'status'
+        ], FALSE));
+
+        $this->db->where('id_surat_izin', $data['id_surat_izin']);
+        $this->db->update('surat_izin',);
+
+
+        ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
+
+        return  $data['id_surat_izin'];
+    }
+
+    public function edit_adm($data)
+    {
+
+        $this->db->set(DataStructure::slice($data, [
+            'id_pegawai', 'id_pengganti', 'jenis_izin', 'alasan', 'tanggal_pengajuan', 'periode_start', 'periode_end', 'lama_izin', 'status_izin', 'alamat_izin',
+            'c_sisa_n', 'c_sisa_n1', 'c_sisa_n2', 'c_n', 'c_n1', 'c_n2', 'lampiran',
+            'id_seksi', 'id_bagian', 'id_satuan', 'atasan_1',  'atasan_2',  'atasan_3',  'atasan_4', 'no_spc'
         ], FALSE));
 
         $this->db->where('id_surat_izin', $data['id_surat_izin']);

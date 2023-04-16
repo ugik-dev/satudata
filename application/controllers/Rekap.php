@@ -68,15 +68,24 @@ class Rekap extends CI_Controller
         }
     }
 
-    public function cuti()
+    public function cuti_izin()
     {
         try {
-            $this->SecurityModel->multiRole('Rekap', 'Rekap Cuti', true);
+            $this->SecurityModel->multiRole('Rekap', 'Rekap Cuti & Izin', true);
             $dataContent['instansi'] = $this->GeneralModel->getAllSatuan();
+
+            if ($dataContent['instansi'][1]['verif_cuti'] == $this->session->userdata('id') || $this->session->userdata['id_role'] == 1) {
+                $dataContent['edit_cuti'] = true;
+            } else {
+                $dataContent['edit_cuti'] = false;
+            }
+            // echo $edit_cuti;
+            // die();
+
             $dataContent['jenis_izin'] = $this->GeneralModel->getJenisIzin();
             $data = array(
                 'page' => 'rekap/cuti',
-                'title' => 'Rekap Cuti',
+                'title' => 'Rekap Cuti & Izin',
                 'dataContent' => $dataContent
             );
 

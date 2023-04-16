@@ -21,6 +21,7 @@
 /uploads/qrcode/*
 !/uploads/qrcode/default.png
 
+/uploads/surat_masuk/*
 /uploads/bukti_absensi/*
 !/uploads/bukti_absensi/default.png
 /uploads/lampiran_izin/*

@@ -350,11 +350,11 @@
 
         $('#menu_4').addClass('active');
         $('#opmenu_4').show();
-        $('#submenu_12').addClass('active');
+        $('#submenu_13').addClass('active');
         var toolbar = {
             'form': $('#toolbar_form'),
-            'jenis_permohonan': $('#toolbar_form').find('#jenis_permohonan'),
-            'status': $('#toolbar_form').find('#status'),
+            'id_satuan': $('#toolbar_form').find('#id_satuan'),
+            'status_rekap': $('#toolbar_form').find('#status_rekap'),
             'newBtn': $('#new_btn'),
         }
 
@@ -368,7 +368,8 @@
             ],
             buttons: [{
                 extend: 'excel',
-                text: 'Export Excel',
+                text: '<i class="fa fa-download ">  Export Excel</i>',
+                className: 'excelButton btn btn-primary  font-weight-bold text-light',
                 exportOptions: {
                     modifier: {
                         // page: 'current'
@@ -451,18 +452,18 @@
         };
 
         $.when(getAllPermohonan()).then((e) => {}).fail((e) => {
-            console.log(e)
+
         });
 
         toolbar.form.on('submit', (e) => {
             getAllPermohonan();
         });
-        toolbar.status.on('change', (e) => {
+        toolbar.status_rekap.on('change', (e) => {
             getAllPermohonan();
         });
 
 
-        toolbar.jenis_permohonan.on('change', (e) => {
+        toolbar.id_satuan.on('change', (e) => {
             getAllPermohonan();
         });
 

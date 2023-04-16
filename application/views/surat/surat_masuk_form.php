@@ -3,99 +3,57 @@
         <form id="user_form" onsubmit="return false;" type="multipart" autocomplete="off">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal_title">
-                    Form Cuti
+                    Form Surat Masuk
                 </h5>
                 <!-- <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <input type="hidden" name="id_skp" value="<?= !empty($dataContent['return_data']['id_skp']) ? $dataContent['return_data']['id_skp'] : '' ?>">
+                    <input type="hidden" name="id_surat_masuk" value="<?= !empty($dataContent['return_data']['id_surat_masuk']) ? $dataContent['return_data']['id_surat_masuk'] : '' ?>">
                     <div class="hr-line-dashed"></div>
-                    <div class="col-lg-8">
+                    <div class="col-lg-4">
                         <div class="col-form-label">Tanggal Izin</div>
                         <div class="row">
                             <div class="col">
-
-                                <input name="periode_start" type="date" id="periode_start" class="form-control" value="<?= !empty($dataContent['return_data']['periode_start']) ? $dataContent['return_data']['periode_start'] : date("Y-m-d") ?>">
-                            </div>
-                            <div class="col-1 d-flex align-items-center">
-                                s.d.
-                            </div>
-                            <div class="col">
-                                <input name="periode_end" type="date" id="periode_end" class="form-control" value="<?= !empty($dataContent['return_data']['periode_end']) ? $dataContent['return_data']['periode_end'] : date("Y-m-d") ?>">
+                                <input name="tanggal_surat" type="date" id="tanggal_surat" class="form-control" value="<?= !empty($dataContent['return_data']['tanggal_surat']) ? $dataContent['return_data']['tanggal_surat'] : date("Y-m-d") ?>">
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="col-form-label">Lama Izin (hari)</div>
+                    <div class="col-lg-8">
+                        <div class="col-form-label">Nomor Surat</div>
                         <div class="row">
                             <div class="col">
-                                <input type="number" name="lama_izin" id="lama_izin" class="form-control" />
+                                <input type="text" name="nomor_surat" id="nomor_surat" class="form-control" />
                             </div>
                         </div>
                     </div>
+                </div>
+                <hr>
+                <div class="row">
                     <div class="col-lg-6">
+                        <div class="col-form-label">Dari</div>
                         <div class="row">
-                            <div class="col-lg-12">
-
-                                <div class="col-form-label">Jenis Perizinan</div>
-                                <select name="jenis_izin" id="jenis_izin" class="form-control" required="required">
-                                    <option value="">Pilih Jenis Izin</option>
-                                    <?php
-                                    foreach ($dataContent['jenis_izin'] as $ji) {
-                                        echo "<option value='{$ji['id_ref_jen_izin']}'>{$ji['nama_izin']}</option>";
-                                    } ?>
-                                </select>
+                            <div class="col">
+                                <textarea type="text" name="dari" id="dari" class="form-control"></textarea>
                             </div>
-                            <!-- <div class="col-lg-4 layout_c_tahunan">
-                                <div class="col-form-label">Tahun N</div>
-                                <input type="number" name="c_n" id="c_n" class="form-control" />
-                            </div>
-                            <div class="col-lg-4 layout_c_tahunan">
-                                <div class="col-form-label">Tahun N-1</div>
-                                <input type="number" name="c_n1" id="c_n1" class="form-control" />
-                            </div>
-                            <div class="col-lg-4 layout_c_tahunan">
-                                <div class="col-form-label">Tahun N-2</div>
-                                <input type="number" name="c_n2" id="c_n2" class="form-control" />
-                            </div> -->
                         </div>
                     </div>
-
 
                     <div class="col-lg-6">
-                        <div class="col-form-label">Pelimpahan Wewenang</div>
-                        <select class="select2 col-sm-12" id="id_pengganti" name="id_pengganti">
-                            <?php
-                            if (!empty($dataContent['laporan']['id_pengganti'])) {
-                                echo '<option selected value="' . $dataContent['laporan']['id_pengganti'] . '">' . $dataContent['laporan']['nama_bendahara'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="col-form-label">Alasan</div>
-                    <div class="row">
-                        <div class="col">
-                            <textarea type="text" name="alasan" id="alasan" class="form-control"></textarea>
+                        <div class="col-form-label">Tujuan / Kepada </div>
+                        <div class="row">
+                            <div class="col">
+                                <textarea type="text" name="kepada" id="kepada" class="form-control"></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12">
-                    <div class="col-form-label">Alamat Selama Menjalankan Izin / Cuti</div>
-                    <div class="row">
-                        <div class="col">
-                            <textarea type="text" name="alamat_izin" id="alamat_izin" class="form-control"></textarea>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="col-lg-4">
-                    <div class="col-form-label">Dokumen Lampiran</div>
+                    <div class="col-form-label">File Surat (pdf)</div>
                     <div class="row">
                         <div class="col">
-                            <!-- <input type="file" class="form-control" id="file_foto" name="file_foto"> -->
-                            <input type="file" name="file_lampiran" id="file_foto" class="form-control">
+                            <input type="file" name="file_lampiran" id="file_lampiran" accept="application/pdf" class=" form-control">
                         </div>
                     </div>
                 </div>
@@ -112,8 +70,9 @@
 
 <script>
     $(document).ready(function() {
-        // $('#sidebar_wrapper_func').addClass('close_icon');
-        $('#sidebar_surat_izin').addClass('active_c');
+        $('#menu_8').addClass('active');
+        $('#opmenu_8').show();
+        $('#submenu_18').addClass('active');
 
         var UserModal = {
             'form': $('#user_form'),
@@ -121,13 +80,13 @@
             'saveEditBtn': $('#save_edit_btn'),
             'add_ku': $('#add_ku'),
             'add_kt': $('#add_kt'),
-            'periode_start': $('#periode_start'),
+            'tanggal_surat': $('#tanggal_surat'),
             'periode_end': $('#periode_end'),
             'jenis_izin': $('#jenis_izin'),
             'c_n': $('#c_n'),
             'c_n1': $('#c_n1'),
             'c_n2': $('#c_n2'),
-            'alamat_izin': $('#alamat_izin'),
+            'kepada': $('#kepada'),
         }
 
         var swalSaveConfigure = {
@@ -246,7 +205,7 @@
                             },
                         }).then((result) => {
 
-                            location.href = "<?= base_url('surat-izin') ?>";
+                            location.href = "<?= base_url('Surat/masuk') ?>";
                         });
                     }
                 });

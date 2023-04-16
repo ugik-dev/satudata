@@ -74,13 +74,6 @@ class SuratIzin extends CI_Controller
                 echo json_encode(array('error' => false, 'data' => $res_data));
             } else
                 echo json_encode(array('error' => true, 'message' => 'Terjadi Kesalahan!!'));
-            // $data = array(
-            //     'page' => 'my/skp_form',
-            //     'title' => 'Form SKP',
-            //     'dataContent' => $res_data
-
-            // );
-            // $this->load->view('page', $data);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
@@ -90,7 +83,7 @@ class SuratIzin extends CI_Controller
     public function edit($id)
     {
         try {
-            $res_data['form_url'] = 'skp/edit_process';
+            $res_data['form_url'] = 'surat_izin/edit_process';
             $filter['my_skp'] = true;
             $filter['id_skp'] = $id;
             $res_data['return_data'] = $this->SKPModel->getDetail($filter)[$id];
@@ -377,7 +370,55 @@ class SuratIzin extends CI_Controller
         return substr($s, 0, -1);
     }
 
+    public function action_edit()
+    {
+        try {
+            // $this->SecurityModel->multiRole('SPPD', 'Entri SPPD');
+            $instansi = $this->GeneralModel->getAllSatuan(['id_satuan' => 1])[1];
 
+            if ($instansi['verif_cuti'] == $this->session->userdata('id') || $this->session->userdata['id_role'] == 1) {
+            } else {
+                throw new UserException('Kamu tidak berhak melakukan aksi ini!!', UNAUTHORIZED_CODE);
+            }
+
+            $data = $this->input->post();
+            if (!empty($_FILES['file_lampiran']['name'])) {
+                $s =  FileIO::uploadGd2('file_lampiran', 'lampiran_izin', '');
+                if (!empty($s['filename']))
+                    $data['lampiran'] = $s['filename'];
+                else {
+                    throw new UserException('Gagal Upload, terjadi kesalahahn!!', UNAUTHORIZED_CODE);
+                }
+            } else {
+            }
+            $id =  $this->SuratIzinModel->edit_adm($data);
+            $data = $this->SuratIzinModel->getAll(['id_surat_izin' => $data['id_surat_izin']])[$data['id_surat_izin']];
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+    public function delete_adm()
+    {
+        try {
+            // $this->SecurityModel->multiRole('SPPD', 'Entri SPPD');
+            $instansi = $this->GeneralModel->getAllSatuan(['id_satuan' => 1])[1];
+
+            if ($instansi['verif_cuti'] == $this->session->userdata('id') || $this->session->userdata['id_role'] == 1) {
+            } else {
+                throw new UserException('Kamu tidak berhak melakukan aksi ini!!', UNAUTHORIZED_CODE);
+            }
+
+            $data = $this->input->post();
+
+            $this->SuratIzinModel->delete_adm($data);
+            // $data = $this->SuratIzinModel->getAll(['id_surat_izin' => $data['id_surat_izin']])[$data['id_surat_izin']];
+            echo json_encode(array('error' => false, 'data' => $data['id_surat_izin']));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
 
     public function add_process()
     {
