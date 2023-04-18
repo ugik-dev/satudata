@@ -8,10 +8,11 @@ class SuratModel extends CI_Model
     {
         $ses = $this->session->userdata();
 
-        $this->db->select("si.*, s.nama_satuan,  p.nama as nama_pegawai");
+        $this->db->select("si.*, s.nama_satuan,  p.nama as nama_pegawai, cs.nama current_dispo_nama ");
         $this->db->from('surat_masuk as si');
         $this->db->join('surat_masuk_dispos sm', 'sm.id_surat_masuk = si.id_surat_masuk', 'LEFT');
         $this->db->join('users p', 'p.id = si.user_input', 'LEFT');
+        $this->db->join('users cs', 'cs.id = si.current_dispo', 'LEFT');
         $this->db->join('satuan s', 'si.id_satuan = s.id_satuan', 'LEFT');
         $this->db->join('roles ro', 'ro.id_role = p.id_role', 'LEFT');
         if (!empty($filter['id_pegawai'])) $this->db->where('si.user_input', $filter['id_pegawai']);
@@ -137,13 +138,55 @@ class SuratModel extends CI_Model
 
     public function add_masuk($data)
     {
+        $this->db->trans_begin();
+
         $data['tanggal_entry'] = date('Y-m-d');
         $this->db->insert('surat_masuk', DataStructure::slice($data, [
             'tanggal_entry', 'user_input', 'id_satuan', 'id_bagian', 'id_seksi', 'tanggal_surat',
-            'nomor_surat', 'dari', 'kepada', 'file_surat',
+            'nomor_surat', 'dari', 'kepada', 'file_surat', 'current_dispo'
         ], FALSE));
-        ExceptionHandler::handleDBError($this->db->error(), "Tambah Surat Masuk", "Surat Masuk");
-        return $this->db->insert_id();
+
+        if ($this->db->error()['code']) {
+            $error = $this->db->error();
+        }
+        $id = $this->db->insert_id();
+
+        if (!empty($data['current_dispo'])) {
+            $data['notif'] = [
+                'id_pegawai' => $data['current_dispo'],
+                'message' => 'Terdapat Surat Masuk ditujukan kepada anda.',
+                'url' => 'Surat/detail_surat_masuk/' . $id,
+                'notif_time' => date('Y-m-d H:i:s')
+            ];
+        }
+        $this->db->insert('notif', DataStructure::slice($data['notif'], [
+            'id_pegawai', 'message', 'url', 'notif_time'
+        ], FALSE));
+
+        if ($this->db->error()['code']) {
+            $error = $this->db->error();
+        }
+
+        $data['tanggal_dispo'] = date('Y-m-d');
+        $dataDispo = [
+            'id_pegawai_after' => $data['current_dispo'],
+            'id_pegawai_before' => $this->session->userdata('id'),
+            'id_surat_masuk' =>  $id,
+            'notif_time' => date('Y-m-d H:i:s')
+        ];
+        $this->db->insert('surat_masuk_dispos', DataStructure::slice($data, [
+            'id_surat_masuk', 'id_pegawai_before', 'id_pegawai_after',
+            'catatan_dispo'
+        ], FALSE));
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            ExceptionHandler::handleDBError($error, "Disposisi", "Surat Masuk");
+        } else {
+            $this->db->trans_commit();
+            return $id;
+        }
+        // return
     }
 
     public function edit($data)

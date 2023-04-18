@@ -199,7 +199,6 @@ function nl2br(str, is_xhtml) {
 }
 
 function statusSPT(status, unnaprove) {
-  conso;
   if (unnaprove != null)
     return `<i class='fa fa-times text-danger'></i> <b class="text-danger"> Approv Ditolak </b>`;
   else if (status == "0")

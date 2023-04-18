@@ -3,24 +3,18 @@
 if (!function_exists('User_Access')) {
 	function User_Access($para_user_id = '')
 	{
-		// $ci2	= &get_instance();
-		// $ci2->load->session();
 		$CI	= &get_instance();
 		$CI->load->database();
-		// $CI->db->select("mp_menu.id as parent_id,mp_menulist.id as page_id,mp_menu.name,mp_menu.icon,mp_menu.order_number,title as sub_name, link as sub_link,slug as link, , id_hak_aksess, view, hk_create,hk_update, hk_delete");
 		$CI->db->from('menu');
 		$CI->db->join('menulist', "menulist.id_menu = menu.id_menu");
 		$CI->db->join('hak_aksess', "hak_aksess.id_menulist = menulist.id_menulist", 'LEFT');
-		// $CI->db->join('hak_aksess', "mp_menulist.id = hak_aksess.id_menulist");
 		$CI->db->where('hak_aksess.id_role ', $para_user_id);
 		$CI->db->where('menu.active_menu ', 1);
-		// $CI->db->where('mp_menulist.active ', 1);
 		$CI->db->order_by('menu.menu_rank, menulist.id_menulist');
 		$res = $CI->db->get();
 		if ($res->num_rows() < 1) {
 			return NULL;
 		}
-		// $ret = $res->result_array();
 		$ret = DataStructure::groupByRecursive2(
 			$res->result_array(),
 			['id_menu'],
@@ -36,23 +30,34 @@ if (!function_exists('User_Access')) {
 	}
 }
 
-if (!function_exists('Fetch_Users_Access_Control_Menus')) {
-	function Fetch_Users_Access_Control_Menus($para_user_id = '')
+if (!function_exists('Get_User_Notif')) {
+	function Get_User_Notif($para_user_id = '')
 	{
 		$CI	= &get_instance();
 		$CI->load->database();
-		$CI->db->select("mp_menu.id as id,mp_menu.name,mp_menu.icon,mp_menu.order_number");
-		$CI->db->from('mp_menu');
-		$CI->db->join('mp_multipleroles', "mp_menu.id = mp_multipleroles.menu_Id and mp_multipleroles.user_id = '$para_user_id'");
-		$CI->db->order_by('mp_menu.order_number');
+		$CI->db->select("*");
+		$CI->db->from('notif');
+		$CI->db->where('id_pegawai', $para_user_id);
 		$query = $CI->db->get();
 		// echo json_encode($query->result());
 		// die();
-		if ($query->num_rows() > 0) {
-			return $query->result();
-		} else {
-			return NULL;
-		}
+		$data['data'] = $query->result_array();
+
+		$CI	= &get_instance();
+		$CI->load->database();
+		$CI->db->select("count(*) as u");
+		$CI->db->from('notif');
+		$CI->db->where('id_pegawai', $para_user_id);
+		$CI->db->where('status', 'u');
+		$query = $CI->db->get();
+		// echo json_encode($query->result());
+		// die();
+		$data['unread'] = $query->result_array()[0]['u'];
+		return $data;
+		// if ($query->num_rows() > 0) {
+		// } else {
+		// 	return NULL;
+		// }
 	}
 }
 

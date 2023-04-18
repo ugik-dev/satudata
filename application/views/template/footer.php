@@ -10,6 +10,16 @@
   </footer>
   </div>
 
+  <script>
+      $(document).ready(function() {
+          $(".notif_click").on("click", function() {
+              curData = $(this).data("id");
+              console.log("redicrec" + curData);
+              location.href = "<?= base_url() ?>notification/" + curData
+          });
+      });
+  </script>
+
   <!-- <script src="<?= base_url() ?>assets/js/jquery-3.5.1.min.js"></script> -->
 
   <script src="<?= base_url() ?>assets/js/bootstrap/bootstrap.bundle.min.js"></script>

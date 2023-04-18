@@ -34,9 +34,7 @@
                             <hr>
                             <!-- <div class="hr-line-dashed"></div> -->
                             <div class="col-lg-12">
-
                                 <div class="row">
-
                                     <div class="col-lg-6">
                                         <div class="col-form-label"><strong>Dari</strong></div>
                                         <?= $dataContent['dari'] ?>
@@ -46,7 +44,6 @@
                                         <?= $dataContent['kepada'] ?>
                                     </div>
                                 </div>
-
                                 <hr>
                             </div>
                             <div class="col-lg-12">

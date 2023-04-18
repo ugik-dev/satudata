@@ -50,6 +50,23 @@ class User extends CI_Controller
         }
     }
 
+    public function notification($id)
+    {
+        try {
+            $data = $this->UserModel->getNotif(['id_notif' => $id, 'id_pegawai' => $this->session->userdata('id')])[$id];
+            if (!empty($data)) {
+
+                if ($data['status'] == 'U') {
+                    $this->UserModel->readNotif($id);
+                }
+                redirect(base_url($data['url']));
+            } else
+                redirect(base_url('dashboard'));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
 
     public function my_profil()
     {

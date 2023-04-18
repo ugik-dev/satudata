@@ -237,35 +237,52 @@
                 <!-- <li>
                     <span class="header-search"><i data-feather="search"></i></span>
                 </li> -->
+                <?php $notif = Get_User_Notif($this->session->userdata('id'));
+                // var_dump($notif);
+
+                ?>
                 <li class="onhover-dropdown">
                     <div class="notification-box">
-                        <i data-feather="bell"> </i><span class="badge rounded-pill badge-secondary">4 </span>
+                        <i data-feather="bell"> </i><?= $notif['unread'] > 0 ? ('<span class="badge rounded-pill badge-secondary">' . $notif['unread'] . ' </span>') : '' ?>
                     </div>
                     <div class="onhover-show-div notification-dropdown">
                         <h6 class="f-18 mb-0 dropdown-title">Notitications</h6>
                         <ul>
-                            <li class="b-l-primary border-4">
-                                <p>
-                                    Delivery processing
-                                    <span class="font-danger">10 min.</span>
-                                </p>
-                            </li>
-                            <li class="b-l-success border-4">
-                                <p>
-                                    Order Complete<span class="font-success">1 hr</span>
-                                </p>
-                            </li>
-                            <li class="b-l-info border-4">
-                                <p>
-                                    Tickets Generated<span class="font-info">3 hr</span>
-                                </p>
-                            </li>
-                            <li class="b-l-warning border-4">
-                                <p>
-                                    Delivery Complete<span class="font-warning">6 hr</span>
-                                </p>
-                            </li>
-                            <li><a class="f-w-700" href="#">Check all</a></li>
+                            <?php
+
+                            $now = new DateTime();
+                            $bell = false;
+                            $html_notif = '';
+                            $i = 0;
+
+                            if (!empty($notif['data']))
+                                foreach ($notif['data'] as $n) {
+                                    $since_start = $now->diff(new DateTime($n['notif_time']));
+                                    if ($since_start->m > 0)
+                                        $text = $since_start->m . ' bln';
+                                    else if ($since_start->d > 0)
+                                        $text = $since_start->d . ' hr';
+                                    else if ($since_start->h > 0)
+                                        $text = $since_start->h . ' jam';
+                                    else if ($since_start->i > 0)
+                                        $text = $since_start->i . ' mnt';
+                                    else
+                                        $text = 'Baru saja';
+                                    $link = base_url() . $n['url'];
+                                    $label = $n["status"] == 'U' ? 'primary' : 'success';
+                                    $label2 = $n["status"] == 'U' ? 'danger' : 'success';
+                                    echo "
+                                    <li class='b-l-$label border-4 notif_click' data-id='{$n["id_notif"]}' >
+                                     <p>
+                                        {$n["message"]}
+                                        <span class='font-$label2'>$text</span>
+                                        </p>
+                                    </li>
+                                        ";
+                                }
+                            ?>
+
+                            <li><a class="f-w-700" href="<?= base_url() ?>notification">Lihat Semua</a></li>
                         </ul>
                     </div>
                 </li>

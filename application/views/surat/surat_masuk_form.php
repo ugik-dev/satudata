@@ -28,6 +28,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="current_dispo">Disposisikan Kepada</label>
+                        <select class="select2 col-sm-12" id="current_dispo" name="current_dispo"></select>
+                    </div>
+                </div>
                 <hr>
                 <div class="row">
                     <div class="col-lg-6">
@@ -146,8 +152,25 @@
             }
         });
 
-
-
+        $("#current_dispo").select2({
+            ajax: {
+                url: '<?= base_url() ?>Search/Pegawai',
+                type: "get",
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        searchTerm: params.term // search term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
 
         UserModal.form.submit(function(event) {
             event.preventDefault();
@@ -205,7 +228,7 @@
                             },
                         }).then((result) => {
 
-                            location.href = "<?= base_url('Surat/masuk') ?>";
+                            // location.href = "<?= base_url('Surat/masuk') ?>";
                         });
                     }
                 });

@@ -218,7 +218,7 @@
                 tujuan = '';
                 i = 1;
 
-                renderData.push([d['id_surat_masuk'], d['tanggal_surat'], nl2br(d['dari']), nl2br(d['kepada']), d['nomor_surat'], '-', button]);
+                renderData.push([d['id_surat_masuk'], d['tanggal_surat'], nl2br(d['dari']), nl2br(d['kepada']), d['nomor_surat'], d['current_dispo_nama'], button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }
@@ -242,7 +242,6 @@
                     return;
                 }
                 swalLoading();
-                // buttonLoading(button);
 
                 $.ajax({
                     url: url,

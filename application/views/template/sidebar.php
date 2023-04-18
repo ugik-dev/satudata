@@ -71,17 +71,17 @@
                     if (!empty($menu))
                         foreach ($menu as $m) {
                             if ($m['subs'] == 1) {
-
                                 echo ' <li class="sidebar-list">
-                        <label class="badge badge-light-primary"></label><a class="sidebar-link sidebar-title" id="menu_' . $m['id_menu'] . '" href="#"><i data-feather="' . $m['icon'] . '"></i><span class="">' . $m['label_menu'] . ' </span></a>
-                        <ul class="sidebar-submenu" id="opmenu_' . $m['id_menu'] . '" >';
+                                        <label class="badge badge-light-primary"></label><a class="sidebar-link sidebar-title" id="menu_' . $m['id_menu'] . '" href="#"><i data-feather="' . $m['icon'] . '"></i><span class="">' . $m['label_menu'] . ' </span></a>
+                                        <ul class="sidebar-submenu" id="opmenu_' . $m['id_menu'] . '" >
+                                        ';
                                 foreach ($m['child'] as $mc) {
                                     echo '<li><a id="submenu_' . $mc['id_menulist'] . '" href="' . base_url() . $mc['url'] . '">' . $mc['label_menulist'] . '</a></li>';
                                 }
                                 echo '</ul> </li>';
                             } else {
                                 echo ' <li class="sidebar-list">
-                                <a class="sidebar-link sidebar-title link-nav" id="menu_' . $m['id_menu'] . '" href="' . $m['menu_url'] . '"><i data-feather="' . $m['icon'] . '"></i><span class="">' . $m['label_menu'] . ' </span></a>
+                                <a class="sidebar-link sidebar-title link-nav" id="menu_' . $m['id_menu'] . '" href="' . base_url() . $m['menu_url'] . '"><i data-feather="' . $m['icon'] . '"></i><span class="">' . $m['label_menu'] . ' </span></a>
                                  </li>';
                             }
                         }

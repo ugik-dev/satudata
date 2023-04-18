@@ -268,9 +268,7 @@ class Surat extends CI_Controller
             if ($cur_user['level'] == 1) {
                 $data_post['id_pegawai_before'] = $cur_user['id'];
                 $this->SuratModel->action_disposisi($data_post);
-                // $logs['id_pegawai_a'] = $cur_user['id'];
             }
-            // $total_c = (int) $data_post['c_sisa_n'] + (int)$data_post['c_sisa_n1'] + (int) $data_post['c_sisa_n2'];
 
             $data = $this->SuratModel->getAll(array('id_surat_izin' => $id))[$id];
             echo json_encode(array('error' => false, 'data' => $data));
@@ -399,7 +397,7 @@ class Surat extends CI_Controller
 
             $id =  $this->SuratModel->add_masuk($data);
 
-            $data = $this->SuratModel->getAll(['id_surat_izin' => $id]);
+            // $data = $this->SuratModel->getAll(['id_surat_masuk' => $id]);
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
             ExceptionHandler::handle($e);

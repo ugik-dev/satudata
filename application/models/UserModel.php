@@ -30,6 +30,24 @@ class UserModel extends CI_Model
         return DataStructure::keyValue($res->result_array(), 'id');
     }
 
+    public function getNotif($filter = [])
+    {
+        $this->db->select("u.*");
+        $this->db->from('notif as u');
+        if (!empty($filter['id_notif'])) $this->db->where('u.id_notif', $filter['id_notif']);
+        if (!empty($filter['id_pegawai'])) $this->db->where('u.id_pegawai', $filter['id_pegawai']);
+        $res = $this->db->get();
+        return DataStructure::keyValue($res->result_array(), 'id_notif');
+    }
+
+
+    public function readNotif($data)
+    {
+        $this->db->set('status', 'R');
+        $this->db->where('id_notif', $data);
+        $this->db->update('notif');
+        return $data;
+    }
 
     public function activatorUser($data)
     {
