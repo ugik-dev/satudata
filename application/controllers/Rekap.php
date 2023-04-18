@@ -56,6 +56,11 @@ class Rekap extends CI_Controller
             $this->SecurityModel->multiRole('Rekap', 'Rekap SPT', true);
             $dataContent['instansi'] = $this->GeneralModel->getAllSatuan();
 
+            if ($this->session->userdata['id_role'] == 1) {
+                $dataContent['edit_spt'] = true;
+            } else {
+                $dataContent['edit_spt'] = false;
+            }
             $data = array(
                 'page' => 'rekap/spt',
                 'title' => 'Rekap SPT & SPPD',

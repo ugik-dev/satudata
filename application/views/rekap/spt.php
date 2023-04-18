@@ -114,226 +114,38 @@
 </div>
 <!-- </div> -->
 
-<div class="modal fade" id="lihat_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+
+<div class="modal fade" id="edit_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
-            <form opd="form" id="lihat_form" onsubmit="return false;" type="multipart" autocomplete="off">
+            <form opd="form" id="edit_form" onsubmit="return false;" type="multipart" autocomplete="off">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modal_title">
-                        Data Surat Izin / Cuti
+                        Edit SPT
                     </h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-6" id="status_izin"> </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="col-form-label">Pegawai Cuti</div>
-                            <input id="nama_pegawai" class="form-control" readonly />
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="col-form-label">Pegawai Pengganti</div>
-                            <input id="nama_pengganti" class="form-control" readonly />
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="col-form-label">Jenis Cuti</div>
-                            <input id="nama_izin" class="form-control" readonly />
-                        </div>
-                        <div class="col-lg-7">
-                            <div class="col-form-label">Tanggal Izin</div>
-                            <div class="row">
-                                <div class="col">
-                                    <input name="periode_start" type="date" id="periode_start" readonly class="form-control" value="<?= !empty($dataContent['return_data']['periode_start']) ? $dataContent['return_data']['periode_start'] : date("Y-m-d") ?>" />
-                                </div>
-                                <div class="col-1 d-flex align-items-center">
-                                    s.d.
-                                </div>
-                                <div class="col">
-                                    <input name="periode_end" type="date" id="periode_end" readonly class="form-control" value="<?= !empty($dataContent['return_data']['periode_end']) ? $dataContent['return_data']['periode_end'] : date("Y-m-d") ?>" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="col-form-label">Lama Izin (hari)</div>
-                            <div class="row">
-                                <div class="col">
-                                    <input type="number" name="lama_izin" readonly id="lama_izin" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="col-form-label">Alasan</div>
-                            <div class="row">
-                                <div class="col">
-                                    <textarea type="text" readonly id="alasan" class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="col-form-label">Alamat Selamat Menjalankan Cuti / Izin</div>
-                            <div class="row">
-                                <div class="col">
-                                    <textarea type="text" readonly id="alamat_izin" class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="row">
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Tahun <span class="c_label_n">N</span></div>
-                                    <input type="number" name="c_n" id="c_n" class="form-control" readonly />
-                                </div>
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Tahun <span class="c_label_n1">N</span></div>
-                                    <input type="number" name="c_n1" id="c_n1" class="form-control" readonly />
-                                </div>
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Tahun <span class="c_label_n2">N</span></div>
-                                    <input type="number" name="c_n2" id="c_n2" class="form-control" readonly />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n">N</span></div>
-                                    <input type="number" name="c_sisa_n" id="c_sisa_n" class="form-control" readonly />
-                                </div>
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n1">N</span></div>
-                                    <input type="number" name="c_sisa_n1" id="c_sisa_n1" class="form-control" readonly />
-                                </div>
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n2">N</span></div>
-                                    <input type="number" name="c_sisa_n2" id="c_sisa_n2" class="form-control" readonly />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12">
-                        <div class="col-form-label">Dokumen Lampiran</div>
-                        <div class="col" id="layout_lampiran">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="verif_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <form opd="form" id="verif_form" onsubmit="return false;" type="multipart" autocomplete="off">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal_title">
-                        Form Verifikasi Cuti
-                    </h5>
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="id_surat_izin" name="id_surat_izin">
+                    <input type="hidden" id="id_spt" name="id_spt">
                     <div class="row">
                         <div class="col-lg-2">
                             <div class="col-form-label">Aksi</div>
                             <button class="btn btn-primary" type="submit" id="save_edit_btn" data-loading-text="Loading..."><strong>Simpan</strong></button>
                         </div>
                         <div class="col-lg-4">
-                            <div class="col-form-label">Status Verifikasi</div>
-                            <select id="verif" name="verif" class="form-control">
-                                <option value="1">Diterima</option>
-                                <option value="2">Ditolak</option>
-                            </select>
+                            <div class="col-form-label">Tanggal Pengajuan</div>
+                            <input id="tgl_pengajuan" type="datetime-local" name="tgl_pengajuan" class="form-control"></input>
                         </div>
                         <div class="col-lg-6">
-                            <div class="col-form-label">Catatan Verifikator Cuti</div>
-                            <input id="cttn_verif" name="cttn_verif" class="form-control"></input>
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="col-form-label">Pegawai Cuti</div>
-                            <input id="nama_pegawai" class="form-control" readonly>
+                            <div class="col-form-label">Nomor SPT</div>
+                            <input id="no_spt" name="no_spt" class="form-control"></input>
                         </div>
                         <div class="col-lg-6">
-                            <div class="col-form-label">Pegawai Pengganti</div>
-                            <input id="nama_pengganti" class="form-control" readonly>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="col-form-label">Jenis Cuti</div>
-                            <input id="nama_izin" class="form-control" readonly>
-                        </div>
-                        <!-- <div class="hr-line-dashed"></div> -->
-                        <div class="col-lg-7">
-                            <div class="col-form-label">Tanggal Izin</div>
-                            <div class="row">
-                                <div class="col">
-                                    <input name="periode_start" type="date" id="periode_start" readonly class="form-control" value="<?= !empty($dataContent['return_data']['periode_start']) ? $dataContent['return_data']['periode_start'] : date("Y-m-d") ?>">
-                                </div>
-                                <div class="col-1 d-flex align-items-center">
-                                    s.d.
-                                </div>
-                                <div class="col">
-                                    <input name="periode_end" type="date" id="periode_end" readonly class="form-control" value="<?= !empty($dataContent['return_data']['periode_end']) ? $dataContent['return_data']['periode_end'] : date("Y-m-d") ?>">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="col-form-label">Lama Izin (hari)</div>
-                            <div class="row">
-                                <div class="col">
-                                    <input type="number" name="lama_izin" readonly id="lama_izin" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="col-form-label">Alasan</div>
-                            <div class="row">
-                                <div class="col">
-                                    <textarea type="text" readonly id="alasan" class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="col-form-label">Alamat Selamat Menjalankan Cuti / Izin</div>
-                            <div class="row">
-                                <div class="col">
-                                    <textarea type="text" readonly id="alamat_izin" class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="row">
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n">N</span></div>
-                                    <input type="number" name="c_sisa_n" id="c_sisa_n" class="form-control" required />
-                                </div>
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n1">N-1</span></div>
-                                    <input type="number" name="c_sisa_n1" id="c_sisa_n1" class="form-control" required />
-                                </div>
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n2">N-2</span></div>
-                                    <input type="number" name="c_sisa_n2" id="c_sisa_n2" class="form-control" required />
-                                </div>
-                            </div>
+                            <div class="col-form-label">Nomor SPPD</div>
+                            <input id="no_sppd" name="no_sppd" class="form-control"></input>
                         </div>
                     </div>
 
-                    <div class="col-lg-12">
-                        <div class="col-form-label">Dokumen Lampiran</div>
-                        <div class="col" id="layout_lampiran">
-                        </div>
-                    </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
                             Close
@@ -378,50 +190,18 @@
             }]
         });
 
-        var VerifModal = {
-            'self': $('#verif_modal'),
-            'info': $('#verif_modal').find('.info'),
-            'form': $('#verif_modal').find('#verif_form'),
-            'addBtn': $('#verif_modal').find('#add_btn'),
-            'saveEditBtn': $('#verif_modal').find('#save_edit_btn'),
-            'idSuratIzin': $('#verif_modal').find('#id_surat_izin'),
-            'periode_start': $('#verif_modal').find('#periode_start'),
-            'periode_end': $('#verif_modal').find('#periode_end'),
-            'lama_izin': $('#verif_modal').find('#lama_izin'),
-            'status_izin': $('#verif_modal').find('#status_izin'),
-            'c_sisa_n': $('#verif_modal').find('#c_sisa_n'),
-            'c_sisa_n1': $('#verif_modal').find('#c_sisa_n1'),
-            'c_sisa_n2': $('#verif_modal').find('#c_sisa_n2'),
-            'c_label_n': $('#verif_modal').find('#c_label_n'),
-            'c_label_n1': $('#verif_modal').find('#c_label_n1'),
-            'c_label_n2': $('#verif_modal').find('#c_label_n2'),
-            'alasan': $('#verif_modal').find('#alasan'),
-            'alamat_izin': $('#verif_modal').find('#alamat_izin'),
-            'nama_izin': $('#verif_modal').find('#nama_izin'),
-            'nama_pegawai': $('#verif_modal').find('#nama_pegawai'),
-            'nama_pengganti': $('#verif_modal').find('#nama_pengganti'),
-            'layout_lampiran': $('#verif_modal').find('#layout_lampiran'),
+        var EditModal = {
+            'self': $('#edit_modal'),
+            'info': $('#edit_modal').find('.info'),
+            'form': $('#edit_modal').find('#edit_form'),
+            'addBtn': $('#edit_modal').find('#add_btn'),
+            'saveEditBtn': $('#edit_modal').find('#save_edit_btn'),
+            'idSuratIzin': $('#edit_modal').find('#id_spt'),
+            'tgl_pengajuan': $('#edit_modal').find('#tgl_pengajuan'),
+            'no_spt': $('#edit_modal').find('#no_spt'),
+            'no_sppd': $('#edit_modal').find('#no_sppd'),
         }
-        var LihatModal = {
-            'self': $('#lihat_modal'),
-            // 'info': $('#lihat_modal').find('.status_izin'),
-            'periode_start': $('#lihat_modal').find('#periode_start'),
-            'periode_end': $('#lihat_modal').find('#periode_end'),
-            'lama_izin': $('#lihat_modal').find('#lama_izin'),
-            'status_izin': $('#lihat_modal').find('#status_izin'),
-            'c_sisa_n': $('#lihat_modal').find('#c_sisa_n'),
-            'c_sisa_n1': $('#lihat_modal').find('#c_sisa_n1'),
-            'c_sisa_n2': $('#lihat_modal').find('#c_sisa_n2'),
-            'c_n': $('#lihat_modal').find('#c_n'),
-            'c_n1': $('#lihat_modal').find('#c_n1'),
-            'c_n2': $('#lihat_modal').find('#c_n2'),
-            'alasan': $('#lihat_modal').find('#alasan'),
-            'alamat_izin': $('#lihat_modal').find('#alamat_izin'),
-            'nama_izin': $('#lihat_modal').find('#nama_izin'),
-            'nama_pegawai': $('#lihat_modal').find('#nama_pegawai'),
-            'nama_pengganti': $('#lihat_modal').find('#nama_pengganti'),
-            'layout_lampiran': $('#lihat_modal').find('#layout_lampiran'),
-        }
+
         var dataRole = {}
         var dataIzin = {}
         <?php $curUser = $this->session->userdata(); ?>
@@ -541,6 +321,12 @@
 
                 dfix = d1.split(" ")[0] + ' s.d ' + d2.split(" ")[0];
                 lihatButton = `
+                <?php
+                if ($dataContent['edit_spt']) {
+                    echo "<a class='form_edit dropdown-item' target='_blank' style='width: 110px' data-jenis='SuratIzin' data-id='$" . "{d['id_spt']}'><i class='fa fa-pencil'></i> Edit </a>";
+                    echo "<a class='delete_adm dropdown-item' target='_blank' style='width: 110px' data-jenis='SuratIzin' data-id='$" . "{d['id_spt']}'><i class='fa fa-pencil'></i> Hapus </a>";
+                }
+                ?>
                          <a class="dropdown-item" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/detail/${d['id_spt']}'><i class='fa fa-eye'></i> Lihat </a>
                  `;
 
@@ -588,292 +374,90 @@
             return ex_tgl[2] + ' ' + bulan[parseInt(ex_tgl[1])] + ' ' + ex_tgl[0]
         }
 
-        FDataTable.on('click', '.verif_cuti', function() {
-            curData = dataIzin[$(this).data('id')];
-            console.log('verf');
-            console.log(curData);
-            VerifModal.self.modal('show');
-            $('#verif_modal').modal('show');
-            VerifModal.idSuratIzin.val(curData['id_surat_izin']);
-            VerifModal.periode_start.val(curData['periode_start']);
-            VerifModal.periode_end.val(curData['periode_end']);
-            VerifModal.lama_izin.val(curData['lama_izin']);
-            VerifModal.nama_izin.val(curData['nama_izin']);
-            VerifModal.nama_pegawai.val(curData['nama_pegawai']);
-            VerifModal.nama_pengganti.val(curData['nama_pengganti']);
-            VerifModal.alasan.val(curData['alasan']);
-            VerifModal.alamat_izin.val(curData['alamat_izin']);
-            if (curData['jenis_izin'] == '11') {
-                VerifModal.c_sisa_n.prop('required', true)
-                VerifModal.c_sisa_n1.prop('required', true)
-                VerifModal.c_sisa_n2.prop('required', true)
-                $('.layout_c_tahunan').show();
-            } else {
-                VerifModal.c_sisa_n.prop('required', false)
-                VerifModal.c_sisa_n1.prop('required', false)
-                VerifModal.c_sisa_n2.prop('required', false)
-                $('.layout_c_tahunan').hide();
-            }
-            cur_tahun = curData['periode_start'].split('-')[0];
-            $('.c_label_n').html(cur_tahun);
-            $('.c_label_n1').html(cur_tahun - 1);
-            $('.c_label_n2').html(cur_tahun - 2);
-            VerifModal.c_sisa_n.val(curData['c_sisa_n']);
-            VerifModal.c_sisa_n1.val(curData['c_sisa_n1']);
-            VerifModal.c_sisa_n2.val(curData['c_sisa_n2']);
-            if (curData['lampiran'] != null && curData['lampiran'] != '') {
-                file_lampiran = curData['lampiran'].split(".");
-                lampHtml = `<a href='<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}'> Download </a>
-                `
-                lampHtml += `
-                <div class="col-lg-12">
-                <object width="100%" height="700px"data="<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}" type="application/pdf">
-                                <iframe src="<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}"></iframe>
-                            </object>
+        <?php if ($dataContent['edit_spt']) { ?>
+            FDataTable.on('click', '.form_edit', function() {
+                curData = dataIzin[$(this).data('id')];
+                console.log(curData);
+                EditModal.self.modal('show');
+                $('#edit_modal').modal('show');
+                EditModal.idSuratIzin.val(curData['id_spt']);
+                EditModal.tgl_pengajuan.val(curData['tgl_pengajuan']);
+                EditModal.no_spt.val(curData['no_spt']);
+                EditModal.no_sppd.val(curData['no_sppd']);
+
+                lampHtml = `
+                             <div class="col-lg-12">
                             </div>`
-                // file_lampiran[1];
-                VerifModal.layout_lampiran.html(lampHtml);
+                EditModal.layout_lampiran.html(lampHtml);
 
-            } else
-                VerifModal.layout_lampiran.html('<b>tidak ada lampiran</b>');
 
-        });
+            });
 
-        FDataTable.on('click', '.data_izin', function() {
-            var jenis = $(this).data('jenis');
-            curData = dataIzin[$(this).data('id')];
-            console.log(curData);
-            LihatModal.self.modal('show');
-            LihatModal.periode_start.val(curData['periode_start']);
-            LihatModal.periode_end.val(curData['periode_end']);
-            LihatModal.lama_izin.val(curData['lama_izin']);
-            LihatModal.nama_izin.val(curData['nama_izin']);
-            LihatModal.nama_pegawai.val(curData['nama_pegawai']);
-            LihatModal.nama_pengganti.val(curData['nama_pengganti']);
-            LihatModal.alasan.val(curData['alasan']);
-            LihatModal.alamat_izin.val(curData['alamat_izin']);
-            LihatModal.c_n.val(curData['c_n']);
-            LihatModal.c_n1.val(curData['c_n1']);
-            LihatModal.c_n2.val(curData['c_n2']);
-            LihatModal.c_sisa_n.val(curData['c_sisa_n']);
-            LihatModal.c_sisa_n1.val(curData['c_sisa_n1']);
-            LihatModal.c_sisa_n2.val(curData['c_sisa_n2']);
-            cur_tahun = curData['periode_start'].split('-')[0];
-            $('.c_label_n').html(cur_tahun);
-            $('.c_label_n1').html(cur_tahun - 1);
-            $('.c_label_n2').html(cur_tahun - 2);
-            LihatModal.status_izin.html(statusIzin(curData['status_izin'], curData['unapprove']))
-            if (curData['lampiran'] != null && curData['lampiran'] != '') {
-                file_lampiran = curData['lampiran'].split(".");
-                lampHtml = `<a href='<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}'> Download </a>
-                `
-                lampHtml += `
-                <div class="col-lg-12">
-                <object width="100%" height="700px"data="<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}" type="application/pdf">
-                                <iframe src="<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}"></iframe>
-                            </object>
-                            </div>`
-                LihatModal.layout_lampiran.html(lampHtml);
-            } else
-                LihatModal.layout_lampiran.html('<b>tidak ada lampiran</b>');
+            EditModal.saveEditBtn.on('click', function(event) {
+                event.preventDefault();
+                var url = "<?= site_url('Spt/action_edit/') ?>";
+                Swal.fire(swalSaveConfigure).then((result) => {
+                    if (!result.value) {
+                        return;
+                    }
 
-        });
-
-        VerifModal.form.submit(function(event) {
-            console.log('sub');
-            event.preventDefault();
-            var url = "<?= site_url('SuratIzin/action_verif/') ?>";
-            Swal.fire(swalSaveConfigure).then((result) => {
-                if (!result.value) {
-                    return;
-                }
-                // buttonLoading(button);
-
-                $.ajax({
-                    url: url,
-                    'type': 'POST',
-                    data: VerifModal.form.serialize(),
-                    success: function(data) {
-                        // buttonIdle(button);
-                        var json = JSON.parse(data);
-                        if (json['error']) {
-                            Swal.fire("Simpan Gagal", json['message'], "error");
-                            return;
-                        }
-                        var d = json['data']
-                        dataIzin[d['id_surat_izin']] = d;
-                        Swal.fire("Simpan Berhasil", "", "success");
-                        renderSKP(dataIzin);
-                        VerifModal.self.modal('hide');
-                    },
-                    error: function(e) {}
+                    $.ajax({
+                        url: url,
+                        'type': 'POST',
+                        // data: EditModal.form.serialize(),
+                        data: new FormData(EditModal.form[0]),
+                        contentType: false,
+                        processData: false,
+                        success: function(data) {
+                            // buttonIdle(button);
+                            var json = JSON.parse(data);
+                            if (json['error']) {
+                                Swal.fire("Simpan Gagal", json['message'], "error");
+                                return;
+                            }
+                            var d = json['data']
+                            dataIzin[d['id_spt']] = d;
+                            Swal.fire("Simpan Berhasil", "", "success");
+                            renderSKP(dataIzin);
+                            EditModal.self.modal('hide');
+                        },
+                        error: function(e) {}
+                    });
                 });
             });
-        });
 
+            FDataTable.on('click', '.delete_adm', function() {
+                curData = $(this).data('id');
+                Swal.fire(swalDeleteConfigure).then((result) => {
+                    if (!result.value) {
+                        return;
+                    }
 
-        FDataTable.on('click', '.approv', function() {
-            var jenis = $(this).data('jenis');
-            var link = $(this).data('link');
-            Swal.fire({
-                title: "Konfrirmasi Approv",
-                text: "Data ini akan di approv anda yakin ?",
-                icon: "warning",
-                allowOutsideClick: false,
-                showCancelButton: true,
-                buttons: {
-                    cancel: 'Batal !!',
-                    catch: {
-                        text: "Ya, Approv !!",
-                        value: true,
-                    },
-                },
-            }).then((result) => {
-                if (!result.isConfirmed) {
-                    return;
-                }
-                Swal.fire({
-                    title: 'Loading Approv!',
-                    allowOutsideClick: false,
-                });
-                Swal.showLoading()
-                cur_id = $(this).data('id')
-                $.ajax({
-                    url: `<?= base_url() ?>${jenis}/action/approv/${cur_id}`,
-                    'type': 'get',
-                    data: {
-                        jenis: jenis
-                    },
-                    success: function(data) {
-                        Swal.close();
-                        // buttonIdle(button);
-                        var json = JSON.parse(data);
-                        if (json['error']) {
-                            Swal.fire("Simpan Gagal", json['message'], "error");
-                            return;
-                        }
-                        var d = json['data']
-                        if (jenis == 'spt')
-                            dataIzin[jenis][d['id_spt']] = d;
-                        else if (jenis == 'SuratIzin')
-                            dataIzin[d['id_surat_izin']] = d;
-                        console.log(dataIzin[d['id_surat_izin']]);
-                        Swal.fire("Approv Berhasil", "", "success");
-                        renderSKP(dataIzin);
-                    },
-                    error: function(e) {}
+                    $.ajax({
+                        url: '<?= base_url() ?>/Spt/delete_adm',
+                        'type': 'POST',
+                        // data: EditModal.form.serialize(),
+                        data: {
+                            id_spt: curData
+                        },
+                        success: function(data) {
+                            // buttonIdle(button);
+                            var json = JSON.parse(data);
+                            if (json['error']) {
+                                Swal.fire("Delete Gagal", json['message'], "error");
+                                return;
+                            }
+                            delete dataIzin[curData];
+                            Swal.fire("Delete Berhasil", "", "success");
+                            renderSKP(dataIzin);
+                            EditModal.self.modal('hide');
+                        },
+                        error: function(e) {}
+                    });
                 });
             });
-        })
 
-        FDataTable.on('click', '.deapprov', function() {
-            var currentData = dataIzin[$(this).data('id')];
-            var jenis = $(this).data('jenis');
-            Swal.fire({
-                title: "Konfrirmasi Penolakan",
-                text: "Data ini akan ditolak ?",
-                icon: "warning",
-                allowOutsideClick: false,
-                showCancelButton: true,
-                buttons: {
-                    cancel: 'Batal !!',
-                    catch: {
-                        text: "Ya, Tolak !!",
-                        value: true,
-                    },
-                },
-            }).then((result) => {
-                if (!result.isConfirmed) {
-                    return;
-                }
-                Swal.fire({
-                    title: 'Loading Tolak Approv!',
-                    allowOutsideClick: false,
-                });
-                Swal.showLoading()
-                cur_id = $(this).data('id')
-                $.ajax({
-                    url: `<?= base_url('Spt/action/unapprov/') ?>${cur_id}`,
-                    'type': 'get',
-                    data: {
-                        id: $(this).data('id'),
-                        aksi: 3,
-                        jenis: jenis
-                    },
-                    success: function(data) {
-
-                        Swal.close();
-
-                        // buttonIdle(button);
-                        var json = JSON.parse(data);
-                        if (json['error']) {
-                            Swal.fire("Tolak Gagal", json['message'], "error");
-                            return;
-                        }
-                        var d = json['data']
-                        dataIzin[jenis][d['id_spt']] = d;
-                        Swal.fire("SKP Berhasil ditolak", "", "success");
-                        renderSKP(dataIzin);
-                    },
-                    error: function(e) {}
-                });
-            });
-        })
-
-        FDataTable.on('click', '.batal_aksi', function() {
-            var currentData = dataIzin[$(this).data('id')];
-            var jenis = $(this).data('jenis');
-            Swal.fire({
-                title: "Konfrirmasi Batal",
-                text: "Aksi untuk data ini akan dibatalkan?",
-                icon: "warning",
-                allowOutsideClick: false,
-                showCancelButton: true,
-                buttons: {
-                    cancel: 'Batal !!',
-                    catch: {
-                        text: "Ya, Batalkan !!",
-                        value: true,
-                    },
-                },
-            }).then((result) => {
-                console.log(result)
-                if (!result.isConfirmed) {
-                    return;
-                }
-                Swal.fire({
-                    title: 'Loading Pembatalan!',
-                    allowOutsideClick: false,
-                });
-                Swal.showLoading()
-                cur_id = $(this).data('id')
-                $.ajax({
-                    url: `<?= base_url('Spt/action/undo/') ?>${cur_id}`,
-                    'type': 'get',
-                    data: {
-                        id: $(this).data('id'),
-                        aksi: 1,
-                        jenis: jenis
-                    },
-                    success: function(data) {
-
-                        Swal.close();
-
-                        // buttonIdle(button);
-                        var json = JSON.parse(data);
-                        if (json['error']) {
-                            Swal.fire("Pembatalan Gagal", json['message'], "error");
-                            return;
-                        }
-                        var d = json['data'];
-                        dataIzin[jenis][d['id_spt']] = d;
-                        Swal.fire("Pembatalan Berhasil", "", "success");
-                        renderSKP(dataIzin);
-                    },
-                    error: function(e) {}
-                });
-            });
-        })
+        <?php } ?>
 
 
     });

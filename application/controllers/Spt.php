@@ -260,7 +260,44 @@ class Spt extends CI_Controller
         }
     }
 
+    public function action_edit()
+    {
+        try {
+            // $this->SecurityModel->multiRole('SPPD', 'Entri SPPD');
+            if ($this->session->userdata['id_role'] == 1) {
+            } else {
+                throw new UserException('Kamu tidak berhak melakukan aksi ini!!', UNAUTHORIZED_CODE);
+            }
 
+            $data = $this->input->post();
+
+            $id =  $this->SPPDModel->edit_adm($data);
+            $data = $this->SPPDModel->getAllSPPD(['id_spt' => $data['id_spt']])[$data['id_spt']];
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+    public function delete_adm()
+    {
+        try {
+            // $this->SecurityModel->multiRole('SPPD', 'Entri SPPD');
+
+            if ($this->session->userdata['id_role'] == 1) {
+            } else {
+                throw new UserException('Kamu tidak berhak melakukan aksi ini!!', UNAUTHORIZED_CODE);
+            }
+
+            $data = $this->input->post();
+
+            $this->SPPDModel->delete($data);
+
+            echo json_encode(array('error' => false, 'data' => $data['id_spt']));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
     public function create_process()
     {
         try {

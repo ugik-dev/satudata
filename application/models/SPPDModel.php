@@ -539,7 +539,81 @@ class SPPDModel extends CI_Model
 
         return $id_spt;
     }
+    public function edit_adm($data)
+    {
 
+        $this->db->set(DataStructure::slice($data, [
+            'tgl_pengajuan', 'no_spt', 'no_sppt',
+        ], FALSE));
+
+        $this->db->where('id_spt', $data['id_spt']);
+        $this->db->update('spt',);
+
+        $id_spt = $data['id_spt'];
+        // $i = 0;
+        // foreach ($data['tempat_tujuan'] as $p) {
+        //     $d_tujuan = array(
+        //         'id_spt' => $id_spt,
+        //         'tempat_tujuan' => $data['tempat_tujuan'][$i],
+        //         'tempat_kembali' => $data['tempat_kembali'][$i],
+        //         'date_berangkat' => $data['date_berangkat'][$i],
+        //         'date_kembali' => $data['date_kembali'][$i],
+        //         'ke' => $i + 1,
+        //     );
+
+        //     if (!empty($data['tempat_tujuan'][$i]) and !empty($data['tempat_kembali'][$i]) and !empty($data['date_berangkat'][$i]) and !empty($data['date_kembali'][$i]) and empty($data['id_tujuan'][$i])) {
+        //         $this->db->insert('tujuan', $d_tujuan);
+        //     } else
+        //     if (!empty($data['tempat_tujuan'][$i]) and !empty($data['tempat_kembali'][$i]) and !empty($data['date_berangkat'][$i]) and !empty($data['date_kembali'][$i]) and !empty($data['id_tujuan'][$i])) {
+        //         $this->db->set($d_tujuan);
+        //         $this->db->where('id_tujuan', $data['id_tujuan'][$i]);
+        //         $this->db->update('tujuan');
+        //     } else if (!empty($data['id_tujuan'][$i])) {
+        //         $this->db->where('id_tujuan', $data['id_tujuan'][$i]);
+        //         $this->db->delete('tujuan');
+        //     }
+        //     $i++;
+        // }
+        // $this->db->where('id_spt', $id_spt);
+        // $this->db->delete('pengikut');
+        // if (!empty($data['pengikut']))
+        //     foreach ($data['pengikut'] as $p) {
+        //         $d_pengikut = array(
+        //             'id_spt' => $id_spt,
+        //             'id_pegawai' => $p,
+        //         );
+        //         $this->db->insert('pengikut', $d_pengikut);
+        //     }
+        // $j = 0;
+        // if (!empty($data['dasar_tambahan']))
+        //     foreach ($data['dasar_tambahan'] as $p) {
+        //         if (empty($data['id_dasar_tambahan'][$j]) and !empty($data['dasar_tambahan'][$j])) {
+        //             $d_pengikut = array(
+        //                 'id_spt' => $id_spt,
+        //                 'dasar_tambahan' => $p,
+        //             );
+        //             $this->db->insert('dasar_tambahan', $d_pengikut);
+        //         } else  if (!empty($data['id_dasar_tambahan'][$j]) and !empty($data['dasar_tambahan'][$j])) {
+        //             $d_pengikut = array(
+        //                 'dasar_tambahan' => $p,
+        //             );
+        //             $this->db->set('dasar_tambahan', $data['dasar_tambahan'][$j]);
+        //             $this->db->where('id_dasar_tambahan', $data['id_dasar_tambahan'][$j]);
+        //             $this->db->update('dasar_tambahan');
+        //             // echo  !empty($data['dasar_tambahan'][$j]);
+        //             // echo  $data['dasar_tambahan'][$j];
+        //             // die();
+        //         } else if (!empty($data['id_dasar_tambahan'][$j]) and empty($data['dasar_tambahan'][$j])) {
+        //             $this->db->where('id_dasar_tambahan', $data['id_dasar_tambahan'][$j]);
+        //             $this->db->delete('dasar_tambahan');
+        //         }
+        //         $j++;
+        //     }
+
+        // ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
+
+        return $id_spt;
+    }
 
     public function draft_to_diajukan($data)
     {
@@ -926,6 +1000,18 @@ class SPPDModel extends CI_Model
     {
         $this->db->where('id_spt', $data['id_spt']);
         $this->db->delete('spt');
+
+        $this->db->where('id_spt', $data['id_spt']);
+        $this->db->delete('pengikut');
+
+        $this->db->where('id_spt', $data['id_spt']);
+        $this->db->delete('tujuan');
+
+        $this->db->where('id_spt', $data['id_spt']);
+        $this->db->delete('spt_laporan');
+
+        $this->db->where('id_spt', $data['id_spt']);
+        $this->db->delete('spt_foto');
         ExceptionHandler::handleDBError($this->db->error(), "Hapus SPT", "SPT");
     }
 
