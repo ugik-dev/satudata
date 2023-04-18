@@ -102,9 +102,9 @@ class SuratIzinModel extends CI_Model
                 // die();
                 if (!empty($filter['status_permohonan'])) {
                     if ($filter['status_permohonan'] == 'menunggu-saya') {
-                        $this->db->where("si.status_izin = 50 OR (si.id_pengganti =  {$penilai['id']} AND status = 0)");
+                        $this->db->where("si.status_izin = 50 OR (si.id_pengganti =  {$penilai['id']} AND si.status_izin = 0)");
                     } else if ($filter['status_permohonan'] == 'approv') {
-                        $this->db->where('si.status_izin in ( 51, 10,11,14,15,99)');
+                        $this->db->where("si.status_izin in ( 51, 10,11,14,15,99) OR (si.id_pengganti =  {$penilai['id']} AND si.status_izin = 0)");
                         $this->db->where('si.status_izin <> 98');
                     }
                 }
@@ -115,9 +115,9 @@ class SuratIzinModel extends CI_Model
                 // die();
                 if (!empty($filter['status_permohonan'])) {
                     if ($filter['status_permohonan'] == 'menunggu-saya') {
-                        $this->db->where("si.status_izin = 51 OR (si.id_pengganti =  {$penilai['id']} AND status = 0)");
+                        $this->db->where("si.status_izin = 51 OR (si.id_pengganti =  {$penilai['id']} AND si.status_izin = 0)");
                     } else if ($filter['status_permohonan'] == 'approv') {
-                        $this->db->where('si.status_izin in ( 10, 11,14,15,99)');
+                        $this->db->where("si.status_izin in ( 10, 11,14,15,99) OR (si.id_pengganti =  {$penilai['id']} AND si.status_izin > 0)");
                         $this->db->where('si.status_izin <> 98');
                     }
                 }
