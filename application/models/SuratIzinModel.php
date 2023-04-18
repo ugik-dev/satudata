@@ -97,12 +97,12 @@ class SuratIzinModel extends CI_Model
             }
 
             if ($penilai['level'] == 8) {
-                $this->db->where('si.status_izin in ( 50, 51,10,11,14,15,99)');
+                $this->db->where("si.id_pengganti =  {$penilai['id']} OR si.status_izin in ( 50, 51,10,11,14,15,99)");
                 $this->db->where('si.id_satuan', $penilai['id_satuan']);
                 // die();
                 if (!empty($filter['status_permohonan'])) {
                     if ($filter['status_permohonan'] == 'menunggu-saya') {
-                        $this->db->where('si.status_izin', 50);
+                        $this->db->where("si.status_izin = 50 OR (si.id_pengganti =  {$penilai['id']} AND status = 0)");
                     } else if ($filter['status_permohonan'] == 'approv') {
                         $this->db->where('si.status_izin in ( 51, 10,11,14,15,99)');
                         $this->db->where('si.status_izin <> 98');
@@ -110,12 +110,12 @@ class SuratIzinModel extends CI_Model
                 }
             } else if ($penilai['level'] == 7) {
                 // $this->db->where("(d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
-                $this->db->where('si.status_izin in (51, 52, 10, 11,14,15,99)');
+                $this->db->where("si.id_pengganti =  {$penilai['id']} OR si.status_izin in (51, 52, 10, 11,14,15,99)");
                 $this->db->where('si.id_satuan', $penilai['id_satuan']);
                 // die();
                 if (!empty($filter['status_permohonan'])) {
                     if ($filter['status_permohonan'] == 'menunggu-saya') {
-                        $this->db->where('si.status_izin', 51);
+                        $this->db->where("si.status_izin = 51 OR (si.id_pengganti =  {$penilai['id']} AND status = 0)");
                     } else if ($filter['status_permohonan'] == 'approv') {
                         $this->db->where('si.status_izin in ( 10, 11,14,15,99)');
                         $this->db->where('si.status_izin <> 98');
