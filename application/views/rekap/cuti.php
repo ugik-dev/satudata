@@ -633,7 +633,6 @@
                                 'id_satuan' => $curUser['id_satuan'],
                                 'id' => $curUser['id'],
                             ]) ?>;
-        console.log(currentUser);
         var swalSaveConfigure = {
             title: "Konfirmasi simpan",
             text: "Yakin akan menyimpan data ini?",
@@ -871,7 +870,6 @@
         <?php if ($dataContent['edit_cuti']) { ?>
             FDataTable.on('click', '.form_edit', function() {
                 curData = dataIzin[$(this).data('id')];
-                console.log('verf');
                 console.log(curData);
                 EditModal.self.modal('show');
                 $('#edit_modal').modal('show');
@@ -1036,7 +1034,6 @@
         });
 
         VerifModal.form.submit(function(event) {
-            console.log('sub');
             event.preventDefault();
             var url = "<?= site_url('SuratIzin/action_verif/') ?>";
             Swal.fire(swalSaveConfigure).then((result) => {
@@ -1113,7 +1110,6 @@
                             dataIzin[jenis][d['id_spt']] = d;
                         else if (jenis == 'SuratIzin')
                             dataIzin[d['id_surat_izin']] = d;
-                        console.log(dataIzin[d['id_surat_izin']]);
                         Swal.fire("Approv Berhasil", "", "success");
                         renderSKP(dataIzin);
                     },
@@ -1193,7 +1189,6 @@
                     },
                 },
             }).then((result) => {
-                console.log(result)
                 if (!result.isConfirmed) {
                     return;
                 }

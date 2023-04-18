@@ -417,7 +417,6 @@
                                 'id_satuan' => $curUser['id_satuan'],
                                 'id' => $curUser['id'],
                             ]) ?>;
-        console.log(currentUser);
         var swalSaveConfigure = {
             title: "Konfirmasi simpan",
             text: "Yakin akan menyimpan data ini?",
@@ -478,7 +477,6 @@
         }
 
         function renderSKP(data) {
-            console.log(data)
             if (data == null || typeof data != "object") {
                 console.log("Sppd::UNKNOWN DATA");
                 return;
@@ -581,7 +579,6 @@
                 info = 'Pengganti : ' + (d['nama_pengganti'] ? d['nama_pengganti'] : '-');
                 info += ('<br>Instansi : ' + d['nama_satuan']);
                 info += ('<br>Nomor : ' + (d['no_spc'] ? d['no_spc'] : ''));
-                console.log(d['unapprove']);
                 renderData.push([d['nama_izin'],
                     d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
                     d['nama_pegawai'], info,
@@ -592,7 +589,6 @@
             Object.values(data['spt']).forEach((spt) => {
                 var aksiBtn = '';
                 <?php if ($this->session->userdata()['level'] == 3 or $this->session->userdata()['level'] == 4) { ?>
-                    console.log('ini level 3 KASUBAG / KABID');
                     if (spt['status'] == 2) {
                         var aksiBtn = `
                     <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
@@ -626,7 +622,6 @@
                         `;
                     }
                 <?php  } else if ($this->session->userdata()['level'] == 5) { ?>
-                    console.log(spt['status'])
                     if (spt['status'] == 1 && spt['id_seksi'] == currentUser['id_seksi']) {
                         var aksiBtn = `
                     <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
@@ -638,9 +633,7 @@
                         `;
                     }
                 <?php  } else if ($this->session->userdata()['level'] == 8) { ?>
-                    console.log(spt['id_satuan'])
                     if (spt['status'] == 50 && spt['id_satuan'] == currentUser['id_satuan']) {
-                        console.log("hereess23")
                         var aksiBtn = `
                     <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
                     <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
@@ -651,7 +644,6 @@
                         `;
                     }
                 <?php  } else if ($this->session->userdata()['level'] == 7) { ?>
-                    console.log(spt['id_satuan'])
                     if (spt['status'] == 59 && spt['id_satuan'] == currentUser['id_satuan']) {
                         var aksiBtn = `
                     <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
@@ -663,7 +655,6 @@
                         `;
                     }
                 <?php  } else if ($this->session->userdata()['penomoran'] == 1) { ?>
-                    console.log('here')
                     if (spt['status'] == 99) {
                         var aksiBtn = `
                     <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
@@ -734,7 +725,6 @@
                                 </div>
                             </div>
                         </div>`;
-                // console.log(button)
                 i = 1;
                 d1 = '';
                 d2 = '';
@@ -779,8 +769,6 @@
         FDataTable.on('click', '.verif_cuti', function() {
             // var jenis = $(this).data('jenis');
             curData = dataSKP['surat_izin'][$(this).data('id')];
-            console.log('verf');
-            console.log(curData);
             VerifModal.self.modal('show');
             $('#verif_modal').modal('show');
             VerifModal.idSuratIzin.val(curData['id_surat_izin']);
@@ -841,7 +829,6 @@
         FDataTable.on('click', '.data_izin', function() {
             var jenis = $(this).data('jenis');
             curData = dataSKP['surat_izin'][$(this).data('id')];
-            console.log(curData);
             LihatModal.self.modal('show');
             LihatModal.periode_start.val(curData['periode_start']);
             LihatModal.periode_end.val(curData['periode_end']);
@@ -879,7 +866,6 @@
         });
 
         VerifModal.form.submit(function(event) {
-            console.log('sub');
             event.preventDefault();
             var url = "<?= site_url('SuratIzin/action_verif/') ?>";
             Swal.fire(swalSaveConfigure).then((result) => {
@@ -956,7 +942,6 @@
                             dataSKP[jenis][d['id_spt']] = d;
                         else if (jenis == 'SuratIzin')
                             dataSKP['surat_izin'][d['id_surat_izin']] = d;
-                        console.log(dataSKP['surat_izin'][d['id_surat_izin']]);
                         Swal.fire("Approv Berhasil", "", "success");
                         renderSKP(dataSKP);
                     },
@@ -1036,7 +1021,6 @@
                     },
                 },
             }).then((result) => {
-                console.log(result)
                 if (!result.isConfirmed) {
                     return;
                 }

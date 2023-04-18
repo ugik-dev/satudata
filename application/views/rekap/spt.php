@@ -212,7 +212,6 @@
                                 'id_satuan' => $curUser['id_satuan'],
                                 'id' => $curUser['id'],
                             ]) ?>;
-        console.log(currentUser);
         var swalSaveConfigure = {
             title: "Konfirmasi simpan",
             text: "Yakin akan menyimpan data ini?",
@@ -271,7 +270,6 @@
         }
 
         function renderSKP(data) {
-            console.log(data)
             if (data == null || typeof data != "object") {
                 console.log("Sppd::UNKNOWN DATA");
                 return;
@@ -369,7 +367,6 @@
         function tgl_indo(tgl) {
             tgl2 = tgl.split(' ');
             ex_tgl = tgl2[0].split('-');
-            console.log(ex_tgl);
             var bulan = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
             return ex_tgl[2] + ' ' + bulan[parseInt(ex_tgl[1])] + ' ' + ex_tgl[0]
         }
