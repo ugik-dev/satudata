@@ -1370,6 +1370,8 @@ class Spt extends CI_Controller
         $pdf->MultiCell(145, 5, $data['jabatan_pegawai'], 0,  'L', 0);
         $i = 2;
         foreach ($data['pengikut'] as $pengikut) {
+            $pdf->CheckPageBreak(22);
+
             $pdf->Cell(5, 2, '', 0, 1, 'L', 0);
             $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
             $pdf->Cell(10, 5, $i . '.', 0, 0, 'L', 0);
@@ -1415,11 +1417,6 @@ class Spt extends CI_Controller
                 $t = $tujuan['tempat_tujuan'];
                 $i++;
             }
-            // if ($d1 != $d2) {
-            //     $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1) . ' sampai ' . tanggal_indonesia($d2);
-            // } else {
-            //     $tujuan_text .= ' pada tanggal ' . tanggal_indonesia($d1);
-            // }
         } else {
             foreach ($data['tujuan'] as $tujuan) {
                 if ($i == 1) {
@@ -1458,9 +1455,11 @@ class Spt extends CI_Controller
         $cur_x = $pdf->getX();
         $cur_y = $pdf->GetY();
 
-        $pdf->CheckPageBreak(65);
 
+        $pdf->CheckPageBreak(60);
         if ($data['status'] == '99' && !empty($data['sign_kadin'])) {
+            // $pdf->CheckPageBreak(50);
+
             $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Ditetapkan di', 0, 0, 'L', 0);
             $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
