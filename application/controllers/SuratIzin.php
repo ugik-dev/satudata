@@ -427,35 +427,35 @@ class SuratIzin extends CI_Controller
             $data = $this->input->post();
             $ses = $this->session->userdata();
             $data['id_pegawai'] = $ses['id'];
-            if (empty($data['id_pengganti'])) {
-                // jika tidak ada pengganti maka
-                if ($ses['jen_satker'] == 1) {
-                    if (!empty($ses['id_seksi'])) {
-                        $data['id_seksi'] = $ses['id_seksi'];
-                    }
-                    if ($ses['level'] == 6 && $ses['id_satuan'] == 1) {
-                        if (!empty($ses['id_seksi'])) {
-                            $data['status_izin'] = 1;
-                        } else {
-                            $data['status_izin'] = 2;
-                        }
-                    } else if ($ses['level'] == 5) {
-                        if (!empty($ses['id_seksi'])) {
-                            $data['status_izin'] = 2;
-                        }
-                    } else if ($ses['level'] == 4 || $ses['level'] == 3) {
-                        $data['status_izin'] = 5;
-                    } else if ($ses['level'] == 2) {
-                        $data['status_izin'] = 6;
-                    } else if ($ses['level'] == 1) {
-                        $data['status_izin'] = 10;
-                    }
-                } else {
-                    $data['status_izin'] = 50;
-                }
-            } else {
-                $data['status_izin'] = 0;
-            }
+            // if (empty($data['id_pengganti'])) {
+            //     // jika tidak ada pengganti maka
+            //     if ($ses['jen_satker'] == 1) {
+            //         if (!empty($ses['id_seksi'])) {
+            //             $data['id_seksi'] = $ses['id_seksi'];
+            //         }
+            //         if ($ses['level'] == 6 && $ses['id_satuan'] == 1) {
+            //             if (!empty($ses['id_seksi'])) {
+            //                 $data['status_izin'] = 1;
+            //             } else {
+            //                 $data['status_izin'] = 2;
+            //             }
+            //         } else if ($ses['level'] == 5) {
+            //             if (!empty($ses['id_seksi'])) {
+            //                 $data['status_izin'] = 2;
+            //             }
+            //         } else if ($ses['level'] == 4 || $ses['level'] == 3) {
+            //             $data['status_izin'] = 5;
+            //         } else if ($ses['level'] == 2) {
+            //             $data['status_izin'] = 6;
+            //         } else if ($ses['level'] == 1) {
+            //             $data['status_izin'] = 10;
+            //         }
+            //     } else {
+            //         $data['status_izin'] = 50;
+            //     }
+            // } else {
+            $data['status_izin'] = 0;
+            // }
             if (!empty($ses['id_seksi']))
                 $data['id_seksi'] = $ses['id_seksi'];
             if (!empty($ses['id_bagian']))
@@ -473,6 +473,67 @@ class SuratIzin extends CI_Controller
                 // throw new UserException('Foto harus diupload !!', UNAUTHORIZED_CODE);
             }
 
+            if ($data['jenis_izin'] == 11) {
+                $last_cuti =  $this->SuratIzinModel->CekLastTahunan($ses['id']);
+                if (!empty($last_cuti[0])) {
+                    // if($last_cuti)
+                    $year = explode('-', $last_cuti[0]['periode_start'])[0];
+                    $cur_year = explode('-', $data['periode_start'])[0];
+
+                    if ($year == $cur_year) {
+                        $data['c_sisa_n'] = $last_cuti[0]['c_sisa_n'] - $last_cuti[0]['c_n'];
+                        $data['c_sisa_n1'] = $last_cuti[0]['c_sisa_n1'] - $last_cuti[0]['c_n1'];
+                        $data['c_sisa_n2'] = $last_cuti[0]['c_sisa_n2'] - $last_cuti[0]['c_n2'];
+                    } else 
+                    if ($year + 1 == $cur_year) {
+                        $data['c_sisa_n'] = 12;
+                        $data['c_sisa_n1'] = $last_cuti[0]['c_sisa_n'] - $last_cuti[0]['c_n'];
+                        $data['c_sisa_n2'] = $last_cuti[0]['c_sisa_n1'] - $last_cuti[0]['c_n1'];
+                        if ($data['c_sisa_n1'] > 6) {
+                            $data['c_sisa_n1'] = 6;
+                        }
+                        if ($data['c_sisa_n2'] > 6) {
+                            $data['c_sisa_n2'] = 6;
+                        }
+                    } else
+                    if ($year + 2 == $cur_year) {
+                        $data['c_sisa_n'] = 12;
+                        $data['c_sisa_n1'] = 6;
+                        $data['c_sisa_n2'] = $last_cuti[0]['c_sisa_n'] - $last_cuti[0]['c_n'];
+                        if ($data['c_sisa_n2'] > 6) {
+                            $data['c_sisa_n2'] = 6;
+                        }
+                    } else {
+                        $data['c_sisa_n'] = 12;
+                        $data['c_sisa_n1'] = 6;
+                        $data['c_sisa_n2'] = 6;
+                    }
+                    // echo json_encode(array('error' => true, $data));
+                    // die();
+
+                    $total_c = (int) $data['c_sisa_n'] + (int)$data['c_sisa_n1'] + (int) $data['c_sisa_n2'];
+
+                    if ($total_c < $data['lama_izin']) {
+                        throw new UserException('Sisa cuti tidak cukup!!!!', UNAUTHORIZED_CODE);
+                    } else {
+                        if ($data['c_sisa_n2'] >= $data['lama_izin']) {
+                            $data['c_n2'] = $data['lama_izin'];
+                            $data['c_n1'] = '0';
+                            $data['c_n'] = '0';
+                        } else if (($data['c_sisa_n2'] + $data['c_sisa_n1']) >= $data['lama_izin']) {
+                            $data['c_n2'] = $data['c_sisa_n2'];
+                            $data['c_n1'] = $data['lama_izin'] - $data['c_sisa_n2'];
+                            $data['c_n'] = '0';
+                        } else {
+                            $data['c_n2'] = $data['c_sisa_n2'];
+                            $data['c_n1'] = $data['c_sisa_n1'];
+                            $data['c_n'] =  $data['lama_izin'] - $data['c_sisa_n2'] - $data['c_sisa_n1'];
+                        }
+                    }
+                }
+                // echo json_encode(array('error' => true, 'data' => $data));
+            }
+            // die();
             $id =  $this->SuratIzinModel->add($data);
 
             $data = $this->SuratIzinModel->getAll(['id_surat_izin' => $id]);

@@ -4,6 +4,18 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class SuratIzinModel extends CI_Model
 {
 
+    public function CekLastTahunan($id)
+    {
+        $this->db->from('surat_izin as si');
+        $this->db->where('id_pegawai', $id);
+        $this->db->where('jenis_izin', 11);
+        $this->db->where('status_izin', 99);
+        $this->db->order_by('id_surat_izin', "DESC");
+        $this->db->limit(1);
+
+        $res = $this->db->get()->result_array();
+        return $res;
+    }
     public function getAll($filter = [])
     {
         $ses = $this->session->userdata();

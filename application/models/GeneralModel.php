@@ -369,6 +369,7 @@ class GeneralModel extends CI_Model
         $this->db->join('bagian b', 'u.id_bagian = b.id_bagian', 'LEFT');
         $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
 
+        $this->db->where('u.deleted_user', 0);
 
         if (!empty($filter['searchTerm'])) $this->db->where('nama like "%' . $filter['searchTerm'] . '%"');
 
