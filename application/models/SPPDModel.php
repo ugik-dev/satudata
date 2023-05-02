@@ -312,15 +312,8 @@ class SPPDModel extends CI_Model
             // die();
             $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
         }
-        // var_dump($this->session->userdata()['level']);
-        // if ($this->session->userdata()['level'] == 2) {
-        //     $this->db->where('s.id_bagian', $this->session->userdata()['id_bagian']);
-        // }
-        $res = $this->db->get();
-        // print($this->db->last_query());
-        // echo json_encode($res->result_array());
-        // die();
 
+        $res = $this->db->get();
         return DataStructure::SPPDStyle($res->result_array());
     }
 
@@ -333,7 +326,7 @@ class SPPDModel extends CI_Model
         $this->db->join('tujuan r', 'u.id_spt = r.id_spt');
         $this->db->where_in('id_pegawai', $data['pengikut']);
         $this->db->where('u.jenis', '2');
-        if (!empty($ex_id)) $this->db->where('u.id_spt <> ', $ex_id);
+        if (!empty($ex_id)) $this->db->where('u.id_spt <>', $ex_id);
         $this->db->where('u.status <> 98');
         $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
 

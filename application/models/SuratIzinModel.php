@@ -4,6 +4,24 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class SuratIzinModel extends CI_Model
 {
 
+    public function CekJadwal($data = [], $start, $end, $ex_id = '')
+    {
+        $data['pengikut'][] = $data['id_pegawai'];
+        $this->db->select('*');
+        $this->db->from('surat_izin as u');
+        $this->db->where_in('id_pegawai', $data['pengikut']);
+        // $this->db->where('u.unapprove is null');
+        $this->db->where("(u.periode_start >='$start' AND u.periode_end <= '$end')");
+
+        $res1 = $this->db->get()->result_array();
+
+        echo $this->db->last_query();
+        // echo json_encode(['error' => true, 'message' => '', 'data' => $res1]);
+        die();
+        if (!empty($res1))
+            throw new UserException("{$res1[0]['nama']} Sudah dijadwalkan berangkat ke {$res1[0]['tempat_tujuan']} pada tanggal {$res1[0]['date_berangkat']} s.d. {$res1[0]['date_kembali']} dengan NO SPPD {$res1[0]['no_sppd']} ", UNAUTHORIZED_CODE);
+    }
+
     public function CekLastTahunan($id)
     {
         $this->db->from('surat_izin as si');
@@ -41,23 +59,21 @@ class SuratIzinModel extends CI_Model
         $this->db->join('users pg', 'pg.id = si.id_pengganti', 'LEFT');
         if (!empty($filter['search_approval']['data_penilai'])) {
             $penilai =  $filter['search_approval']['data_penilai'];
-            if ($penilai['level'] == 6)
+            if ($penilai['level'] == 6) {
                 $this->db->where("si.id_pengganti =  {$penilai['id']} OR (s.verif_cuti = {$penilai['id']}  && si.status_izin in (10, 11,15) )");
+            }
             if ($penilai['level'] == 5) {
                 $this->db->where("si.id_pengganti =  {$penilai['id']} OR si.id_seksi = {$penilai['id_seksi']}");
             }
             // die();
             if ($penilai['level'] == 4 || $penilai['level'] == 3) {
                 if ($penilai['id_bagian'] == 2) {
-                    $this->db->where("(si.status_izin in (11,14,15,6,99) OR status_izin = 11)");
+                    $this->db->where("(si.status_izin in (11,14,15,6,99) OR (si.id_bagian = 2 and si.status_izin in (2,10)))");
                     if (!empty($filter['status_permohonan'])) {
                         if ($filter['status_permohonan'] == 'menunggu-saya') {
-                            // die();
-                            $this->db->where("(si.status_izin = 11 and si.unapprove IS NULL)");
+                            $this->db->where("(si.status_izin = 11 OR (si.id_bagian = 2 and si.status_izin = 2) and si.unapprove IS NULL)");
                         } else if ($filter['status_permohonan'] == 'my-approv') {
-                            $this->db->where("si.status_izin in (14,15,6,99)");
-                            // } else if ($filter['status_permohonan'] == 'ditolak') {
-                            //     $this->db->where('u.status = 98');
+                            $this->db->where("(si.status_izin in (14,15,6,99) OR (si.id_bagian = 2 and si.status_izin > 2))");
                         } else if ($filter['status_permohonan'] == 'selesai') {
                             $this->db->where('u.status = 99');
                         }

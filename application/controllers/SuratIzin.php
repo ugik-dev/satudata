@@ -154,7 +154,11 @@ class SuratIzin extends CI_Controller
                             if (!empty($pegawai['id_seksi'])) {
                                 $data['status_izin'] = 1;
                             } else {
-                                $data['status_izin'] = 2;
+                                if ($data['id_bagian'] == 2 && $data['jen_izin'] == 1) {
+                                    $data['status_izin'] = 10;
+                                } else {
+                                    $data['status_izin'] = 2;
+                                }
                             }
                         } else if ($pegawai['level'] == 5) {
                             if (!empty($pegawai['id_seksi'])) {
@@ -191,7 +195,16 @@ class SuratIzin extends CI_Controller
                 } else if (($cur_user['level'] == 3 || $cur_user['level'] == 4) && $data['status_izin'] == 2 && ($cur_user['id_bagian'] = $data['id_bagian'])) {
                     $logs['deskripsi'] =  'Menyetujui';
                     $logs['label'] = 'success';
-                    $data['status_izin'] = 10;
+                    if ($data['id_bagian'] == 2 && $data['jen_izin'] == 2) {
+                        $data['status_izin'] = 14;
+                    } else {
+                        if ($data['jen_izin'] == 2) {
+                            $data['status_izin'] = 11;
+                        } else {
+                            $data['status_izin'] = 10;
+                        }
+                    }
+
                     if ($data['level_pegawai'] == 6) {
                         $sign['atasan'] =  $this->SuratIzinModel->sign($cur_user, $cur_user['jabatan']);
                         $this->SuratIzinModel->approv($data, $sign);
@@ -283,6 +296,7 @@ class SuratIzin extends CI_Controller
                         $data_post['c_n'] =  $data['lama_izin'] - $data_post['c_sisa_n2'] - $data_post['c_sisa_n1'];
                     }
                 }
+
             if ($data['verif_cuti'] == $cur_user['id'] && in_array($data['status_izin'], [10, 11])) {
                 if ($data_post['verif'] == 1) {
                     $data_post['verif'] = $cur_user['id'];
@@ -572,7 +586,7 @@ class SuratIzin extends CI_Controller
         // if ($tipe == 4)
         //     $this->print_pencairan($data);
     }
-  
+
 
     function kop($pdf, $data, $dinkes = false)
     {
