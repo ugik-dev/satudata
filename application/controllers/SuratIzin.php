@@ -572,9 +572,11 @@ class SuratIzin extends CI_Controller
         // if ($tipe == 4)
         //     $this->print_pencairan($data);
     }
-    function kop($pdf, $data)
+  
+
+    function kop($pdf, $data, $dinkes = false)
     {
-        if ($data['jen_satker'] == 1) {
+        if ($data['jen_satker'] == 1 || $dinkes) {
             // echo json_encode($data);
             $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);
             $pdf->SetFont('Arial', '', 13);
@@ -596,29 +598,101 @@ class SuratIzin extends CI_Controller
             $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
             $pdf->SetLineWidth(0.2);
         } else
-        if ($data['jen_satker'] == 2 || $data['jen_satker'] == 3) {
-            // echo json_encode($data);
-            $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);
+        if ($data['jen_satker'] == 2) {
+            $pdf->Image(base_url('assets/img/kab_bangka.png'), 10, 5, 20, 27);
+            $pdf->Image(base_url('assets/img/logo_puskesmas.png'), 180, 5, 27, 27);
             $pdf->SetFont('Arial', '', 13);
             $pdf->SetFont('Arial', 'B', 15);
-            $pdf->Cell(15, 6, '', 0, 0, 'C');
-            $pdf->Cell(185, 6, 'PEMERINTAH KABUPATEN BANGKA', 0, 1, 'C');
-            $pdf->Cell(15, 6, '', 0, 0, 'C');
-            $pdf->Cell(185, 6, 'DINAS KESEHATAN', 0, 1, 'C');
-            $pdf->Cell(15, 6, '', 0, 0, 'C');
+            $pdf->Cell(20, 6, '', 0, 0, 'C');
+            $pdf->Cell(155, 6, 'PEMERINTAH KABUPATEN BANGKA', 0, 1, 'C');
+            $pdf->Cell(20, 6, '', 0, 0, 'C');
+            $pdf->Cell(155, 6, 'DINAS KESEHATAN', 0, 1, 'C');
+            $pdf->Cell(20, 6, '', 0, 0, 'C');
             $pdf->SetFont('Arial', 'B', 20);
-            $pdf->Cell(185, 7, $data['nama_satuan'], 0, 1, 'C');
+            $pdf->Cell(155, 7, $data['nama_satuan'], 0, 1, 'C');
             $pdf->SetFont('Arial', '', 10);
-            $pdf->Cell(15, 4, '', 0, 0, 'C');
-            $pdf->Cell(185, 4, 'Jalan : ' . $data['alamat_lengkap'], 0, 1, 'C');
-            $pdf->Cell(15, 4, '', 0, 0, 'C');
-            $pdf->Cell(185, 4, (!empty($data['kode_pos']) ? 'Kode Pos : ' . $data['kode_pos'] . ' ' : '') . (!empty($data['no_tlp']) ? 'Telp. ' . $data['no_tlp'] : ''), 0, 1, 'C');
-            $pdf->Cell(15, 4, '', 0, 0, 'C');
-            $pdf->Cell(185, 4, (!empty($data['email']) ? ' Email : ' . $data['email'] : '') . (!empty($data['website']) ? ' Website : ' . $data['website'] : ''), 0, 1, 'C');
+            $pdf->Cell(20, 4, '', 0, 0, 'C');
+            $pdf->Cell(155, 4,  $data['alamat_lengkap'], 0, 1, 'C');
+            $pdf->Cell(20, 4, '', 0, 0, 'C');
+            $pdf->Cell(155, 4, (!empty($data['kode_pos']) ? 'Kode Pos : ' . $data['kode_pos'] . ' ' : '') . (!empty($data['no_tlp']) ? 'Telp. ' . $data['no_tlp'] : ''), 0, 1, 'C');
+            $pdf->Cell(20, 4, '', 0, 0, 'C');
+            $pdf->Cell(155, 4, (!empty($data['email']) ? ' Email : ' . $data['email'] : '') . (!empty($data['website']) ? ' Website : ' . $data['website'] : ''), 0, 1, 'C');
             $pdf->Line($pdf->GetX(), $pdf->GetY() + 3, $pdf->GetX() + 195, $pdf->GetY() + 3);
             $pdf->SetLineWidth(0.4);
             $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
             $pdf->SetLineWidth(0.2);
+        } else
+        if ($data['jen_satker'] == 3) {
+            // echo json_encode($data);
+            if ($data['id_satuan'] == 17) {
+                $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);
+                $pdf->Image(base_url('assets/img/logo_eko.png'), 180, 0, 27, 35);
+                $pdf->SetFont('Arial', '', 13);
+                $pdf->SetFont('Arial', 'B', 15);
+                $pdf->Cell(20, 6, '', 0, 0, 'C');
+                $pdf->Cell(155, 6, 'PEMERINTAH KABUPATEN BANGKA', 0, 1, 'C');
+                $pdf->Cell(20, 6, '', 0, 0, 'C');
+                $pdf->Cell(155, 6, 'DINAS KESEHATAN', 0, 1, 'C');
+                $pdf->Cell(20, 6, '', 0, 0, 'C');
+                $pdf->SetFont('Arial', 'B', 20);
+                $pdf->Cell(155, 7, $data['nama_satuan'], 0, 1, 'C');
+                $pdf->SetFont('Arial', '', 10);
+                $pdf->Cell(20, 4, '', 0, 0, 'C');
+                $pdf->Cell(155, 4,  " Jalan Raya Belinyu Dusun Sp. Cangkum, Desa Riding Panjang Belinyu - Bangka", 0, 1, 'C');
+                $pdf->Cell(20, 4, '', 0, 0, 'C');
+                $pdf->Cell(155, 4, (!empty($data['kode_pos']) ? 'Kode Pos : ' . $data['kode_pos'] . ' ' : '') . (!empty($data['no_tlp']) ? 'Telp. ' . $data['no_tlp'] : ''), 0, 1, 'C');
+                // $pdf->Cell(20, 4, '', 0, 0, 'C');
+                // $pdf->Cell(155, 4, (!empty($data['email']) ? ' Email : ' . $data['email'] : '') . (!empty($data['website']) ? ' Website : ' . $data['website'] : ''), 0, 1, 'C');
+                $pdf->Line($pdf->GetX(), $pdf->GetY() + 3, $pdf->GetX() + 195, $pdf->GetY() + 3);
+                $pdf->SetLineWidth(0.4);
+                $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
+                $pdf->SetLineWidth(0.2);
+            } else  if ($data['id_satuan'] == 18) {
+                $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);
+                $pdf->Image(base_url('assets/img/logo_sr2.jpg'), 174, 5, 27, 27);
+                $pdf->SetFont('Arial', '', 13);
+                $pdf->SetFont('Arial', 'B', 20);
+                $pdf->Cell(20, 6, '', 0, 0, 'C');
+                $pdf->Cell(155, 6, 'PEMERINTAH KABUPATEN BANGKA', 0, 1, 'C');
+                $pdf->Cell(20, 6, '', 0, 0, 'C');
+                $pdf->Cell(155, 6, 'DINAS KESEHATAN', 0, 1, 'C');
+                $pdf->Cell(20, 6, '', 0, 0, 'C');
+                $pdf->SetFont('Arial', 'B', 20);
+                $pdf->Cell(155, 7, $data['nama_satuan'], 0, 1, 'C');
+                $pdf->SetFont('Arial', '', 10);
+                $pdf->Cell(20, 4, '', 0, 0, 'C');
+                $pdf->Cell(155, 4,  $data['alamat_lengkap'], 0, 1, 'C');
+                $pdf->Cell(20, 4, '', 0, 0, 'C');
+                $pdf->Cell(155, 4, (!empty($data['kode_pos']) ? 'Kode Pos : ' . $data['kode_pos'] . ' ' : '') . (!empty($data['no_tlp']) ? 'Telp. ' . $data['no_tlp'] : ''), 0, 1, 'C');
+                $pdf->Cell(20, 4, '', 0, 0, 'C');
+                $pdf->Cell(155, 4, (!empty($data['email']) ? ' Email : ' . $data['email'] : '') . (!empty($data['website']) ? ' Website : ' . $data['website'] : ''), 0, 1, 'C');
+                $pdf->Line($pdf->GetX(), $pdf->GetY() + 2, $pdf->GetX() + 195, $pdf->GetY() + 2);
+                $pdf->SetLineWidth(0.7);
+                $pdf->Line($pdf->GetX(), $pdf->GetY() + 2.8, $pdf->GetX() + 195, $pdf->GetY() + 2.8);
+                $pdf->SetLineWidth(0.2);
+            } else {
+                $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);
+                $pdf->SetFont('Arial', '', 13);
+                $pdf->SetFont('Arial', 'B', 15);
+                $pdf->Cell(15, 6, '', 0, 0, 'C');
+                $pdf->Cell(185, 6, 'PEMERINTAH KABUPATEN BANGKA', 0, 1, 'C');
+                $pdf->Cell(15, 6, '', 0, 0, 'C');
+                $pdf->Cell(185, 6, 'DINAS KESEHATAN', 0, 1, 'C');
+                $pdf->Cell(15, 6, '', 0, 0, 'C');
+                $pdf->SetFont('Arial', 'B', 20);
+                $pdf->Cell(185, 7, $data['nama_satuan'], 0, 1, 'C');
+                $pdf->SetFont('Arial', '', 10);
+                $pdf->Cell(15, 4, '', 0, 0, 'C');
+                $pdf->Cell(185, 4,  $data['alamat_lengkap'], 0, 1, 'C');
+                $pdf->Cell(15, 4, '', 0, 0, 'C');
+                $pdf->Cell(185, 4, (!empty($data['kode_pos']) ? 'Kode Pos : ' . $data['kode_pos'] . ' ' : '') . (!empty($data['no_tlp']) ? 'Telp. ' . $data['no_tlp'] : ''), 0, 1, 'C');
+                $pdf->Cell(15, 4, '', 0, 0, 'C');
+                $pdf->Cell(185, 4, (!empty($data['email']) ? ' Email : ' . $data['email'] : '') . (!empty($data['website']) ? ' Website : ' . $data['website'] : ''), 0, 1, 'C');
+                $pdf->Line($pdf->GetX(), $pdf->GetY() + 3, $pdf->GetX() + 195, $pdf->GetY() + 3);
+                $pdf->SetLineWidth(0.4);
+                $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
+                $pdf->SetLineWidth(0.2);
+            }
         }
     }
 
