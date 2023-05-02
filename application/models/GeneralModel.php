@@ -395,10 +395,11 @@ class GeneralModel extends CI_Model
         if ($this->session->userdata()['id_role'] != 1) {
             $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
         }
-        if (!empty($filter['searchTerm'])) $this->db->where('nama_dasar like "%' . $filter['searchTerm'] . '%"');
+        if (!empty($filter['searchTerm'])) $this->db->where('(nama_dasar like "%' . $filter['searchTerm'] . '%" OR kode_rekening like "%' . $filter['searchTerm'] . '%")');
         $this->db->limit('20');
         $res = $this->db->get();
         return $res->result_array();
+        // 1.02.02
     }
 
     public function getAllTransport($filter = [])

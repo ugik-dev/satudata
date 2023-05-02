@@ -195,7 +195,7 @@
                 No SPT : ${ spt['no_spt']?spt['no_spt']:''}<br>
                 No SPPD : ${ spt['no_sppd']?spt['no_sppd']:''}
                 `;
-                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], info, spt['nama_pegawai'], tujuan, statusSPT(spt['status']), button]);
+                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], info, spt['nama_pegawai'], tujuan, statusSPT(spt['status'], spt['unapprove_oleh']), button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }
