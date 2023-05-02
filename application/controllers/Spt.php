@@ -541,7 +541,7 @@ class Spt extends CI_Controller
                 $pdf->Cell(155, 7, $data['nama_satuan'], 0, 1, 'C');
                 $pdf->SetFont('Arial', '', 10);
                 $pdf->Cell(20, 4, '', 0, 0, 'C');
-                $pdf->Cell(155, 4,  $data['alamat_lengkap'], 0, 1, 'C');
+                $pdf->Cell(155, 4,  " Jalan Raya Belinyu Dusun Sp. Cangkum, Desa Riding Panjang Belinyu - Bangka", 0, 1, 'C');
                 $pdf->Cell(20, 4, '', 0, 0, 'C');
                 $pdf->Cell(155, 4, (!empty($data['kode_pos']) ? 'Kode Pos : ' . $data['kode_pos'] . ' ' : '') . (!empty($data['no_tlp']) ? 'Telp. ' . $data['no_tlp'] : ''), 0, 1, 'C');
                 // $pdf->Cell(20, 4, '', 0, 0, 'C');
