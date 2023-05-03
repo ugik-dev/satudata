@@ -81,10 +81,6 @@ class SPPDModel extends CI_Model
             $this->db->select('u.id_spt, u.tgl_pengajuan,u.status, u.no_spt, u.no_sppd, u.unapprove_oleh');
         }
 
-
-
-
-
         $this->db->from('spt as u');
         $this->db->join('satuan sa', 'sa.id_satuan = u.id_satuan');
         $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
@@ -97,6 +93,7 @@ class SPPDModel extends CI_Model
         $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
         $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
         $this->db->join('tujuan tj', 'tj.id_spt = u.id_spt', 'LEFT');
+        $this->db->join('pengikut pk', 'pk.id_spt = u.id_spt', 'LEFT');
         $this->db->group_by('id_spt');
 
         if (!empty($filter['dari']) && !empty($filter['sampai'])) $this->db->where(' (
@@ -110,7 +107,7 @@ class SPPDModel extends CI_Model
         if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
         if (!empty($filter['id_bagian'])) $this->db->where('u.id_bagian', $filter['id_bagian']);
         if (!empty($filter['id_seksi'])) $this->db->where('u.id_seksi', $filter['id_seksi']);
-        if (!empty($filter['my_perjadin'])) $this->db->where('u.id_pegawai', $this->session->userdata()['id']);
+        if (!empty($filter['my_perjadin'])) $this->db->where('( u.id_pegawai =' .  $ses['id'] . ' OR pk.id_pegawai = ' .  $ses['id'] . ' )');
         if (!empty($filter['search_approval']['data_penilai'])) {
             $penilai =  $filter['search_approval']['data_penilai'];
             if ($penilai['jen_satker'] == 1) {

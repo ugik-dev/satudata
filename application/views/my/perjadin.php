@@ -1,25 +1,68 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xl-12 col-lg-12">
-            <div class="card">
-                <div class="card-header">
+            <div class="default-according style-1 faq-accordion job-accordion">
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Filter
+                                </button>
+                            </h2>
+                        </div>
+                        <div class="collapse show" id="collapseOne" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <form class="form-inline" id="toolbar_form" onsubmit="return false;">
 
-                    <form class="form-inline" id="toolbar_form" onsubmit="return false;">
-                        <!-- <div class="col-lg-2"> -->
-                        <input type="hidden" id="is_not_self" name="is_not_self" value="1">
-                        <!-- </div> -->
-                        <!-- <div class="col-lg-2">
-                            <select class="form-control mr-sm-2" name="tool_id_role" id="tool_id_role"></select>
-                        </div> -->
-                        <!-- <button type="button" class="btn btn-success my-1 mr-sm-2" id="new_btn" disabled="disabled"><i class="fal fa-plus"></i> Tambah Sppd Baru</button> -->
-                    </form>
+                                <div class="card-body filter-cards-view animate-chk">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label">Status </label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control " name="status_rekap" id="status_rekap">
+                                                        <option value=""> Semua </option>
+                                                        <option value="menunggu"> Menunggu </option>
+                                                        <option value="ditolak"> Di Tolak </option>
+                                                        <option value="selesai" selected> Diterima </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3 row">
+                                                <?php
+                                                $date = new DateTime(date('Y-m-d'));
+                                                $date->add(new DateInterval('P2M'));
+                                                $date->invert = 1;
+                                                ?>
+                                                <label class="col-sm-3 col-form-label">Dari</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control m-input digits" id="dari" name="dari" type="date" value="<?= date("Y-m-d", strtotime("-2 months")); ?>" data-bs-original-title="" title="">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label">Sampai</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control m-input digits" id="sampai" name="sampai" type="date" value="<?= $date->format('Y-m-d') ?>" data-bs-original-title="" title="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary text-center" type="submit">
+                                            <i class="fa fa-search ml-3 mr-3"></i> Cari
+                                        </button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-
+            </div>
+            <div class="card">
                 <div class="card-body">
-                    <!-- <div class="col-lg-12"> -->
-                    <!-- <div class="ibox"> -->
-                    <!-- <div class="ibox-content"> -->
-
                     <div class="table-responsive">
                         <table id="FDataTable" class="table table-border-horizontal" style="padding-bottom: 100px">
                             <thead>
@@ -40,15 +83,11 @@
         </div>
     </div>
 </div>
-<!-- </div> -->
-
-
 
 <script>
     $(document).ready(function() {
-        $('#menu_2').addClass('active');
-        $('#opmenu_2').show();
-        $('#submenu_5').addClass('active');
+        $('#sidebar_spt_saya').addClass('active');
+
         var toolbar = {
             'form': $('#toolbar_form'),
             'id_role': $('#toolbar_form').find('#id_role'),
@@ -115,13 +154,13 @@
 
 
 
-        toolbar.id_role.on('change', (e) => {
+        toolbar.form.on('submit', (e) => {
             getAllSppd();
         });
 
         function getAllSppd() {
             Swal.fire({
-                title: 'Loading SPPD!',
+                title: 'Loading!!',
                 allowOutsideClick: false,
             });
             Swal.showLoading()
@@ -151,15 +190,9 @@
 
             var renderData = [];
             Object.values(data).forEach((sppd) => {
-                //             var editButton = `
-                //     <a class="dropdown-item"  href='<?= base_url() ?>sppd/edit/${sppd['id_spt']}'><i class='fa fa-pencil'></i> Edit Sppd</a>
-                //   `;
                 var lihatButton = `
-        <a class="btn btn-primary btn-sm" style="width: 110px" href='<?= base_url() ?>user/detail_perjadin/${sppd['id_spt']}'><i class='fa fa-eye'></i> Buka</a>
+        <a class="btn btn-primary btn-sm" style="width: 110px" href='<?= base_url() ?>spt/detail/${sppd['id_spt']}'><i class='fa fa-eye'></i> Buka</a>
       `;
-                //             var deleteButton = `
-                //     <a class="delete dropdown-item" data-id='${sppd['id']}'><i class='fa fa-trash'></i> Hapus Sppd</a>
-                //   `;
                 var button = `
                            <div class="dropdown-basic">
                             <div class="dropdown">

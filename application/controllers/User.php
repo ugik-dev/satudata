@@ -13,7 +13,7 @@ class User extends CI_Controller
     public function getAllSPPD()
     {
         try {
-            $this->SecurityModel->multiRole('SPPD', 'Daftar Pengajuan');
+            $this->SecurityModel->userOnlyGuard();
             $filter = $this->input->get();
             $filter['my_perjadin'] = true;
             $data = $this->SPPDModel->getAllSPPD($filter);
