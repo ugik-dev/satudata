@@ -6,7 +6,6 @@ class User extends CI_Controller
     {
         parent::__construct();
         $this->load->model(array('SecurityModel', 'SPPDModel', 'GeneralModel', 'AktifitasModel', 'UserModel'));
-        // $this->load->helper(array('DataStructure'));
         $this->db->db_debug = false;
     }
 

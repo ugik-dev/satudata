@@ -41,15 +41,16 @@ class SuratIzinModel extends CI_Model
         // die();
         $this->db->select("si.*, s.nama_satuan, r.nama_izin,s.verif_cuti,s.jen_satker, r.jen_izin,ro.level level_pegawai, p.nama as nama_pegawai, pg.nama as nama_pengganti");
         if (!empty($filter['detail'])) {
-            $this->db->select('p.nip nip_pegawai,
+            $this->db->select('
+            p.nip nip_pegawai,
             p.pangkat_gol pangkat_gol_pegawai,
             p.jabatan jabatan_pegawai,
             p.signature signature_pegawai,
             p.tmt_kerja,
             p.no_hp,
             pg.nip nip_pengganti,
-            p.pangkat_gol pangkat_gol_pengganti,
-            p.jabatan jabatan_pengganti');
+            pg.pangkat_gol pangkat_gol_pengganti,
+            pg.jabatan jabatan_pengganti');
         }
         $this->db->from('surat_izin as si');
         $this->db->join('ref_jen_izin r', 'si.jenis_izin = r.id_ref_jen_izin');

@@ -42,39 +42,37 @@ class SPPDModel extends CI_Model
         $ses = $this->session->userdata();
 
         $this->db->select('rjs.nama_ref_jen_spt');
-        $this->db->select('p2.nama as nama_input');
         $this->db->select('s.nama as nama_pegawai,
-                            ptk.nama as nama_pptk, 
-                            p.nama as nama_ppk, 
                             ro.level level_pegawai,
-                            d.id_ppk2, d.id_pptk,
                             sa.nama_satuan
                             ');
         if (!$sort) {
-            $this->db->select(' s.jabatan jabatan_pegawai, 
+            $this->db->select('p2.nama as nama_input');
+            $this->db->select('s.jabatan jabatan_pegawai, 
             s.pangkat_gol as pangkat_gol_pegawai,
             s.id_seksi as id_seksi_pegawai,
             s.id_bagian as id_bagian_pegawai, 
             s.nip nip_pegawai');
 
             $this->db->select(' 
+            p.nama as nama_ppk,
             p.jabatan jabatan_ppk, 
             p.pangkat_gol as pangkat_gol_ppk, 
             p.nip nip_ppk');
 
             $this->db->select('  
+            ptk.nama as nama_pptk, 
             ptk.jabatan jabatan_pptk, 
             ptk.pangkat_gol as pangkat_gol_pptk, 
             ptk.nip nip_pptk');
-            $this->db->select(' d.id_dasar, 
-             
+            $this->db->select('
+            d.id_ppk2, d.id_pptk,
             d.kode_rekening,
             d.nama_dasar
             ');
             $this->db->select("un.approval_id_user as id_unapproval ,
             t.nama_tr as nama_transport,
             sa.jen_satker, 
-     
             u.*");
         } else {
             // $this->db->select('u.id_spt');
@@ -84,14 +82,16 @@ class SPPDModel extends CI_Model
         $this->db->from('spt as u');
         $this->db->join('satuan sa', 'sa.id_satuan = u.id_satuan');
         $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
-        $this->db->join('users p', 'p.id = d.id_ppk2', 'LEFT');
-        $this->db->join('users ptk', 'ptk.id = d.id_pptk', 'LEFT');
+        if (!$sort) {
+            $this->db->join('users p', 'p.id = d.id_ppk2', 'LEFT');
+            $this->db->join('users ptk', 'ptk.id = d.id_pptk', 'LEFT');
+            $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
+            $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
+            $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
+            $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
+        }
         $this->db->join('ref_jen_spt rjs', 'u.jenis = rjs.id_ref_jen_spt', 'LEFT');
-        $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
-        $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
         $this->db->join('roles ro', 's.id_role = ro.id_role', 'LEFT');
-        $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
-        $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
         $this->db->join('tujuan tj', 'tj.id_spt = u.id_spt', 'LEFT');
         $this->db->join('pengikut pk', 'pk.id_spt = u.id_spt', 'LEFT');
         $this->db->group_by('id_spt');
