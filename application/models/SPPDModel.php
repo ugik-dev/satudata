@@ -841,7 +841,7 @@ class SPPDModel extends CI_Model
             } else {
                 $this->db->set('status', 59);
             }
-        } else if ($ap_pptk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3 || $data_spt['jen_satker'] == 3)) {
+        } else if ($ap_pptk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3 || $data_spt['jen_satker'] == 4)) {
             $this->db->set('status', 52);
         } else if ($ap_pptk && $data_spt['jen_satker'] == 1) {
             if (empty($data_spt['approve_kabid']))
