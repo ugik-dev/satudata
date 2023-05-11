@@ -643,10 +643,7 @@ class SPPDModel extends CI_Model
         if (!empty($res)) {
             $num['spt'] = '800/' . ($res[0]['x'] + 1) . '/' . $s3b;
         } else {
-            if ($dataSatuan['id_satuan'] == 11) {
-                $num['spt'] = '800/918/' . $s3b;
-            } else
-                $num['spt'] = '800/1/' . $s3b;
+            $num['spt'] = '800/1/' . $s3b;
         }
 
         if ($data['jenis'] == 2) {
@@ -661,9 +658,7 @@ class SPPDModel extends CI_Model
             if (!empty($res)) {
                 $num['sppd'] = '934/' . ($res[0]['x'] + 1) . '/' . $s3a;
             } else {
-                if ($dataSatuan['id_satuan'] == 11) {
-                    $num['spt'] = '934/857/' . $s3b;
-                } else   $num['sppd'] = '934/1/' . $s3a;
+                $num['sppd'] = '934/1/' . $s3a;
             }
         }
         return $num;
