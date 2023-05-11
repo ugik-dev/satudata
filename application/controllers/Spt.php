@@ -373,7 +373,7 @@ class Spt extends CI_Controller
                 else
                     $data['status'] = 2;
             } else
-            if ($this->session->userdata('jen_satker') == 2 || $this->session->userdata('jen_satker') == 3) {
+            if ($this->session->userdata('jen_satker') == 2 || $this->session->userdata('jen_satker') == 3 || $this->session->userdata('jen_satker') == 4) {
                 $data['status'] = 50;
             }
 
