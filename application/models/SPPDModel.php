@@ -82,11 +82,11 @@ class SPPDModel extends CI_Model
         $this->db->from('spt as u');
         $this->db->join('satuan sa', 'sa.id_satuan = u.id_satuan');
         $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
+        $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
         if (!$sort) {
             $this->db->join('users p', 'p.id = d.id_ppk2', 'LEFT');
             $this->db->join('users ptk', 'ptk.id = d.id_pptk', 'LEFT');
             $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
-            $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
             $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
             $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
         }
