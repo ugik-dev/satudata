@@ -819,7 +819,7 @@ class SPPDModel extends CI_Model
                 }
                 $this->db->set('status', '99');
             }
-        } else if ($ap_ppk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3)) {
+        } else if ($ap_ppk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3 || $data_spt['jen_satker'] == 4)) {
             if ($ses['level'] == 7) {
                 $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
 
@@ -841,7 +841,7 @@ class SPPDModel extends CI_Model
             } else {
                 $this->db->set('status', 59);
             }
-        } else if ($ap_pptk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3)) {
+        } else if ($ap_pptk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3 || $data_spt['jen_satker'] == 3)) {
             $this->db->set('status', 52);
         } else if ($ap_pptk && $data_spt['jen_satker'] == 1) {
             if (empty($data_spt['approve_kabid']))
