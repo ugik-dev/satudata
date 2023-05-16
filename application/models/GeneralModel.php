@@ -373,12 +373,12 @@ class GeneralModel extends CI_Model
 
         if (!empty($filter['searchTerm'])) $this->db->where('nama like "%' . $filter['searchTerm'] . '%"');
 
-        if ($this->session->userdata()['id_role'] != 1) {
-            // die();
-            // if ($this->session->userdata()['id_satuan'] == 1) {
-            // }
-            $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
-        }
+        // if ($this->session->userdata()['id_role'] != 1) {
+        //     // die();
+        //     // if ($this->session->userdata()['id_satuan'] == 1) {
+        //     // }
+        //     $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
+        // }
         // if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
         // $this->db->where('ppk', 1);
         $this->db->limit('20');
