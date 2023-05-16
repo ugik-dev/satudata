@@ -42,8 +42,7 @@
 
                                 <?php
                                 ?>
-                                <!-- <a class="btn btn-primary" href="<?= base_url('sppd/edit/' . $dataContent['return_data']['id_spt']) ?>"><strong>Edit </strong></a> -->
-                                <!-- </div> -->
+
                             </div>
                             <div class="col-lg-6">
                                 <div class="row">
@@ -79,6 +78,8 @@
                                         <?php
                                         if (!empty($dataContent['return_data']['id_dasar'])) {
                                             echo $dataContent['return_data']['nama_dasar'];
+                                        } else  if (!empty($dataContent['return_data']['dasar'])) {
+                                            echo $dataContent['return_data']['dasar'];
                                         }
                                         ?>
                                     </div>
@@ -325,20 +326,20 @@
                                             <td>Surat Perintah Tugas</td>
                                             <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/1') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
                                         </tr>
-                                        <tr>
+                                        <!-- <tr>
                                             <td>Surat Perintah Tugas dengan QR Code</td>
                                             <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/1/2') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
-                                        </tr>
+                                        </tr> -->
                                         <?php if ($dataContent['return_data']['jenis'] == 2) {
                                         ?>
                                             <tr>
                                                 <td>Surat Perintah Perjalanan Dinas</td>
                                                 <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/2') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <td>Surat Perintah Perjalanan Dinas dengan QR Code</td>
                                                 <td><a href="<?= base_url('spt/print/' . $dataContent['return_data']['id_spt'] . '/2/2') ?>" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i></a></td>
-                                            </tr>
+                                            </tr> -->
                                         <?php } else if ($dataContent['return_data']['jenis'] == 3) {
                                         ?>
                                             <tr>

@@ -34,14 +34,12 @@
                     <div class="hr-line-dashed"></div>
                     <div class="col-lg-12">
                         <div class="col-form-label">Dasar</div>
-                        <textarea class="form-control" id="dasar" name="dasar"></textarea>
-                        <!-- <select class="select2 col-sm-12" id="id_dasar" name="id_dasar">
-                            <?php
-                            if (!empty($dataContent['return_data']['id_dasar'])) {
-                                echo '<option selected value="' . $dataContent['return_data']['id_dasar'] . '">' . $dataContent['return_data']['nama_dasar'] . '</option>';
-                            }
-                            ?>
-                        </select> -->
+                        <textarea class="form-control" id="dasar" name="dasar"><?php
+                                                                                if (!empty($dataContent['return_data']['dasar'])) {
+                                                                                    echo $dataContent['return_data']['dasar'];
+                                                                                }
+                                                                                ?></textarea>
+
                         <a class="btn btn-light my-1" type="" id="add_dasar" data-loading-text="Loading..."><strong>Tambah Dasar</strong></a>
                         <div class="col-lg-12" id="layout_dasar_tambahan">
                             <?php
@@ -68,6 +66,7 @@
                         <div class="col-form-label">Maksud Perjalanan Dinas</div>
                         <textarea name="maksud" id="maksud" class="form-control" rows="3"><?= !empty($dataContent['return_data']['maksud']) ? $dataContent['return_data']['maksud'] : '' ?></textarea>
                     </div>
+
 
                     <!-- <div class="col-lg-12">
                         <div class="col-form-label">PPK</div>
@@ -109,7 +108,10 @@
                         <div class="col-form-label">Lama Perjalanan</div>
                         <input class="form-control" id="lama_dinas" name="lama_dinas" type="number" value="<?= !empty($dataContent['return_data']['lama_dinas']) ? $dataContent['return_data']['lama_dinas'] : '' ?>">
                     </div>
-
+                    <div class="col-lg-6">
+                        <div class="col-form-label">Berangkat Dari</div>
+                        <input class="form-control" id="berangkat_dari" name="berangkat_dari" type="text" value="<?= !empty($dataContent['return_data']['berangkat_dari']) ? $dataContent['return_data']['berangkat_dari'] : (!empty($this->session->userdata('nama_satuan')) ? $this->session->userdata('nama_satuan') : '') ?>">
+                    </div>
                     <div class="col-lg-6">
                         <div class="col-form-label">Transportasi</div>
                         <select class="form-control" id="transport" name="transport" required>

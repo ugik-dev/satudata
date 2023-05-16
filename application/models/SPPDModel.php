@@ -253,14 +253,16 @@ class SPPDModel extends CI_Model
         }
         if (!empty($res_id)) {
             if (!$sort) {
-                $this->db->select('p.*, u.nama, u.nip, u.jabatan,u.pangkat_gol, tanggal_lahir');
+                $this->db->select('p.*, u.nama, u.nip, u.jabatan,u.pangkat_gol, tanggal_lahir, r.level');
             } else {
-                $this->db->select('p.id_spt, u.nama');
+                $this->db->select('p.id_spt, u.nama, r.level');
             }
 
             $this->db->from('pengikut p ');
             $this->db->join('users u', 'u.id = p.id_pegawai');
+            $this->db->join('roles r', 'u.id_role = r.id_role');
             $this->db->where_in('id_spt', $res_id);
+            $this->db->order_by('level,id_pengikut', 'ASC');
             $pengikut = DataStructure::groupingByParent($this->db->get()->result_array(), 'id_spt');
             if (!$sort) {
                 $this->db->select('*');
@@ -392,6 +394,8 @@ class SPPDModel extends CI_Model
         $data['id_seksi'] = $ses['id_seksi'];
         $data['id_bagian'] = $ses['id_bagian'];
         $data['user_input'] = $ses['id'];
+        // echo json_encode($data);
+        // die();
         $this->db->insert('spt', DataStructure::slice($data, [
             'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas', 'jenis',
             'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk', 'status', 'berangkat_dari'
@@ -441,9 +445,7 @@ class SPPDModel extends CI_Model
     }
     public function addLogs($data)
     {
-
         $this->db->insert('spt_logs', $data);
-
         ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
     }
 
@@ -452,10 +454,12 @@ class SPPDModel extends CI_Model
     {
 
         $ses = $this->session->userdata();
-        $data['id_satuan'] = $ses['id_satuan'];
-        $data['id_seksi'] = $ses['id_seksi'];
-        $data['id_bagian'] = $ses['id_bagian'];
-        $data['user_input'] = $ses['id'];
+        if ($ses['id_role'] != '1') {
+            $data['id_satuan'] = $ses['id_satuan'];
+            $data['id_seksi'] = $ses['id_seksi'];
+            $data['id_bagian'] = $ses['id_bagian'];
+            $data['user_input'] = $ses['id'];
+        }
         $this->db->set(DataStructure::slice($data, [
             'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas',
             'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk', 'berangkat_dari', 'status'
@@ -668,9 +672,6 @@ class SPPDModel extends CI_Model
             }
         }
         return $num;
-        // echo json_encode($res);
-        // die();
-        // echo $num;
     }
 
     function sign($id, $field, $user, $title, $status = '')

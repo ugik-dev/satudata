@@ -22,8 +22,9 @@ class Spt extends CI_Controller
         try {
             $this->SecurityModel->multiRole('SPT / SPPD', 'Daftar Pengajuan');
             $filter = $this->input->get();
-            if ($this->session->userdata('id_role') != 1) {
+            // die();
 
+            if ($this->session->userdata('id_role') != 1) {
                 $filter['id_bagian'] = $this->session->userdata('id_bagian');
                 $filter['id_seksi'] = $this->session->userdata('id_seksi');
             }
@@ -76,16 +77,19 @@ class Spt extends CI_Controller
                 'title' => 'Form SPT SPT',
                 'dataContent' => $res_data
             );
+            // echo json_encode($this->session->userdata());
+            // die();
             if (!empty($res_data['return_data']['sign_kadin'])) {
-                // $this->load->view('error_page');
-                $data['page'] = 'error_page2';
-                $data['message'] = 'Maaf, SPT ini sudah di approve tahap akhir, tidak dapat dirubah  lagi..';
-                $data['redirect'] = 'spt/detail/' . $res_data['return_data']['id_spt'];
-                // echo json_encode($data);
-                // die();
-                // return;
-                // return;
-            } else            if ($res_data['return_data']['jenis'] == 1) {
+                if ($this->session->userdata()['id_role'] != 1) {
+                    $data['page'] = 'error_page2';
+                    $data['message'] = 'Maaf, SPT ini sudah di approve tahap akhir, tidak dapat dirubah  lagi..';
+                    $data['redirect'] = 'spt/detail/' . $res_data['return_data']['id_spt'];
+                } else if ($res_data['return_data']['jenis'] == 1) {
+                    $data['page'] = 'spt/form_spt';
+                } else if ($res_data['return_data']['jenis'] == 2) {
+                    $data['page'] = 'spt/form_spt_sppd';
+                }
+            } else if ($res_data['return_data']['jenis'] == 1) {
                 $data['page'] = 'spt/form_spt';
             } else if ($res_data['return_data']['jenis'] == 2) {
                 $data['page'] = 'spt/form_spt_sppd';
@@ -367,14 +371,16 @@ class Spt extends CI_Controller
                 }
                 $this->SPPDModel->CekJadwal($data, $hari_pertama, $hari_terakhir, $data['id_spt']);
             }
-            if ($this->session->userdata('jen_satker') == 1) {
-                if (!empty($this->session->userdata('id_seksi')))
-                    $data['status'] = 1;
-                else
-                    $data['status'] = 2;
-            } else
-            if ($this->session->userdata('jen_satker') == 2 || $this->session->userdata('jen_satker') == 3 || $this->session->userdata('jen_satker') == 4) {
-                $data['status'] = 50;
+            if ($this->session->userdata('id_role') != 1) {
+
+                if ($this->session->userdata('jen_satker') == 1) {
+                    if (!empty($this->session->userdata('id_seksi')))
+                        $data['status'] = 1;
+                    else
+                        $data['status'] = 2;
+                } else if ($this->session->userdata('jen_satker') == 2 || $this->session->userdata('jen_satker') == 3 || $this->session->userdata('jen_satker') == 4) {
+                    $data['status'] = 50;
+                }
             }
 
             $id =  $this->SPPDModel->editSPPD($data);
@@ -403,6 +409,7 @@ class Spt extends CI_Controller
             $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
             $id = $this->input->get()['id_spt'];
             $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id));
+
             if (!empty($data[$id])) {
                 if ($data[$id]['user_input'] == $this->session->userdata('id')) {
                     $this->SPPDModel->delete(['id_spt' => $data[$id]['id_spt']]);
@@ -888,21 +895,21 @@ class Spt extends CI_Controller
         $pdf->Cell(70, 10, '(....................................................)', 0, 1, 'C');
         $sign = $this->GeneralModel->getSingnature($data['id_pegawai'])[$data['id_pegawai']];
         if (!empty($sign['signature']))
-            $pdf->Image(base_url('uploads/signature/' . $sign['signature']), 141, $pdf->getY() - 14, 30, 20);
-        $i = 0;
+            // $pdf->Image(base_url('uploads/signature/' . $sign['signature']), 141, $pdf->getY() - 14, 30, 20);
+            $i = 0;
         foreach ($data['pengikut'] as $p) {
             $pdf->Cell(120, 10, $p['nama'], 0, 0, 'R');
             $pdf->Cell(70, 10, '(....................................................)', 0, 1, 'C');
             $sign = $this->GeneralModel->getSingnature($p['id_pegawai'])[$p['id_pegawai']];
-            if (!empty($sign['signature'])) {
-                if ($i != 0) {
-                    $pdf->Image(base_url('uploads/signature/' . $sign['signature']), 141, $pdf->getY() - 14, 30, 20);
-                    $i = 0;
-                } else {
-                    $i = 1;
-                    $pdf->Image(base_url('uploads/signature/' . $sign['signature']), 161, $pdf->getY() - 14, 30, 20);
-                }
-            }
+            // if (!empty($sign['signature'])) {
+            //     if ($i != 0) {
+            //         $pdf->Image(base_url('uploads/signature/' . $sign['signature']), 141, $pdf->getY() - 14, 30, 20);
+            //         $i = 0;
+            //     } else {
+            //         $i = 1;
+            //         $pdf->Image(base_url('uploads/signature/' . $sign['signature']), 161, $pdf->getY() - 14, 30, 20);
+            //     }
+            // }
         }
 
         $foto = $this->SPPDModel->getFoto(['id_spt' => $data['id_spt']]);
