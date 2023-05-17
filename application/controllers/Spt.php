@@ -607,7 +607,7 @@ class Spt extends CI_Controller
         } else if ($data['jen_satker'] == 4) {
             if ($data['id_satuan'] == 120) {
                 $pdf->Image(base_url('assets/img/kab_bangka.png'), 20, 5, 20, 27);
-                $pdf->Image(base_url('assets/img/logo_kalk.jpg'), 180, 0, 31, 35);
+                $pdf->Image(base_url('assets/img/logo_kalk.jpg'), 170, 3, 40, 30);
                 $pdf->SetFont('Arial', '', 13);
                 $pdf->SetFont('Arial', 'B', 15);
                 $pdf->Cell(20, 6, '', 0, 0, 'C');
