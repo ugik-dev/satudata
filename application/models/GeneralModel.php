@@ -173,9 +173,9 @@ class GeneralModel extends CI_Model
         $this->db->join('bagian bg', 'u.id_bagian = bg.id_bagian', 'LEFT');
         $this->db->where('u.deleted_user', 0);
         if (!empty($filter['id'])) $this->db->where('u.id', $filter['id']);
-        // if ($this->session->userdata()['id_role'] != 1) {
-        //     $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
-        // }
+        if ($this->session->userdata()['id_role'] != 1) {
+            $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
+        }
         $res = $this->db->get();
         return DataStructure::keyValue($res->result_array(), 'id');
     }
@@ -357,17 +357,18 @@ class GeneralModel extends CI_Model
 
     public function getAllPegawai2($filter = [])
     {
-        if ($this->session->userdata()['id_role'] == 1) {
-            $this->db->select('id as id, CONCAT(u.nama, " | " , COALESCE(s.nama_satuan,""), " - " , COALESCE(b.nama_bag,"")) as text');
-        } else if ($this->session->userdata()['id_satuan'] == 1) {
-            $this->db->select('id as id, CONCAT(u.nama, " | " , b.nama_bag) as text');
-        } else {
-            $this->db->select('id as id, u.nama as text');
-        }
+        // if ($this->session->userdata()['id_role'] == 1) {
+        $this->db->select('id as id, CONCAT(u.nama, " | " , COALESCE(s.nama_satuan,""), COALESCE(CONCAT(" - " , b.nama_bag),"")) as text');
+        // } else if ($this->session->userdata()['id_satuan'] == 1) {
+        //     $this->db->select('id as id, CONCAT(u.nama, " | " , b.nama_bag) as text');
+        // } else {
+        //     $this->db->select('id as id, u.nama as text');
+        // }
 
         $this->db->from('users u ');
         $this->db->join('bagian b', 'u.id_bagian = b.id_bagian', 'LEFT');
         $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
+        // $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
 
         $this->db->where('u.deleted_user', 0);
 
