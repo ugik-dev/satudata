@@ -14,6 +14,7 @@ class UserModel extends CI_Model
         $this->db->join('bagian bg', 'u.id_bagian = bg.id_bagian', 'LEFT');
         if (empty($filter['is_login'])) {
             $this->db->select("NULL as password", FALSE);
+            $this->db->where("(password is not null and username is not null)");
         }
         $this->db->where('u.status', 1);
         if (isset($filter['is_not_self'])) $this->db->where('u.id_user !=', $this->session->userdata('id_user'));
@@ -145,7 +146,7 @@ class UserModel extends CI_Model
 
     public function addUser($data)
     {
-        $data['password'] = md5($data['password']);
+        if (!empty($data['password'])) $data['password'] = md5($data['password']);
 
         $this->db->insert('users', DataStructure::slice($data, [
             // 'username', 'password', 'nama', 'email', 'nip', 'alamat', 'no_hp', 'status', 'id_role', 'id_satuan', 'id_bagian', 'id_seksi', 'pangkat_gol', 'jabatan'

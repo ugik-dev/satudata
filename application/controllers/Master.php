@@ -30,6 +30,26 @@ class Master extends CI_Controller
         }
     }
 
+    public function kader()
+    {
+        try {
+            // echo json_encode($this->session->userdata());
+            // die();
+            $this->SecurityModel->multiRole('Master', 'Kader');
+            $ref  = $this->GeneralModel->getAllRefSaker();
+
+            $data = array(
+                'page' => 'master/kader',
+                'title' => 'Kader',
+                'ref_satker' => $ref
+
+            );
+            $this->load->view('page', $data);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
     public function detail_pegawai($id)
     {
         try {
@@ -257,6 +277,10 @@ class Master extends CI_Controller
             $this->SecurityModel->multiRole('Master', 'Pegawai');
             $data = $this->input->post();
 
+            if ($this->session->userdata()['id_role'] != 1) {
+                $data['id_satuan'] = $this->session->userdata()['id_satuan'];
+            }
+
             $this->UserModel->editUser($data);
             $data = $this->GeneralModel->getAllUser(array('id' => $data['id']))[$data['id']];
             echo json_encode(array('error' => false, 'data' => $data));
@@ -264,6 +288,27 @@ class Master extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
+
+    public function editKader()
+    {
+        try {
+            $this->SecurityModel->multiRole('Master', 'Pegawai');
+            $data = $this->input->post();
+
+            if ($this->session->userdata()['id_role'] != 1) {
+                $data['id_satuan'] = $this->session->userdata()['id_satuan'];
+            }
+            $data['id_role'] = 99;
+            $data['jenis_pegawai'] = 4;
+
+            $this->UserModel->editUser($data);
+            $data = $this->GeneralModel->getAllUser(array('id' => $data['id']))[$data['id']];
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
 
     public function deleteUser()
     {
@@ -284,9 +329,27 @@ class Master extends CI_Controller
         try {
             $this->SecurityModel->multiRole('Master', 'Pegawai');
             $data = $this->input->post();
-            if ($this->session->userdata()['id_satuan'] != 1) {
+            if ($this->session->userdata()['id_role'] != 1) {
                 $data['id_satuan'] = $this->session->userdata()['id_satuan'];
             }
+            $id =  $this->UserModel->addUser($data);
+            $data = $this->GeneralModel->getAllUser(array('id' => $id))[$id];
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
+    public function addKader()
+    {
+        try {
+            $this->SecurityModel->multiRole('Master', 'Kader');
+            $data = $this->input->post();
+            if ($this->session->userdata()['id_role'] != 1) {
+                $data['id_satuan'] = $this->session->userdata()['id_satuan'];
+            }
+            $data['id_role'] = 99;
+            $data['jenis_pegawai'] = 4;
             $id =  $this->UserModel->addUser($data);
             $data = $this->GeneralModel->getAllUser(array('id' => $id))[$id];
             echo json_encode(array('error' => false, 'data' => $data));

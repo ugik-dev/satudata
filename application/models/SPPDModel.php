@@ -327,7 +327,13 @@ class SPPDModel extends CI_Model
         $this->db->where('u.jenis', '2');
         if (!empty($ex_id)) $this->db->where('u.id_spt <>', $ex_id);
         $this->db->where('u.status <> 98');
-        $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
+        // $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
+        $this->db->where("(
+            r.date_berangkat BETWEEN '$start' AND '$end' OR 
+            r.date_kembali BETWEEN '$start' AND '$end' OR
+            '$start' BETWEEN  r.date_berangkat  AND  r.date_kembali OR
+            '$end' BETWEEN  r.date_berangkat  AND  r.date_kembali  
+            )");
 
         $res1 = $this->db->get()->result_array();
         if (!empty($res1))
@@ -344,7 +350,13 @@ class SPPDModel extends CI_Model
         $this->db->where('u.status <> 98');
         if (!empty($ex_id)) $this->db->where('u.id_spt <> ', $ex_id);
         $this->db->where('u.jenis', '2');
-        $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
+        // $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
+        $this->db->where("(
+            r.date_berangkat BETWEEN '$start' AND '$end' OR 
+            r.date_kembali BETWEEN '$start' AND '$end' OR
+            '$start' BETWEEN  r.date_berangkat  AND  r.date_kembali OR
+            '$end' BETWEEN  r.date_berangkat  AND  r.date_kembali  
+             )");
 
         $res1 = $this->db->get()->result_array();
         if (!empty($res1))

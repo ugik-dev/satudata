@@ -325,10 +325,11 @@ class Spt extends CI_Controller
                     }
                 }
                 $this->SPPDModel->CekJadwal($data, $hari_pertama, $hari_terakhir);
-                // $this->load->model('SuratIzinModel');
-                // $this->SuratIzinModel->CekJadwal($data, $hari_pertama, $hari_terakhir);
                 // die();
             }
+
+            $this->load->model('SuratIzinModel');
+            $this->SuratIzinModel->CekJadwal($data, $hari_pertama, $hari_terakhir);
             // echo $hari_pertama;
             // echo $hari_terakhir;
             // die();

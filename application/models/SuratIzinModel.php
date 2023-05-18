@@ -7,19 +7,28 @@ class SuratIzinModel extends CI_Model
     public function CekJadwal($data = [], $start, $end, $ex_id = '')
     {
         $data['pengikut'][] = $data['id_pegawai'];
-        $this->db->select('*');
+        $this->db->select('u.*, us.nama, r.nama_izin');
         $this->db->from('surat_izin as u');
+        $this->db->join('users as us', 'u.id_pegawai = us.id');
+        $this->db->join('ref_jen_izin as r', 'u.jenis_izin = r.id_ref_jen_izin');
         $this->db->where_in('id_pegawai', $data['pengikut']);
         // $this->db->where('u.unapprove is null');
-        $this->db->where("(u.periode_start >='$start' AND u.periode_end <= '$end')");
+        // $this->db->where("(u.periode_start >='$start' AND u.periode_end <= '$end')");
+
+        $this->db->where("(
+        periode_start BETWEEN '$start' AND '$end' OR 
+        periode_end BETWEEN '$start' AND '$end' OR
+        '$start' BETWEEN periode_start AND periode_end OR
+        '$end' BETWEEN periode_start AND periode_end 
+        )");
 
         $res1 = $this->db->get()->result_array();
 
-        echo $this->db->last_query();
-        // echo json_encode(['error' => true, 'message' => '', 'data' => $res1]);
-        die();
+        // echo $this->db->last_query();
         if (!empty($res1))
-            throw new UserException("{$res1[0]['nama']} Sudah dijadwalkan berangkat ke {$res1[0]['tempat_tujuan']} pada tanggal {$res1[0]['date_berangkat']} s.d. {$res1[0]['date_kembali']} dengan NO SPPD {$res1[0]['no_sppd']} ", UNAUTHORIZED_CODE);
+            throw new UserException("{$res1[0]['nama']} Sedang {$res1[0]['nama_izin']} pada tanggal {$res1[0]['periode_start']} s.d. {$res1[0]['periode_end']} dengan NO Surat {$res1[0]['no_spc']} ", UNAUTHORIZED_CODE);
+        // echo json_encode(['error' => true, 'message' => '', 'data' => $res1]);
+        // die();
     }
 
     public function CekLastTahunan($id)

@@ -173,6 +173,14 @@ class GeneralModel extends CI_Model
         $this->db->join('bagian bg', 'u.id_bagian = bg.id_bagian', 'LEFT');
         $this->db->where('u.deleted_user', 0);
         if (!empty($filter['id'])) $this->db->where('u.id', $filter['id']);
+        if (isset($filter['ex_kader'])) {
+            // echo "ad";
+            // die();
+            if ($filter['ex_kader'])
+                $this->db->where('u.id_role = 99');
+            else
+                $this->db->where('u.id_role <> 99');
+        }
         if ($this->session->userdata()['id_role'] != 1) {
             $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
         }
