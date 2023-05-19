@@ -311,21 +311,21 @@ class Spt extends CI_Controller
 
             // $hari_pertama = '';
             // $hari_terakhir = '';
+            if (empty($data['date_berangkat'][0]) or empty($data['date_berangkat'][0]) or empty($data['tempat_tujuan'][0])) {
+                throw new UserException('Tujuan belum lengkap!');
+            }
+            foreach ($data['id_tujuan'] as $key => $t) {
+                // echo $data['date_berangkat'][$key];
+                if (empty($hari_pertama) && !empty($data['date_berangkat'][$key])) {
+                    $hari_pertama = $data['date_berangkat'][$key];
+                }
+                if (!empty($data['date_kembali'][$key])) {
+                    $hari_terakhir = $data['date_kembali'][$key];
+                }
+            }
+
             if ($data['jenis'] == '2') {
-                if (empty($data['date_berangkat'][0]) or empty($data['date_berangkat'][0]) or empty($data['tempat_tujuan'][0])) {
-                    throw new UserException('Tujuan belum lengkap!');
-                }
-                foreach ($data['id_tujuan'] as $key => $t) {
-                    // echo $data['date_berangkat'][$key];
-                    if (empty($hari_pertama) && !empty($data['date_berangkat'][$key])) {
-                        $hari_pertama = $data['date_berangkat'][$key];
-                    }
-                    if (!empty($data['date_kembali'][$key])) {
-                        $hari_terakhir = $data['date_kembali'][$key];
-                    }
-                }
                 $this->SPPDModel->CekJadwal($data, $hari_pertama, $hari_terakhir);
-                // die();
             }
 
             $this->load->model('SuratIzinModel');
