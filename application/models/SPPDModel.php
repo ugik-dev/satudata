@@ -260,7 +260,7 @@ class SPPDModel extends CI_Model
 
             $this->db->from('pengikut p ');
             $this->db->join('users u', 'u.id = p.id_pegawai');
-            $this->db->join('roles r', 'u.id_role = r.id_role');
+            $this->db->join('roles r', 'u.id_role = r.id_role', 'LEFT');
             $this->db->where_in('id_spt', $res_id);
             $this->db->order_by('level,id_pengikut', 'ASC');
             $pengikut = DataStructure::groupingByParent($this->db->get()->result_array(), 'id_spt');

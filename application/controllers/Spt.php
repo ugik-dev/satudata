@@ -1402,8 +1402,8 @@ class Spt extends CI_Controller
         $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
         $pdf->MultiCell(145, 5, $data['jabatan_pegawai'], 0,  'L', 0);
         $i = 2;
-        echo json_encode($data['pengikut']);
-        die();
+        // echo json_encode($data['pengikut'];
+        // die();
         foreach ($data['pengikut'] as $pengikut) {
             $pdf->CheckPageBreak(22);
 
