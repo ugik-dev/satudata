@@ -163,8 +163,10 @@ class SuratIzinModel extends CI_Model
             // $this->db->or_where("si.id_pengganti =  {$penilai['id']} ");
             if (!empty($filter['chk-surat-izin']) or !empty($filter['chk-surat-cuti']) or !empty($filter['chk-lembur'])) {
                 $jen = [];
-                if (!empty($filter['chk-surat-izin']))
+                if (!empty($filter['chk-surat-izin'])) {
                     $jen[] = 2;
+                    $jen[] = 3;
+                }
                 if (!empty($filter['chk-surat-cuti']))
                     $jen[] = 1;
                 // if (!empty($filter['chk-lembur']))
@@ -196,7 +198,7 @@ class SuratIzinModel extends CI_Model
     {
         // die();
         $s1 = 0;
-        if ($data['jen_izin'] == 2) {
+        if ($data['jen_izin'] == 2 || $data['jen_izin'] == 3) {
             $this->db->where('id_satuan', $data['id_satuan']);
             $satuan = $this->db->get('satuan')->result_array()[0]['kode_surat'];
             $s3 = $satuan . '/' . substr($data['tanggal_pengajuan'], 0, 4);

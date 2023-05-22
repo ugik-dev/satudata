@@ -42,9 +42,9 @@ class SuratIzin extends CI_Controller
         try {
             $res_data['form_url'] = 'surat-izin/add_process';
             if ($this->session->userdata()['jenis_pegawai'] == 1) {
-                $filter['jen_izin'] = 1;
+                $filter['jen_izin'] = [1, 3];
             } else {
-                $filter['jen_izin'] = 2;
+                $filter['jen_izin'] = [2, 3];
             }
             $res_data['jenis_izin'] = $this->GeneralModel->getJenisIzin($filter);
             $data = array(
@@ -195,10 +195,10 @@ class SuratIzin extends CI_Controller
                 } else if (($cur_user['level'] == 3 || $cur_user['level'] == 4) && $data['status_izin'] == 2 && ($cur_user['id_bagian'] = $data['id_bagian'])) {
                     $logs['deskripsi'] =  'Menyetujui';
                     $logs['label'] = 'success';
-                    if ($data['id_bagian'] == 2 && $data['jen_izin'] == 2) {
+                    if ($data['id_bagian'] == 2 && in_array($data['jen_izin'], [2, 3])) {
                         $data['status_izin'] = 14;
                     } else {
-                        if ($data['jen_izin'] == 2) {
+                        if (in_array($data['jen_izin'], [2, 3])) {
                             $data['status_izin'] = 11;
                         } else {
                             $data['status_izin'] = 10;

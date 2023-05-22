@@ -94,6 +94,7 @@
                             <thead>
                                 <tr>
                                     <th style="width: 5%; text-align:center!important">Jenis</th>
+                                    <th style="width: 10%; text-align:center!important">Pengajuan</th>
                                     <th style="width: 10%; text-align:center!important">TANGGAL</th>
                                     <th style="width: 10%; text-align:center!important">PEGAWAI</th>
                                     <th style="width: 20%; text-align:center!important">INFORMASI LAINNYA</th>
@@ -357,7 +358,7 @@
 
         var FDataTable = $('#FDataTable').DataTable({
             'columnDefs': [],
-            responsive: true,
+            responsive: false,
             deferRender: true,
             "order": [
                 [1, "desc"]
@@ -579,7 +580,7 @@
                 info = 'Pengganti : ' + (d['nama_pengganti'] ? d['nama_pengganti'] : '-');
                 info += ('<br>Instansi : ' + d['nama_satuan']);
                 info += ('<br>Nomor : ' + (d['no_spc'] ? d['no_spc'] : ''));
-                renderData.push([d['nama_izin'],
+                renderData.push([d['nama_izin'], d['tanggal_pengajuan'],
                     d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
                     d['nama_pegawai'], info,
                     d['nama_satuan'], statusIzin(d['status_izin'], d['unapprove']), d['id_surat_izin'], button
@@ -758,7 +759,7 @@
                 })
 
                 dfix = d1.split(" ")[0] + ' s.d ' + d2.split(" ")[0];
-                renderData.push([spt['nama_ref_jen_spt'], dfix, pegawai, tmpt,
+                renderData.push([spt['nama_ref_jen_spt'], spt['tgl_pengajuan'] + ' (' + spt['nama_input'] + ')', dfix, pegawai, tmpt,
                     spt['nama_satuan'], statusSPT(spt['status'],
                         spt['unapprove_oleh']), spt['id_spt'], button
                 ]);

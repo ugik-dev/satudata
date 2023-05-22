@@ -109,7 +109,12 @@ class GeneralModel extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('ref_jen_izin');
-        if (!empty($filter['jen_izin'])) $this->db->where('jen_izin', $filter['jen_izin']);
+        if (!empty($filter['jen_izin'])) {
+            if (is_array($filter['jen_izin']))
+                $this->db->where_in('jen_izin', $filter['jen_izin']);
+            else
+                $this->db->where('jen_izin', $filter['jen_izin']);
+        }
         $res = $this->db->get();
         return $res->result_array();
     }
