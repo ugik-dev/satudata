@@ -384,8 +384,8 @@ class GeneralModel extends CI_Model
 
         $this->db->where('u.deleted_user', 0);
 
-        if (!empty($filter['searchTerm'])) $this->db->where('nama like "%' . $filter['searchTerm'] . '%"');
-        // if (!empty($filter['searchTerm'])) $this->db->where('CONCAT(u.nama, " " ,s.nama_satuan) like "%' . $filter['searchTerm'] . '%"');
+        // if (!empty($filter['searchTerm'])) $this->db->where('nama like "%' . $filter['searchTerm'] . '%"');
+        if (!empty($filter['searchTerm'])) $this->db->where('CONCAT(u.nama, " " ,s.nama_satuan) like "%' . $filter['searchTerm'] . '%"');
 
         // if ($this->session->userdata()['id_role'] != 1) {
         //     // die();
