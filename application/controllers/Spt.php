@@ -1281,7 +1281,7 @@ class Spt extends CI_Controller
         $pdf->Cell(5, 4, to_romawi(6), 0, 'C');
         $pdf->Cell(24, 4, 'Tiba kembali di', 0);
         $pdf->Cell(3, 4, ':', 0, 0);
-        $pdf->MultiCell(58, 4, $data_satuan['berangkat_dari'] . "\n(Tempat Berkedudukan)", 0,  'L');
+        $pdf->MultiCell(58, 4, (empty($data['berangkat_dari']) ? $data_satuan['nama_satuan'] : $data['berangkat_dari']) . "\n(Tempat Berkedudukan)", 0,  'L');
         $pdf->Cell(7, 4, '', 0, 0);
         $pdf->Cell(24, 4, ' Pada tanggal', 0);
         $pdf->Cell(3, 4, ':', 0, 0);
