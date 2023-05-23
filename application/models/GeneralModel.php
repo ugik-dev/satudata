@@ -391,9 +391,9 @@ class GeneralModel extends CI_Model
         //     // die();
         if ($this->session->userdata()['id_satuan'] == 1) {
         } else {
-            $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
+            $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
+            // $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
         }
-        //     $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
         // }
         // if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
         // $this->db->where('ppk', 1);
