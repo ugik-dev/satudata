@@ -44,10 +44,10 @@ class SPPDModel extends CI_Model
         $this->db->select('rjs.nama_ref_jen_spt');
         $this->db->select('s.nama as nama_pegawai,
                             ro.level level_pegawai,
-                            sa.nama_satuan
+                            sa.nama_satuan,
+                            p2.nama as nama_input
                             ');
         if (!$sort) {
-            $this->db->select('p2.nama as nama_input');
             $this->db->select('s.jabatan jabatan_pegawai, 
             s.pangkat_gol as pangkat_gol_pegawai,
             s.id_seksi as id_seksi_pegawai,
@@ -81,10 +81,10 @@ class SPPDModel extends CI_Model
         $this->db->join('satuan sa', 'sa.id_satuan = u.id_satuan');
         $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
         $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
+        $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
         if (!$sort) {
             $this->db->join('users p', 'p.id = d.id_ppk2', 'LEFT');
             $this->db->join('users ptk', 'ptk.id = d.id_pptk', 'LEFT');
-            $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
             $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
             $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
         }
