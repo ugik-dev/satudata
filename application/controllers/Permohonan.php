@@ -91,7 +91,7 @@ class Permohonan extends CI_Controller
             if (in_array($data_penilai['level'], [1, 2, 3, 4, 5, 7, 8, 6])) {
                 // $data['laporan_spt'] = $this->SPPDModel->getLaporan($filter, true);
                 if (!empty($filter['chk-spt']) or !empty($filter['chk-sppd']) or !empty($filter['chk-lembur']))
-                    $data['spt'] = $this->SPPDModel->getAllSPPD($filter);
+                    $data['spt'] = $this->SPPDModel->getAllSPPD($filter, true);
                 else $data['spt'] = [];
             } else {
                 $data['spt'] = [];

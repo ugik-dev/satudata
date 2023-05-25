@@ -15,7 +15,7 @@ class User extends CI_Controller
             $this->SecurityModel->userOnlyGuard();
             $filter = $this->input->get();
             $filter['my_perjadin'] = true;
-            $data = $this->SPPDModel->getAllSPPD($filter);
+            $data = $this->SPPDModel->getAllSPPD($filter, true);
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
             ExceptionHandler::handle($e);

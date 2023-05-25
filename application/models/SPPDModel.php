@@ -246,6 +246,9 @@ class SPPDModel extends CI_Model
 
         $res = $this->db->get()->result_array();
         $res_id = [];
+        // echo json_encode($sort);
+        // die();
+
         foreach ($res as $rid) {
             array_push($res_id, $rid['id_spt']);
         }
