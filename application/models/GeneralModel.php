@@ -381,14 +381,8 @@ class GeneralModel extends CI_Model
         $this->db->from('users u ');
         $this->db->join('bagian b', 'u.id_bagian = b.id_bagian', 'LEFT');
         $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
-
         $this->db->where('u.deleted_user', 0);
-
-        // if (!empty($filter['searchTerm'])) $this->db->where('nama like "%' . $filter['searchTerm'] . '%"');
         if (!empty($filter['searchTerm'])) $this->db->where('CONCAT(u.nama, " " ,s.nama_satuan) like "%' . $filter['searchTerm'] . '%"');
-
-        // if ($this->session->userdata()['id_role'] != 1) {
-        //     // die();
         if ($this->session->userdata()['id_satuan'] == 1) {
         } else {
             $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);

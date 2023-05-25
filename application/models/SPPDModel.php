@@ -75,10 +75,8 @@ class SPPDModel extends CI_Model
             sa.jen_satker, 
             u.*");
         } else {
-            // $this->db->select('u.id_spt');
             $this->db->select('u.id_spt, u.tgl_pengajuan,u.status, u.no_spt, u.no_sppd, u.unapprove_oleh');
         }
-
         $this->db->from('spt as u');
         $this->db->join('satuan sa', 'sa.id_satuan = u.id_satuan');
         $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
@@ -279,41 +277,65 @@ class SPPDModel extends CI_Model
         }
         return DataStructure::SPPDStyle2($res, $tujuan, $pengikut);
     }
-    public function getAllSPPD2($filter = [])
+    public function getAllSPPD2($filter = [], $sort = false)
     {
-        $this->db->select('rjs.nama_ref_jen_spt');
-        $this->db->select("un.approval_id_user as id_unapproval ,p2.nama as nama_input, r.*,t.nama_tr as nama_transport, s.nama as nama_pegawai, s.jabatan jabatan_pegawai, s.pangkat_gol as pangkat_gol_pegawai,s.id_seksi as id_seksi_pegawai, s.id_bagian as id_bagian_pegawai, s.nip nip_pegawai ,p.nama as nama_ppk, p.jabatan jabatan_ppk, p.pangkat_gol as pangkat_gol_ppk, p.nip nip_ppk , u.*, d.nama_dasar");
-        $this->db->from('spt as u');
-        $this->db->join('tujuan r', 'u.id_spt = r.id_spt');
-        $this->db->join('users p', 'p.id = u.id_ppk', 'LEFT');
-        $this->db->join('ref_jen_spt rjs', 'u.jenis = rjs.id_ref_jen_spt', 'LEFT');
-        $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
-        $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
-        $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
-        $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
-        $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
-        if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
-        if (!empty($filter['my_perjadin'])) $this->db->where('u.id_pegawai', $this->session->userdata()['id']);
-        if (!empty($filter['search_approval']['data_penilai'])) {
-            $penilai =  $filter['search_approval']['data_penilai'];
-            $this->db->where('s.id_bagian', $penilai['id_bagian']);
-            if ($penilai['level'] == 3) {
-                // die();
-                if (!empty($filter['status_permohonan'])) {
-                    if ($filter['status_permohonan'] == 'menunggu')
-                        $this->db->where('u.status', 1);
-                    if ($filter['status_permohonan'] == 'approv')
-                        $this->db->where('u.status', 2);
-                }
-            }
-        }
-        if ($this->session->userdata('jen_satker') == 2) {
-            // die();
-            $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
-        }
+        $ses = $this->session->userdata();
 
-        $res = $this->db->get();
-        return DataStructure::SPPDStyle($res->result_array());
+        $this->db->select('rjs.nama_ref_jen_spt');
+        $this->db->select('s.nama as nama_pegawai,
+                            ro.level level_pegawai,
+                            sa.nama_satuan
+                            ');
+        if (!$sort) {
+            // $this->db->select('p2.nama as nama_input');
+            // $this->db->select('s.jabatan jabatan_pegawai, 
+            // s.pangkat_gol as pangkat_gol_pegawai,
+            // s.id_seksi as id_seksi_pegawai,
+            // s.id_bagian as id_bagian_pegawai, 
+            // s.nip nip_pegawai');
+
+            // $this->db->select(' 
+            // p.nama as nama_ppk,
+            // p.jabatan jabatan_ppk, 
+            // p.pangkat_gol as pangkat_gol_ppk, 
+            // p.nip nip_ppk');
+
+            // $this->db->select('  
+            // ptk.nama as nama_pptk, 
+            // ptk.jabatan jabatan_pptk, 
+            // ptk.pangkat_gol as pangkat_gol_pptk, 
+            // ptk.nip nip_pptk');
+            $this->db->select('
+            d.id_ppk2, d.id_pptk,
+            d.kode_rekening,
+            d.nama_dasar
+            ');
+            // $this->db->select("un.approval_id_user as id_unapproval ,
+            // t.nama_tr as nama_transport,
+            // sa.jen_satker, 
+            // u.*");
+        } else {
+            $this->db->select('u.id_spt, u.tgl_pengajuan,u.status, u.no_spt, u.no_sppd, u.unapprove_oleh');
+        }
+        $this->db->from('spt as u');
+        $this->db->join('satuan sa', 'sa.id_satuan = u.id_satuan');
+        $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
+        $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
+        if (!$sort) {
+            $this->db->join('users p', 'p.id = d.id_ppk2', 'LEFT');
+            $this->db->join('users ptk', 'ptk.id = d.id_pptk', 'LEFT');
+            $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
+            $this->db->join('approval un', 'u.unapprove_oleh = un.id_approval', 'LEFT');
+            $this->db->join('transport t', 't.transport = u.transport', 'LEFT');
+        }
+        $this->db->join('ref_jen_spt rjs', 'u.jenis = rjs.id_ref_jen_spt', 'LEFT');
+        $this->db->join('roles ro', 's.id_role = ro.id_role', 'LEFT');
+        $this->db->group_by('id_spt');
+        if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
+        if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
+        if (!empty($filter['id_bagian'])) $this->db->where('u.id_bagian', $filter['id_bagian']);
+        if (!empty($filter['id_seksi'])) $this->db->where('u.id_seksi', $filter['id_seksi']);
+        return DataStructure::keyValue($this->db->get()->result_array(), 'id_spt');
     }
 
     public function CekJadwal($data = [], $start, $end, $ex_id = '')
