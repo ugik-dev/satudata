@@ -46,6 +46,8 @@ class SuratIzin extends CI_Controller
             } else {
                 $filter['jen_izin'] = [2, 3];
             }
+
+
             $res_data['jenis_izin'] = $this->GeneralModel->getJenisIzin($filter);
             $data = array(
                 'page' => 'my/surat_izin_form',
@@ -469,6 +471,13 @@ class SuratIzin extends CI_Controller
             //     }
             // } else {
             $data['status_izin'] = 0;
+            $this->load->model('SPPDModel');
+            $this->SPPDModel->CekJadwal($data, $data['periode_start'], $data['periode_end'], '', true);
+
+            echo json_encode($data);
+            die();
+            // if ($data['date_berangkat'][0] < date('Y-m-d')) {
+            //     throw new UserException('Tanggal Keberangkatan Terlambat!');
             // }
             if (!empty($ses['id_seksi']))
                 $data['id_seksi'] = $ses['id_seksi'];

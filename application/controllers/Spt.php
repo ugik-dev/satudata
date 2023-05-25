@@ -160,28 +160,10 @@ class Spt extends CI_Controller
     public function action($action, $id)
     {
         try {
-            // $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
             $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
-            // $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
-            // $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
-            // echo json_encode($res_data);
-            // die();
-
             $cur_user = $this->session->userdata();
             $logs['id_spt'] = $id;
             $logs['id_user'] = $cur_user['id'];
-            // if ($data['user_input'] == $cur_user['id']) {
-            //     if ($data['status'] == 0) {
-            //         if ($action == 'ajukan') {
-            //             $logs['deskripsi'] =  'Mengajukan Permohonan';
-            //             $logs['label'] = 'success';
-            //             $this->SPPDModel->draft_to_diajukan($data);
-            //             $this->SPPDModel->addLogs($logs);
-            //             echo json_encode(array('error' => false, 'data' => $data));
-            //             return;
-            //         }
-            //     }
-            // }
 
             if ($action == 'approv') {
                 $logs['deskripsi'] =  'Menyetujui';
@@ -203,23 +185,7 @@ class Spt extends CI_Controller
             }
 
 
-            // if ($cur_user['level'] == 2 && $data['id_bagian_pegawai'] == $cur_user['id_bagian']) {
-            //     if ($data['status'] == 1) {
-            //         if ($action == 'approv') {
-            //             $this->SPPDModel->approv($data);
-            //         }
-            //         if ($action == 'unapprov') {
-            //             $this->SPPDModel->unapprov($data);
-            //         }
-            //     } else if ($data['status'] == 2 && $data['id_unapproval'] == $cur_user['id']) {
-            //         if ($action == 'undo') {
-            //             $this->SPPDModel->undo($data);
-            //         }
-            //     } else
-            //         throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
-            // } else {
-            //     throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
-            // }
+
             $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
@@ -308,14 +274,13 @@ class Spt extends CI_Controller
 
             $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
             $data = $this->input->post();
-
-            // $hari_pertama = '';
-            // $hari_terakhir = '';
             if (empty($data['date_berangkat'][0]) or empty($data['date_berangkat'][0]) or empty($data['tempat_tujuan'][0])) {
                 throw new UserException('Tujuan belum lengkap!');
             }
+            if ($data['date_berangkat'][0] < date('Y-m-d')) {
+                throw new UserException('Tanggal Keberangkatan Terlambat!');
+            }
             foreach ($data['id_tujuan'] as $key => $t) {
-                // echo $data['date_berangkat'][$key];
                 if (empty($hari_pertama) && !empty($data['date_berangkat'][$key])) {
                     $hari_pertama = $data['date_berangkat'][$key];
                 }
@@ -327,12 +292,9 @@ class Spt extends CI_Controller
             if ($data['jenis'] == '2') {
                 $this->SPPDModel->CekJadwal($data, $hari_pertama, $hari_terakhir);
             }
-
             $this->load->model('SuratIzinModel');
             $this->SuratIzinModel->CekJadwal($data, $hari_pertama, $hari_terakhir);
-            // echo $hari_pertama;
-            // echo $hari_terakhir;
-            // die();
+
             if ($this->session->userdata('jen_satker') == 1) {
                 if (!empty($this->session->userdata('id_seksi')))
                     $data['status'] = 1;

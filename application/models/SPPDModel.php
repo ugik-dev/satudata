@@ -338,15 +338,18 @@ class SPPDModel extends CI_Model
         return DataStructure::keyValue($this->db->get()->result_array(), 'id_spt');
     }
 
-    public function CekJadwal($data = [], $start, $end, $ex_id = '')
+    public function CekJadwal($data = [], $start, $end, $ex_id = '', $all = false)
     {
         $data['pengikut'][] = $data['id_pegawai'];
-        $this->db->select('us.nama, r.tempat_tujuan, no_sppd ,r.date_berangkat,date_kembali');
+        // echo json_encode($data['pengikut']);
+        // echo $end;
+        // die();
+        $this->db->select('us.nama, r.tempat_tujuan, no_sppd ,no_spt,r.date_berangkat,date_kembali');
         $this->db->from('spt as u');
         $this->db->join('users us', 'u.id_pegawai = us.id');
         $this->db->join('tujuan r', 'u.id_spt = r.id_spt');
         $this->db->where_in('id_pegawai', $data['pengikut']);
-        $this->db->where('u.jenis', '2');
+        if (!$all) $this->db->where('u.jenis', '2');
         if (!empty($ex_id)) $this->db->where('u.id_spt <>', $ex_id);
         $this->db->where('u.status <> 98');
         // $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
@@ -359,11 +362,11 @@ class SPPDModel extends CI_Model
 
         $res1 = $this->db->get()->result_array();
         if (!empty($res1))
-            throw new UserException("{$res1[0]['nama']} Sudah dijadwalkan berangkat ke {$res1[0]['tempat_tujuan']} pada tanggal {$res1[0]['date_berangkat']} s.d. {$res1[0]['date_kembali']} dengan NO SPPD {$res1[0]['no_sppd']} ", UNAUTHORIZED_CODE);
+            throw new UserException("{$res1[0]['nama']} Sudah dijadwalkan berangkat ke {$res1[0]['tempat_tujuan']} pada tanggal {$res1[0]['date_berangkat']} s.d. {$res1[0]['date_kembali']} dengan NO SPT {$res1[0]['no_spt']} ", UNAUTHORIZED_CODE);
 
         // pengikut
         $data['pengikut'][] = $data['id_pegawai'];
-        $this->db->select('us.nama, r.tempat_tujuan, no_sppd ,r.date_berangkat,date_kembali');
+        $this->db->select('us.nama, r.tempat_tujuan, no_sppd, no_spt ,r.date_berangkat,date_kembali');
         $this->db->from('spt as u');
         $this->db->join('pengikut p', 'p.id_spt = u.id_spt');
         $this->db->join('users us', 'p.id_pegawai = us.id');
@@ -371,7 +374,7 @@ class SPPDModel extends CI_Model
         $this->db->where_in('p.id_pegawai', $data['pengikut']);
         $this->db->where('u.status <> 98');
         if (!empty($ex_id)) $this->db->where('u.id_spt <> ', $ex_id);
-        $this->db->where('u.jenis', '2');
+        if (!$all) $this->db->where('u.jenis', '2');
         // $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
         $this->db->where("(
             r.date_berangkat BETWEEN '$start' AND '$end' OR 
@@ -382,9 +385,10 @@ class SPPDModel extends CI_Model
 
         $res1 = $this->db->get()->result_array();
         if (!empty($res1))
-            throw new UserException("{$res1[0]['nama']} Sudah dijadwalkan berangkat ke {$res1[0]['tempat_tujuan']} pada tanggal {$res1[0]['date_berangkat']} s.d. {$res1[0]['date_kembali']} dengan NO SPPD {$res1[0]['no_sppd']} ", UNAUTHORIZED_CODE);
+            throw new UserException("{$res1[0]['nama']} Sudah dijadwalkan berangkat ke {$res1[0]['tempat_tujuan']} pada tanggal {$res1[0]['date_berangkat']} s.d. {$res1[0]['date_kembali']} dengan NO SPT {$res1[0]['no_spt']} ", UNAUTHORIZED_CODE);
 
         // echo json_encode($res1);
+        // echo $this->db->last_query();
         // die();
 
         // return DataStructure::SPPDStyle($res->result_array());
