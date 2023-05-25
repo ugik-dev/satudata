@@ -474,8 +474,8 @@ class SuratIzin extends CI_Controller
             $this->load->model('SPPDModel');
             $this->SPPDModel->CekJadwal($data, $data['periode_start'], $data['periode_end'], '', true);
 
-            echo json_encode($data);
-            die();
+            // echo json_encode($data);
+            // die();
             // if ($data['date_berangkat'][0] < date('Y-m-d')) {
             //     throw new UserException('Tanggal Keberangkatan Terlambat!');
             // }
