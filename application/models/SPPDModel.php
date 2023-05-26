@@ -75,7 +75,7 @@ class SPPDModel extends CI_Model
             sa.jen_satker, 
             u.*");
         } else {
-            $this->db->select('u.id_spt, u.tgl_pengajuan,u.status, u.no_spt, u.no_sppd, u.unapprove_oleh');
+            $this->db->select('u.id_spt, u.tgl_pengajuan,u.status, u.no_spt, u.no_sppd, u.unapprove_oleh, u.id_satuan, u.id_bagian, u.id_seksi');
         }
         $this->db->from('spt as u');
         $this->db->join('satuan sa', 'sa.id_satuan = u.id_satuan');
