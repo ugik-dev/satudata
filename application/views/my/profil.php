@@ -93,7 +93,7 @@
                                     <div class="col-sm-12 col-md-3">
                                         <div class="mb-3">
                                             <label class="form-label">NIK</label>
-                                            <input class="form-control" name="nik" type="text" value="<?= $data_profile['nik'] ?>" />
+                                            <input class="form-control" name="nik" type="text" value="<?= $data_profile['nik'] ?>" required />
                                         </div>
                                     </div>
                                     <div class="col-md-12">

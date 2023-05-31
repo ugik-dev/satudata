@@ -65,6 +65,12 @@
                                 <input type="text" placeholder="ex. 1986XX XXXXXX X XXX" class="form-control" id="nip" name="nip">
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="nik">NIK</label>
+                                <input type="text" placeholder="ex. 1986XX XXXXXX X XXX" class="form-control" id="nik" name="nik" required="required">
+                            </div>
+                        </div>
                         <!-- </div>
                     <div class="row"> -->
                         <div class="col-lg-6">
@@ -173,14 +179,6 @@
                                 <option value="2">Tidak</option>
                             </select>
                         </div>
-                        <div class="col-lg-4" <?= $this->session->userdata()['id_satuan'] != 1 ? 'hidden' : '' ?>>
-                            <div class="col-form-label">PENOMORAN</div>
-                            <select class="col-sm-12 form-control" id="penomoran" name="penomoran">
-                                <option value="">--</option>
-                                <option value="1">Ya</option>
-                                <option value="2">Tidak</option>
-                            </select>
-                        </div>
                         <div class="col-lg-4">
                             <div class="col-form-label"> Role </div>
                             <select class="select2 col-sm-12" id="id_role" name="id_role"></select>
@@ -281,7 +279,7 @@
             'id_seksi': $('#user_modal').find('#id_seksi'),
             'id_satuan': $('#user_modal').find('#id_satuan'),
             'ppk': $('#user_modal').find('#ppk'),
-            'penomoran': $('#user_modal').find('#penomoran'),
+            'nik': $('#user_modal').find('#nik'),
             'pend_jenjang': $('#user_modal').find('#pend_jenjang'),
             'pend_jurusan': $('#user_modal').find('#pend_jurusan'),
             'tanggal_lahir': $('#user_modal').find('#tanggal_lahir'),
@@ -597,7 +595,7 @@
             UserModal.nip.val(currentData['nip']);
             UserModal.username.val(currentData['username']);
             UserModal.ppk.val(currentData['ppk']);
-            UserModal.penomoran.val(currentData['penomoran']);
+            UserModal.nik.val(currentData['nik']);
             UserModal.pend_jenjang.val(currentData['pend_jenjang']);
             UserModal.pend_jurusan.val(currentData['pend_jurusan']);
             UserModal.tanggal_lahir.val(currentData['tanggal_lahir']);
