@@ -33,7 +33,7 @@
                                             <div class="mb-3 row">
                                                 <label class="col-sm-3 col-form-label">Instansi </label>
                                                 <div class="col-sm-8">
-                                                    <select class="form-control " name="id_satuan" id="id_satuan">
+                                                    <select class="select2 form-control " name="id_satuan" id="id_satuan">
                                                         <option value=""> Semua </option>
                                                         <?php
                                                         foreach ($dataContent['instansi'] as $ji) {
@@ -68,11 +68,15 @@
                                             </div>
                                         </div>
                                         <div class="checkbox-animated m-checkbox-inline">
-                                            <label class="form-check form-check-inline" for="chk-surat-izin">
-                                                <input class="checkbox_animated" id="chk-surat-izin" name="chk-surat-izin" type="checkbox" checked />Surat Izin
+
+                                            <label class="form-check form-check-inline" for="chk-spt">
+                                                <input class="checkbox_animated" id="chk-spt" name="chk-spt" type="checkbox" checked />SPT
                                             </label>
-                                            <label class="form-check form-check-inline" for="chk-surat-cuti">
-                                                <input class="checkbox_animated" id="chk-surat-cuti" name="chk-surat-cuti" type="checkbox" checked />Surat Cuti
+                                            <label class="form-check form-check-inline" for="chk-sppd">
+                                                <input class="checkbox_animated" id="chk-sppd" name="chk-sppd" type="checkbox" checked />SPPD
+                                            </label>
+                                            <label class="form-check form-check-inline" for="chk-lembur">
+                                                <input class="checkbox_animated" id="chk-lembur" name="chk-lembur" type="checkbox" checked />Lembur
                                             </label>
                                         </div>
                                         <button class="btn btn-primary text-center" type="submit">
@@ -163,6 +167,7 @@
         $('#menu_4').addClass('active');
         $('#opmenu_4').show();
         $('#submenu_13').addClass('active');
+        $('.select2').select2();
         var toolbar = {
             'form': $('#toolbar_form'),
             'id_satuan': $('#toolbar_form').find('#id_satuan'),
@@ -230,9 +235,9 @@
             confirmButtonText: "Ya, Hapus!",
         };
 
-        $.when(getAllPermohonan()).then((e) => {}).fail((e) => {
+        // $.when(getAllPermohonan()).then((e) => {}).fail((e) => {
 
-        });
+        // });
 
         toolbar.form.on('submit', (e) => {
             getAllPermohonan();

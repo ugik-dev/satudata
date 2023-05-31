@@ -1191,11 +1191,16 @@ class SPPDModel extends CI_Model
             $this->db->set('approve_sekdin', NULL);
             $this->db->set('unapprove_oleh', NULL);   // if ($data_spt['id_bagian'] == $ses['id_bagian']) {
 
-            if ($data['level_pegawai'] == 7) {
-                $this->db->set('status', '11');
-            } else {
+            // if ($data['level_pegawai'] == 7) {
+            if ($data['id_ppk'] == $ses['id']) {
+                $this->db->set('sign_ppk', NULL);
                 $this->db->set('status', '10');
+            } else {
+                $this->db->set('status', '11');
             }
+            // } else {
+            //     $this->db->set('status', '10');
+            // }
         }
         if (($data['status'] == '99') && ($data['approve_kadin'] == $ses['id'])) {
             // echo "true";

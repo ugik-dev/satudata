@@ -606,10 +606,11 @@
                     <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
                     <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
                     `;
-                    } else if (spt['status'] == 12 || spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>') {
+                    } else if ((spt['status'] == 12 && spt['unapprove_oleh'] == null) || (spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>' && spt['status'] == 11)) {
                         var aksiBtn = `
                         <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
                         `;
+
                     }
                 <?php  } else if ($this->session->userdata()['level'] == 1) { ?>
                     if (spt['status'] == 12) {
@@ -654,13 +655,6 @@
                         var aksiBtn = `
                         <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
                         `;
-                    }
-                <?php  } else if ($this->session->userdata()['penomoran'] == 1) { ?>
-                    if (spt['status'] == 99) {
-                        var aksiBtn = `
-                    <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
-                    <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
-                    `;
                     }
                 <?php  } ?>
                 if (spt['status'] == 5 && spt['id_pptk'] == '<?= $this->session->userdata()['id'] ?>' && spt['id_pptk'] != '') {
