@@ -98,6 +98,7 @@
                                     <th style="width: 10%; text-align:center!important">TGL PENGAJUAN</th>
                                     <th style="width: 12%; text-align:center!important">TGL DINAS</th>
                                     <th style="width: 12%; text-align:center!important">TUJUAN</th>
+                                    <!-- <th style="width: 12%; text-align:center!important">MAKSUD</th> -->
                                     <th style="width: 10%; text-align:center!important">INSTANSI</th>
                                     <th style="width: 10%; text-align:center!important">PEGAWAI</th>
                                     <th style="width: 10%; text-align:center!important">NO SPT</th>
@@ -359,6 +360,7 @@
                     // tgl_indo(d['periode_end']),
                     // d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
                     tmpt,
+                    // d['maksud'],
                     d['nama_satuan'],
                     pegawai,
                     d['no_spt'],

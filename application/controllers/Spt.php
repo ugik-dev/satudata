@@ -277,8 +277,10 @@ class Spt extends CI_Controller
             if (empty($data['date_berangkat'][0]) or empty($data['date_berangkat'][0]) or empty($data['tempat_tujuan'][0])) {
                 throw new UserException('Tujuan belum lengkap!');
             }
-            if ($data['date_berangkat'][0] < date('Y-m-d')) {
-                throw new UserException('Tanggal Keberangkatan Terlambat!');
+            if ($this->session->userdata('id_role') != '1') {
+                if ($data['date_berangkat'][0] < date('Y-m-d')) {
+                    throw new UserException('Tanggal Keberangkatan Terlambat!');
+                }
             }
             foreach ($data['id_tujuan'] as $key => $t) {
                 if (empty($hari_pertama) && !empty($data['date_berangkat'][$key])) {
