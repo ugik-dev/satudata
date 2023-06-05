@@ -286,8 +286,13 @@ class Spt extends CI_Controller
                 if (empty($hari_pertama) && !empty($data['date_berangkat'][$key])) {
                     $hari_pertama = $data['date_berangkat'][$key];
                 }
-                if (!empty($data['date_kembali'][$key])) {
-                    $hari_terakhir = $data['date_kembali'][$key];
+
+                if ($data['jenis'] == '3') {
+                    $hari_terakhir = $data['date_berangkat'][$key];
+                } else {
+                    if (!empty($data['date_kembali'][$key])) {
+                        $hari_terakhir = $data['date_kembali'][$key];
+                    }
                 }
             }
 
