@@ -884,7 +884,22 @@ class Spt extends CI_Controller
         $pdf->MultiCell(185, 5, $this->convertHTML($laporan['text_laporan']), 0, 'L');
         $pdf->Cell(70, 5, '', 0, 1, 'L');
         $pdf->Cell(100, 5, '', 0, 0, 'L');
-        $pdf->Cell(90, 5, $data_satuan['satuan_tempat'] . ', ' . tanggal_indonesia($laporan['timestamp_lap']), 0, 1, 'C');
+        // echo json_encode($data['tujuan']);
+        // die();
+        $hari_terakhir = '';
+        foreach ($data['tujuan'] as $key => $t) {
+
+            if ($data['jenis'] == '3') {
+                $hari_terakhir = $t['date_kembali'];
+            } else {
+                if (!empty($t['date_kembali'])) {
+                    $hari_terakhir = $t['date_kembali'];
+                }
+            }
+        }
+        // echo $hari_terakhir;
+        // die();
+        $pdf->Cell(90, 5, $data_satuan['satuan_tempat'] . ', ' . tanggal_indonesia($hari_terakhir), 0, 1, 'C');
         $pdf->Cell(100, 5, '', 0, 0, 'L');
         $pdf->Cell(90, 5, 'Yang Melaporkan :', 0, 1, 'C');
         $pdf->Cell(100, 3, '', 0, 1, 'L');
