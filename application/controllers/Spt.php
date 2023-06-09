@@ -8,6 +8,7 @@ class Spt extends CI_Controller
         $this->load->model(array('SecurityModel', 'SPPDModel', 'GeneralModel'));
         $this->db->db_debug = FALSE;
     }
+
     public function getFoto()
     {
         try {
@@ -49,7 +50,6 @@ class Spt extends CI_Controller
     public function getPengikut($id)
     {
         try {
-            // $this->SecurityModel->multiRole('SPT / SPPD', 'Daftar Pengajuan');
             $filter = $this->input->get();
             $data = $this->SPPDModel->getPengikut($filter);
             echo json_encode(array('error' => false, 'data' => $data));
@@ -1349,6 +1349,16 @@ class Spt extends CI_Controller
         $pdf->Cell(25, 5, 'Dasar            :', 0, 0, 'L', 0);
         $pdf->Cell(5, 5, '1. ', 0, 0, 'L', 0);
         $pdf->MultiCell(165, 5, !empty($data['nama_dasar']) ? $data['nama_dasar'] : $data['dasar'], 0, 'J');
+        $dasar_tambahan = $this->SPPDModel->getDasar($data['id_spt']);
+        $idt = 2;
+        foreach ($dasar_tambahan as $dt) {
+            // echo json_encode($dt);
+            // die();
+            $pdf->Cell(1, 3, '', 0, 0, 'L', 1);
+            $pdf->Cell(25, 5, '', 0, 0, 'L', 0);
+            $pdf->Cell(5, 5, $idt . '. ', 0, 0, 'L', 0);
+            $pdf->MultiCell(165, 5, $dt['dasar_tambahan'], 0, 'J');
+        }
         $pdf->Cell(25, 5, ' ', 0, 1, 'L', 0);
         $pdf->SetFont('Arial', 'B', 11);
         $pdf->Cell(195, 5, 'MEMERINTAHKAN :', 0, 1, 'C', 0);

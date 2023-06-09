@@ -85,6 +85,32 @@
         </div>
       </div>
     </div>
+    <!-- Aktifitas SPT -->
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="best-seller-table responsive-tbl">
+            <div class="item">
+              <div class="table-responsive product-list">
+                <table class="table table-bordernone">
+                  <thead>
+                    <tr>
+                      <th class="f-22">Tujuan</th>
+                      <th>Pelaksana</th>
+                      <th>Maksud</th>
+                      <th class="text-end">Status</th>
+                      <th class="text-end">Lihat</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Info SPT -->
     <div class="col-xl-12 col-lg-12 xl-100 appointment box-col-12">
       <div class="card">
@@ -108,6 +134,8 @@
         </div>
       </div>
     </div>
+
+
     <!-- Monitor Web -->
 
     <div class="col-xl-12 xl-100 appointment box-col-6">
