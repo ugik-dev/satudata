@@ -263,8 +263,33 @@ class SuratIzin extends CI_Controller
                     $this->SuratIzinModel->approv($data, $sign);
                     $this->SuratIzinModel->addLogs($logs);
                 }
+            } else   if ($action == 'unapprov') {
+                $logs['deskripsi'] =  'Menolak';
+                $logs['label'] = 'danger';
+                if ($cur_user['level'] == 5 && $data['status_izin'] == 1 && ($cur_user['id_seksi'] = $data['id_seksi'])) {
+                    $this->SuratIzinModel->addLogs($logs);
+                    $this->SuratIzinModel->unapprov($data, $cur_user['id']);
+                } else if (($cur_user['level'] == 3 || $cur_user['level'] == 4) && $data['status_izin'] == 2 && ($cur_user['id_bagian'] = $data['id_bagian'])) {
+                    $this->SuratIzinModel->addLogs($logs);
+                    $this->SuratIzinModel->unapprov($data, $cur_user['id']);
+                } else if ($cur_user['level'] == 2 && $data['status_izin'] == 14) {
+                    $this->SuratIzinModel->addLogs($logs);
+                    $this->SuratIzinModel->unapprov($data, $cur_user['id']);
+                } else if ($cur_user['level'] == 1 && $data['status_izin'] == 15) {
+                    $this->SuratIzinModel->addLogs($logs);
+                    $this->SuratIzinModel->unapprov($data, $cur_user['id']);
+                } else if ($cur_user['level'] == 3 && $cur_user['id_bagian'] == 2 && $data['status_izin'] == 11) {
+                    $this->SuratIzinModel->addLogs($logs);
+                    $this->SuratIzinModel->unapprov($data, $cur_user['id']);
+                } else if ($cur_user['level'] == 8 && $cur_user['id_satuan'] == $data['id_satuan'] && $data['status_izin'] == 50) {
+                    $this->SuratIzinModel->addLogs($logs);
+                    $this->SuratIzinModel->unapprov($data, $cur_user['id']);
+                } else if ($cur_user['level'] == 7 && $cur_user['id_satuan'] == $data['id_satuan'] && $data['status_izin'] == 51) {
+                    $this->SuratIzinModel->addLogs($logs);
+                    $this->SuratIzinModel->unapprov($data, $cur_user['id']);
+                }
             }
-
+            $data = $this->SuratIzinModel->getAll(array('id_surat_izin' => $id))[$id];
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -531,8 +556,6 @@ class SuratIzin extends CI_Controller
                         $data['c_sisa_n1'] = 6;
                         $data['c_sisa_n2'] = 6;
                     }
-                    // echo json_encode(array('error' => true, $data));
-                    // die();
 
                     $total_c = (int) $data['c_sisa_n'] + (int)$data['c_sisa_n1'] + (int) $data['c_sisa_n2'];
 

@@ -580,7 +580,7 @@
                 info = 'Pengganti : ' + (d['nama_pengganti'] ? d['nama_pengganti'] : '-');
                 info += ('<br>Instansi : ' + d['nama_satuan']);
                 info += ('<br>Nomor : ' + (d['no_spc'] ? d['no_spc'] : ''));
-                renderData.push([d['nama_izin'], d['tanggal_pengajuan'],
+                renderData.push([d['nama_izin'] + (d['kategori'] == 1 ? '' : '<br><b>(Urgent)</b>'), d['tanggal_pengajuan'],
                     d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
                     d['nama_pegawai'], info,
                     d['nama_satuan'], statusIzin(d['status_izin'], d['unapprove']), d['id_surat_izin'], button
@@ -948,6 +948,7 @@
         FDataTable.on('click', '.deapprov', function() {
             var currentData = dataSKP[$(this).data('id')];
             var jenis = $(this).data('jenis');
+
             Swal.fire({
                 title: "Konfrirmasi Penolakan",
                 text: "Data ini akan ditolak ?",
@@ -972,10 +973,10 @@
                 Swal.showLoading()
                 cur_id = $(this).data('id')
                 $.ajax({
-                    url: `<?= base_url('Spt/action/unapprov/') ?>${cur_id}`,
+                    url: `<?= base_url('') ?>${jenis}/action/unapprov/${cur_id}`,
                     'type': 'get',
                     data: {
-                        id: $(this).data('id'),
+                        id: cur_id,
                         aksi: 3,
                         jenis: jenis
                     },
@@ -990,8 +991,11 @@
                             return;
                         }
                         var d = json['data']
-                        dataSKP[jenis][d['id_spt']] = d;
-                        Swal.fire("SKP Berhasil ditolak", "", "success");
+                        if (jenis == 'spt')
+                            dataSKP[jenis][d['id_spt']] = d;
+                        else if (jenis == 'SuratIzin')
+                            dataSKP['surat_izin'][d['id_surat_izin']] = d;
+                        Swal.fire("Berhasil ditolak", "", "success");
                         renderSKP(dataSKP);
                     },
                     error: function(e) {}

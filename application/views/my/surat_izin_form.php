@@ -47,21 +47,20 @@
                                     } ?>
                                 </select>
                             </div>
-                            <!-- <div class="col-lg-4 layout_c_tahunan">
-                                <div class="col-form-label">Tahun N</div>
-                                <input type="number" name="c_n" id="c_n" class="form-control" />
-                            </div>
-                            <div class="col-lg-4 layout_c_tahunan">
-                                <div class="col-form-label">Tahun N-1</div>
-                                <input type="number" name="c_n1" id="c_n1" class="form-control" />
-                            </div>
-                            <div class="col-lg-4 layout_c_tahunan">
-                                <div class="col-form-label">Tahun N-2</div>
-                                <input type="number" name="c_n2" id="c_n2" class="form-control" />
-                            </div> -->
                         </div>
                     </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12">
 
+                                <div class="col-form-label">Kategori</div>
+                                <select name="kategori" id="kategori" class="form-control" required="required">
+                                    <option value="1">Non Urgent</option>
+                                    <option value="2">Urgent</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-lg-6">
                         <div class="col-form-label">Pelimpahan Wewenang</div>

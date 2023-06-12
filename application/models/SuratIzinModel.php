@@ -374,6 +374,15 @@ class SuratIzinModel extends CI_Model
         $this->db->delete('surat_izin');
     }
 
+    public function unapprov($data, $usr)
+    {
+        $this->db->set('unapprove', $usr);
+        $this->db->where('id_surat_izin', $data['id_surat_izin']);
+        $this->db->update('surat_izin',);
+        ExceptionHandler::handleDBError($this->db->error(), "Tambah Surat Izin", "Surat Izin");
+    }
+
+
     public function add($data)
     {
         $data['tanggal_pengajuan'] = date('Y-m-d');
