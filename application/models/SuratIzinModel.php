@@ -388,7 +388,7 @@ class SuratIzinModel extends CI_Model
         $data['tanggal_pengajuan'] = date('Y-m-d');
         $this->db->insert('surat_izin', DataStructure::slice($data, [
             'id_pegawai', 'id_pengganti', 'jenis_izin', 'alasan', 'tanggal_pengajuan', 'periode_start', 'periode_end', 'lama_izin', 'status_izin', 'alamat_izin',
-            'c_sisa_n', 'c_sisa_n1', 'c_sisa_n2', 'c_n', 'c_n1', 'c_n2', 'lampiran',
+            'c_sisa_n', 'c_sisa_n1', 'c_sisa_n2', 'c_n', 'c_n1', 'c_n2', 'lampiran', 'kategori',
             'id_seksi', 'id_bagian', 'id_satuan', 'atasan_1',  'atasan_2',  'atasan_3',  'atasan_4',
         ], FALSE));
         ExceptionHandler::handleDBError($this->db->error(), "Tambah Surat Izin", "Surat Izin");
@@ -405,7 +405,7 @@ class SuratIzinModel extends CI_Model
         $res_data['id_penilai'] = $data['id_penilai'];
         $res_data['id_user'] = $id_user;
         $this->db->set(DataStructure::slice($data, [
-            'date', 'id_user', 'id_penilai', 'periode_start', 'periode_end', 'tgl_pengajuan', 'status'
+            'date', 'id_user', 'id_penilai', 'periode_start', 'periode_end', 'tgl_pengajuan', 'status', 'kategori'
         ], FALSE));
 
         $this->db->where('id_surat_izin', $data['id_surat_izin']);
@@ -422,7 +422,7 @@ class SuratIzinModel extends CI_Model
 
         $this->db->set(DataStructure::slice($data, [
             'id_pegawai', 'id_pengganti', 'jenis_izin', 'alasan', 'tanggal_pengajuan', 'periode_start', 'periode_end', 'lama_izin', 'status_izin', 'alamat_izin',
-            'c_sisa_n', 'c_sisa_n1', 'c_sisa_n2', 'c_n', 'c_n1', 'c_n2', 'lampiran',
+            'c_sisa_n', 'c_sisa_n1', 'c_sisa_n2', 'c_n', 'c_n1', 'c_n2', 'lampiran', 'kategori',
             'id_seksi', 'id_bagian', 'id_satuan', 'atasan_1',  'atasan_2',  'atasan_3',  'atasan_4', 'no_spc'
         ], FALSE));
 
