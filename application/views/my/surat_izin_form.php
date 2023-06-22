@@ -244,8 +244,7 @@
                                 },
                             },
                         }).then((result) => {
-
-                            location.href = "<?= base_url('surat-izin') ?>";
+                            // location.href = "<?= base_url('surat-izin') ?>";
                         });
                     }
                 });

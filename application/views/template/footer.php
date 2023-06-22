@@ -21,6 +21,7 @@
   </script>
 
   <!-- <script src="<?= base_url() ?>assets/js/jquery-3.5.1.min.js"></script> -->
+  <!-- <script src="<?= base_url() ?>assets/plugins/input-mask/jquery.mask.min.js"></script> -->
 
   <script src="<?= base_url() ?>assets/js/bootstrap/bootstrap.bundle.min.js"></script>
   <!-- feather icon js-->

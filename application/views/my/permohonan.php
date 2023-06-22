@@ -550,6 +550,12 @@
                           <a class="deapprov dropdown-item " data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-times'></i> Tolak Approv</a>
                     `;
                 } // if ((d['status_izin'] == '99')) {
+                if (d['unapprove'] == curUser) {
+
+                    aksiBtn =
+                        `<a class="batal_aksi dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-undo'></i> Batalkan Aksi</a>
+                        `;
+                } // if ((d['status_izin'] == '99')) {
                 cek_btn =
                     `<a class="data_izin dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-eye'></i> Lihat</a>
                     `;
@@ -1030,7 +1036,7 @@
                 Swal.showLoading()
                 cur_id = $(this).data('id')
                 $.ajax({
-                    url: `<?= base_url('Spt/action/undo/') ?>${cur_id}`,
+                    url: `<?= base_url('') ?>${jenis}/action/undo/${cur_id}`,
                     'type': 'get',
                     data: {
                         id: $(this).data('id'),

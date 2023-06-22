@@ -263,7 +263,69 @@ class SPPDModel extends CI_Model
             $this->db->where('u.qrcode', $filter['qrcode']);
         }
     }
+    public function getMyPerjadin($filter = [], $sort = false)
+    {
+        $this->db->db_debug = true;
+        $ses = $this->session->userdata();
 
+        $this->db->select('rjs.nama_ref_jen_spt');
+        // $this->db->select(' p2.nama as nama_input,
+        //                     ');
+
+        $this->db->select('u.id_spt, u.tgl_pengajuan,u.status, u.no_spt, u.no_sppd, u.unapprove_oleh, u.id_satuan, u.id_bagian, u.id_seksi');
+
+        $this->db->from('spt as u');
+        // $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
+
+        $this->db->join('ref_jen_spt rjs', 'u.jenis = rjs.id_ref_jen_spt', 'LEFT');
+        $this->db->join('tujuan tj', 'tj.id_spt = u.id_spt', 'LEFT');
+        $this->db->join('pengikut pk', 'pk.id_spt = u.id_spt', 'LEFT');
+        // $this->db->group_by('id_spt');
+
+        if (!empty($filter['dari']) && !empty($filter['sampai'])) $this->db->where(' (
+            (tj.date_berangkat BETWEEN "' . $filter['dari'] . '" AND "' . $filter['sampai'] . '" ) OR
+            (tj.date_berangkat BETWEEN "' . $filter['dari'] . '" AND "' . $filter['sampai'] . '" )
+        )
+        ');
+        if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
+        // $this->db->where('u.id_spt', 24);
+        if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
+        if (!empty($filter['id_bagian'])) $this->db->where('u.id_bagian', $filter['id_bagian']);
+        if (!empty($filter['id_seksi'])) $this->db->where('u.id_seksi', $filter['id_seksi']);
+        // $this->db->where('( u.id_pegawai =' .  $ses['id'] . ' OR pk.id_pegawai = ' .  $ses['id'] . ' )');
+        $this->db->where('( u.id_pegawai =' .  $ses['id'] . '  )');
+        $this->db->or_where('( pk.id_pegawai = ' .  $ses['id'] . ' )');
+
+
+        $res = $this->db->get()->result_array();
+        echo $this->db->last_query();
+        die();
+        // echo json_encode($res->result_array());
+        // die();
+        // ->result_array();
+        $res_id = [];
+        // die();
+
+        foreach ($res as $rid) {
+            array_push($res_id, $rid['id_spt']);
+        }
+        if (!empty($res_id)) {
+            if (!$sort) {
+                $this->db->select('*');
+            } else {
+                $this->db->select('id_spt,date_berangkat,date_kembali,tempat_tujuan');
+            }
+            $this->db->from('tujuan');
+            $this->db->order_by('ke', 'ASC');
+            $this->db->where_in('id_spt', $res_id);
+            $tujuan = DataStructure::groupingByParent($this->db->get()->result_array(), 'id_spt');
+            echo $this->db->last_query();
+            die();
+        } else {
+            $tujuan = [];
+        }
+        return DataStructure::SPPDStyle2($res, $tujuan, null);
+    }
     public function getAllSPPD($filter = [], $sort = false)
     {
         $ses = $this->session->userdata();

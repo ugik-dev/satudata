@@ -368,25 +368,23 @@ class DataStructure
     return $ret;
   }
 
-  public static function SPPDStyle2($arr, $tujuan, $pengikut)
+  public static function SPPDStyle2($arr, $tujuan, $pengikut = null)
   {
 
     $ret = array();
     foreach ($arr as $a) {
       $groupKey = $a['id_spt'];
-      // if (empty($ret[$a['id_spt']]))
       $ret[$a['id_spt']] = $a;
       $ret[$a['id_spt']]['tujuan'] = [];
       $ret[$a['id_spt']]['pengikut'] = [];
-      // echo json_encode($ret);
-      // die();
     }
     foreach ($tujuan as $key => $b) {
       $ret[$key]['tujuan'] = $b;
     }
-    foreach ($pengikut as $key => $c) {
-      $ret[$key]['pengikut'] = $c;
-    }
+    if ($pengikut != null)
+      foreach ($pengikut as $key => $c) {
+        $ret[$key]['pengikut'] = $c;
+      }
     // echo json_encode($ret);
     // die();
     return $ret;

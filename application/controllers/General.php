@@ -97,6 +97,18 @@ class General extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
+    public function getAllKodeAnggaran()
+    {
+        try {
+            $filter = $this->input->get();
+            // $filter['nature'] = 'Assets';
+            $data = $this->GeneralModel->getAllKodeAnggaran($filter);
+            echo json_encode(array('error' => false, 'data' => $data));
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
     public function getAllPosition()
     {
         try {

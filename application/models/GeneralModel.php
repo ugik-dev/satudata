@@ -150,7 +150,25 @@ class GeneralModel extends CI_Model
         // die();
         return DataStructure::keyValue($res->result_array(), 'id_dasar');
     }
+    public function getAllKodeAnggaran($filter = [])
+    {
+        $this->db->select('d.*,us.nama as nama_petugas, u1.nama as nama_ppk2, u2.nama as nama_pptk');
+        $this->db->from('kode_anggaran as d');
+        $this->db->join('users as us', 'us.id = d.user_input');
+        $this->db->join('users as u1', 'id_ppk = u1.id', 'LEFT');
+        $this->db->join('users as u2', 'id_pptk = u2.id', 'LEFT');
+        if (!empty($filter['id_dasar']))
+            $this->db->where('id_dasar', $filter['id_dasar']);
 
+        if ($this->session->userdata('id_role') != 1) {
+            if (!empty($this->session->userdata('id_bagian'))) $this->db->where('d.id_bagian', $this->session->userdata('id_bagian'));
+            $this->db->where('d.id_satuan', $this->session->userdata('id_satuan'));
+        }
+        $res = $this->db->get();
+        // echo $this->db->last_query();
+        // die();
+        return DataStructure::keyValue($res->result_array(), 'id_anggaran');
+    }
 
     public function getAllMySKP($filter, $jk)
     {
