@@ -230,23 +230,26 @@ function statusSPT(status, unnaprove) {
 }
 function statusIzin(status, unnaprove = null) {
   if (unnaprove != null) {
-    if (status == "0")
-      return ` <i class='fa fa-times text-danger'> </i> <b class="text-danger"> Ditolak Pengganti </b> `;
-    else if (status == "1")
-      return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Kasi</b></i> `;
-    else if (status == "2")
-      return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Kabid / Kasubag </b></i> `;
-    else if (status == "3")
-      return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Sekretaris Dinas</b></i> `;
-    else if (status == "6")
-      return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Kepala Dinas</b></i> `;
-    else if (status == "10")
-      return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Verifikasi Admin Kepegawaian</b></i> `;
-    else if (status == "11")
-      return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Kasubag Kepegawaian </b></i> `;
-    else if (status == "14")
-      return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Sekretaris </b></i> `;
-    return `<i class='fa fa-times text-danger'></i> <b class="text-danger"> Approv Ditolak </b>`;
+    // if (status == "0")
+    //   return ` <i class='fa fa-times text-danger'> </i> <b class="text-danger"> Ditolak Pengganti </b> `;
+    // else
+    return ` <i class='fa fa-times text-danger'> </i> <b class="text-danger"> Ditolak </b><br>(${unnaprove})`;
+
+    //  if (status == "1")
+    //   return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Kasi</b></i> `;
+    // else if (status == "2")
+    //   return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Kabid / Kasubag </b></i> `;
+    // else if (status == "3")
+    //   return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Sekretaris Dinas</b></i> `;
+    // else if (status == "6")
+    //   return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Kepala Dinas</b></i> `;
+    // else if (status == "10")
+    //   return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Verifikasi Admin Kepegawaian</b></i> `;
+    // else if (status == "11")
+    //   return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Kasubag Kepegawaian </b></i> `;
+    // else if (status == "14")
+    //   return `<i class='fa fa-hourglass-start text-danger'>  <b class="text-danger"> Ditolak Sekretaris </b></i> `;
+    // return `<i class='fa fa-times text-danger'></i> <b class="text-danger"> Approv Ditolak </b>`;
   } else if (status == "0")
     return ` <i class='fa fa-edit text-warning'> </i> <b class="text-warning"> Menunggu Persetujuan Pengganti </b> `;
   else if (status == "1")

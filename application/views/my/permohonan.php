@@ -589,7 +589,7 @@
                 renderData.push([d['nama_izin'] + (d['kategori'] == 1 ? '' : '<br><b>(Urgent)</b>'), d['tanggal_pengajuan'],
                     d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
                     d['nama_pegawai'], info,
-                    d['nama_satuan'], statusIzin(d['status_izin'], d['unapprove']), d['id_surat_izin'], button
+                    d['nama_satuan'], statusIzin(d['status_izin'], d['unapprove_nama']), d['id_surat_izin'], button
                 ]);
             });
 
@@ -742,6 +742,7 @@
 
                     i++;
                 })
+                tmpt = tmpt + '<br>Maksud :' + spt['maksud'];
                 if (spt['jenis'] == 2) {
                     tmpt = tmpt + '<br>No SPT : ' + (spt['no_spt'] ? spt['no_spt'] : '') + '<br>No SPPD : ' + (spt['no_sppd'] ? spt['no_sppd'] : '');
                 } else {
@@ -849,7 +850,7 @@
             $('.c_label_n').html(cur_tahun);
             $('.c_label_n1').html(cur_tahun - 1);
             $('.c_label_n2').html(cur_tahun - 2);
-            LihatModal.status_izin.html(statusIzin(curData['status_izin'], curData['unapprove']))
+            LihatModal.status_izin.html(statusIzin(curData['status_izin'], curData['unapprove_nama']))
             if (curData['lampiran'] != null && curData['lampiran'] != '') {
                 file_lampiran = curData['lampiran'].split(".");
                 lampHtml = `<a href='<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}'> Download </a>

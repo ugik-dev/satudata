@@ -805,7 +805,7 @@
                     d['c_n'],
                     d['c_n1'],
                     d['c_n2'],
-                    statusIzin(d['status_izin'], d['unapprove']), d['id_surat_izin'], button
+                    statusIzin(d['status_izin'], d['unapprove_nama']), d['id_surat_izin'], button
                 ]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
@@ -1016,7 +1016,7 @@
             $('.c_label_n').html(cur_tahun);
             $('.c_label_n1').html(cur_tahun - 1);
             $('.c_label_n2').html(cur_tahun - 2);
-            LihatModal.status_izin.html(statusIzin(curData['status_izin'], curData['unapprove']))
+            LihatModal.status_izin.html(statusIzin(curData['status_izin'], curData['unapprove_nama']))
             if (curData['lampiran'] != null && curData['lampiran'] != '') {
                 file_lampiran = curData['lampiran'].split(".");
                 lampHtml = `<a href='<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}'> Download </a>

@@ -103,6 +103,7 @@
                                     <th style="width: 10%; text-align:center!important">PEGAWAI</th>
                                     <th style="width: 10%; text-align:center!important">NO SPT</th>
                                     <th style="width: 10%; text-align:center!important">NO SPPD</th>
+                                    <th style="width: 10%; text-align:center!important">Maksud</th>
                                     <th style="width: 5%; text-align:center!important">STATUS</th>
                                     <th style="width: 2%; text-align:center!important">ID</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
@@ -322,8 +323,10 @@
                     // d2 = tj['date_kembali']
                     i++;
                 })
-
-                dfix = d1.split(" ")[0] + ' s.d ' + d2.split(" ")[0];
+                if (d1.split(" ")[0] != d1.split(" ")[0])
+                    dfix = tgl_indo(d1.split(" ")[0]) + ' s.d ' + tgl_indo(d2.split(" ")[0]);
+                else
+                    dfix = tgl_indo(d1.split(" ")[0]);
                 lihatButton = `
                 <?php
                 if ($dataContent['edit_spt']) {
@@ -365,6 +368,7 @@
                     pegawai,
                     d['no_spt'],
                     d['no_sppd'],
+                    d['maksud'],
                     statusSPT(d['status'], d['unapprove_oleh']), d['id_spt'], button
                 ]);
             });

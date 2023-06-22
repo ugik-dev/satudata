@@ -48,7 +48,7 @@ class SuratIzinModel extends CI_Model
         $ses = $this->session->userdata();
         // echo json_encode($filter);
         // die();
-        $this->db->select("si.*, s.nama_satuan, r.nama_izin,s.verif_cuti,s.jen_satker, r.jen_izin,ro.level level_pegawai, p.nama as nama_pegawai, pg.nama as nama_pengganti");
+        $this->db->select("si.*, s.nama_satuan,pu.nama unapprove_nama, r.nama_izin,s.verif_cuti,s.jen_satker, r.jen_izin,ro.level level_pegawai, p.nama as nama_pegawai, pg.nama as nama_pengganti");
         if (!empty($filter['detail'])) {
             $this->db->select('
             p.nip nip_pegawai,
@@ -67,6 +67,7 @@ class SuratIzinModel extends CI_Model
         $this->db->join('satuan s', 'si.id_satuan = s.id_satuan', 'LEFT');
         $this->db->join('roles ro', 'ro.id_role = p.id_role', 'LEFT');
         $this->db->join('users pg', 'pg.id = si.id_pengganti', 'LEFT');
+        $this->db->join('users pu', 'pu.id = si.unapprove', 'LEFT');
         if (!empty($filter['search_approval']['data_penilai'])) {
             $penilai =  $filter['search_approval']['data_penilai'];
             if ($penilai['level'] == 6) {
@@ -385,11 +386,11 @@ class SuratIzinModel extends CI_Model
     public function undo($data, $usr)
     {
         if ($data['unapprove'] == $usr) {
-            $this->db->set('unapprove', 'null');
+            $this->db->set('unapprove', null);
         }
         $this->db->where('id_surat_izin', $data['id_surat_izin']);
         $this->db->update('surat_izin',);
-        ExceptionHandler::handleDBError($this->db->error(), "Tambah Surat Izin", "Surat Izin");
+        ExceptionHandler::handleDBError($this->db->error(), "Undo Surat Izin", "Surat Izin");
     }
 
     public function add($data)
