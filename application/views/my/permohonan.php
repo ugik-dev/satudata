@@ -1054,7 +1054,10 @@
                             return;
                         }
                         var d = json['data'];
-                        dataSKP[jenis][d['id_spt']] = d;
+                        if (jenis == 'spt')
+                            dataSKP[jenis][d['id_spt']] = d;
+                        else if (jenis == 'SuratIzin')
+                            dataSKP['surat_izin'][d['id_surat_izin']] = d;
                         Swal.fire("Pembatalan Berhasil", "", "success");
                         renderSKP(dataSKP);
                     },
