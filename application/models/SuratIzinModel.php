@@ -382,6 +382,15 @@ class SuratIzinModel extends CI_Model
         ExceptionHandler::handleDBError($this->db->error(), "Tambah Surat Izin", "Surat Izin");
     }
 
+    public function undo($data, $usr)
+    {
+        if ($data['unapprove'] == $usr) {
+            $this->db->set('unapprove', 'null');
+        }
+        $this->db->where('id_surat_izin', $data['id_surat_izin']);
+        $this->db->update('surat_izin',);
+        ExceptionHandler::handleDBError($this->db->error(), "Tambah Surat Izin", "Surat Izin");
+    }
 
     public function add($data)
     {
