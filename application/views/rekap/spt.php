@@ -104,6 +104,7 @@
                                     <th style="width: 10%; text-align:center!important">NO SPT</th>
                                     <th style="width: 10%; text-align:center!important">NO SPPD</th>
                                     <th style="width: 10%; text-align:center!important">Maksud</th>
+                                    <th style="width: 10%; text-align:center!important">LPD</th>
                                     <th style="width: 5%; text-align:center!important">STATUS</th>
                                     <th style="width: 2%; text-align:center!important">ID</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
@@ -369,6 +370,7 @@
                     d['no_spt'],
                     d['no_sppd'],
                     d['maksud'],
+                    d['id_laporan'] == null ? "<i class='fa fa-times text-danger'></i><b class='text-danger'>Belum</b>" : "<i class='fa fa-check text-success'></i><b class='text-success'>Sudah</b>",
                     statusSPT(d['status'], d['unapprove_oleh']), d['id_spt'], button
                 ]);
             });

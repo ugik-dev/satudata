@@ -331,7 +331,7 @@ class SPPDModel extends CI_Model
         $ses = $this->session->userdata();
 
         $this->db->select('rjs.nama_ref_jen_spt');
-        $this->db->select('s.nama as nama_pegawai,
+        $this->db->select('s.nama as nama_pegawai,l.id_laporan,
                             ro.level level_pegawai,
                             sa.nama_satuan,
                             p2.nama as nama_input,
@@ -370,6 +370,7 @@ class SPPDModel extends CI_Model
         $this->db->join('satuan sa', 'sa.id_satuan = u.id_satuan');
         $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
         $this->db->join('users s', 's.id = u.id_pegawai', 'LEFT');
+        $this->db->join('spt_laporan l', 'l.id_spt = u.id_spt', 'LEFT');
         $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
         if (!$sort) {
             $this->db->join('users p', 'p.id = d.id_ppk2', 'LEFT');
@@ -427,6 +428,8 @@ class SPPDModel extends CI_Model
                             //     $this->db->where('u.status = 98');
                         } else if ($filter['status_permohonan'] == 'selesai') {
                             $this->db->where('u.status = 99');
+                        } else if ($filter['status_permohonan'] == 'ditolak') {
+                            $this->db->where('u.unapprove_oleh', $penilai['id']);
                         }
                     }
                 } else if ($penilai['level'] == 3 or $penilai['level'] == 4) {

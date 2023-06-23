@@ -86,7 +86,9 @@ class SuratIzinModel extends CI_Model
                         } else if ($filter['status_permohonan'] == 'my-approv') {
                             $this->db->where("(si.status_izin in (14,15,6,99) OR (si.id_bagian = 2 and si.status_izin > 2))");
                         } else if ($filter['status_permohonan'] == 'selesai') {
-                            $this->db->where('u.status = 99');
+                            $this->db->where('si.status_izin = 99');
+                        } else if ($filter['status_permohonan'] == 'ditolak') {
+                            $this->db->where('si.unapprove', $penilai['id_bagian']);
                         }
                     }
                 } else {
@@ -99,7 +101,9 @@ class SuratIzinModel extends CI_Model
                             // } else if ($filter['status_permohonan'] == 'ditolak') {
                             //     $this->db->where('u.status = 98');
                         } else if ($filter['status_permohonan'] == 'selesai') {
-                            $this->db->where('u.status = 99');
+                            $this->db->where('si.status_izin = 99');
+                        } else if ($filter['status_permohonan'] == 'ditolak') {
+                            $this->db->where('si.unapprove', $penilai['id_bagian']);
                         }
                     }
                 }
@@ -115,7 +119,9 @@ class SuratIzinModel extends CI_Model
                         // } else if ($filter['status_permohonan'] == 'ditolak') {
                         //     $this->db->where('u.status = 98');
                     } else if ($filter['status_permohonan'] == 'selesai') {
-                        $this->db->where('u.status = 99');
+                        $this->db->where('si.status_izin = 99');
+                    } else if ($filter['status_permohonan'] == 'ditolak') {
+                        $this->db->where('si.unapprove', $penilai['id_bagian']);
                     }
                 }
             }
@@ -130,7 +136,9 @@ class SuratIzinModel extends CI_Model
                         // } else if ($filter['status_permohonan'] == 'ditolak') {
                         //     $this->db->where('u.status = 98');
                     } else if ($filter['status_permohonan'] == 'selesai') {
-                        $this->db->where('u.status = 99');
+                        $this->db->where('si.status_izin = 99');
+                    } else if ($filter['status_permohonan'] == 'ditolak') {
+                        $this->db->where('si.unapprove', $penilai['id_bagian']);
                     }
                 }
             }
