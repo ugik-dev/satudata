@@ -420,7 +420,7 @@ class SPPDModel extends CI_Model
                     // die();
                     if (!empty($filter['status_permohonan'])) {
                         if ($filter['status_permohonan'] == 'menunggu-saya') {
-                            $this->db->where("(u.status = 11 and u.unapprove_oleh IS NULL) OR (d.id_ppk2 = {$penilai['id']} AND  u.status = 6)");
+                            $this->db->where("u.unapprove_oleh IS NULL AND (u.status = 11 OR (d.id_ppk2 = {$penilai['id']} AND  u.status = 6))");
                         } else if ($filter['status_permohonan'] == 'my-approv') {
                             $this->db->where("(u.status > 11 AND d.id_ppk2 = {$penilai['id']}) OR approve_sekdin = {$penilai['id']}");
                             // } else if ($filter['status_permohonan'] == 'ditolak') {
