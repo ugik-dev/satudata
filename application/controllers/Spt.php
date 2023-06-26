@@ -125,9 +125,25 @@ class Spt extends CI_Controller
     public function laporan_process()
     {
         try {
-            $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
+            // $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
+
             $data = $this->input->Post();
+            echo json_encode($data);
+            $team = [];
+            $team[] = $data['user_input'];
+            $team[] = $data['id_pegawai'];
+            foreach ($data['pengikut'] as $d) {
+                $team[]  = $d['id_pegawai'];
+            }
+            if (in_array($this->session->userdata('id'), $team)) {
+            }
+            // die();
             $this->SPPDModel->addLaporan($data);
+            $logs['id_spt'] = $data['id_spt'];
+            $logs['id_user'] = $this->session->userdata('id');
+            $logs['deskripsi'] =  'Entri Laporan';
+            $logs['label'] = 'success';
+            $this->SPPDModel->addLogs($logs);
             echo json_encode(['error' => false, 'data' => $data]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
