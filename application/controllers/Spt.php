@@ -128,7 +128,7 @@ class Spt extends CI_Controller
             // $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
 
             $data = $this->input->Post();
-            echo json_encode($data);
+            // echo json_encode($data);
             $team = [];
             $team[] = $data['user_input'];
             $team[] = $data['id_pegawai'];
