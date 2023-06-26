@@ -289,17 +289,17 @@ class SPPDModel extends CI_Model
         ');
         if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
         // $this->db->where('u.id_spt', 24);
-        if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
-        if (!empty($filter['id_bagian'])) $this->db->where('u.id_bagian', $filter['id_bagian']);
-        if (!empty($filter['id_seksi'])) $this->db->where('u.id_seksi', $filter['id_seksi']);
-        // $this->db->where('( u.id_pegawai =' .  $ses['id'] . ' OR pk.id_pegawai = ' .  $ses['id'] . ' )');
+        // if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
+        // if (!empty($filter['id_bagian'])) $this->db->where('u.id_bagian', $filter['id_bagian']);
+        // if (!empty($filter['id_seksi'])) $this->db->where('u.id_seksi', $filter['id_seksi']);
+        // // $this->db->where('( u.id_pegawai =' .  $ses['id'] . ' OR pk.id_pegawai = ' .  $ses['id'] . ' )');
         $this->db->where('( u.id_pegawai =' .  $ses['id'] . '  )');
         $this->db->or_where('( pk.id_pegawai = ' .  $ses['id'] . ' )');
 
 
         $res = $this->db->get()->result_array();
-        echo $this->db->last_query();
-        die();
+        // echo $this->db->last_query();
+        // die();
         // echo json_encode($res->result_array());
         // die();
         // ->result_array();
@@ -319,11 +319,12 @@ class SPPDModel extends CI_Model
             $this->db->order_by('ke', 'ASC');
             $this->db->where_in('id_spt', $res_id);
             $tujuan = DataStructure::groupingByParent($this->db->get()->result_array(), 'id_spt');
-            echo $this->db->last_query();
-            die();
+            // echo $this->db->last_query();
+            // die();
         } else {
             $tujuan = [];
         }
+
         return DataStructure::SPPDStyle2($res, $tujuan, null);
     }
     public function getAllSPPD($filter = [], $sort = false)

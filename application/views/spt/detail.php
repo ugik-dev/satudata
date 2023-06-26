@@ -380,7 +380,16 @@
                         }
                         ?>
                     </div>
-                    <?php if ($dataContent['return_data']['user_input'] == $this->session->userdata('id')) {
+                    <?php
+                    $team = [];
+                    $team[] = $dataContent['return_data']['user_input'];
+                    $team[] = $dataContent['return_data']['id_pegawai'];
+                    foreach ($dataContent['return_data']['pengikut'] as $d) {
+                        $team[]  = $d['id_pegawai'];
+                        // var_dump($d);
+                    }
+                    // die();
+                    if (in_array($this->session->userdata('id'), $team)) {
                     ?>
                         <a class="btn btn-primary mb-2" href="<?= base_url() . 'spt/laporan/' . $dataContent['return_data']['id_spt'] ?>"><strong><i class="fa fa-pencil"></i> Form Laporan </strong></a>
                         <a class="btn btn-primary mb-2" id="addFoto"><strong><i class="fa fa-plus"></i> Tambah Foto </strong></a>
