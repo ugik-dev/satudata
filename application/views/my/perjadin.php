@@ -70,7 +70,7 @@
                                     <th style="width: 2%; text-align:center!important">ID</th>
                                     <th style="width: 10%; text-align:center!important">NO SPT</th>
                                     <th style="width: 10%; text-align:center!important">NO SPPD</th>
-                                    <th style="width: 24%; text-align:center!important">PEGAWAI</th>
+                                    <!-- <th style="width: 24%; text-align:center!important">PEGAWAI</th> -->
                                     <th style="width: 10%; text-align:center!important">TUJUAN</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
                                 </tr>
@@ -217,7 +217,7 @@
                     i++;
 
                 })
-                renderData.push([sppd['id_spt'], sppd['no_sppd'], sppd['no_spt'], sppd['nama_pegawai'], tujuan, lihatButton]);
+                renderData.push([sppd['id_spt'], sppd['no_sppd'], sppd['no_spt'], tujuan, lihatButton]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }

@@ -128,23 +128,27 @@ class Spt extends CI_Controller
             // $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
 
             $data = $this->input->Post();
-            // echo json_encode($data);
+            $data_res = $this->SPPDModel->getAllSPPD(array('id_spt' => $data['id_spt']))[$data['id_spt']];
+
             $team = [];
-            $team[] = $data['user_input'];
-            $team[] = $data['id_pegawai'];
-            foreach ($data['pengikut'] as $d) {
+            $team[] = $data_res['user_input'];
+            $team[] = $data_res['id_pegawai'];
+            foreach ($data_res['pengikut'] as $d) {
                 $team[]  = $d['id_pegawai'];
             }
             if (in_array($this->session->userdata('id'), $team)) {
+                $this->SPPDModel->addLaporan($data);
+                $logs['id_spt'] = $data['id_spt'];
+                $logs['id_user'] = $this->session->userdata('id');
+                $logs['deskripsi'] =  'Entri Laporan';
+                $logs['label'] = 'success';
+                $this->SPPDModel->addLogs($logs);
+                echo json_encode(['error' => false, 'data' => $data]);
+            } else {
+                throw new UserException('Kamu tidak berhak melakukan aksi ini!!', UNAUTHORIZED_CODE);
             }
+            // echo json_encode($data);
             // die();
-            $this->SPPDModel->addLaporan($data);
-            $logs['id_spt'] = $data['id_spt'];
-            $logs['id_user'] = $this->session->userdata('id');
-            $logs['deskripsi'] =  'Entri Laporan';
-            $logs['label'] = 'success';
-            $this->SPPDModel->addLogs($logs);
-            echo json_encode(['error' => false, 'data' => $data]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
