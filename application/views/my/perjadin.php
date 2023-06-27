@@ -70,8 +70,10 @@
                                     <th style="width: 2%; text-align:center!important">ID</th>
                                     <th style="width: 10%; text-align:center!important">NO SPT</th>
                                     <th style="width: 10%; text-align:center!important">NO SPPD</th>
-                                    <!-- <th style="width: 24%; text-align:center!important">PEGAWAI</th> -->
                                     <th style="width: 10%; text-align:center!important">TUJUAN</th>
+                                    <th style="width: 10%; text-align:center!important">MAKSUD</th>
+                                    <th style="width: 24%; text-align:center!important">STATUS</th>
+                                    <th style="width: 24%; text-align:center!important">LPD</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
                                 </tr>
                             </thead>
@@ -215,9 +217,12 @@
                     else
                         tujuan += '<br>' + i + '. ' + tj['tempat_tujuan'] + ' (' + tj['date_berangkat'] + ')';
                     i++;
-
                 })
-                renderData.push([sppd['id_spt'], sppd['no_sppd'], sppd['no_spt'], tujuan, lihatButton]);
+                renderData.push([sppd['id_spt'], sppd['no_spt'], sppd['no_sppd'], tujuan, sppd['maksud'],
+                    sppd['id_laporan'] == null ? "<i class='fa fa-times text-danger'></i><b class='text-danger'>Belum</b>" : "<i class='fa fa-check text-success'></i><b class='text-success'>Sudah</b>",
+                    statusSPT(sppd['status'], sppd['unapprove_oleh']),
+                    lihatButton
+                ]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }

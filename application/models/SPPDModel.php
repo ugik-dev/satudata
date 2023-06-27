@@ -268,39 +268,40 @@ class SPPDModel extends CI_Model
         $this->db->db_debug = true;
         $ses = $this->session->userdata();
 
-        $this->db->select('rjs.nama_ref_jen_spt');
+        // $this->db->select('rjs.nama_ref_jen_spt');
         // $this->db->select(' p2.nama as nama_input,
         //                     ');
 
-        $this->db->select('u.id_spt, u.tgl_pengajuan,u.status, u.no_spt, u.no_sppd, u.unapprove_oleh, u.id_satuan, u.id_bagian, u.id_seksi');
+        $this->db->select('l.id_laporan ,u.id_spt, u.tgl_pengajuan,u.status, u.no_spt, u.no_sppd, u.maksud, u.unapprove_oleh, u.id_satuan, u.id_bagian, u.id_seksi, u.status');
 
         $this->db->from('spt as u');
         // $this->db->join('users p2', 'p2.id = u.user_input', 'LEFT');
+        $this->db->join('spt_laporan l', 'l.id_spt = u.id_spt', 'LEFT');
 
-        $this->db->join('ref_jen_spt rjs', 'u.jenis = rjs.id_ref_jen_spt', 'LEFT');
-        $this->db->join('tujuan tj', 'tj.id_spt = u.id_spt', 'LEFT');
+        // $this->db->join('ref_jen_spt rjs', 'u.jenis = rjs.id_ref_jen_spt', 'LEFT');
         $this->db->join('pengikut pk', 'pk.id_spt = u.id_spt', 'LEFT');
-        // $this->db->group_by('id_spt');
 
-        if (!empty($filter['dari']) && !empty($filter['sampai'])) $this->db->where(' (
-            (tj.date_berangkat BETWEEN "' . $filter['dari'] . '" AND "' . $filter['sampai'] . '" ) OR
-            (tj.date_berangkat BETWEEN "' . $filter['dari'] . '" AND "' . $filter['sampai'] . '" )
-        )
-        ');
-        if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
+        // $this->db->join('tujuan tj', 'tj.id_spt = u.id_spt', 'LEFT');
+        $this->db->group_by('id_spt');
+        // if (!empty($filter['dari']) && !empty($filter['sampai'])) $this->db->where(' (
+        //     (tj.date_berangkat BETWEEN "' . $filter['dari'] . '" AND "' . $filter['sampai'] . '" ) OR
+        //     (tj.date_berangkat BETWEEN "' . $filter['dari'] . '" AND "' . $filter['sampai'] . '" )
+        // )
+        // ');
+        // if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
         // $this->db->where('u.id_spt', 24);
         // if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
         // if (!empty($filter['id_bagian'])) $this->db->where('u.id_bagian', $filter['id_bagian']);
         // if (!empty($filter['id_seksi'])) $this->db->where('u.id_seksi', $filter['id_seksi']);
         // // $this->db->where('( u.id_pegawai =' .  $ses['id'] . ' OR pk.id_pegawai = ' .  $ses['id'] . ' )');
-        $this->db->where('( u.id_pegawai =' .  $ses['id'] . '  )');
-        $this->db->or_where('( pk.id_pegawai = ' .  $ses['id'] . ' )');
+        $this->db->where('u.id_pegawai =' .  $ses['id'] . '  ');
+        $this->db->or_where(' pk.id_pegawai = ' .  $ses['id'] . ' ');
 
 
         $res = $this->db->get()->result_array();
         // echo $this->db->last_query();
+        // echo json_encode($res);
         // die();
-        // echo json_encode($res->result_array());
         // die();
         // ->result_array();
         $res_id = [];

@@ -133,16 +133,21 @@ class Spt extends CI_Controller
             $team = [];
             $team[] = $data_res['user_input'];
             $team[] = $data_res['id_pegawai'];
+            if ($this->session->userdata('id_role') == '1') {
+                $team[]  = $this->session->userdata('id');
+            }
             foreach ($data_res['pengikut'] as $d) {
                 $team[]  = $d['id_pegawai'];
             }
             if (in_array($this->session->userdata('id'), $team)) {
                 $this->SPPDModel->addLaporan($data);
-                $logs['id_spt'] = $data['id_spt'];
-                $logs['id_user'] = $this->session->userdata('id');
-                $logs['deskripsi'] =  'Entri Laporan';
-                $logs['label'] = 'success';
-                $this->SPPDModel->addLogs($logs);
+                if ($this->session->userdata('id_role') == '1') {
+                    $logs['id_spt'] = $data['id_spt'];
+                    $logs['id_user'] = $this->session->userdata('id');
+                    $logs['deskripsi'] =  'Entri Laporan';
+                    $logs['label'] = 'success';
+                    $this->SPPDModel->addLogs($logs);
+                }
                 echo json_encode(['error' => false, 'data' => $data]);
             } else {
                 throw new UserException('Kamu tidak berhak melakukan aksi ini!!', UNAUTHORIZED_CODE);

@@ -25,7 +25,7 @@ class User extends CI_Controller
     public function getAllAktifitas()
     {
         try {
-            // $this->SecurityModel->userOnlyGuard();
+            $this->SecurityModel->userOnlyGuard();
             $filter = $this->input->get();
             $filter['my_aktifitas'] = true;
             $data = $this->AktifitasModel->getAllSPPD($filter);
@@ -38,6 +38,7 @@ class User extends CI_Controller
     public function perjadin()
     {
         try {
+            $this->SecurityModel->userOnlyGuard();
 
             $data = array(
                 'page' => 'my/perjadin',
