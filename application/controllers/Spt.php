@@ -435,10 +435,24 @@ class Spt extends CI_Controller
             $dataSPT = $this->SPPDModel->getAllSPPD(['id_spt' => $data['id_spt']]);
             if (empty($dataSPT))
                 throw new UserException('Maaf, SPT tidak ditemukan.');
-            if ($this->session->userdata('id') != $dataSPT[$data['id_spt']]['user_input'])
-                throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
             else if ($dataSPT[$data['id_spt']]['status'] != '99')
                 throw new UserException('Status SPT ini belum disetujui');
+
+            // $data_res = $this->SPPDModel->getAllSPPD(array('id_spt' => $data['id_spt']))[$data['id_spt']];
+
+            $team = [];
+            $team[] = $dataSPT[$data['id_spt']]['user_input'];
+            $team[] = $dataSPT[$data['id_spt']]['id_pegawai'];
+            if ($this->session->userdata('id_role') == '1') {
+                $team[]  = $this->session->userdata('id');
+            }
+            foreach ($dataSPT[$data['id_spt']]['pengikut'] as $d) {
+                $team[]  = $d['id_pegawai'];
+            }
+            if (in_array($this->session->userdata('id'), $team)) {
+            } else {
+                throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
+            }
 
             $dataFoto['id_foto'] = $data['id_foto'];
             $dataFoto['deskripsi'] = $data['deskripsi'];
