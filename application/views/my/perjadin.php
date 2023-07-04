@@ -11,25 +11,36 @@
                                 </button>
                             </h2>
                         </div>
-                        <div class="collapse show" id="collapseOne" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="collapse " id="collapseOne" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                             <form class="form-inline" id="toolbar_form" onsubmit="return false;">
-
                                 <div class="card-body filter-cards-view animate-chk">
                                     <div class="row">
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
                                             <div class="mb-3 row">
-                                                <label class="col-sm-3 col-form-label">Status </label>
+                                                <label class="col-sm-3 col-form-label">Status Aproval</label>
                                                 <div class="col-sm-8">
                                                     <select class="form-control " name="status_rekap" id="status_rekap">
-                                                        <option value=""> Semua </option>
+                                                        <option value="" selected> Semua </option>
                                                         <option value="menunggu"> Menunggu </option>
                                                         <option value="ditolak"> Di Tolak </option>
-                                                        <option value="selesai" selected> Diterima </option>
+                                                        <option value="selesai"> Diterima </option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label">Status LPD</label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control " name="status_lpd" id="status_lpd">
+                                                        <option value="" selected> Semua </option>
+                                                        <option value="belum"> Belum Entri LPD </option>
+                                                        <option value="sudah"> Sudah Entri LPD </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
                                             <div class="mb-3 row">
                                                 <?php
                                                 $date = new DateTime(date('Y-m-d'));
@@ -38,13 +49,13 @@
                                                 ?>
                                                 <label class="col-sm-3 col-form-label">Dari</label>
                                                 <div class="col-sm-8">
-                                                    <input class="form-control m-input digits" id="dari" name="dari" type="date" value="<?= date("Y-m-d", strtotime("-2 months")); ?>" data-bs-original-title="" title="">
+                                                    <input class="form-control m-input digits" id="dari" name="dari" type="date" value="<?= date("Y-m-d", strtotime("-4 months")); ?>" data-bs-original-title="" title="">
                                                 </div>
 
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-6">
                                             <div class="mb-3 row">
                                                 <label class="col-sm-3 col-form-label">Sampai</label>
                                                 <div class="col-sm-8">
@@ -72,8 +83,8 @@
                                     <th style="width: 10%; text-align:center!important">NO SPPD</th>
                                     <th style="width: 10%; text-align:center!important">TUJUAN</th>
                                     <th style="width: 10%; text-align:center!important">MAKSUD</th>
-                                    <th style="width: 24%; text-align:center!important">STATUS</th>
                                     <th style="width: 24%; text-align:center!important">LPD</th>
+                                    <th style="width: 24%; text-align:center!important">STATUS</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
                                 </tr>
                             </thead>
@@ -92,9 +103,6 @@
 
         var toolbar = {
             'form': $('#toolbar_form'),
-            'id_role': $('#toolbar_form').find('#id_role'),
-            'id_opd': $('#toolbar_form').find('#id_opd'),
-            'newBtn': $('#new_btn'),
         }
 
         var FDataTable = $('#FDataTable').DataTable({
@@ -148,9 +156,7 @@
             confirmButtonText: "Ya, Hapus!",
         };
 
-        $.when(getAllSppd()).then((e) => {
-            toolbar.newBtn.prop('disabled', false);
-        }).fail((e) => {
+        $.when(getAllSppd()).then((e) => {}).fail((e) => {
             console.log(e)
         });
 
@@ -168,7 +174,7 @@
             Swal.showLoading()
             return $.ajax({
                 url: `<?php echo site_url('user/getAllSppd/') ?>`,
-                'type': 'POST',
+                'type': 'GET',
                 data: toolbar.form.serialize(),
                 success: function(data) {
                     Swal.close();

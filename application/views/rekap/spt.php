@@ -18,13 +18,25 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div class="mb-3 row">
-                                                <label class="col-sm-3 col-form-label">Status </label>
+                                                <label class="col-sm-3 col-form-label">Approval </label>
                                                 <div class="col-sm-8">
                                                     <select class="form-control " name="status_rekap" id="status_rekap">
                                                         <option value=""> Semua </option>
                                                         <option value="menunggu"> Menunggu </option>
                                                         <option value="ditolak"> Di Tolak </option>
-                                                        <option value="selesai" selected> Selesai </option>
+                                                        <option value="selesai" selected> Diterima </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label">LPD</label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control " name="status_lpd" id="status_lpd">
+                                                        <option value="" selected> Semua </option>
+                                                        <option value="belum"> Belum Entri LPD </option>
+                                                        <option value="sudah"> Sudah Entri LPD </option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -33,11 +45,16 @@
                                             <div class="mb-3 row">
                                                 <label class="col-sm-3 col-form-label">Instansi </label>
                                                 <div class="col-sm-8">
+                                                    <?php $curUser = $this->session->userdata(); ?>
                                                     <select class="select2 form-control " name="id_satuan" id="id_satuan">
                                                         <option value=""> Semua </option>
                                                         <?php
+
                                                         foreach ($dataContent['instansi'] as $ji) {
-                                                            echo "<option value='{$ji['id_satuan']}'> {$ji['nama_satuan']} </option>    ";
+                                                            if ($curUser['id_satuan'] == $ji['id_satuan'])
+                                                                echo "<option value='{$ji['id_satuan']}' selected> {$ji['nama_satuan']} </option>    ";
+                                                            else
+                                                                echo "<option value='{$ji['id_satuan']}' > {$ji['nama_satuan']} </option>    ";
                                                         }
                                                         ?>
                                                     </select>
@@ -170,11 +187,12 @@
         $('#menu_4').addClass('active');
         $('#opmenu_4').show();
         $('#submenu_13').addClass('active');
-        $('.select2').select2();
+        $('.select2').select2()
         var toolbar = {
             'form': $('#toolbar_form'),
             'id_satuan': $('#toolbar_form').find('#id_satuan'),
             'status_rekap': $('#toolbar_form').find('#status_rekap'),
+            'status_lpd': $('#toolbar_form').find('#status_lpd'),
             'newBtn': $('#new_btn'),
         }
 
@@ -212,7 +230,6 @@
 
         var dataRole = {}
         var dataIzin = {}
-        <?php $curUser = $this->session->userdata(); ?>
         var currentUser = <?= json_encode([
                                 'level' => $curUser['level'],
                                 'id_seksi' => $curUser['id_seksi'],
@@ -238,17 +255,15 @@
             confirmButtonText: "Ya, Hapus!",
         };
 
-        // $.when(getAllPermohonan()).then((e) => {}).fail((e) => {
-
-        // });
-
         toolbar.form.on('submit', (e) => {
             getAllPermohonan();
         });
         toolbar.status_rekap.on('change', (e) => {
             getAllPermohonan();
         });
-
+        toolbar.status_lpd.on('change', (e) => {
+            getAllPermohonan();
+        });
 
         toolbar.id_satuan.on('change', (e) => {
             getAllPermohonan();

@@ -39,7 +39,7 @@
                                                 ?>
                                                 <label class="col-sm-3 col-form-label">Dari</label>
                                                 <div class="col-sm-8">
-                                                    <input class="form-control m-input digits" id="dari" name="dari" type="date" value="<?= date("Y-m-d", strtotime("-1 months")); ?>" data-bs-original-title="" title="">
+                                                    <input class="form-control m-input digits" id="dari" name="dari" type="date" value="<?= date("Y-m-d", strtotime("-3 months")); ?>" data-bs-original-title="" title="">
                                                 </div>
                                             </div>
                                         </div>
@@ -114,158 +114,7 @@
 </div>
 <!-- </div> -->
 
-<div class="modal fade" id="lihat_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <form opd="form" id="lihat_form" onsubmit="return false;" type="multipart" autocomplete="off">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal_title">
-                        Data Surat Izin / Cuti
-                    </h5>
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-6" id="status_izin"> </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="col-form-label">Pegawai Cuti</div>
-                            <input id="nama_pegawai" class="form-control" readonly />
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="col-form-label">Pegawai Pengganti</div>
-                            <input id="nama_pengganti" class="form-control" readonly />
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="col-form-label">Jenis Cuti</div>
-                            <input id="nama_izin" class="form-control" readonly />
-                        </div>
-                        <div class="col-lg-7">
-                            <div class="col-form-label">Tanggal Izin</div>
-                            <div class="row">
-                                <div class="col">
-                                    <input name="periode_start" type="date" id="periode_start" readonly class="form-control" value="<?= !empty($dataContent['return_data']['periode_start']) ? $dataContent['return_data']['periode_start'] : date("Y-m-d") ?>" />
-                                </div>
-                                <div class="col-1 d-flex align-items-center">
-                                    s.d.
-                                </div>
-                                <div class="col">
-                                    <input name="periode_end" type="date" id="periode_end" readonly class="form-control" value="<?= !empty($dataContent['return_data']['periode_end']) ? $dataContent['return_data']['periode_end'] : date("Y-m-d") ?>" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                            <div class="col-form-label">Lama Izin (hari)</div>
-                            <div class="row">
-                                <div class="col">
-                                    <input type="number" name="lama_izin" readonly id="lama_izin" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="col-form-label">Alasan</div>
-                            <div class="row">
-                                <div class="col">
-                                    <textarea type="text" readonly id="alasan" class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="col-form-label">Alamat Selamat Menjalankan Cuti / Izin</div>
-                            <div class="row">
-                                <div class="col">
-                                    <textarea type="text" readonly id="alamat_izin" class="form-control"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="row">
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Tahun <span class="c_label_n">N</span></div>
-                                    <input type="number" name="c_n" id="c_n" class="form-control" readonly />
-                                </div>
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Tahun <span class="c_label_n1">N</span></div>
-                                    <input type="number" name="c_n1" id="c_n1" class="form-control" readonly />
-                                </div>
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Tahun <span class="c_label_n2">N</span></div>
-                                    <input type="number" name="c_n2" id="c_n2" class="form-control" readonly />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n">N</span></div>
-                                    <input type="number" name="c_sisa_n" id="c_sisa_n" class="form-control" readonly />
-                                </div>
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n1">N</span></div>
-                                    <input type="number" name="c_sisa_n1" id="c_sisa_n1" class="form-control" readonly />
-                                </div>
-                                <div class="col-lg-4 layout_c_tahunan">
-                                    <div class="col-form-label">Sisa Tahun <span class="c_label_n2">N</span></div>
-                                    <input type="number" name="c_sisa_n2" id="c_sisa_n2" class="form-control" readonly />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12">
-                        <div class="col-form-label">Dokumen Lampiran</div>
-                        <div class="col" id="layout_lampiran">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="riwayat_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <form opd="form" id="" onsubmit="return false;" type="multipart" autocomplete="off">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal_title">
-                        Riwayat Approval
-                    </h5>
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-6" id="status_izin"> </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="col-lg-12" id="layer_riwayat">
-                    </div>
-                    <table id="TableRiwayat" class="table table-border-horizontal" style="padding-bottom: 100px">
-                        <thead>
-                            <tr>
-                                <th style="width: 5%; text-align:center!important">Waktu</th>
-                                <th style="width: 10%; text-align:center!important">Keterangan</th>
-                                <th style="width: 10%; text-align:center!important">Nama</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<?php $this->load->view('modal/surat_izin/riwayat') ?>
 
 <div class="modal fade" id="verif_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
@@ -384,6 +233,7 @@
     </div>
 </div>
 
+
 <script>
     $(document).ready(function() {
         $('#sidebar_permohonan').addClass('active_c');
@@ -395,6 +245,7 @@
             'newBtn': $('#new_btn'),
         }
 
+
         var FDataTable = $('#FDataTable').DataTable({
             'columnDefs': [],
             responsive: false,
@@ -404,17 +255,10 @@
             ]
         });
 
-        var TableRiwayat = $('#TableRiwayat').DataTable({
-            'columnDefs': [],
-            responsive: false,
-            deferRender: true,
-            "order": false
-        });
 
-        var RiwayatModal = {
-            'self': $('#riwayat_modal'),
-            'layer_riwayat': $('#riwayat_modal').find('#layer_riwayat'),
-        }
+
+
+
         var VerifModal = {
             'self': $('#verif_modal'),
             'info': $('#verif_modal').find('.info'),
@@ -821,6 +665,8 @@
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         };
 
+        <?php $this->load->view('modal/surat_izin/riwayat_jq.js') ?>
+
         FDataTable.on('click', '.verif_cuti', function() {
             // var jenis = $(this).data('jenis');
             curData = dataSKP['surat_izin'][$(this).data('id')];
@@ -881,44 +727,7 @@
 
         });
 
-        FDataTable.on('click', '.data_izin', function() {
-            var jenis = $(this).data('jenis');
-            curData = dataSKP['surat_izin'][$(this).data('id')];
-            LihatModal.self.modal('show');
-            LihatModal.periode_start.val(curData['periode_start']);
-            LihatModal.periode_end.val(curData['periode_end']);
-            LihatModal.lama_izin.val(curData['lama_izin']);
-            LihatModal.nama_izin.val(curData['nama_izin']);
-            LihatModal.nama_pegawai.val(curData['nama_pegawai']);
-            LihatModal.nama_pengganti.val(curData['nama_pengganti']);
-            LihatModal.alasan.val(curData['alasan']);
-            LihatModal.alamat_izin.val(curData['alamat_izin']);
-            LihatModal.c_n.val(curData['c_n']);
-            LihatModal.c_n1.val(curData['c_n1']);
-            LihatModal.c_n2.val(curData['c_n2']);
-            LihatModal.c_sisa_n.val(curData['c_sisa_n']);
-            LihatModal.c_sisa_n1.val(curData['c_sisa_n1']);
-            LihatModal.c_sisa_n2.val(curData['c_sisa_n2']);
-            cur_tahun = curData['periode_start'].split('-')[0];
-            $('.c_label_n').html(cur_tahun);
-            $('.c_label_n1').html(cur_tahun - 1);
-            $('.c_label_n2').html(cur_tahun - 2);
-            LihatModal.status_izin.html(statusIzin(curData['status_izin'], curData['unapprove_nama']))
-            if (curData['lampiran'] != null && curData['lampiran'] != '') {
-                file_lampiran = curData['lampiran'].split(".");
-                lampHtml = `<a href='<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}'> Download </a>
-                `
-                lampHtml += `
-                <div class="col-lg-12">
-                <object width="100%" height="700px"data="<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}" type="application/pdf">
-                                <iframe src="<?= base_url('uploads/lampiran_izin/') ?>${curData['lampiran']}"></iframe>
-                            </object>
-                            </div>`
-                LihatModal.layout_lampiran.html(lampHtml);
-            } else
-                LihatModal.layout_lampiran.html('<b>tidak ada lampiran</b>');
 
-        });
 
         VerifModal.form.submit(function(event) {
             event.preventDefault();
@@ -952,71 +761,7 @@
         });
 
 
-        FDataTable.on('click', '.riwayat_approval', function() {
-            var jenis = $(this).data('jenis');
-            var link = $(this).data('link');
-            // Swal.fire({
-            //     title: "Konfrirmasi Approv",
-            //     text: "Data ini akan di approv anda yakin ?",
-            //     icon: "warning",
-            //     allowOutsideClick: false,
-            //     showCancelButton: true,
-            //     buttons: {
-            //         cancel: 'Batal !!',
-            //         catch: {
-            //             text: "Ya, Approv !!",
-            //             value: true,
-            //         },
-            //     },
-            // }).then((result) => {
-            //     if (!result.isConfirmed) {
-            //         return;
-            //     }
-            Swal.fire({
-                title: 'Loading Approv!',
-                allowOutsideClick: false,
-            });
-            Swal.showLoading()
-            cur_id = $(this).data('id')
-            $.ajax({
-                url: `<?= base_url() ?>SuratIzin/riwayat_approval/${cur_id}`,
-                'type': 'get',
-                data: {
-                    jenis: jenis
-                },
-                success: function(data) {
-                    Swal.close();
-                    // buttonIdle(button);
-                    var json = JSON.parse(data);
-                    if (json['error']) {
-                        Swal.fire("Simpan Gagal", json['message'], "error");
-                        return;
-                    }
 
-                    var dat = json['data']
-                    var dataRiwayat = []
-                    RiwayatModal.self.modal('show');
-                    RiwayatModal.layer_riwayat.html('')
-                    var htmlRiwayat = '';
-                    Object.values(dat).forEach((d) => {
-                        htmlRiwayat += d['nama'] + ' ' + d['time_logs'] + '<br>';
-                        dataRiwayat.push([d['time_logs'], d['deskripsi'], d['nama']])
-                    })
-                    TableRiwayat.clear().rows.add(dataRiwayat).draw('full-hold');
-                    // console.log(htmlRiwayat)
-                    // RiwayatModal.layer_riwayat.html(htmlRiwayat)
-
-                    // if (jenis == 'spt')
-                    //     dataSKP[jenis][d['id_spt']] = d;
-                    // else if (jenis == 'SuratIzin')
-                    //     dataSKP['surat_izin'][d['id_surat_izin']] = d;
-                    // Swal.fire("Approv Berhasil", "", "success");
-                    // renderSKP(dataSKP);
-                },
-                error: function(e) {}
-            });
-            // });
-        })
         FDataTable.on('click', '.approv', function() {
             var jenis = $(this).data('jenis');
             var link = $(this).data('link');

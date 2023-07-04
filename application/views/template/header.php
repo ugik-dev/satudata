@@ -38,6 +38,7 @@
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/custom.css?v=0.1.2" />
     <!-- galeri -->
 
+
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/photoswipe.css" />
     <!-- end  galeri -->
     <link id="color" rel="stylesheet" href="<?= base_url() ?>assets/css/color-1.css" media="screen" />
@@ -51,6 +52,9 @@
     <link href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.13.4/af-2.5.3/b-2.3.6/b-colvis-2.3.6/b-html5-2.3.6/b-print-2.3.6/cr-1.6.2/date-1.4.0/fc-4.2.2/fh-3.3.2/kt-2.8.2/r-2.4.1/rg-1.3.1/rr-1.3.3/sc-2.1.1/sb-1.4.2/sp-2.1.2/sl-1.6.2/sr-1.2.2/datatables.min.css" rel="stylesheet" />
     <script src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.13.4/af-2.5.3/b-2.3.6/b-colvis-2.3.6/b-html5-2.3.6/b-print-2.3.6/cr-1.6.2/date-1.4.0/fc-4.2.2/fh-3.3.2/kt-2.8.2/r-2.4.1/rg-1.3.1/rr-1.3.3/sc-2.1.1/sb-1.4.2/sp-2.1.2/sl-1.6.2/sr-1.2.2/datatables.min.js"></script>
     <script src="<?= base_url('assets/') ?>js/FileUploader.js"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js
+"></script>
     <script src="<?= base_url('assets/') ?>js/custom.js?v=0.0.13"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="<?php echo base_url(); ?>assets/plugins/jquery.maskMoney.js" type="text/javascript"></script>

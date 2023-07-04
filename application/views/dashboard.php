@@ -134,7 +134,120 @@
         </div>
       </div>
     </div>
+    <div class="col-xl-12 col-lg-12 xl-100 appointment box-col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="header-top">
+            <h5 class="m-0">Monitoring Laporan</h5>
+            <div class="card-header-right-icon">
+              <select name="tahun" id="tahun_spt">
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2021">2020</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="apache-cotainer-large" id="echart-bar2"></div>
+        </div>
+      </div>
+    </div>
 
+    <script type="text/javascript">
+      var myChart = echarts.init(document.getElementById('echart-bar2'));
+      myChart.setOption({
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow",
+          },
+        },
+        legend: {
+          data: [
+            "Total SPT",
+            "Sudah Laporan",
+            "Belum Laporan",
+          ],
+        },
+        toolbox: {
+          show: true,
+          orient: "vertical",
+          left: "right",
+          top: "center",
+          feature: {
+            mark: {
+              show: true
+            },
+            dataView: {
+              show: true,
+              readOnly: false
+            },
+            magicType: {
+              show: true,
+              type: ["bar", "stack"]
+            },
+            restore: {
+              show: true
+            },
+            saveAsImage: {
+              show: true
+            },
+          },
+        },
+        calculable: true,
+        xAxis: [{
+          type: "category",
+          data: [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+          ],
+        }, ],
+        yAxis: [{
+          type: "value",
+        }, ],
+        series: [{
+            name: "Total SPT",
+            type: "bar",
+            // color: 'blue',
+            // label: 'ss',
+            data: [320, 332, 301, 334, 390, 330, 320],
+          },
+          {
+            name: "Belum Laporan",
+            type: "bar",
+            color: 'red',
+            stack: "advertising",
+            data: [120, 132, 101, 134, 90, 230, 210],
+          },
+          {
+            name: "Sudah Laporan",
+            type: "bar",
+            // color: 'green',
+            stack: "advertising",
+            data: [220, 182, 191, 234, 290, 330, 310],
+          },
+
+        ],
+      });
+    </script>
+
+    <!-- <div class="col-xl-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>Bar chart 2</h5>
+        </div>
+        <div class="card-body">
+          <div class="apache-cotainer-large" id="echart-bar2"></div>
+        </div>
+      </div>
+    </div> -->
 
     <!-- Monitor Web -->
 
@@ -1384,3 +1497,13 @@
     }
   });
 </script>
+
+<!-- 
+<script src="<?= base_url() ?>assets/js/chart/echart/pie-chart/facePrint.js"></script>
+<script src="<?= base_url() ?>assets/js/chart/echart/pie-chart/testHelper.js"></script>
+<script src="<?= base_url() ?>assets/js/chart/echart/pie-chart/custom-transition-texture.js"></script>
+-->
+<!--
+  <script src="<?= base_url() ?>assets/js/chart/echart/data/symbols.js"></script> 
+   <script src="<?= base_url() ?>assets/js/chart/echart/custom.js"></script>
+   -->
