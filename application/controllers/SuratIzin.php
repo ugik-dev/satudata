@@ -61,6 +61,18 @@ class SuratIzin extends CI_Controller
         }
     }
 
+    public function riwayat_approval($id)
+    {
+        try {
+
+            // $this->SecurityModel->useronlyguard()
+            $data = $this->SuratIzinModel->RiwayatApproval($id);
+            echo json_encode(['error' => false, 'data' => $data]);
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
     public function ajukan_approv()
     {
         try {

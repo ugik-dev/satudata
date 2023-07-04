@@ -228,6 +228,45 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="riwayat_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <form opd="form" id="" onsubmit="return false;" type="multipart" autocomplete="off">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title">
+                        Riwayat Approval
+                    </h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6" id="status_izin"> </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="col-lg-12" id="layer_riwayat">
+                    </div>
+                    <table id="TableRiwayat" class="table table-border-horizontal" style="padding-bottom: 100px">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%; text-align:center!important">Waktu</th>
+                                <th style="width: 10%; text-align:center!important">Keterangan</th>
+                                <th style="width: 10%; text-align:center!important">Nama</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="verif_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
@@ -364,6 +403,18 @@
                 [1, "desc"]
             ]
         });
+
+        var TableRiwayat = $('#TableRiwayat').DataTable({
+            'columnDefs': [],
+            responsive: false,
+            deferRender: true,
+            "order": false
+        });
+
+        var RiwayatModal = {
+            'self': $('#riwayat_modal'),
+            'layer_riwayat': $('#riwayat_modal').find('#layer_riwayat'),
+        }
         var VerifModal = {
             'self': $('#verif_modal'),
             'info': $('#verif_modal').find('.info'),
@@ -557,7 +608,9 @@
                         `;
                 } // if ((d['status_izin'] == '99')) {
                 cek_btn =
-                    `<a class="data_izin dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-eye'></i> Lihat</a>
+                    `
+                    <a class="data_izin dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-eye'></i> Lihat</a>
+                    <a class="riwayat_approval dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-eye'></i> Riwayat Approval</a>
                     `;
                 // }
                 print_btn = `
@@ -899,6 +952,71 @@
         });
 
 
+        FDataTable.on('click', '.riwayat_approval', function() {
+            var jenis = $(this).data('jenis');
+            var link = $(this).data('link');
+            // Swal.fire({
+            //     title: "Konfrirmasi Approv",
+            //     text: "Data ini akan di approv anda yakin ?",
+            //     icon: "warning",
+            //     allowOutsideClick: false,
+            //     showCancelButton: true,
+            //     buttons: {
+            //         cancel: 'Batal !!',
+            //         catch: {
+            //             text: "Ya, Approv !!",
+            //             value: true,
+            //         },
+            //     },
+            // }).then((result) => {
+            //     if (!result.isConfirmed) {
+            //         return;
+            //     }
+            Swal.fire({
+                title: 'Loading Approv!',
+                allowOutsideClick: false,
+            });
+            Swal.showLoading()
+            cur_id = $(this).data('id')
+            $.ajax({
+                url: `<?= base_url() ?>SuratIzin/riwayat_approval/${cur_id}`,
+                'type': 'get',
+                data: {
+                    jenis: jenis
+                },
+                success: function(data) {
+                    Swal.close();
+                    // buttonIdle(button);
+                    var json = JSON.parse(data);
+                    if (json['error']) {
+                        Swal.fire("Simpan Gagal", json['message'], "error");
+                        return;
+                    }
+
+                    var dat = json['data']
+                    var dataRiwayat = []
+                    RiwayatModal.self.modal('show');
+                    RiwayatModal.layer_riwayat.html('')
+                    var htmlRiwayat = '';
+                    Object.values(dat).forEach((d) => {
+                        htmlRiwayat += d['nama'] + ' ' + d['time_logs'] + '<br>';
+                        dataRiwayat.push([d['time_logs'], d['deskripsi'], d['nama']])
+                    })
+                    TableRiwayat.clear().rows.add(dataRiwayat).draw('full-hold');
+                    // console.log(htmlRiwayat)
+                    // RiwayatModal.layer_riwayat.html(htmlRiwayat)
+
+                    // if (jenis == 'spt')
+                    //     dataSKP[jenis][d['id_spt']] = d;
+                    // else if (jenis == 'SuratIzin')
+                    //     dataSKP['surat_izin'][d['id_surat_izin']] = d;
+                    // Swal.fire("Approv Berhasil", "", "success");
+                    // renderSKP(dataSKP);
+                },
+                error: function(e) {}
+            });
+            // });
+        })
         FDataTable.on('click', '.approv', function() {
             var jenis = $(this).data('jenis');
             var link = $(this).data('link');

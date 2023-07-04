@@ -43,6 +43,21 @@ class SuratIzinModel extends CI_Model
         $res = $this->db->get()->result_array();
         return $res;
     }
+
+    public function RiwayatApproval($id)
+    {
+        $this->db->select('si.* , u.nama');
+        $this->db->from('surat_izin_logs as si');
+        $this->db->join('users u ', 'si.id_user = u.id');
+        $this->db->where('id_si', $id);
+        // $this->db->where('status_izin', 99);
+        $this->db->order_by('time_logs', "DESC");
+        // $this->db->limit(1);
+
+        $res = $this->db->get()->result_array();
+        return $res;
+    }
+
     public function getAll($filter = [])
     {
         $ses = $this->session->userdata();
