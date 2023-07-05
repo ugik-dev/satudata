@@ -21,6 +21,23 @@ class Dashboard extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
+
+    public function getAktifitasHarian()
+    {
+        try {
+            $this->SecurityModel->userOnlyGuard();
+            $this->load->model('SPPDModel');
+            $filter['dari'] = date('Y-5-d');
+            $filter['sampai'] = date('Y-5-d');
+            $filter['status_rekap'] = 'selesai';
+            $data = $this->SPPDModel->getAllSPPD($filter);
+            echo json_encode(['error' => false, 'data' => $data]);
+            // $this->load->view('theme/sweet-alert2');
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
+
     public function getInfoSPTPkm()
     {
         try {

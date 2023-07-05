@@ -88,27 +88,27 @@
     <!-- Aktifitas SPT -->
     <div class="col-xl-12">
       <div class="card">
-        <div class="card-body">
-          <div class="best-seller-table responsive-tbl">
-            <div class="item">
-              <div class="table-responsive product-list">
-                <table class="table table-bordernone">
-                  <thead>
-                    <tr>
-                      <th class="f-22">Tujuan</th>
-                      <th>Pelaksana</th>
-                      <th>Maksud</th>
-                      <th class="text-end">Status</th>
-                      <th class="text-end">Lihat</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+        <div class="card-header">
+          <div class="header-top">
+            <h5 class="m-0">Kegiatan Hari Ini</h5>
           </div>
         </div>
+        <div class="card-body">
+          <table id="TableAktifitas" class="table ">
+            <thead>
+              <tr>
+                <th>Tujuan</th>
+                <th>Pelaksana</th>
+                <th>Maksud</th>
+                <th>Tanggal</th>
+                <th>Lihat</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </div>
     <!-- Info SPT -->
@@ -138,7 +138,7 @@
       <div class="card">
         <div class="card-header">
           <div class="header-top">
-            <h5 class="m-0">Monitoring Laporan</h5>
+            <h5 class="m-0">Monitoring SPT Puskesmas</h5>
             <div class="card-header-right-icon">
               <select name="tahun" id="tahun_spt">
                 <option value="2023">2023</option>
@@ -154,10 +154,6 @@
         </div>
       </div>
     </div>
-
-    <script type="text/javascript">
-
-    </script>
 
     <div class="col-xl-12 xl-100 appointment box-col-6">
       <div class="card">
@@ -645,6 +641,25 @@
     var load_more = $('#load_more');
 
     var info_spt = $('#info_spt');
+    var TableAktifitas = $('#TableAktifitas').DataTable({
+      // dom: 'Bfrtip',
+      'columnDefs': [],
+      // responsive: true,
+      deferRender: true,
+      "order": [
+        [1, "desc"]
+      ],
+      // buttons: [{
+      //   extend: 'excel',
+      //   text: '<i class="fa fa-download ">  Export Excel</i>',
+      //   className: 'excelButton btn btn-primary  font-weight-bold text-light',
+      //   exportOptions: {
+      //     modifier: {
+      //       // page: 'current'
+      //     }
+      //   }
+      // }]
+    });
 
     var primary = localStorage.getItem("primary") || "#7366ff";
     var secondary = localStorage.getItem("secondary") || "#f73164";
@@ -761,6 +776,7 @@
     getPengumuman(false)
     getMonitorWebsite(false)
     getBeritaPkm(false)
+    getAktifitasHarian(false)
     getInfoSPT(false)
     getInfoSPTPkm(false)
 
@@ -1063,6 +1079,122 @@
         error: function(e) {}
       });
     }
+
+    function getAktifitasHarian(update) {
+      if (update) {
+        Swal.fire({
+          title: 'Loading!',
+          allowOutsideClick: false,
+        });
+        Swal.showLoading()
+      }
+      return $.ajax({
+        url: `<?php echo base_url('dashboard/getAktifitasHarian') ?>`,
+        'type': 'get',
+        data: {},
+        success: function(data) {
+          Swal.close();
+          var json = JSON.parse(data);
+          if (json['error']) {
+            Swal.fire("Error", json['message'], "error");
+
+            return;
+          }
+          dataSPT = json['data'];
+          renderAktifitas(dataSPT)
+        },
+        error: function(e) {}
+      });
+    }
+
+    function tgl_indo(tgl) {
+      tgl2 = tgl.split(' ');
+      ex_tgl = tgl2[0].split('-');
+      var bulan = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+      return ex_tgl[2] + ' ' + bulan[parseInt(ex_tgl[1])] + ' ' + ex_tgl[0]
+    }
+
+    function renderAktifitas(data) {
+      if (data == null || typeof data != "object") {
+        console.log("Sppd::UNKNOWN DATA");
+        return;
+      }
+      var i = 0;
+      var renderData = [];
+      Object.values(data).forEach((d) => {
+        var aksiBtn = '';
+        i = 1;
+        d1 = '';
+        d2 = '';
+        tmpt = '';
+        Object.values(d['tujuan']).forEach((tj) => {
+          if (i == 1) {
+            d1 = tj['date_berangkat'];
+            tmpt = tmpt + '1. ' + tj['tempat_tujuan'];
+          } else {
+            tmpt = tmpt + '<br>' + i + '. ' + tj['tempat_tujuan'];
+
+          }
+          d2 = tj['date_kembali'];
+
+          i++;
+        })
+        pegawai = d['nama_pegawai'];
+        i = 1;
+        Object.values(d['pengikut']).forEach((p) => {
+          if (i == 1)
+            pegawai = pegawai + '<br> Pengikut : ';
+          pegawai = pegawai + '<br>' + i + '. ' + p['nama'];
+          // d2 = tj['date_kembali']
+          i++;
+        })
+        if (d1.split(" ")[0] != d1.split(" ")[0])
+          dfix = tgl_indo(d1.split(" ")[0]) + ' s.d ' + tgl_indo(d2.split(" ")[0]);
+        else
+          dfix = tgl_indo(d1.split(" ")[0]);
+        lihatButton = `
+                         <a class="btn btn-light" target="_blank" style="width: 110px" href='<?= base_url() ?>spt/detail/${d['id_spt']}'><i class='fa fa-eye'></i></a>
+                 `;
+
+        var aksiBtn = `
+                                `;
+        var deaprvButton = `
+                                `;
+        var button = `
+                           <div class="dropdown-basic">
+                            <div class="dropdown">
+                                <div class="btn-group mb-1">
+                                    <button class="dropbtn btn-square btn-sm btn-primary" style="width : 120px"  type="button">
+                                        Aksi
+                                        <span><i class="icofont icofont-arrow-down"> </i></span>
+                                    </button>
+                                    <div class="dropdown-content">
+                                        ${aksiBtn}
+                                        ${lihatButton}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+
+        renderData.push([
+          tmpt,
+          pegawai,
+          // tgl_indo(d['tgl_pengajuan']),
+          d['maksud'],
+          dfix,
+          // tgl_indo(d['periode_end']),
+          // d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
+          // d['nama_satuan'],
+          // d['no_spt'],
+          // d['no_sppd'],
+          // d['maksud'],
+          // d['id_laporan'] == null ? "<i class='fa fa-times text-danger'></i><b class='text-danger'>Belum</b>" : "<i class='fa fa-check text-success'></i><b class='text-success'>Sudah</b>",
+          // statusSPT(d['status'], d['unapprove_oleh']), d['id_spt'],
+          lihatButton
+        ]);
+      });
+      TableAktifitas.clear().rows.add(renderData).draw('full-hold');
+    };
 
     function renderSPT(data) {
       var options1 = {
