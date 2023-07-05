@@ -1518,6 +1518,7 @@ class Spt extends CI_Controller
             $pdf->MultiCell(194, 5, 'Surat tugas ini dibuat untuk dilaksanakan dan setelah selesai, pelaksanaan tugas segera menyampaikan laporan kepada atasan langsungnya.', 0, 'J');
         } else {
             $pdf->MultiCell(194, 5, 'Dalam Rangka ' . $data['maksud'] . ' di ' . $tujuan_text . '.', 0, 'J');
+            $pdf->CheckPageBreak(70);
             $pdf->Cell(5, 4, '', 0, 1, 'L', 0);
             $pdf->MultiCell(194, 5, 'Surat tugas ini dibuat untuk dilaksanakan dan setelah selesai, pelaksanaan tugas segera menyampaikan laporan kepada atasan langsungnya. Kepada instansi terkait, kami mohon bantuan demi kelancaran pelaksanaan tugas dimaksud.', 0, 'J');
         }
@@ -1527,8 +1528,6 @@ class Spt extends CI_Controller
         $pdf->Cell(3, 5, "", 0, 1, 'L', 0);
         $cur_x = $pdf->getX();
         $cur_y = $pdf->GetY();
-
-
         $pdf->CheckPageBreak(60);
         if ($data['status'] == '99' && !empty($data['sign_kadin'])) {
             // $pdf->CheckPageBreak(50);
