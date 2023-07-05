@@ -21,6 +21,17 @@ class Dashboard extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
+    public function getInfoSPTPkm()
+    {
+        try {
+            $this->SecurityModel->userOnlyGuard();
+            $data = $this->DashboardModel->getInfoSPTPkm();
+            echo json_encode(['error' => false, 'data' => $data]);
+            // $this->load->view('theme/sweet-alert2');
+        } catch (Exception $e) {
+            ExceptionHandler::handle($e);
+        }
+    }
 
     public function getLiveChat()
     {

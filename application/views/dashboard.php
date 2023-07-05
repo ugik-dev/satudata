@@ -156,100 +156,8 @@
     </div>
 
     <script type="text/javascript">
-      var myChart = echarts.init(document.getElementById('echart-bar2'));
-      myChart.setOption({
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "shadow",
-          },
-        },
-        legend: {
-          data: [
-            "Total SPT",
-            "Sudah Laporan",
-            "Belum Laporan",
-          ],
-        },
-        toolbox: {
-          show: true,
-          orient: "vertical",
-          left: "right",
-          top: "center",
-          feature: {
-            mark: {
-              show: true
-            },
-            dataView: {
-              show: true,
-              readOnly: false
-            },
-            magicType: {
-              show: true,
-              type: ["bar", "stack"]
-            },
-            restore: {
-              show: true
-            },
-            saveAsImage: {
-              show: true
-            },
-          },
-        },
-        calculable: true,
-        xAxis: [{
-          type: "category",
-          data: [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday",
-          ],
-        }, ],
-        yAxis: [{
-          type: "value",
-        }, ],
-        series: [{
-            name: "Total SPT",
-            type: "bar",
-            // color: 'blue',
-            // label: 'ss',
-            data: [320, 332, 301, 334, 390, 330, 320],
-          },
-          {
-            name: "Belum Laporan",
-            type: "bar",
-            color: 'red',
-            stack: "advertising",
-            data: [120, 132, 101, 134, 90, 230, 210],
-          },
-          {
-            name: "Sudah Laporan",
-            type: "bar",
-            // color: 'green',
-            stack: "advertising",
-            data: [220, 182, 191, 234, 290, 330, 310],
-          },
 
-        ],
-      });
     </script>
-
-    <!-- <div class="col-xl-12">
-      <div class="card">
-        <div class="card-header">
-          <h5>Bar chart 2</h5>
-        </div>
-        <div class="card-body">
-          <div class="apache-cotainer-large" id="echart-bar2"></div>
-        </div>
-      </div>
-    </div> -->
-
-    <!-- Monitor Web -->
 
     <div class="col-xl-12 xl-100 appointment box-col-6">
       <div class="card">
@@ -854,6 +762,7 @@
     getMonitorWebsite(false)
     getBeritaPkm(false)
     getInfoSPT(false)
+    getInfoSPTPkm(false)
 
     // toolbar.tahun.trigger('change');
     tahun_monitor_website.on('change', function() {
@@ -1128,6 +1037,33 @@
       });
     }
 
+    function getInfoSPTPkm(update) {
+      if (update) {
+        Swal.fire({
+          title: 'Loading!',
+          allowOutsideClick: false,
+        });
+        Swal.showLoading()
+      }
+      return $.ajax({
+        url: `<?php echo base_url('dashboard/getInfoSPTPkm') ?>`,
+        'type': 'get',
+        data: {},
+        success: function(data) {
+          Swal.close();
+          var json = JSON.parse(data);
+          if (json['error']) {
+            Swal.fire("Error", json['message'], "error");
+
+            return;
+          }
+          dataSPT = json['data'];
+          renderSPT2(dataSPT)
+        },
+        error: function(e) {}
+      });
+    }
+
     function renderSPT(data) {
       var options1 = {
         chart: {
@@ -1187,6 +1123,83 @@
       cartInfoSPT = new ApexCharts(document.querySelector("#info_spt"), options1);
 
       cartInfoSPT.render();
+
+    }
+
+    function renderSPT2(data) {
+      console.log(data);
+      var myChart = echarts.init(document.getElementById('echart-bar2'));
+      myChart.setOption({
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow",
+          },
+        },
+        legend: {
+          data: [
+            "Total SPT",
+            "Sudah Laporan",
+            "Belum Laporan",
+          ],
+        },
+        toolbox: {
+          show: true,
+          orient: "vertical",
+          left: "right",
+          top: "center",
+          feature: {
+            mark: {
+              show: true
+            },
+            dataView: {
+              show: true,
+              readOnly: false
+            },
+            magicType: {
+              show: true,
+              type: ["bar", "stack"]
+            },
+            restore: {
+              show: true
+            },
+            saveAsImage: {
+              show: true
+            },
+          },
+        },
+        calculable: true,
+        xAxis: [{
+          type: "category",
+          data: data['nama'],
+        }, ],
+        yAxis: [{
+          type: "value",
+        }, ],
+        series: [{
+            name: "Total SPT",
+            type: "bar",
+            // color: 'blue',
+            // label: 'ss',
+            data: data['total'],
+          },
+          {
+            name: "Belum Laporan",
+            type: "bar",
+            color: 'red',
+            stack: "advertising",
+            data: data['belum'],
+          },
+          {
+            name: "Sudah Laporan",
+            type: "bar",
+            // color: 'green',
+            stack: "advertising",
+            data: data['sudah'],
+          },
+
+        ],
+      });
 
     }
 
