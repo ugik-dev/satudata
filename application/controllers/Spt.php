@@ -302,7 +302,8 @@ class Spt extends CI_Controller
             if (empty($data['date_berangkat'][0]) or empty($data['date_berangkat'][0]) or empty($data['tempat_tujuan'][0])) {
                 throw new UserException('Tujuan belum lengkap!');
             }
-            if ($this->session->userdata('id_role') == '1' or $this->session->userdata('id_satuan') == 22) {
+            // if ($this->session->userdata('id_role') == '1' or $this->session->userdata('id_satuan') == 22) {
+            if ($this->session->userdata('id_role') == '1') {
             } else {
                 if ($data['date_berangkat'][0] < date('Y-m-d')) {
                     throw new UserException('Tanggal Keberangkatan Terlambat!');
@@ -367,7 +368,8 @@ class Spt extends CI_Controller
                 }
                 $this->SPPDModel->CekJadwal($data, $hari_pertama, $hari_terakhir, $data['id_spt']);
             }
-            if ($this->session->userdata('id_role') == '1' or $this->session->userdata('id_satuan') == 22) {
+            // if ($this->session->userdata('id_role') == '1' or $this->session->userdata('id_satuan') == 22) {
+            if ($this->session->userdata('id_role') == '1') {
             } else {
                 if ($data['date_berangkat'][0] < date('Y-m-d')) {
                     throw new UserException('Tanggal Keberangkatan Terlambat!');
