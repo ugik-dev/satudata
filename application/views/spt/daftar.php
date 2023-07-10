@@ -1,22 +1,111 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xl-12 col-lg-12">
-            <div class="card">
-                <div class="card-header">
-
-                    <form hidden class="form-inline" id="toolbar_form" onsubmit="return false;">
-                        <!-- <div class="col-lg-2"> -->
-                        <input type="hidden" id="is_not_self" name="is_not_self" value="1">
-                        <!-- <input type="hidden" id="id_seksi" name="id_seksi" value="1"> -->
-                        <!-- <input type="hidden" id="id_bidang" name="id_bidang" value="<?= $this->session->userdata() ?>"> -->
-                        <!-- </div> -->
-                        <div class="col-lg-2">
-                            <select class="form-control mr-sm-2" name="tool_id_role" id="tool_id_role"></select>
+            <div class="default-according style-1 faq-accordion job-accordion">
+                <div class="accordion" id="accordionExample">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Filter
+                                </button>
+                            </h2>
                         </div>
-                        <button type="button" class="btn btn-success my-1 mr-sm-2" id="new_btn" disabled="disabled"><i class="fal fa-plus"></i> Tambah Spt Baru</button>
-                    </form>
-                </div>
+                        <div class="collapse show" id="collapseOne" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <form class="form-inline" id="toolbar_form" onsubmit="return false;">
 
+                                <div class="card-body filter-cards-view animate-chk">
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label">Approval </label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control " name="status_rekap" id="status_rekap">
+                                                        <option value="" selected> Semua </option>
+                                                        <option value="menunggu"> Menunggu </option>
+                                                        <option value="ditolak"> Di Tolak </option>
+                                                        <option value="selesai"> Diterima </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label">LPD</label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control " name="status_lpd" id="status_lpd">
+                                                        <option value="" selected> Semua </option>
+                                                        <option value="belum"> Belum Entri LPD </option>
+                                                        <option value="sudah"> Sudah Entri LPD </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label">Instansi </label>
+                                                <div class="col-sm-8">
+                                                    <?php $curUser = $this->session->userdata(); ?>
+                                                    <select class="select2 form-control " name="id_satuan" id="id_satuan">
+                                                        <option value=""> Semua </option>
+                                                        <?php
+
+                                                        foreach ($dataContent['instansi'] as $ji) {
+                                                            if ($curUser['id_satuan'] == $ji['id_satuan'])
+                                                                echo "<option value='{$ji['id_satuan']}' selected> {$ji['nama_satuan']} </option>    ";
+                                                            else
+                                                                echo "<option value='{$ji['id_satuan']}' > {$ji['nama_satuan']} </option>    ";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3 row">
+                                                <?php
+                                                $date = new DateTime(date('Y-m-d'));
+                                                $date->add(new DateInterval('P1M'));
+                                                $date->invert = 1;
+                                                ?>
+                                                <label class="col-sm-3 col-form-label">Dari</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control m-input digits" id="dari" name="dari" type="date" value="<?= date("Y-m-d", strtotime("-1 months")); ?>" data-bs-original-title="" title="">
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-3 col-form-label">Sampai</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control m-input digits" id="sampai" name="sampai" type="date" value="<?= date('Y-m-d') ?>" data-bs-original-title="" title="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="checkbox-animated m-checkbox-inline">
+
+                                            <label class="form-check form-check-inline" for="chk-spt">
+                                                <input class="checkbox_animated" id="chk-spt" name="chk-spt" type="checkbox" checked />SPT
+                                            </label>
+                                            <label class="form-check form-check-inline" for="chk-sppd">
+                                                <input class="checkbox_animated" id="chk-sppd" name="chk-sppd" type="checkbox" checked />SPPD
+                                            </label>
+                                            <label class="form-check form-check-inline" for="chk-lembur">
+                                                <input class="checkbox_animated" id="chk-lembur" name="chk-lembur" type="checkbox" checked />Lembur
+                                            </label>
+                                        </div>
+                                        <button class="btn btn-primary text-center" type="submit">
+                                            <i class="fa fa-search ml-3 mr-3"></i> Cari
+                                        </button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
                 <div class="card-body">
                     <!-- <div class="col-lg-12"> -->
                     <!-- <div class="ibox"> -->
@@ -28,10 +117,10 @@
                                 <tr>
                                     <th style="width: 2%; text-align:center!important">ID</th>
                                     <th style="width: 10%; text-align:center!important">Jenis</th>
-                                    <!-- <th style="width: 10%; text-align:center!important">NO SPT</th> -->
                                     <th style="width: 10%; text-align:center!important">INFO</th>
                                     <th style="width: 24%; text-align:center!important">PEGAWAI</th>
                                     <th style="width: 10%; text-align:center!important">TUJUAN</th>
+                                    <th style="width: 10%; text-align:center!important">LPD</th>
                                     <th style="width: 10%; text-align:center!important">Status</th>
                                     <th style="width: 5%; text-align:center!important">Action</th>
                                 </tr>
@@ -55,9 +144,9 @@
         $('#submenu_5').addClass('active');
         var toolbar = {
             'form': $('#toolbar_form'),
-            'id_role': $('#toolbar_form').find('#id_role'),
-            'id_opd': $('#toolbar_form').find('#id_opd'),
-            'newBtn': $('#new_btn'),
+            'id_satuan': $('#toolbar_form').find('#id_satuan'),
+            'status_rekap': $('#toolbar_form').find('#status_rekap'),
+            'status_lpd': $('#toolbar_form').find('#status_lpd'),
         }
 
         var FDataTable = $('#FDataTable').DataTable({
@@ -119,10 +208,19 @@
         });
 
 
-
-        toolbar.id_role.on('change', (e) => {
+        toolbar.form.on('submit', (e) => {
             getAllSppd();
         });
+        toolbar.status_rekap.on('change', (e) => {
+            getAllSppd();
+        });
+        toolbar.status_lpd.on('change', (e) => {
+            getAllSppd();
+        });
+
+        // toolbar.id_satuan.on('change', (e) => {
+        //     getAllSppd();
+        // });
 
         function getAllSppd() {
             Swal.fire({
@@ -195,7 +293,7 @@
                 No SPT : ${ spt['no_spt']?spt['no_spt']:''}<br>
                 No SPPD : ${ spt['no_sppd']?spt['no_sppd']:''}
                 `;
-                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], info, spt['nama_pegawai'], tujuan, statusSPT(spt['status'], spt['unapprove_oleh']), button]);
+                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], info, spt['nama_pegawai'], tujuan, d['id_laporan'] == null ? "<i class='fa fa-times text-danger'></i><b class='text-danger'>Belum</b>" : "<i class='fa fa-check text-success'></i><b class='text-success'>Sudah</b>", statusSPT(spt['status'], spt['unapprove_oleh']), button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }

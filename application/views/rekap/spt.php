@@ -193,7 +193,6 @@
             'id_satuan': $('#toolbar_form').find('#id_satuan'),
             'status_rekap': $('#toolbar_form').find('#status_rekap'),
             'status_lpd': $('#toolbar_form').find('#status_lpd'),
-            'newBtn': $('#new_btn'),
         }
 
         var FDataTable = $('#FDataTable').DataTable({

@@ -98,7 +98,7 @@
                     </div>
 
                     <div class="col-lg-6">
-                        <div class="col-form-label">Lama Perjalanan</div>
+                        <div class="col-form-label">Lama Perjalanan (hari)</div>
                         <input class="form-control" id="lama_dinas" name="lama_dinas" type="number" value="<?= !empty($dataContent['return_data']['lama_dinas']) ? $dataContent['return_data']['lama_dinas'] : '' ?>">
                     </div>
 
@@ -111,7 +111,7 @@
                         <select class="form-control" id="transport" name="transport" required>
                         </select>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6" <?= $this->session->userdata('id_satuan') == 1 ? 'hidden' : '' ?>>
                         <div class="col-form-label">Jenis</div>
                         <select class="form-control" id="luardaerah" name="luardaerah" required>
                             <option value="1">Dalam Daerah Kabupaten Bangka</option>
