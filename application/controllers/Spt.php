@@ -951,8 +951,8 @@ class Spt extends CI_Controller
         $pdf->Cell(70, 10, '(....................................................)', 0, 1, 'C');
         $sign = $this->GeneralModel->getSingnature($data['id_pegawai'])[$data['id_pegawai']];
         if (!empty($sign['signature']))
-            // $pdf->Image(base_url('uploads/signature/' . $sign['signature']), 141, $pdf->getY() - 14, 30, 20);
-            $i = 0;
+            $pdf->Image(base_url('uploads/signature/' . $sign['signature']), 141, $pdf->getY() - 14, 30, 20);
+        $i = 0;
         foreach ($data['pengikut'] as $p) {
             $pdf->Cell(120, 10, $p['nama'], 0, 0, 'R');
             $pdf->Cell(70, 10, '(....................................................)', 0, 1, 'C');
