@@ -100,7 +100,7 @@
                 <th>Tujuan</th>
                 <th>Pelaksana</th>
                 <th>Maksud</th>
-                <th>Tanggal</th>
+                <th>Instansi</th>
                 <th>Lihat</th>
               </tr>
             </thead>
@@ -649,7 +649,7 @@
       // responsive: true,
       deferRender: true,
       "order": [
-        [1, "desc"]
+        [3, "asc"]
       ],
       // buttons: [{
       //   extend: 'excel',
@@ -1183,7 +1183,8 @@
           pegawai,
           // tgl_indo(d['tgl_pengajuan']),
           d['maksud'],
-          dfix,
+          d['nama_satuan'],
+          // dfix,
           // tgl_indo(d['periode_end']),
           // d['periode_start'] + (d['periode_start'] == d['periode_end'] ? '' : ' s.d. ' + d['periode_end']),
           // d['nama_satuan'],
