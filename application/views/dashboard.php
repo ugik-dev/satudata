@@ -33,7 +33,7 @@
 
 <div class="container-fluid">
   <div class="row second-chart-list third-news-update">
-    <div class="col-xl-4 col-lg-12 xl-50 morning-sec box-col-12">
+    <div hidden class="col-xl-4 col-lg-12 xl-50 morning-sec box-col-12">
       <div class="card profile-greeting">
         <div class="card-body pb-0">
           <div class="media">
@@ -62,7 +62,7 @@
     </div>
 
     <!-- livechat -->
-    <div class="col-xl-4 xl-50 chat-sec box-col-6">
+    <div hidden class="col-xl-4 xl-50 chat-sec box-col-6">
       <div class="card chat-default">
         <div class="card-header card-no-border">
           <div class="media media-dashboard">
@@ -116,6 +116,27 @@
       <div class="card">
         <div class="card-header">
           <div class="header-top">
+            <h5 class="m-0">Monitoring SPT Puskesmas</h5>
+            <div class="card-header-right-icon">
+              <select name="tahun" id="tahun_spt">
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2021">2020</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="apache-cotainer-large" id="echart-bar2"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-12 col-lg-12 xl-100 appointment box-col-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="header-top">
             <h5 class="m-0">Monitoring SPT / SPPD</h5>
             <div class="card-header-right-icon">
               <select name="tahun" id="tahun_spt">
@@ -134,26 +155,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-12 col-lg-12 xl-100 appointment box-col-12">
-      <div class="card">
-        <div class="card-header">
-          <div class="header-top">
-            <h5 class="m-0">Monitoring SPT Puskesmas</h5>
-            <div class="card-header-right-icon">
-              <select name="tahun" id="tahun_spt">
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2021">2020</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="apache-cotainer-large" id="echart-bar2"></div>
-        </div>
-      </div>
-    </div>
+
 
     <div class="col-xl-12 xl-100 appointment box-col-6">
       <div class="card">
@@ -863,8 +865,8 @@
             }
             dataChat = json['data'];
             renderLiveChat(dataChat, update)
-            if (!update) getRealTimeLiveChat()
-            loadingLiveChat = false;
+            // if (!update) getRealTimeLiveChat()
+            // loadingLiveChat = false;
 
           },
           error: function(e) {}

@@ -27,8 +27,8 @@ class Dashboard extends CI_Controller
         try {
             $this->SecurityModel->userOnlyGuard();
             $this->load->model('SPPDModel');
-            $filter['dari'] = date('Y-5-d');
-            $filter['sampai'] = date('Y-5-d');
+            $filter['dari'] = date('Y-m-d');
+            $filter['sampai'] = date('Y-m-d');
             $filter['status_rekap'] = 'selesai';
             $data = $this->SPPDModel->getAllSPPD($filter);
             echo json_encode(['error' => false, 'data' => $data]);
