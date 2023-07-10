@@ -147,7 +147,7 @@
                 // swal("Login Gagal", json['message'], "error");
                 return;
               }
-              $(location).attr('href', '<?= base_url() ?>profil');
+              $(location).attr('href', '<?= base_url() ?>dashboard');
             },
             error: () => {
               // buttonIdle(submitBtn);
