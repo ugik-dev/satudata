@@ -111,6 +111,13 @@
                         <select class="form-control" id="transport" name="transport" required>
                         </select>
                     </div>
+                    <div class="col-lg-6">
+                        <div class="col-form-label">Jenis</div>
+                        <select class="form-control" id="luardaerah" name="luardaerah" required>
+                            <option value="1">Dalam Daerah Kabupaten Bangka</option>
+                            <option value="2">Luar Daerah Kabupaten Bangka</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="col-lg-12" id="layout_tujuan">
 

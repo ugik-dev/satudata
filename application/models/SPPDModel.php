@@ -1181,7 +1181,7 @@ class SPPDModel extends CI_Model
 
             $this->db->set('approve_kabid', $ses['id']);
 
-            if ($data_spt['level_pegawai'] == 7) {
+            if ($data_spt['luardaerah'] == 2) {
                 $this->db->set('status', '11');
             } else {
                 $nomor = $this->cek_nomor($data_spt);
