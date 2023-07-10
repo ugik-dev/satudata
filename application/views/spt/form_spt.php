@@ -108,15 +108,19 @@
                         <div class="col-form-label">Lama Perjalanan</div>
                         <input class="form-control" id="lama_dinas" name="lama_dinas" type="number" value="<?= !empty($dataContent['return_data']['lama_dinas']) ? $dataContent['return_data']['lama_dinas'] : '' ?>">
                     </div>
-                    <div class="col-lg-6">
+                    <!-- <div class="col-lg-6">
                         <div class="col-form-label">Berangkat Dari</div>
                         <input class="form-control" id="berangkat_dari" name="berangkat_dari" type="text" value="<?= !empty($dataContent['return_data']['berangkat_dari']) ? $dataContent['return_data']['berangkat_dari'] : (!empty($this->session->userdata('nama_satuan')) ? $this->session->userdata('nama_satuan') : '') ?>">
-                    </div>
-                    <div class="col-lg-6">
+                    </div> -->
+                    <!-- <div class="col-lg-6">
                         <div class="col-form-label">Transportasi</div>
                         <select class="form-control" id="transport" name="transport" required>
                         </select>
-                    </div>
+                    </div> -->
+                    <select class="form-control" id="luardaerah" name="luardaerah" required>
+                        <option value="1">Dalam Daerah Kabupaten Bangka</option>
+                        <option value="2">Luar Daerah Kabupaten Bangka</option>
+                    </select>
                 </div>
                 <div class="col-lg-12" id="layout_tujuan">
 
