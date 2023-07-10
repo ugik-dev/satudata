@@ -769,7 +769,7 @@ class SPPDModel extends CI_Model
         // echo json_encode($data);
         // die();
         $this->db->insert('spt', DataStructure::slice($data, [
-            'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas', 'jenis',
+            'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas', 'jenis', 'luardaerah',
             'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk', 'status', 'berangkat_dari'
 
         ], FALSE));
@@ -833,7 +833,7 @@ class SPPDModel extends CI_Model
             $data['user_input'] = $ses['id'];
         }
         $this->db->set(DataStructure::slice($data, [
-            'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas',
+            'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas', 'luardaerah',
             'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk', 'berangkat_dari', 'status'
         ], FALSE));
 
