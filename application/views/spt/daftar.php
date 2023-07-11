@@ -293,7 +293,7 @@
                 No SPT : ${ spt['no_spt']?spt['no_spt']:''}<br>
                 No SPPD : ${ spt['no_sppd']?spt['no_sppd']:''}
                 `;
-                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], info, spt['nama_pegawai'], tujuan, d['id_laporan'] == null ? "<i class='fa fa-times text-danger'></i><b class='text-danger'>Belum</b>" : "<i class='fa fa-check text-success'></i><b class='text-success'>Sudah</b>", statusSPT(spt['status'], spt['unapprove_oleh']), button]);
+                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], info, spt['nama_pegawai'], tujuan, spt['id_laporan'] == null ? "<i class='fa fa-times text-danger'></i><b class='text-danger'>Belum</b>" : "<i class='fa fa-check text-success'></i><b class='text-success'>Sudah</b>", statusSPT(spt['status'], spt['unapprove_oleh']), button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }
