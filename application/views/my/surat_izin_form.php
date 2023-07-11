@@ -209,15 +209,15 @@
                 if (!result.isConfirmed) {
                     return;
                 }
-                // Swal.fire({
-                //     title: 'Loading ..',
-                //     html: 'Harap Tunggu !!',
-                //     allowOutsideClick: false,
-                //     buttons: false,
-                //     didOpen: () => {
-                //         Swal.showLoading()
-                //     }
-                // })
+                Swal.fire({
+                    title: 'Loading ..',
+                    html: 'Harap Tunggu !!',
+                    allowOutsideClick: false,
+                    buttons: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                })
                 $.ajax({
                     url: url,
                     'type': 'POST',
@@ -244,7 +244,7 @@
                                 },
                             },
                         }).then((result) => {
-                            // location.href = "<?= base_url('surat-izin') ?>";
+                            location.href = "<?= base_url('surat-izin') ?>";
                         });
                     }
                 });

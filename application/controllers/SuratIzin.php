@@ -507,6 +507,14 @@ class SuratIzin extends CI_Controller
             $data = $this->input->post();
             $ses = $this->session->userdata();
             $data['id_pegawai'] = $ses['id'];
+            if ($ses['jenis_pegawai'] == 2 && $data['kategori'] == 1) {
+                $sisa =  $this->SuratIzinModel->cekSisaPegawai($ses['id']);
+                if ($sisa['x'] >= 6) {
+                    throw new UserException('Sisa izin sudah habis!!', UNAUTHORIZED_CODE);
+                }
+            }
+            // echo json_encode($sisa);
+            // die();
             // if (empty($data['id_pengganti'])) {
             //     // jika tidak ada pengganti maka
             //     if ($ses['jen_satker'] == 1) {
