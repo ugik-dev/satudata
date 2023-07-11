@@ -13,25 +13,9 @@ var RiwayatModal = {
 FDataTable.on("click", ".riwayat_approval", function () {
   var jenis = $(this).data("jenis");
   var link = $(this).data("link");
-  // Swal.fire({
-  //     title: "Konfrirmasi Approv",
-  //     text: "Data ini akan di approv anda yakin ?",
-  //     icon: "warning",
-  //     allowOutsideClick: false,
-  //     showCancelButton: true,
-  //     buttons: {
-  //         cancel: 'Batal !!',
-  //         catch: {
-  //             text: "Ya, Approv !!",
-  //             value: true,
-  //         },
-  //     },
-  // }).then((result) => {
-  //     if (!result.isConfirmed) {
-  //         return;
-  //     }
+
   Swal.fire({
-    title: "Loading Approv!",
+    title: "Loading!",
     allowOutsideClick: false,
   });
   Swal.showLoading();
@@ -73,7 +57,6 @@ FDataTable.on("click", ".riwayat_approval", function () {
     },
     error: function (e) {},
   });
-  // });
 });
 
 FDataTable.on("click", ".data_izin", function () {
