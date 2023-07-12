@@ -303,9 +303,9 @@ class Spt extends CI_Controller
                 throw new UserException('Tujuan belum lengkap!');
             }
             if (
-                $this->session->userdata('id_role') == '1' or
-                $this->session->userdata('id_satuan') == 23 or
-                $this->session->userdata('id_satuan') == 9
+                $this->session->userdata('id_role') == '1'
+                // or $this->session->userdata('id_satuan') == 23 
+                // or $this->session->userdata('id_satuan') == 9
             ) {
                 // if ($this->session->userdata('id_role') == '1') {
             } else {
@@ -373,9 +373,9 @@ class Spt extends CI_Controller
                 $this->SPPDModel->CekJadwal($data, $hari_pertama, $hari_terakhir, $data['id_spt']);
             }
             if (
-                $this->session->userdata('id_role') == '1' or
-                $this->session->userdata('id_satuan') == 23 or
-                $this->session->userdata('id_satuan') == 9
+                $this->session->userdata('id_role') == '1'
+                // or $this->session->userdata('id_satuan') == 23
+                // or $this->session->userdata('id_satuan') == 9
             ) {
                 // if ($this->session->userdata('id_role') == '1') {
             } else {
