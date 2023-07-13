@@ -1250,7 +1250,7 @@ class Spt extends CI_Controller
 
         $pdf->Cell(30, 1, "", 0, 1);
         $pdf->SetX($cur_x + 108);
-        if ($data_satuan['jen_satker'] == 1)
+        if ($data_satuan['jen_satker'] == 1 or ($data_satuan['jen_satker'] != 1 && $data['luardaerah'] == 2))
             $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
         if ($data_satuan['jen_satker'] == 2)
             $pdf->MultiCell(80, 4, "Kepala\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
@@ -1558,7 +1558,7 @@ class Spt extends CI_Controller
             $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
             $pdf->Cell(40, 5, tanggal_indonesia($data['tgl_pengajuan']), 0, 1, 'L', 0);
             $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
-            if ($data_satuan['jen_satker'] == 1 or $data['level_pegawai'] == 7) {
+            if ($data_satuan['jen_satker'] == 1 or ($data_satuan['jen_satker'] != 1  && $data['luardaerah'] == 2)) {
                 if (!empty($data['sign_kadin2'])) {
                     $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin2']])[0];
                     $pdf->MultiCell(45, 5,  "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L', 0);

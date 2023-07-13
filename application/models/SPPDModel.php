@@ -1197,7 +1197,7 @@ class SPPDModel extends CI_Model
             if ($ses['level'] == 7) {
                 $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
 
-                if ($data_spt['level_pegawai'] == 7) {
+                if ($data_spt['level_pegawai'] == 7 && $data_spt['luardaerah'] == 2) {
                     $this->db->set('status', '11');
                 } else {
                     $nomor = $this->cek_nomor($data_spt);
