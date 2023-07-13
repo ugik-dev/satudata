@@ -1042,9 +1042,9 @@ class Spt extends CI_Controller
 
         $pdf = new PDF_MC_Table('P', 'mm', array(215.9, 355.6));
         if (!empty($data['no_sppd']))
-            $filename = 'SPPD ' . $data['no_sppd'];
+            $filename = 'SPPD ' . $data['no_sppd'] . '.pdf';
         else
-            $filename = 'SPPD ' . $data['id_spt'];
+            $filename = 'SPPD ' . $data['id_spt'] . '.pdf';
         $pdf->SetTitle($filename);
         $pdf->SetMargins(10, 5, 15, 10, 'C');
         $pdf->AddPage();
@@ -1631,7 +1631,7 @@ class Spt extends CI_Controller
             $pdf->MultiCell(45, 5,  '', 0, 'L', 0);
         }
         $pdf->Cell(130, 5, '', 0, 0, 'C', 0);
-        $filename = 'SPT ' . $data['id_spt'];
+        $filename = 'SPT ' . (!empty($data['no_spt']) ?  $data['no_spt'] : $data['id_spt']) . '.pdf';
 
         $pdf->Output('', $filename, false);
     }
