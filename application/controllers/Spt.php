@@ -659,13 +659,13 @@ class Spt extends CI_Controller
         }
     }
 
-    public function print($id, $tipe, $qr = 1)
+    public function print($id, $tipe, $qr = 1, $cap = 1)
     {
         $filter = $this->input->get();
         $data = $this->SPPDModel->getAllSPPD(['id_spt' => $id])[$id];
 
         if ($tipe == 1)
-            $this->print_spt($data, $qr);
+            $this->print_spt($data, $qr, $cap);
         if ($tipe == 2)
             $this->print_sppd($data, $qr);
         if ($tipe == 3)
@@ -1383,7 +1383,7 @@ class Spt extends CI_Controller
         $pdf->Output('', $filename, false);
     }
 
-    function print_spt($data, $qr)
+    function print_spt($data, $qr, $cap)
     {
         require('assets/fpdf/mc_table.php');
 
@@ -1597,7 +1597,9 @@ class Spt extends CI_Controller
                     $pdf->Image(base_url('uploads/qrcode/20' . $data['qrcode'] . '.png'), 40, $pdf->getY() - 40.5, 25);
                 }
             }
-
+            if ($cap == 'cap') {
+                $pdf->Image(base_url('assets/img/cap-dinkes.png'), 120, $pdf->getY() - 48, 0, 40);
+            }
             // if ($qr == 1)
             //     $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 120, $pdf->getY() - 40, 0, 25);
             // else {
