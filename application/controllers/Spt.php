@@ -1393,7 +1393,7 @@ class Spt extends CI_Controller
         $pdf->SetMargins(10, 5, 15, 10, 'C');
         $pdf->AddPage();
         $data_satuan =  $this->GeneralModel->getSatuan(['id_satuan' => $data['id_satuan']])[0];
-        echo json_encode($data_datuan);
+        echo json_encode($data_satuan);
         die();
         if ($data['level_pegawai'] == 7)
             $this->kop($pdf, $data_satuan, true);
