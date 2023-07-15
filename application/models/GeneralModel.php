@@ -243,20 +243,20 @@ class GeneralModel extends CI_Model
         // return DataStructure::keyValue($res->result_array(), 'id_satuan');
     }
 
-    public function getAllPosition($filter = [])
+    public function getAllMutasi($filter = [])
     {
-        $this->db->select('*');
-        $this->db->from('user_position u ');
-        $this->db->join('roles r', 'u.id_role = r.id_role');
-        $this->db->join('satuan st', 'u.id_satuan = st.id_satuan');
+        $this->db->select('u.*, r.nama_role, st.nama_satuan, sk.nama_seksi, bg.nama_bag');
+        $this->db->from('mutasi u ');
+        $this->db->join('roles r', 'u.id_role = r.id_role', 'LEFT');
+        $this->db->join('satuan st', 'u.id_satuan = st.id_satuan', 'LEFT');
         $this->db->join('ref_seksi sk', 'u.id_seksi= sk.id_ref_seksi', 'LEFT');
         $this->db->join('bagian bg', 'u.id_bagian = bg.id_bagian', 'LEFT');
         if (!empty($filter['id_user']))
             $this->db->where('id_user', $filter['id_user']);
-        if (!empty($filter['id_user_position']))
-            $this->db->where('id_user_position', $filter['id_user_position']);
+        if (!empty($filter['id_mutasi']))
+            $this->db->where('id_mutasi', $filter['id_mutasi']);
         $res = $this->db->get();
-        return DataStructure::keyValue($res->result_array(), 'id_user_position');
+        return DataStructure::keyValue($res->result_array(), 'id_mutasi');
     }
 
     public function getAllSatuan2($filter = [])

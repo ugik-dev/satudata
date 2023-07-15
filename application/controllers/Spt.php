@@ -1393,7 +1393,8 @@ class Spt extends CI_Controller
         $pdf->SetMargins(10, 5, 15, 10, 'C');
         $pdf->AddPage();
         $data_satuan =  $this->GeneralModel->getSatuan(['id_satuan' => $data['id_satuan']])[0];
-
+        echo json_encode($data_datuan);
+        die();
         if ($data['level_pegawai'] == 7)
             $this->kop($pdf, $data_satuan, true);
         else
@@ -1571,7 +1572,6 @@ class Spt extends CI_Controller
                 // $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin2']])[0];
             } else if ($data_satuan['jen_satker'] == 2) {
                 $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
-
                 $pdf->MultiCell(80, 5,  "Kepala " . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L', 0);
             } else if ($data_satuan['jen_satker'] == 3) {
                 $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];

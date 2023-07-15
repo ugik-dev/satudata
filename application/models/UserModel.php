@@ -160,10 +160,40 @@ class UserModel extends CI_Model
         ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
 
         $id_user = $this->db->insert_id();
-
-
         return $id_user;
     }
+
+    public function addMutasi($data)
+    {
+
+        $this->db->insert('mutasi', DataStructure::slice($data, [
+            'id_user', 'id_satuan', 'id_bagian', 'id_seksi', 'id_role',
+            'jabatan', 'pangkat_golongan', 'petugas', 'tanggal_entri', 'tanggal_mutasi',
+        ], TRUE));
+
+        // $this->db->set(DataStructure::slice($data, ['username', 'nama', 'email', 'nip', 'alamat', 'no_hp', 'status', 'id_role']));
+        ExceptionHandler::handleDBError($this->db->error(), "Tambah User", "User");
+
+        $id_user = $this->db->insert_id();
+        return $id_user;
+    }
+    public function editMutasi($data)
+    {
+
+        $this->db->where('id_mutasi', $data['id_mutasi']);
+        $this->db->set(DataStructure::slice($data, [
+            'id_user', 'id_satuan', 'id_bagian', 'id_seksi', 'id_role',
+            'jabatan', 'pangkat_golongan', 'petugas', 'tanggal_entri', 'tanggal_mutasi',
+        ], false));
+        $this->db->update('mutasi');
+
+        // $this->db->set(DataStructure::slice($data, ['username', 'nama', 'email', 'nip', 'alamat', 'no_hp', 'status', 'id_role']));
+        ExceptionHandler::handleDBError($this->db->error(), "Edit Mutasi", "Mutasi");
+
+        // $id_user = $this->db->insert_id();
+        return $data['id_mutasi'];
+    }
+
 
     public function registerUser($data)
     {

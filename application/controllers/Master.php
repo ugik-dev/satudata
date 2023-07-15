@@ -358,14 +358,14 @@ class Master extends CI_Controller
         }
     }
 
-    public function editPosition()
+    public function editMutasi()
     {
         try {
             $this->SecurityModel->multiRole('Master', 'Pegawai');
             $data = $this->input->post();
 
-            $this->UserModel->editPosition($data);
-            $data = $this->GeneralModel->getAllPostion(array('id' => $data['id']))[$data['id']];
+            $this->UserModel->editMutasi($data);
+            $data = $this->GeneralModel->getAllMutasi(array('id_mutasi' => $data['id_mutasi']))[$data['id_mutasi']];
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -374,13 +374,16 @@ class Master extends CI_Controller
 
 
 
-    public function addPosition()
+    public function addMutasi()
     {
         try {
             $this->SecurityModel->multiRole('Master', 'Pegawai');
             $data = $this->input->post();
-            $id =  $this->UserModel->addPosition($data);
+            $data['petugas'] = $this->session->userdata('id');
+            $data['tanggal_entri'] = date('Y-m-d h:i:s');
+            $id =  $this->UserModel->addMutasi($data);
             // $data = $this->GeneralModel->getAllPostion(array('id' => $id))[$id];
+            $data = $this->GeneralModel->getAllMutasi(array('id_mutasi' => $id))[$data['id_mutasi']];
 
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
