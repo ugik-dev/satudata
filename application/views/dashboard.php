@@ -688,7 +688,7 @@
         error: function(e) {}
       });
     }
-    renderKehadiran()
+    // renderKehadiran()
 
     function renderKehadiran() {
       var options1 = {
@@ -775,11 +775,11 @@
     // setTimeout(
     //   getLiveChat(false), 10000);
 
-    getPengumuman(false)
-    getMonitorWebsite(false)
-    getBeritaPkm(false)
+    // getPengumuman(false)
+    // getMonitorWebsite(false)
+    // getBeritaPkm(false)
     getAktifitasHarian(false)
-    getInfoSPT(false)
+    // getInfoSPT(false)
     getInfoSPTPkm(false)
 
     // toolbar.tahun.trigger('change');
