@@ -329,15 +329,20 @@
                     // tmpt = tmpt + '<br>No SPT : ' + (d['no_spt'] ? d['no_spt'] : '');
 
                 }
-                pegawai = d['nama_pegawai'];
+                pegawai = d['nama_pelaksana'];
                 i = 1;
-                Object.values(d['pengikut']).forEach((p) => {
-                    if (i == 1)
-                        pegawai = pegawai + '<br> Pengikut : ';
-                    pegawai = pegawai + '<br>' + i + '. ' + p['nama'];
-                    // d2 = tj['date_kembali']
-                    i++;
-                })
+                if (d['pengikut'] == null || typeof d['pengikut'] != "object") {
+
+                } else {
+                    Object.values(d['pengikut']).forEach((p) => {
+                        if (i == 1)
+                            pegawai = pegawai + '<br> Pengikut : ';
+                        pegawai = pegawai + '<br>' + i + '. ' + p['nama'];
+                        // d2 = tj['date_kembali']
+                        i++;
+                    })
+                }
+
                 if (d1.split(" ")[0] != d1.split(" ")[0])
                     dfix = tgl_indo(d1.split(" ")[0]) + ' s.d ' + tgl_indo(d2.split(" ")[0]);
                 else
@@ -372,7 +377,7 @@
                             </div>
                         </div>`;
 
-                renderData.push([d['nama_ref_jen_spt'],
+                renderData.push([d['rjs'],
                     tgl_indo(d['tgl_pengajuan']),
                     dfix,
                     // tgl_indo(d['periode_end']),

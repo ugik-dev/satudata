@@ -41,21 +41,17 @@ class DashboardModel extends CI_Model
     public function getInfoSPTPkm($filter = [])
     {
 
-        // $this->db->query("
-        // SELECT sa.id_satuan, nama_satuan, COUNT(id_laporan) FROM 
-        // JOIN spt as s on s.id_satuan = sa.id_satuan
-        // LEFT JOIN spt_laporan as l on s.id_spt = l.id_spt
-        // WHERE s.status = 99
-        // GROUP by id_satuan;");
-        $this->db->select('sa.id_satuan, sort_name, COUNT(id_laporan) lpd,COUNT(s.id_spt) total');
-        $this->db->from('`satuan` as sa');
-        $this->db->join('spt as s ', 's.id_satuan = sa.id_satuan');
-        $this->db->join('spt_laporan as l ', 's.id_spt = l.id_spt', 'LEFT');
-        $this->db->where('status', 99);
-        $this->db->where('sa.jen_satker', 2);
-        $this->db->group_by('sa.id_satuan');
-        $this->db->order_by('sa.jen_satker');
-        $res = $this->db->get();
+        // $this->db->select('sa.id_satuan, sort_name, COUNT(id_laporan) lpd,COUNT(s.id_spt) total');
+        // $this->db->from('`satuan` as sa');
+        // $this->db->join('spt as s ', 's.id_satuan = sa.id_satuan');
+        // $this->db->join('spt_laporan as l ', 's.id_spt = l.id_spt', 'LEFT');
+        // $this->db->where('status', 99);
+        // $this->db->where('sa.jen_satker', 2);
+        // $this->db->group_by('sa.id_satuan');
+        // $this->db->order_by('sa.jen_satker');
+        $res = $this->db->get('v_info_pkm');
+        // echo $this->db->last_query();
+        // die();
         ExceptionHandler::handleDBError($this->db->error(), "Edit Dasar", "Dasar");
         $res = $res->result_array();
 

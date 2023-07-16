@@ -2,7 +2,64 @@
 
 class DataStructure
 {
-
+  public static function SptPengikut($r, $full)
+  {
+    if ($full)
+      return [
+        'id_pegawai' => $r['id_pegawai'],
+        'nama' => $r['nama_pengikut'],
+        'nip' => $r['nip_pengikut'],
+      ];
+    else
+      return [
+        'id_pegawai' => $r['id_pegawai'],
+        'nama_pengikut' => $r['nama_pengikut'],
+      ];
+  }
+  public static function SPTStyle($res, $full = false)
+  {
+    $ret = [];
+    foreach ($res as $r) {
+      if (empty($ret[$r['id_spt']])) {
+        $ret[$r['id_spt']] = [
+          'id_spt' => $r['id_spt'],
+          'tgl_pengajuan' => $r['tgl_pengajuan'],
+          'nama_pelaksana' => $r['nama_pelaksana'],
+          'maksud' => $r['maksud'],
+          'nama_satuan' => $r['nama_satuan'],
+          'rjs' => $r['rjs'],
+          'id_laporan' => $r['id_laporan'],
+          'no_spt' => $r['no_spt'],
+          'no_sppd' => $r['no_sppd'],
+          'unapprove_oleh' => $r['unapprove_oleh'],
+          'status' => $r['status'],
+        ];
+        if (!empty($r['id_tujuan'])) {
+          $ret[$r['id_spt']]['tujuan'][$r['id_tujuan']] = [
+            'id_tujuan' => $r['id_tujuan'],
+            'tempat_tujuan' => $r['tempat_tujuan'],
+            'date_berangkat' => $r['date_berangkat'],
+            'date_kembali' => $r['date_kembali'],
+            'date_kembali' => $r['date_kembali'],
+          ];
+        }
+        if (!empty($r['id_pegawai'])) {
+          $ret[$r['id_spt']]['pengikut'][$r['id_pegawai']] = DataStructure::SptPengikut($r, $full);
+        }
+      } else {
+        if (empty($ret[$r['id_spt']]['tujuan'][$r['id_tujuan']])) {
+          $ret[$r['id_spt']]['tujuan'][$r['id_tujuan']] = [
+            'id_tujuan' => $r['id_tujuan'],
+            'tempat_tujuan' => $r['tempat_tujuan'],
+          ];
+        }
+        if (empty($ret[$r['id_spt']]['pengikut'][$r['id_pegawai']])) {
+          $ret[$r['id_spt']]['pengikut'][$r['id_pegawai']] = DataStructure::SptPengikut($r, $full);
+        }
+      }
+    }
+    return $ret;
+  }
   public static function absensi_rekap($pegawai, $arr, $usort = true)
   {
     $ret = [];
