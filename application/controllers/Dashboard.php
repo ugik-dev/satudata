@@ -43,7 +43,25 @@ class Dashboard extends CI_Controller
         try {
             $this->SecurityModel->userOnlyGuard();
             $data = $this->DashboardModel->getInfoSPTPkm();
-            echo json_encode(['error' => false, 'data' => $data]);
+            if (!empty($data['update_at'])) {
+                $from       = $data['update_at'];
+                $to         = date('Y-m-d H:i:s');
+                $total      = strtotime($to) - strtotime($from);
+                $hours      = floor($total / 60 / 60);
+            } else {
+                $this->DashboardModel->updateInfoSPTPkm();
+                $data = $this->DashboardModel->getInfoSPTPkm();
+            }
+            // $minutes    = round(($total - ($hours * 60 * 60)) / 60);
+
+            // echo 'from' . $from . '<br>';
+            // echo 'to' . $to . '<br>';
+            if ($hours >= 1) {
+                $this->DashboardModel->updateInfoSPTPkm();
+                $data = $this->DashboardModel->getInfoSPTPkm();
+            }
+            // echo $hours . '.' . $minutes;
+            echo json_encode(['error' => false, 'data' => $data['data']]);
             // $this->load->view('theme/sweet-alert2');
         } catch (Exception $e) {
             ExceptionHandler::handle($e);

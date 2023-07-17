@@ -38,38 +38,76 @@ class DashboardModel extends CI_Model
         $res =   DataStructure::keyValue($res, 'id_chat');
         return $res;
     }
-    public function getInfoSPTPkm($filter = [])
+
+    public function updateInfoSPTPkm()
     {
 
-        // $this->db->select('sa.id_satuan, sort_name, COUNT(id_laporan) lpd,COUNT(s.id_spt) total');
-        // $this->db->from('`satuan` as sa');
-        // $this->db->join('spt as s ', 's.id_satuan = sa.id_satuan');
-        // $this->db->join('spt_laporan as l ', 's.id_spt = l.id_spt', 'LEFT');
-        // $this->db->where('status', 99);
-        // $this->db->where('sa.jen_satker', 2);
-        // $this->db->group_by('sa.id_satuan');
-        // $this->db->order_by('sa.jen_satker');
-        $res = $this->db->get('v_info_pkm');
-        // echo $this->db->last_query();
-        // die();
-        ExceptionHandler::handleDBError($this->db->error(), "Edit Dasar", "Dasar");
+        $this->db->select('sa.id_satuan, sort_name, COUNT(id_laporan) lpd,COUNT(s.id_spt) total');
+        $this->db->from('`satuan` as sa');
+        $this->db->join('spt as s ', 's.id_satuan = sa.id_satuan');
+        $this->db->join('spt_laporan as l ', 's.id_spt = l.id_spt', 'LEFT');
+        $this->db->where('status', 99);
+        $this->db->where('sa.jen_satker', 2);
+        $this->db->group_by('sa.id_satuan');
+        $this->db->order_by('sa.jen_satker');
+        $res = $this->db->get();
+
+        ExceptionHandler::handleDBError($this->db->error(), "Gagal Mendapatkan Info SPT PKM");
         $res = $res->result_array();
 
+        $data['id_satuan'] = [];
         $data['nama'] = [];
         $data['total'] = [];
         $data['belum'] = [];
         $data['sudah'] = [];
+        $push_data = [];
         foreach ($res as $r) {
             if (!empty($r['total'])) {
+                $data['id_satuan'][] = $r['id_satuan'];
                 $data['nama'][] = $r['sort_name'];
                 $data['total'][] = !empty($r['total']) ? $r['total'] : 0;
                 $data['sudah'][] = !empty($r['lpd']) ? $r['lpd'] : 0;
                 $data['belum'][] =  (!empty($r['total']) ? $r['total'] : 0) - (!empty($r['lpd']) ? $r['lpd'] : 0);
+                $push_data = [
+                    'id_satuan' => $r['id_satuan'],
+                    'nama' => $r['sort_name'],
+                    'total' => !empty($r['total']) ? $r['total'] : 0,
+                    'sudah' =>  !empty($r['lpd']) ? $r['lpd'] : 0,
+                    'belum' => (!empty($r['total']) ? $r['total'] : 0) - (!empty($r['lpd']) ? $r['lpd'] : 0),
+
+                ];
+                $this->db->replace('res_infospt_x_dinkes', $push_data);
             }
         }
-        // echo json_encode($data);
-        // die();
-        return $data;
+    }
+    public function getInfoSPTPkm($filter = [])
+    {
+
+        $res = $this->db->get('res_infospt_x_dinkes');
+        ExceptionHandler::handleDBError($this->db->error(), "Edit Dasar", "Dasar");
+
+        $res = $res->result_array();
+
+        $data['id_satuan'] = [];
+        $data['nama'] = [];
+        $data['total'] = [];
+        $data['belum'] = [];
+        $data['sudah'] = [];
+        $last_update = null;
+        foreach ($res as $r) {
+            if (!empty($r['total'])) {
+                $data['id_satuan'][] = $r['id_satuan'];
+                $data['nama'][] = $r['nama'];
+                $data['total'][] = !empty($r['total']) ? $r['total'] : 0;
+                $data['sudah'][] = !empty($r['sudah']) ? $r['sudah'] : 0;
+                $data['belum'][] =  !empty($r['belum']) ? $r['belum'] : 0;
+                $last_update = $r['update_at'];
+            }
+        }
+        return [
+            'update_at' => $last_update,
+            'data' => $data
+        ];
     }
 
     public function getInfoSPT($filter = [])
