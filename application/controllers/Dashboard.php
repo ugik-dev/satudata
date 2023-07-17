@@ -61,7 +61,7 @@ class Dashboard extends CI_Controller
                 $data = $this->DashboardModel->getInfoSPTPkm();
             }
             // echo $hours . '.' . $minutes;
-            echo json_encode(['error' => false, 'data' => $data['data']]);
+            echo json_encode(['error' => false, 'data' => $data['data'], 'update_at' => $data['update_at']]);
             // $this->load->view('theme/sweet-alert2');
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
