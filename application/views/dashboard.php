@@ -764,7 +764,7 @@
     var cartTahunan;
     var loadingLiveChat = false;
 
-    getLiveChat(false)
+    // getLiveChat(false)
 
     function getRealTimeLiveChat() {
       let timerId = setTimeout(function tick() {
