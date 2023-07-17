@@ -26,11 +26,32 @@ class Dashboard extends CI_Controller
     {
         try {
             $this->SecurityModel->userOnlyGuard();
-            $this->load->model('SPPDModel');
+            $this->load->model('SPTModel');
             $filter['dari'] = date('Y-m-d');
             $filter['sampai'] = date('Y-m-d');
             $filter['status_rekap'] = 'selesai';
-            $data = $this->SPPDModel->getAllSPPD($filter);
+            if ($this->session->userdata('jen_satker') != 1)
+                $filter2['id_satuan'] = $this->session->userdata('id_satuan');
+            else
+                $filter2 = [];
+            $data = $this->DashboardModel->getAktifitasHarian($filter2);
+            if (!empty($data[0]['update_at'])) {
+                $from       = $data[0]['update_at'];
+                $to         = date('Y-m-d H:i:s');
+                $total      = strtotime($to) - strtotime($from);
+                $hours      = floor($total / 60 / 60);
+                if ($hours >= 1) {
+                    $data_update = $this->SPTModel->getAllSPPD($filter);
+                    $this->DashboardModel->updateAktifitasHarian($data_update);
+                    $data = $this->DashboardModel->getAktifitasHarian($filter2);
+                } else {
+                    $data = $this->DashboardModel->getAktifitasHarian($filter2);
+                }
+            } else {
+                $data_update = $this->SPTModel->getAllSPPD($filter);
+                $this->DashboardModel->updateAktifitasHarian($data_update);
+                $data = $this->DashboardModel->getAktifitasHarian($filter2);
+            }
             echo json_encode(['error' => false, 'data' => $data]);
             // $this->load->view('theme/sweet-alert2');
         } catch (Exception $e) {
@@ -48,21 +69,17 @@ class Dashboard extends CI_Controller
                 $to         = date('Y-m-d H:i:s');
                 $total      = strtotime($to) - strtotime($from);
                 $hours      = floor($total / 60 / 60);
+                if ($hours >= 1) {
+                    $this->DashboardModel->updateInfoSPTPkm();
+                    $data = $this->DashboardModel->getInfoSPTPkm();
+                } else {
+                    $data = $this->DashboardModel->getInfoSPTPkm();
+                }
             } else {
                 $this->DashboardModel->updateInfoSPTPkm();
                 $data = $this->DashboardModel->getInfoSPTPkm();
             }
-            // $minutes    = round(($total - ($hours * 60 * 60)) / 60);
-
-            // echo 'from' . $from . '<br>';
-            // echo 'to' . $to . '<br>';
-            if ($hours >= 1) {
-                $this->DashboardModel->updateInfoSPTPkm();
-                $data = $this->DashboardModel->getInfoSPTPkm();
-            }
-            // echo $hours . '.' . $minutes;
             echo json_encode(['error' => false, 'data' => $data['data'], 'update_at' => $data['update_at']]);
-            // $this->load->view('theme/sweet-alert2');
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }

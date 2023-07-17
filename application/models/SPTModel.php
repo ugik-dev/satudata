@@ -7,7 +7,7 @@ class SPTModel extends CI_Model
     {
         $ses = $this->session->userdata();
 
-        $this->db->select('u.id_spt,  u.maksud, u.tgl_pengajuan, u.status, no_spt, no_sppd,unapprove_oleh,
+        $this->db->select('u.id_spt,  u.maksud, u.tgl_pengajuan, u.status, no_spt, no_sppd,unapprove_oleh, u.id_satuan,
         rjs.nama_ref_jen_spt rjs, l.id_laporan, sa.nama_satuan,
         s.nama nama_pelaksana,
         tj.id_tujuan, tj.tempat_tujuan,date_berangkat,date_kembali,
@@ -224,8 +224,8 @@ class SPTModel extends CI_Model
                 }
             }
             if (empty($filter['qrcode'])) {
-                if ($this->session->userdata('jen_satker') != 1)
-                    $this->db->where('u.id_satuan', $ses['id_satuan']);
+                // if ($this->session->userdata('jen_satker') != 1)
+                //     $this->db->where('u.id_satuan', $ses['id_satuan']);
             } else {
                 $this->db->where('u.qrcode', $filter['qrcode']);
             }

@@ -26,6 +26,7 @@ class DataStructure
           'tgl_pengajuan' => $r['tgl_pengajuan'],
           'nama_pelaksana' => $r['nama_pelaksana'],
           'maksud' => $r['maksud'],
+          'id_satuan' => $r['id_satuan'],
           'nama_satuan' => $r['nama_satuan'],
           'rjs' => $r['rjs'],
           'id_laporan' => $r['id_laporan'],
