@@ -312,7 +312,7 @@
         <?php
         if (!empty($dataContent['return_data']['tujuan'])) {
             foreach ($dataContent['return_data']['tujuan'] as $p) {
-                echo 'addTujuan(' . $p['id_tujuan'] . ', "' . $p['tempat_tujuan'] . '" , "' . $p['date_berangkat'] . '" , "' . $p['tempat_kembali'] . '" , "' . $p['date_kembali'] . '");  ';
+                echo 'addTujuan(' . $p['id_tujuan'] . ', "' . $p['tempat_tujuan'] . '" , "' . $p['date_berangkat'] . '" , "' . $p['dari'] . '" , "' . $p['sampai'] . '");  ';
             }
         } else {
             echo 'addTujuan();';
@@ -333,7 +333,7 @@
             </div>
             <div class="col-lg-2">
             <div class="col-form-label">Dari </div>
-            <input class="form-control" id="dari[]" name="dari[]" type="time" value="${dk}">
+            <input class="form-control" id="dari[]" name="dari[]" type="time" value="${tk}">
             </div>
             <div class="col-lg-2">
             <div class="col-form-label">Sampai </div>

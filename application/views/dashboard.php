@@ -651,16 +651,7 @@
       "order": [
         [3, "asc"]
       ],
-      // buttons: [{
-      //   extend: 'excel',
-      //   text: '<i class="fa fa-download ">  Export Excel</i>',
-      //   className: 'excelButton btn btn-primary  font-weight-bold text-light',
-      //   exportOptions: {
-      //     modifier: {
-      //       // page: 'current'
-      //     }
-      //   }
-      // }]
+
     });
 
     var primary = localStorage.getItem("primary") || "#7366ff";
@@ -775,9 +766,9 @@
     // setTimeout(
     //   getLiveChat(false), 10000);
 
-    // getPengumuman(false)
+    getPengumuman(false)
     // getMonitorWebsite(false)
-    // getBeritaPkm(false)
+    getBeritaPkm(false)
     getAktifitasHarian(false)
     // getInfoSPT(false)
     getInfoSPTPkm(false)

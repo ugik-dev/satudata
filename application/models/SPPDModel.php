@@ -846,16 +846,18 @@ class SPPDModel extends CI_Model
             $d_tujuan = array(
                 'id_spt' => $id_spt,
                 'tempat_tujuan' => $data['tempat_tujuan'][$i],
-                'tempat_kembali' => $data['tempat_kembali'][$i],
+                'tempat_kembali' => !empty($data['tempat_kembali'][$i]) ? $data['tempat_kembali'][$i] : '',
                 'date_berangkat' => $data['date_berangkat'][$i],
-                'date_kembali' => $data['date_kembali'][$i],
+                'date_kembali' => !empty($data['date_kembali'][$i]) ? $data['date_kembali'][$i] : '',
+                'dari' => !empty($data['dari'][$i]) ? $data['dari'][$i] : '',
+                'sampai' => !empty($data['sampai'][$i]) ? $data['sampai'][$i] : '',
                 'ke' => $i + 1,
             );
 
-            if (!empty($data['tempat_tujuan'][$i]) and !empty($data['tempat_kembali'][$i]) and !empty($data['date_berangkat'][$i]) and !empty($data['date_kembali'][$i]) and empty($data['id_tujuan'][$i])) {
+            if (!empty($data['tempat_tujuan'][$i]) and  !empty($data['date_berangkat'][$i]) and empty($data['id_tujuan'][$i])) {
                 $this->db->insert('tujuan', $d_tujuan);
             } else
-            if (!empty($data['tempat_tujuan'][$i]) and !empty($data['tempat_kembali'][$i]) and !empty($data['date_berangkat'][$i]) and !empty($data['date_kembali'][$i]) and !empty($data['id_tujuan'][$i])) {
+            if (!empty($data['tempat_tujuan'][$i]) and  !empty($data['date_berangkat'][$i]) and !empty($data['id_tujuan'][$i])) {
                 $this->db->set($d_tujuan);
                 $this->db->where('id_tujuan', $data['id_tujuan'][$i]);
                 $this->db->update('tujuan');

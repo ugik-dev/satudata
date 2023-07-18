@@ -64,7 +64,7 @@ https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js
 <body>
     <!-- <body onload="startTime()"> -->
     <!-- loader starts-->
-    <div class="loader-wrapper">
+    <!-- <div class="loader-wrapper">
         <div class="loader-index"><span></span></div>
         <svg>
             <defs></defs>
@@ -73,6 +73,6 @@ https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js
                 <fecolormatrix in="blur" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"></fecolormatrix>
             </filter>
         </svg>
-    </div>
+    </div> -->
     <div class="tap-top"><i data-feather="chevrons-up"></i></div>
     <div class="page-wrapper compact-wrapper" id="pageWrapper">

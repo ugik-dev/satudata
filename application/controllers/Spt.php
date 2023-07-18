@@ -88,11 +88,15 @@ class Spt extends CI_Controller
                     $data['page'] = 'spt/form_spt';
                 } else if ($res_data['return_data']['jenis'] == 2) {
                     $data['page'] = 'spt/form_spt_sppd';
+                } else if ($res_data['return_data']['jenis'] == 3) {
+                    $data['page'] = 'spt/form_lembur';
                 }
             } else if ($res_data['return_data']['jenis'] == 1) {
                 $data['page'] = 'spt/form_spt';
             } else if ($res_data['return_data']['jenis'] == 2) {
                 $data['page'] = 'spt/form_spt_sppd';
+            } else if ($res_data['return_data']['jenis'] == 3) {
+                $data['page'] = 'spt/form_lembur';
             }
             $this->load->view('page', $data);
         } catch (Exception $e) {
