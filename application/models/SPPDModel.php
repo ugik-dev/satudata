@@ -1174,16 +1174,10 @@ class SPPDModel extends CI_Model
                     $this->db->set('status', '51');
             }
         } else if ($data_spt['status'] == '59' && $ses['level'] == 7) {
-
-
             $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
-
-
             $this->db->set('sign_kadin', $id_sign_kadin);
-
             $this->db->set('approve_kabid', $ses['id']);
-
-            if ($data_spt['luardaerah'] == 2) {
+            if ($data_spt['luardaerah'] == 2 && $data_spt['level_pegawai'] == 7) {
                 $this->db->set('status', '11');
             } else {
                 $nomor = $this->cek_nomor($data_spt);
