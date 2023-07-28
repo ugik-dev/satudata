@@ -568,8 +568,8 @@ class SPPDModel extends CI_Model
             }
         }
         if (empty($filter['qrcode'])) {
-            if ($this->session->userdata('jen_satker') != 1)
-                $this->db->where('u.id_satuan', $ses['id_satuan']);
+            // if ($this->session->userdata('jen_satker') != 1)
+            //     $this->db->where('u.id_satuan', $ses['id_satuan']);
         } else {
             $this->db->where('u.qrcode', $filter['qrcode']);
         }
