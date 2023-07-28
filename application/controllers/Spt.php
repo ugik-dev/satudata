@@ -168,7 +168,7 @@ class Spt extends CI_Controller
         try {
             $this->SecurityModel->userOnlyGuard(true);
             // $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
-            $res_data['return_data'] = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
+            $res_data['return_data'] = $this->SPPDModel->getAllSPPD(array('id_spt' => $id), false, true)[$id];
             $res_data['return_data']['pengikut'] = $this->SPPDModel->getPengikut($id);
             $res_data['return_data']['dasar_tambahan'] = $this->SPPDModel->getDasar($id);
             $res_data['return_data']['logs'] = $this->SPPDModel->getLogs(array('id_spt' => $id));

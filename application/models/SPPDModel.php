@@ -358,7 +358,7 @@ class SPPDModel extends CI_Model
 
         return DataStructure::SPPDStyle2($res, $tujuan, null);
     }
-    public function getAllSPPD($filter = [], $sort = false)
+    public function getAllSPPD($filter = [], $sort = false, $cross = false)
     {
         $ses = $this->session->userdata();
 
@@ -568,8 +568,13 @@ class SPPDModel extends CI_Model
             }
         }
         if (empty($filter['qrcode'])) {
-            // if ($this->session->userdata('jen_satker') != 1)
-            //     $this->db->where('u.id_satuan', $ses['id_satuan']);
+            if ($this->session->userdata('jen_satker') != 1) {
+                // if (in_array($this->session->userdata('level'), ['7', '8'])) {
+                //     // $this->db->where('u.id_satuan', $ses['id_satuan']);
+                // } else
+                if (!$cross)
+                    $this->db->where('u.id_satuan', $ses['id_satuan']);
+            }
         } else {
             $this->db->where('u.qrcode', $filter['qrcode']);
         }
