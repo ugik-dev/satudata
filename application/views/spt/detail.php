@@ -372,14 +372,6 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="tap-laporan" role="tabpanel" aria-labelledby="contact-top-tab">
-
-                    <div class="col-lg-12">
-                        <h5>Laporan</h5>
-                        <?php if (!empty($dataContent['laporan']['text_laporan'])) {
-                            echo $dataContent['laporan']['text_laporan'];
-                        }
-                        ?>
-                    </div>
                     <?php
                     $team = [];
                     $team[] = $dataContent['return_data']['user_input'];
@@ -390,14 +382,20 @@
                     if (in_array($this->session->userdata('id'), $team)) {
                     ?>
                         <a class="btn btn-primary mb-2" href="<?= base_url() . 'spt/laporan/' . $dataContent['return_data']['id_spt'] ?>"><strong><i class="fa fa-pencil"></i> Form Laporan </strong></a>
-                        <a class="btn btn-primary mb-2" id="addFoto"><strong><i class="fa fa-plus"></i> Tambah Foto </strong></a>
-                    <?php } ?>
+                        <a class="btn btn-primary mb-2" id="addFoto"><strong><i class="fa fa-plus"></i> Foto </strong></a>
+                        <a class="btn btn-primary mb-2" id="addPdf"><strong><i class="fa fa-plus"></i> File PDF </strong></a>
+                    <?php } ?> <div class="col-lg-12">
+                        <h5>Laporan</h5>
+                        <?php if (!empty($dataContent['laporan']['text_laporan'])) {
+                            echo $dataContent['laporan']['text_laporan'];
+                        }
+                        ?>
+                    </div>
+
+
                     <hr>
                     <h5>Foto</h5>
                     <div class="gallery my-gallery row" id="layout_foto" itemscope="">
-
-
-
                     </div>
                     <!-- Root element of PhotoSwipe. Must have class pswp.-->
                     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -434,6 +432,26 @@
                             </div>
                         </div>
                     </div>
+                    <br><br>
+                    <hr>
+                    <div class="col-lg-12">
+                        <h5>
+                            File PDF
+                        </h5>
+                        <table id="FileDataTable" class="table  cell-border row-border display " style="padding-bottom: 100px">
+                            <thead>
+                                <tr>
+                                    <th>Nama File</th>
+                                    <th>Oleh</th>
+                                    <th>Tanggal</th>
+                                    <th style="width: 1%; text-align:center!important">Lihat</th>
+                                    <th style="width: 1%; text-align:center!important">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <!-- </div>
                 </div> -->
@@ -454,8 +472,8 @@
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="id_spt" name="id_spt" value="<?= $dataContent['return_data']['id_spt'] ?>">
-                    <input type="hidden" id="id_foto" name="id_foto">
+                    <input type="" id="id_spt" name="id_spt" value="<?= $dataContent['return_data']['id_spt'] ?>">
+                    <input type="" id="id_foto" name="id_foto">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
@@ -479,6 +497,7 @@
         </div>
     </div>
 </div>
+
 <script>
     $(document).ready(function() {
         $('#menu_2').addClass('active');
@@ -600,6 +619,25 @@
             'file_foto': $('#foto_modal').find('#file_foto'),
 
         };
+        var FileDataTable = $('#FileDataTable').DataTable({
+            'columnDefs': [{
+                    "targets": 0,
+                    "className": "text-left",
+                    "width": "4%"
+                },
+                {
+                    "targets": [3, 4],
+                    "className": "text-center",
+                    "width": "2%"
+
+                }
+            ],
+            deferRender: true,
+            "order": [
+                [0, "desc"]
+            ]
+        });
+
         $('#addFoto').on('click', (ev) => {
             FotoModal.self.modal('show');
             FotoModal.file_foto.prop('required', true);
@@ -610,6 +648,7 @@
         })
 
         dataFoto = [];
+        dataFile = [];
         getFotoSppd();
 
 
@@ -631,8 +670,10 @@
                     if (json['error']) {
                         return;
                     }
-                    dataFoto = json['data'];
+                    dataFoto = json['data']['image'];
+                    dataFile = json['data']['file'];
                     renderFoto(dataFoto);
+                    renderFile(dataFile);
                 },
                 error: function(e) {}
             });
@@ -658,7 +699,7 @@
                             </figure>
                             </div>
                             <div class="row col-12 icon-lists">
-                                 <div class="col"><i class="fa fa-trash delete_foto pl-2 pr-2" data-id="${d['id_foto']}"></i>  <i class="fa fa-pencil edit_foto mr-2" data-id="${d['id_foto']}"></i></div>
+                                 <div class="col"><i class="fa fa-trash delete_foto pl-2 pr-2" data-id="${d['id_foto']}" data-img="Y"></i>  <i class="fa fa-pencil edit_foto mr-2" data-img="Y" data-id="${d['id_foto']}"></i></div>
                         
                        
                     </div>
@@ -676,66 +717,117 @@
                 FotoModal.form.trigger('reset');
 
                 var currentData = dataFoto[$(this).data('id')];
+                FotoModal.file_foto.prop('required', false);
                 console.log(currentData);
                 FotoModal.id_foto.val(currentData['id_foto']);
                 FotoModal.deskripsi.val(currentData['deskripsi']);
             });
 
+
+
+
             $('.delete_foto').on('click', function(event) {
-                event.preventDefault();
                 var currentData = dataFoto[$(this).data('id')];
-                console.log(currentData);
-                var url = "<?= base_url('Spt/deleteFoto') ?>";
-                Swal.fire({
-                    title: "Konfirmasi?",
-                    text: "Foto akan dihapus?",
-                    icon: "warning",
-                    allowOutsideClick: false,
-                    showCancelButton: true,
-                    buttons: {
-                        cancel: 'Batal !!',
-                        catch: {
-                            text: "Ya, Saya Hapus !!",
-                            value: true,
-                        },
+                delete_foto(currentData);
+            });
+
+
+        }
+        FileDataTable.on('click', '.delete_foto2', function() {
+            var currentData = dataFile[$(this).data('id')];
+            delete_foto(currentData);
+        })
+
+        FileDataTable.on('click', '.edit_foto2', function() {
+            FotoModal.self.modal('show');
+            FotoModal.addBtn.hide();
+            FotoModal.saveEditBtn.show();
+            FotoModal.form.trigger('reset');
+
+            FotoModal.file_foto.prop('required', false);
+            var currentData = dataFile[$(this).data('id')];
+            FotoModal.id_foto.val(currentData['id_foto']);
+            FotoModal.deskripsi.val(currentData['deskripsi']);
+        });
+
+        function delete_foto(currentData) {
+            event.preventDefault();
+            console.log(currentData);
+            var url = "<?= base_url('Spt/deleteFoto') ?>";
+            Swal.fire({
+                title: "Konfirmasi?",
+                text: "Foto akan dihapus?",
+                icon: "warning",
+                allowOutsideClick: false,
+                showCancelButton: true,
+                buttons: {
+                    cancel: 'Batal !!',
+                    catch: {
+                        text: "Ya, Saya Hapus !!",
+                        value: true,
                     },
-                }).then((result) => {
-                    swalLoading();
-                    if (!result.isConfirmed) {
-                        return;
-                    }
-                    $.ajax({
-                        url: url,
-                        'type': 'get',
-                        data: {
-                            'id_foto': currentData['id_foto'],
-                            'id_spt': currentData['id_spt'],
-                        },
-                        //     // formProfile.form.serialize(),
-                        //     new FormData(FotoModal.form[0]),
-                        // contentType: false,
-                        // processData: false,
-                        success: function(data) {
-                            // buttonIdle(button);
-                            var json = JSON.parse(data);
-                            if (json['error']) {
-                                Swal.fire("Simpan Gagal", json['message'], "error");
-                                return;
-                            }
-                            var res = json['data']
+                },
+            }).then((result) => {
+                if (!result.isConfirmed) {
+                    return;
+                }
+                swalLoading();
+                $.ajax({
+                    url: url,
+                    'type': 'get',
+                    data: {
+                        'id_foto': currentData['id_foto'],
+                        'id_spt': currentData['id_spt'],
+                    },
+                    success: function(data) {
+                        // buttonIdle(button);
+                        var json = JSON.parse(data);
+                        if (json['error']) {
+                            Swal.fire("Simpan Gagal", json['message'], "error");
+                            return;
+                        }
+                        var res = json['data']
+                        if (currentData['is_image'] == 'Y') {
                             delete dataFoto[currentData['id_foto']];
                             renderFoto(dataFoto);
-                            Swal.fire("Simpan Berhasil", "", "success");
-                            // location.reload();
-                            // renderUser(dataUser);
-                            // formProfile.self.modal('hide');
-                        },
-                        error: function(e) {}
-                    });
+                        } else {
+                            delete dataFile[currentData['id_foto']];
+                            renderFile(dataFile);
+                        }
+                        Swal.fire("Simpan Berhasil", "", "success");
+                        // location.reload();
+                        // renderUser(dataUser);
+                        // formProfile.self.modal('hide');
+                    },
+                    error: function(e) {}
                 });
             });
         }
 
+        function renderFile(data) {
+            if (data == null || typeof data != "object") {
+                console.log("Data::UNKNOWN DATA");
+                return;
+            }
+            var i = 0;
+
+            var renderData = [];
+            Object.values(data).forEach((d) => {
+
+                var button = `
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <button class="btn btn-danger delete_foto2 pl-2 pr-2" data-img="N" data-id="${d['id_foto']}">
+                            <i class="fa fa-trash " " ></i> 
+                        </button>
+                        <button class="btn btn-warning edit_foto2 pl-2 pr-2" data-img="N" data-id="${d['id_foto']}">
+                         <i class="fa fa-pencil  mr-2" ></i>
+                        </button>
+                    </div>
+                        `;
+                renderData.push([d['deskripsi'], d['nama_pegawai'], d['waktu'], `<a class="btn btn-primary" target="_blank" href='<?= base_url() ?>uploads/foto_sppd/${d['file_foto']}'><i class="fa fa-eye"></i></a>`, button]);
+            });
+            FileDataTable.clear().rows.add(renderData).draw('full-hold');
+        }
         FotoModal.form.submit(function(event) {
             console.log('submit');
             event.preventDefault();
@@ -754,10 +846,10 @@
                     },
                 },
             }).then((result) => {
-                swalLoading();
                 if (!result.isConfirmed) {
                     return;
                 }
+                swalLoading();
                 $.ajax({
                     url: url,
                     'type': 'POST',
@@ -774,13 +866,61 @@
                             return;
                         }
                         var res = json['data']
-                        dataFoto[res['id_foto']] = res;
-                        renderFoto(dataFoto);
+                        if (res['is_image'] == 'Y') {
+                            dataFoto[res['id_foto']] = res;
+                            renderFoto(dataFoto);
+                        } else {
+                            dataFile[res['id_foto']] = res;
+                            renderFile(dataFile);
+                        }
                         Swal.fire("Simpan Berhasil", "", "success");
                         FotoModal.self.modal('hide')
                         // location.reload();
                         // renderUser(dataUser);
                         // formProfile.self.modal('hide');
+                    },
+                    error: function(e) {}
+                });
+            });
+        });
+        PdfModal.form.submit(function(event) {
+            console.log('submit');
+            event.preventDefault();
+            var url = "<?= base_url('Spt/addPdf') ?>";
+            Swal.fire({
+                title: "Apakah anda Yakin?",
+                text: "Data Disimpan!",
+                icon: "warning",
+                allowOutsideClick: false,
+                showCancelButton: true,
+                buttons: {
+                    cancel: 'Batal !!',
+                    catch: {
+                        text: "Ya, Saya Simpan !!",
+                        value: true,
+                    },
+                },
+            }).then((result) => {
+                if (!result.isConfirmed) {
+                    return;
+                }
+                swalLoading();
+                $.ajax({
+                    url: url,
+                    'type': 'POST',
+                    data:
+                        // formProfile.form.serialize(),
+                        new FormData(PdfModal.form[0]),
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        // buttonIdle(button);
+                        var json = JSON.parse(data);
+                        if (json['error']) {
+                            Swal.fire("Simpan Gagal", json['message'], "error");
+                            return;
+                        }
+                        var res = json['data']
                     },
                     error: function(e) {}
                 });

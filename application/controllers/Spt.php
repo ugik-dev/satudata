@@ -13,7 +13,16 @@ class Spt extends CI_Controller
     {
         try {
             $filter = $this->input->get();
-            $data = $this->SPPDModel->getFoto($filter);
+            $filter['is_image'] = 'Y';
+
+            $data['image'] = $this->SPPDModel->getFoto($filter);
+            $filter['is_image'] = 'N';
+            $data['file'] = $this->SPPDModel->getFoto($filter);
+            // $new_data = ['image' => [], 'file' => []];
+            // foreach ($data as $d) {
+            //     if ($d['is_image'] == 'Y')
+            //         $new_data['image'][] = $d;
+            // }
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
         }
@@ -108,7 +117,7 @@ class Spt extends CI_Controller
     {
         try {
             $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
-            $res_data['return_data'] = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
+            $res_data['return_data'] = $this->SPPDModel->getAllSPPD(array('id_spt' => $id), false, true)[$id];
             $laporan = $this->SPPDModel->getLaporan(array('id_spt' => $id));
             if (!empty($laporan))
                 $res_data['laporan'] = $laporan[$id];
@@ -132,7 +141,7 @@ class Spt extends CI_Controller
             // $this->SecurityModel->multiRole('SPT / SPPD', ['Entri SPT', 'Entri SPT SPPD', 'Entri Lembur']);
 
             $data = $this->input->Post();
-            $data_res = $this->SPPDModel->getAllSPPD(array('id_spt' => $data['id_spt']))[$data['id_spt']];
+            $data_res = $this->SPPDModel->getAllSPPD(array('id_spt' => $data['id_spt']), false, true)[$data['id_spt']];
 
             $team = [];
             $team[] = $data_res['user_input'];
@@ -222,8 +231,6 @@ class Spt extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
-
-
 
     public function create($jenis = 'spt')
     {
@@ -450,13 +457,11 @@ class Spt extends CI_Controller
         try {
             $data =  $this->input->post();
             $dataFoto['id_spt'] = $data['id_spt'];
-            $dataSPT = $this->SPPDModel->getAllSPPD(['id_spt' => $data['id_spt']]);
+            $dataSPT = $this->SPPDModel->getAllSPPD(['id_spt' => $data['id_spt']], false, true);
             if (empty($dataSPT))
                 throw new UserException('Maaf, SPT tidak ditemukan.');
             else if ($dataSPT[$data['id_spt']]['status'] != '99')
                 throw new UserException('Status SPT ini belum disetujui');
-
-            // $data_res = $this->SPPDModel->getAllSPPD(array('id_spt' => $data['id_spt']))[$data['id_spt']];
 
             $team = [];
             $team[] = $dataSPT[$data['id_spt']]['user_input'];
@@ -475,11 +480,18 @@ class Spt extends CI_Controller
             $dataFoto['id_foto'] = $data['id_foto'];
             $dataFoto['deskripsi'] = $data['deskripsi'];
             if (!empty($_FILES['file_foto']['name'])) {
-                $s =  FileIO::upload2('file_foto', 'foto_sppd', '', 'jpg|png|jpeg');
+                $s =  FileIO::upload2('file_foto', 'foto_sppd', '', 'jpg|png|jpeg|pdf');
+                // echo json_encode($s);
+                // die();
                 if (!empty($s['filename'])) {
-
                     $dataFoto['file_foto'] = $s['filename'];
+                    if ($s['is_image']) {
+                        $dataFoto['is_image'] = 'Y';
+                    } else {
+                        $dataFoto['is_image'] = 'N';
+                    }
                 }
+                $dataFoto['id_pegawai'] = $this->session->userdata('id');
             }
             $id = $this->SPPDModel->addFoto($dataFoto);
             $data = $this->SPPDModel->getFoto(['id_foto' => $id])[$id];
@@ -488,20 +500,27 @@ class Spt extends CI_Controller
             ExceptionHandler::handle($e);
         }
     }
+
     public function deleteFoto()
     {
         try {
             $data =  $this->input->get();
             $dataFoto['id_spt'] = $data['id_spt'];
             $dataFoto['id_foto'] = $data['id_foto'];
-            $dataSPT = $this->SPPDModel->getAllSPPD(['id_spt' => $data['id_spt']]);
-            if (empty($dataSPT))
-                throw new UserException('Maaf, SPT tidak ditemukan.');
-            if ($this->session->userdata('id') != $dataSPT[$data['id_spt']]['user_input'])
+            $dataSPT = $this->SPPDModel->getAllSPPD(['id_spt' => $data['id_spt']], false, true);
+            $team = [];
+            $team[] = $dataSPT[$data['id_spt']]['user_input'];
+            $team[] = $dataSPT[$data['id_spt']]['id_pegawai'];
+            if ($this->session->userdata('id_role') == '1') {
+                $team[]  = $this->session->userdata('id');
+            }
+            foreach ($dataSPT[$data['id_spt']]['pengikut'] as $d) {
+                $team[]  = $d['id_pegawai'];
+            }
+            if (in_array($this->session->userdata('id'), $team)) {
+            } else {
                 throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
-            else if ($dataSPT[$data['id_spt']]['status'] != '99')
-                throw new UserException('Status SPT ini belum disetujui');
-
+            }
             // $dataFoto['id_foto'] = $data['id_foto'];
             // $dataFoto['deskripsi'] = $data['deskripsi'];
             // if (!empty($_FILES['file_foto']['name'])) {

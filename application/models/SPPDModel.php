@@ -15,7 +15,10 @@ class SPPDModel extends CI_Model
     }
     public function getFoto($filter = [])
     {
-        $this->db->from('spt_foto');
+        $this->db->select('f.*, u.nama nama_pegawai');
+        $this->db->from('spt_foto as f');
+        $this->db->join('users as u', 'f.id_pegawai = u.id', 'LEFT');
+        if (!empty($filter['is_image'])) $this->db->where('is_image', $filter['is_image']);
         if (!empty($filter['id_spt'])) $this->db->where('id_spt', $filter['id_spt']);
         if (!empty($filter['id_foto'])) $this->db->where('id_foto', $filter['id_foto']);
         return DataStructure::keyValue($this->db->get()->result_array(), 'id_foto');;

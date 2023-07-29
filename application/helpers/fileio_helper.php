@@ -45,6 +45,7 @@ class FileIO
     } else {
       return [
         'type' => $type,
+        'is_image' => $CI->upload->data()['is_image'],
         'filename' => $CI->upload->data()['file_name'],
         'url' => "uploads/{$folder}/{$CI->upload->data()['file_name']}",
         'size' => round($CI->upload->data()['file_size'])
