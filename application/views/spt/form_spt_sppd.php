@@ -535,11 +535,12 @@
 
 
         $("#id_dasar").select2({
+            minimumInputLength: 6,
             ajax: {
                 url: '<?= base_url() ?>Search/dasar',
                 type: "get",
                 dataType: 'json',
-                delay: 250,
+                delay: 500,
                 data: function(params) {
                     return {
                         searchTerm: params.term // search term
@@ -555,14 +556,17 @@
         });
 
         $("#id_pegawai").select2({
+            // console.log(params.term);
+            minimumInputLength: 4,
             ajax: {
                 url: '<?= base_url() ?>Search/pegawai',
                 type: "get",
                 dataType: 'json',
-                delay: 250,
+                delay: 500,
                 data: function(params) {
                     return {
-                        searchTerm: params.term // search term
+                        searchTerm: params.term,
+                        page_limit: 10
                     };
                 },
                 processResults: function(response) {
@@ -575,11 +579,12 @@
         });
 
         $("#pengikut").select2({
+            minimumInputLength: 4,
             ajax: {
                 url: '<?= base_url() ?>Search/pegawai',
                 type: "get",
                 dataType: 'json',
-                delay: 250,
+                delay: 500,
                 data: function(params) {
                     return {
                         searchTerm: params.term // search term

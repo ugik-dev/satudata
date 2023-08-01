@@ -56,7 +56,6 @@
                                     <a class='delete_dasar_tambahan_lama col-sm-1 col-form-label' data-id='" . $dt['id_dasar_tambahan'] . "' data-newrow='false' ><i class='fa fa-trash'></i> </a>
                                     </div>";
                                 }
-                                // echo '<option selected value="' . $dataContent['return_data']['id_dasar'] . '">' . $dataContent['return_data']['nama_dasar'] . '</option>';
                             }
                             ?>
                         </div>
@@ -68,22 +67,10 @@
                     </div>
 
 
-                    <!-- <div class="col-lg-12">
-                        <div class="col-form-label">PPK</div>
-                        <select class="select2 col-sm-12" id="id_ppk" name="id_ppk">
-                            <?php
-                            // echo $dataContent['return_data']['id_ppk'];
-                            if (!empty($dataContent['return_data']['id_ppk'])) {
-                                echo '<option selected value="' . $dataContent['return_data']['id_ppk'] . '">' . $dataContent['return_data']['nama_ppk'] . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div> -->
                     <div class="col-lg-6">
                         <div class="col-form-label">Pegawai Pelaksana</div>
                         <select class="select2 col-sm-12" id="id_pegawai" name="id_pegawai">
                             <?php
-                            // echo $dataContent['return_data']['id_ppk'];
                             if (!empty($dataContent['return_data']['id_pegawai'])) {
                                 echo '<option selected value="' . $dataContent['return_data']['id_pegawai'] . '">' . $dataContent['return_data']['nama_pegawai'] . '</option>';
                             }
@@ -549,32 +536,13 @@
 
 
 
-        $("#id_ppk").select2({
-            ajax: {
-                url: '<?= base_url() ?>Search/ppk',
-                type: "get",
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        searchTerm: params.term // search term
-                    };
-                },
-                processResults: function(response) {
-                    return {
-                        results: response
-                    };
-                },
-                cache: true
-            }
-        });
-
         $("#id_dasar").select2({
+            minimumInputLength: 6,
             ajax: {
                 url: '<?= base_url() ?>Search/dasar',
                 type: "get",
                 dataType: 'json',
-                delay: 250,
+                delay: 500,
                 data: function(params) {
                     return {
                         searchTerm: params.term // search term
@@ -590,11 +558,12 @@
         });
 
         $("#id_pegawai").select2({
+            minimumInputLength: 4,
             ajax: {
                 url: '<?= base_url() ?>Search/pegawai',
                 type: "get",
                 dataType: 'json',
-                delay: 250,
+                delay: 500,
                 data: function(params) {
                     return {
                         searchTerm: params.term // search term
@@ -610,11 +579,12 @@
         });
 
         $("#pengikut").select2({
+            minimumInputLength: 4,
             ajax: {
                 url: '<?= base_url() ?>Search/pegawai',
                 type: "get",
                 dataType: 'json',
-                delay: 250,
+                delay: 500,
                 data: function(params) {
                     return {
                         searchTerm: params.term // search term
