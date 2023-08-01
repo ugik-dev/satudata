@@ -29,11 +29,8 @@ class Rekap extends CI_Controller
     {
         try {
             $filter = $this->input->get();
-            // $filter['search_approval']['data_penilai'] = $data_penilai = $this->session->userdata();
-            // $filter['id_penilai'] = $data_penilai['id'];
             $filter['detail'] = true;
             $this->load->model('SPTModel');
-            // $data = $this->SPPDModel->getAllSPPD($filter, true);
             $data = $this->SPTModel->getAllSPPD($filter, true);
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {

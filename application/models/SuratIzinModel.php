@@ -215,7 +215,18 @@ class SuratIzinModel extends CI_Model
                 $this->db->where_in('r.jen_izin', $jen);
             }
         }
-
+        if (!empty($filter['dari']) && !empty($filter['sampai'])) {
+            $start = $filter['dari'];
+            $end = $filter['sampai'];
+            $this->db->where("(
+                si.periode_start BETWEEN '$start' AND '$end' OR 
+                si.periode_end BETWEEN '$start' AND '$end' OR
+            '$start' BETWEEN  si.periode_start  AND  si.periode_end OR
+            '$end' BETWEEN  si.periode_start  AND  si.periode_end  
+            )");
+            // die();
+        }
+        if (!empty($filter['id_satuan'])) $this->db->where('si.id_satuan', $filter['id_satuan']);
         if (!empty($filter['jen_izin'])) $this->db->where('r.jen_izin', $filter['jen_izin']);
         if (!empty($filter['jenis_izin'])) $this->db->where('si.jenis_izin', $filter['jenis_izin']);
         if (!empty($filter['status_rekap'])) {
@@ -228,10 +239,7 @@ class SuratIzinModel extends CI_Model
         if (!empty($filter['id_pegawai'])) $this->db->where('si.id_pegawai', $filter['id_pegawai']);
         if (!empty($filter['id_pengganti'])) $this->db->where('si.id_pengganti', $filter['id_pengganti']);
         if (!empty($filter['id_surat_izin'])) $this->db->where('si.id_surat_izin', $filter['id_surat_izin']);
-        // if (!empty($filter['my_surat_izin'])) $this->db->where('u.id_user', $this->session->userdata()['id']);
         $res = $this->db->get();
-        // echo json_encode($res->result_array());
-        // die();
 
         return  DataStructure::keyValue($res->result_array(), 'id_surat_izin');
     }
