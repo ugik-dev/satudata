@@ -459,7 +459,7 @@
                 url: '<?= base_url() ?>Search/dasar',
                 type: "get",
                 dataType: 'json',
-                delay: 500,
+                delay: 1500,
                 data: function(params) {
                     return {
                         searchTerm: params.term // search term
@@ -480,7 +480,7 @@
                 url: '<?= base_url() ?>Search/pegawai',
                 type: "get",
                 dataType: 'json',
-                delay: 500,
+                delay: 1500,
                 data: function(params) {
                     return {
                         searchTerm: params.term // search term
@@ -501,7 +501,7 @@
                 url: '<?= base_url() ?>Search/pegawai',
                 type: "get",
                 dataType: 'json',
-                delay: 500,
+                delay: 1500,
                 data: function(params) {
                     return {
                         searchTerm: params.term // search term
