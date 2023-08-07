@@ -12,7 +12,7 @@
   <link rel="shortcut icon" href="<?= base_url() ?>assets/img/kab_bangka.png" type="image/x-icon">
   <title>DINKES KAB.BANGKA | Login</title>
   <!-- Google font-->
-  <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap" rel="stylesheet"> -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/font-awesome.css">
   <!-- ico-font-->
@@ -26,14 +26,14 @@
   <!-- Plugins css start-->
   <!-- Plugins css Ends-->
   <!-- Bootstrap css-->
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/sweetalert2.css">
+  <!-- <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/sweetalert2.css"> -->
 
   <!-- <script src="<?= base_url() ?>sweetalert2/dist"></script> -->
   <!-- <script src="<?= base_url() ?>sweetalert2/dist/sweetalert2.min.js"></script>
   <link rel="stylesheet" href="<?= base_url() ?>sweetalert2/dist/sweetalert2.min.css"> -->
   <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/bootstrap.css">
   <!-- App css-->
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/style.css">
+  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/style.css?ver=1.2">
   <link id="color" rel="stylesheet" href="<?= base_url() ?>assets/css/color-1.css" media="screen">
   <!-- Responsive css-->
   <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/responsive.css">

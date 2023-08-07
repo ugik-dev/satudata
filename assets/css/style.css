@@ -22644,7 +22644,7 @@ footer {
   -ms-flex-pack: center;
   justify-content: center;
   margin: 0 auto;
-  background: url('../img/bg-dinkes.jpg');
+  background: url('../img/bg-dinkes-sm.jpg');
   background-position: center;
   padding: 30px 12px;
   */
@@ -22660,7 +22660,7 @@ footer {
   -ms-flex-pack: center;
   justify-content: center;
   margin: 0 auto;
-  background: url('../img/bg-dinkes.jpg');
+  background: url('../img/bg-dinkes-sm.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

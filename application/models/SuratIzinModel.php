@@ -224,7 +224,6 @@ class SuratIzinModel extends CI_Model
             '$start' BETWEEN  si.periode_start  AND  si.periode_end OR
             '$end' BETWEEN  si.periode_start  AND  si.periode_end  
             )");
-            // die();
         }
         if (!empty($filter['id_satuan'])) $this->db->where('si.id_satuan', $filter['id_satuan']);
         if (!empty($filter['jen_izin'])) $this->db->where('r.jen_izin', $filter['jen_izin']);
