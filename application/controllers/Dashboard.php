@@ -134,11 +134,43 @@ class Dashboard extends CI_Controller
                 $this->DashboardModel->updateInfoSPTPkm();
                 $dataSPT = $this->DashboardModel->getInfoSPTPkm();
             }
+            // aktifitas
+            $this->load->model('SPTModel');
+            $filter['dari'] = date('Y-m-d');
+            $filter['sampai'] = date('Y-m-d');
+            $filter['status_rekap'] = 'selesai';
+            if ($this->session->userdata('jen_satker') != 1)
+                $filter2['id_satuan'] = $this->session->userdata('id_satuan');
+            else
+                $filter2 = [];
+            $dataAktifitas = $this->DashboardModel->getAktifitasHarian($filter2);
+            if (!empty($dataAktifitas[0]['update_at'])) {
+                $from       = $dataAktifitas[0]['update_at'];
+                $to         = date('Y-m-d H:i:s');
+                $total      = strtotime($to) - strtotime($from);
+                $hours      = floor($total / 60 / 60);
+                if ($hours >= 1) {
+                    $data_update = $this->SPTModel->getAllSPPD($filter);
+                    $this->DashboardModel->updateAktifitasHarian($data_update);
+                    $dataAktifitas = $this->DashboardModel->getAktifitasHarian($filter2);
+                } else {
+                    $dataAktifitas = $this->DashboardModel->getAktifitasHarian($filter2);
+                }
+            } else {
+                $data_update = $this->SPTModel->getAllSPPD($filter);
+                $this->DashboardModel->updateAktifitasHarian($data_update);
+                $dataAktifitas = $this->DashboardModel->getAktifitasHarian($filter2);
+            }
+
 
             $data = array(
                 'page' => 'dashboard',
                 'title' => 'Dashboard',
-                'dataContent' => ['infoSPTPKm' => $dataSPT]
+                'dataContent' => [
+                    'infoSPTPKm' => $dataSPT,
+                    'aktifitasharian' => $dataAktifitas,
+                ],
+
             );
             // echo json_encode($this->session->userdata());
             // echo json_encode(User_Access(1));

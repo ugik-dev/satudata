@@ -754,8 +754,10 @@
     var chartBulanan;
     var cartTahunan;
     var loadingLiveChat = false;
-    var dataSPT = <?= json_encode($dataContent['infoSPTPKm']) ?>;
-    renderSPT(dataSPT);
+    var dataSPT = <?= json_encode($dataContent['infoSPTPKm']['data']) ?>;
+    var dataAktifitas = <?= json_encode($dataContent['aktifitasharian']) ?>;
+    renderSPT2(dataSPT)
+    renderSPT(dataAktifitas)
     // getLiveChat(false)
 
     function getRealTimeLiveChat() {
@@ -770,7 +772,7 @@
     // getPengumuman(false)
     // getMonitorWebsite(false)
     // getBeritaPkm(false)
-    getAktifitasHarian(false)
+    // getAktifitasHarian(false)
     // getInfoSPT(false)
     // getInfoSPTPkm(false)
 
@@ -1193,7 +1195,7 @@
     }
 
     function renderSPT2(data) {
-      console.log(data);
+      console.log(data['data']);
       var myChart = echarts.init(document.getElementById('echart-bar2'));
       myChart.setOption({
         tooltip: {
