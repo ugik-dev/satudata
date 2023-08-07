@@ -757,7 +757,7 @@
     var dataSPT = <?= json_encode($dataContent['infoSPTPKm']['data']) ?>;
     var dataAktifitas = <?= json_encode($dataContent['aktifitasharian']) ?>;
     renderSPT2(dataSPT)
-    renderSPT(dataAktifitas)
+    renderAktifitas(dataAktifitas)
     // getLiveChat(false)
 
     function getRealTimeLiveChat() {
@@ -1195,7 +1195,6 @@
     }
 
     function renderSPT2(data) {
-      console.log(data['data']);
       var myChart = echarts.init(document.getElementById('echart-bar2'));
       myChart.setOption({
         tooltip: {
