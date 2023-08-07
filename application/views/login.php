@@ -33,10 +33,10 @@
   <link rel="stylesheet" href="<?= base_url() ?>sweetalert2/dist/sweetalert2.min.css"> -->
   <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/bootstrap.css">
   <!-- App css-->
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/style.css?ver=1.2">
+  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/style.css?v=1.2">
   <link id="color" rel="stylesheet" href="<?= base_url() ?>assets/css/color-1.css" media="screen">
   <!-- Responsive css-->
-  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/responsive.css">
+  <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/responsive.css?v=1.2">
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 

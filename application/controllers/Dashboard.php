@@ -118,9 +118,27 @@ class Dashboard extends CI_Controller
     {
         try {
             $this->SecurityModel->userOnlyGuard();
+            $dataSPT = $this->DashboardModel->getInfoSPTPkm();
+            if (!empty($dataSPT['update_at'])) {
+                $from       = $dataSPT['update_at'];
+                $to         = date('Y-m-d H:i:s');
+                $total      = strtotime($to) - strtotime($from);
+                $hours      = floor($total / 60 / 60);
+                if ($hours >= 1) {
+                    $this->DashboardModel->updateInfoSPTPkm();
+                    $dataSPT = $this->DashboardModel->getInfoSPTPkm();
+                } else {
+                    $dataSPT = $this->DashboardModel->getInfoSPTPkm();
+                }
+            } else {
+                $this->DashboardModel->updateInfoSPTPkm();
+                $dataSPT = $this->DashboardModel->getInfoSPTPkm();
+            }
+
             $data = array(
                 'page' => 'dashboard',
                 'title' => 'Dashboard',
+                'dataContent' => ['infoSPTPKm' => $dataSPT]
             );
             // echo json_encode($this->session->userdata());
             // echo json_encode(User_Access(1));
