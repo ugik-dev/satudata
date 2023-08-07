@@ -150,3 +150,52 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="riwayat_izin_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <form opd="form" id="" onsubmit="return false;" type="multipart" autocomplete="off">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title">
+                        Riwayat Izin / Cuti
+                    </h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6" id="status_izin"> </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="col-lg-12" id="layer_riwayat">
+                    </div>
+                    <table id="TableRiwayatIzin" class="table table-border-horizontal" style="padding-bottom: 100px">
+                        <thead>
+                            <tr>
+                                <!-- <th style="width: 2%; text-align:center!important">ID</th> -->
+                                <th style="width: 10%; text-align:center!important">Tanggal Izin</th>
+                                <th style="width: 10%; text-align:center!important">Pengganti</th>
+                                <th style="width: 10%; text-align:center!important">Jenis</th>
+                                <th style="width: 10%; text-align:center!important">Status</th>
+                                <th style="width: 5%; text-align:center!important">Durasi(hari)</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">Total lama izin / cuti yang sudah disetujui</td>
+                                <td id="total_lama_izin"></td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

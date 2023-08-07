@@ -455,6 +455,7 @@
                     `
                     <a class="data_izin dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-eye'></i> Lihat</a>
                     <a class="riwayat_approval dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_surat_izin']}' ><i class='fa fa-eye'></i> Riwayat Approval</a>
+                    <a class="riwayat_izin dropdown-item"  data-jenis='SuratIzin' data-id='${d['id_pegawai']}' ><i class='fa fa-eye'></i> Riwayat Izin / Cuti</a>
                     `;
                 // }
                 print_btn = `
