@@ -758,7 +758,7 @@
     var dataAktifitas = <?= json_encode($dataContent['aktifitasharian']) ?>;
     renderSPT2(dataSPT)
     renderAktifitas(dataAktifitas)
-    // getLiveChat(false)
+    getLiveChat(false)
 
     function getRealTimeLiveChat() {
       let timerId = setTimeout(function tick() {
@@ -766,14 +766,14 @@
         timerId = setTimeout(tick, 5000); // (*)
       }, 5000);
     }
-    // setTimeout(
-    //   getLiveChat(false), 10000);
+    setTimeout(
+      getLiveChat(false), 30000);
 
-    // getPengumuman(false)
-    // getMonitorWebsite(false)
-    // getBeritaPkm(false)
+    getPengumuman(false)
+    getMonitorWebsite(false)
+    getBeritaPkm(false)
     // getAktifitasHarian(false)
-    // getInfoSPT(false)
+    getInfoSPT(false)
     // getInfoSPTPkm(false)
 
     // toolbar.tahun.trigger('change');
@@ -1022,32 +1022,32 @@
       });
     }
 
-    // function getInfoSPT(update) {
-    //   if (update) {
-    //     Swal.fire({
-    //       title: 'Loading!',
-    //       allowOutsideClick: false,
-    //     });
-    //     Swal.showLoading()
-    //   }
-    //   return $.ajax({
-    //     url: `<?php echo base_url('dashboard/getInfoSPT') ?>`,
-    //     'type': 'get',
-    //     data: {},
-    //     success: function(data) {
-    //       Swal.close();
-    //       var json = JSON.parse(data);
-    //       if (json['error']) {
-    //         Swal.fire("Error", json['message'], "error");
+    function getInfoSPT(update) {
+      if (update) {
+        Swal.fire({
+          title: 'Loading!',
+          allowOutsideClick: false,
+        });
+        Swal.showLoading()
+      }
+      return $.ajax({
+        url: `<?php echo base_url('dashboard/getInfoSPT') ?>`,
+        'type': 'get',
+        data: {},
+        success: function(data) {
+          Swal.close();
+          var json = JSON.parse(data);
+          if (json['error']) {
+            Swal.fire("Error", json['message'], "error");
 
-    //         return;
-    //       }
-    //       dataSPT = json['data'];
-    //       renderSPT(dataSPT)
-    //     },
-    //     error: function(e) {}
-    //   });
-    // }
+            return;
+          }
+          dataSPT = json['data'];
+          renderSPT(dataSPT)
+        },
+        error: function(e) {}
+      });
+    }
 
     function getInfoSPTPkm(update) {
       if (update) {
