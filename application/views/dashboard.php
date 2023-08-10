@@ -33,7 +33,7 @@
 
 <div class="container-fluid">
   <div class="row second-chart-list third-news-update">
-    <div hidden class="col-xl-4 col-lg-12 xl-50 morning-sec box-col-12">
+    <div class="col-xl-4 col-lg-12 xl-50 morning-sec box-col-12">
       <div class="card profile-greeting">
         <div class="card-body pb-0">
           <div class="media">
@@ -62,7 +62,7 @@
     </div>
 
     <!-- livechat -->
-    <div hidden class="col-xl-4 xl-50 chat-sec box-col-6">
+    <div class="col-xl-4 xl-50 chat-sec box-col-6">
       <div class="card chat-default">
         <div class="card-header card-no-border">
           <div class="media media-dashboard">
@@ -322,7 +322,7 @@
         </div>
       </div>
     </div> -->
-    <div class="col-xl-9 xl-100 chart_data_left box-col-12">
+    <!-- <div class="col-xl-9 xl-100 chart_data_left box-col-12">
       <div class="card">
         <div class="card-body p-0">
           <div class="row m-0 chart-main">
@@ -401,8 +401,8 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-xl-3 xl-50 chart_data_right second d-none">
+    </div> -->
+    <!-- <div class="col-xl-3 xl-50 chart_data_right second d-none">
       <div class="card">
         <div class="card-body">
           <div class="media align-items-center">
@@ -414,7 +414,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="col-xl-4 xl-50 news box-col-6">
       <div class="card">
         <div class="card-header">
