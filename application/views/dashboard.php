@@ -33,7 +33,7 @@
 
 <div class="container-fluid">
   <div class="row second-chart-list third-news-update">
-    <div class="col-xl-4 col-lg-12 xl-50 morning-sec box-col-12">
+    <div hidden class="col-xl-4 col-lg-12 xl-50 morning-sec box-col-12">
       <div class="card profile-greeting">
         <div class="card-body pb-0">
           <div class="media">
@@ -62,7 +62,7 @@
     </div>
 
     <!-- livechat -->
-    <div class="col-xl-4 xl-50 chat-sec box-col-6">
+    <div hidden class="col-xl-4 xl-50 chat-sec box-col-6">
       <div class="card chat-default">
         <div class="card-header card-no-border">
           <div class="media media-dashboard">
@@ -322,7 +322,7 @@
         </div>
       </div>
     </div> -->
-    <!-- <div class="col-xl-9 xl-100 chart_data_left box-col-12">
+    <div class="col-xl-9 xl-100 chart_data_left box-col-12">
       <div class="card">
         <div class="card-body p-0">
           <div class="row m-0 chart-main">
@@ -401,8 +401,8 @@
           </div>
         </div>
       </div>
-    </div> -->
-    <!-- <div class="col-xl-3 xl-50 chart_data_right second d-none">
+    </div>
+    <div class="col-xl-3 xl-50 chart_data_right second d-none">
       <div class="card">
         <div class="card-body">
           <div class="media align-items-center">
@@ -414,7 +414,7 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
     <div class="col-xl-4 xl-50 news box-col-6">
       <div class="card">
         <div class="card-header">
@@ -758,7 +758,7 @@
     var dataAktifitas = <?= json_encode($dataContent['aktifitasharian']) ?>;
     renderSPT2(dataSPT)
     renderAktifitas(dataAktifitas)
-    getLiveChat(false)
+    // getLiveChat(false)
 
     function getRealTimeLiveChat() {
       let timerId = setTimeout(function tick() {
@@ -766,14 +766,14 @@
         timerId = setTimeout(tick, 5000); // (*)
       }, 5000);
     }
-    setTimeout(
-      getLiveChat(false), 30000);
+    // setTimeout(
+    //   getLiveChat(false), 10000);
 
-    getPengumuman(false)
-    getMonitorWebsite(false)
-    getBeritaPkm(false)
+    // getPengumuman(false)
+    // getMonitorWebsite(false)
+    // getBeritaPkm(false)
     // getAktifitasHarian(false)
-    getInfoSPT(false)
+    // getInfoSPT(false)
     // getInfoSPTPkm(false)
 
     // toolbar.tahun.trigger('change');
@@ -1022,32 +1022,32 @@
       });
     }
 
-    function getInfoSPT(update) {
-      if (update) {
-        Swal.fire({
-          title: 'Loading!',
-          allowOutsideClick: false,
-        });
-        Swal.showLoading()
-      }
-      return $.ajax({
-        url: `<?php echo base_url('dashboard/getInfoSPT') ?>`,
-        'type': 'get',
-        data: {},
-        success: function(data) {
-          Swal.close();
-          var json = JSON.parse(data);
-          if (json['error']) {
-            Swal.fire("Error", json['message'], "error");
+    // function getInfoSPT(update) {
+    //   if (update) {
+    //     Swal.fire({
+    //       title: 'Loading!',
+    //       allowOutsideClick: false,
+    //     });
+    //     Swal.showLoading()
+    //   }
+    //   return $.ajax({
+    //     url: `<?php echo base_url('dashboard/getInfoSPT') ?>`,
+    //     'type': 'get',
+    //     data: {},
+    //     success: function(data) {
+    //       Swal.close();
+    //       var json = JSON.parse(data);
+    //       if (json['error']) {
+    //         Swal.fire("Error", json['message'], "error");
 
-            return;
-          }
-          dataSPT = json['data'];
-          renderSPT(dataSPT)
-        },
-        error: function(e) {}
-      });
-    }
+    //         return;
+    //       }
+    //       dataSPT = json['data'];
+    //       renderSPT(dataSPT)
+    //     },
+    //     error: function(e) {}
+    //   });
+    // }
 
     function getInfoSPTPkm(update) {
       if (update) {
