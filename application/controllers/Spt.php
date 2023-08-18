@@ -1010,7 +1010,7 @@ class Spt extends CI_Controller
             $pdf->SetFillColor(230, 230, 230);
             $pdf->Cell(190, 7, ' ', 0, 1, 'L', 0);
             $pdf->SetLineWidth(0.4);
-            $pdf->Cell(195, 5, 'FOTO PERJALAN DINAS', 0, 1, 'C', 0);
+            $pdf->Cell(195, 5, 'FOTO PERJALANAN DINAS', 0, 1, 'C', 0);
             $pdf->Cell(10, 10, '', 0, 1, 'L');
             $pdf->SetFont('Arial', '', 10.5);
             $j = 1;
