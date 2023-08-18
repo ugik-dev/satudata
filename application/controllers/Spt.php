@@ -924,7 +924,7 @@ class Spt extends CI_Controller
         if ($data['jenis'] == 3)
             $pdf->Cell(195, 5, 'LAPORAN LEMBUR', 0, 1, 'C', 0);
         else if ($data['jenis'] == 2)
-            $pdf->Cell(195, 5, 'LAPORAN PERJALAN DINAS', 0, 1, 'C', 0);
+            $pdf->Cell(195, 5, 'LAPORAN PERJALANAN DINAS', 0, 1, 'C', 0);
         else if ($data['jenis'] == 1)
             $pdf->Cell(195, 5, 'LAPORAN TUGAS', 0, 1, 'C', 0);
         $pdf->Cell(10, 10, '', 0, 1, 'L');
