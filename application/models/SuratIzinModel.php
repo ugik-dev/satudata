@@ -46,14 +46,14 @@ class SuratIzinModel extends CI_Model
 
     public function cekSisaPegawai($id)
     {
-        $this->db->select('count(lama_izin) AS x');
+        $this->db->select('sum(lama_izin) AS x');
         $this->db->from('surat_izin as si');
         $this->db->where('id_pegawai', $id);
-        $this->db->where('kategori', 1);
+        // $this->db->where('kategori', 1);
         $this->db->where('YEAR(periode_start)', date('Y'));
         // $this->db->where('status_izin <> 99');
         $this->db->where('unapprove is null');
-        $this->db->where('jenis_izin <> 1');
+        // $this->db->where('jenis_izin <> 1');
         $this->db->order_by('id_pegawai', "DESC");
         $this->db->limit(1);
 

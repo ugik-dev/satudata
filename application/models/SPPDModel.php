@@ -769,6 +769,8 @@ class SPPDModel extends CI_Model
     public function addSPPD($data)
     {
 
+
+        // die();
         $ses = $this->session->userdata();
         $data['id_satuan'] = $ses['id_satuan'];
         $data['id_seksi'] = $ses['id_seksi'];
@@ -1185,7 +1187,8 @@ class SPPDModel extends CI_Model
             $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
             $this->db->set('sign_kadin', $id_sign_kadin);
             $this->db->set('approve_kabid', $ses['id']);
-            if ($data_spt['luardaerah'] == 2 && $data_spt['level_pegawai'] == 7) {
+            // if ($data_spt['luardaerah'] == 2 && $data_spt['level_pegawai'] == 7) {
+            if ($data_spt['luardaerah'] == 2) {
                 $this->db->set('status', '11');
             } else {
                 $nomor = $this->cek_nomor($data_spt);
@@ -1198,10 +1201,12 @@ class SPPDModel extends CI_Model
                 $this->db->set('status', '99');
             }
         } else if ($ap_ppk && ($data_spt['jen_satker'] == 2 || $data_spt['jen_satker'] == 3 || $data_spt['jen_satker'] == 4)) {
+            // echo "jere";
             if ($ses['level'] == 7) {
                 $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan']);
 
-                if ($data_spt['level_pegawai'] == 7 && $data_spt['luardaerah'] == 2) {
+                // if ($data_spt['level_pegawai'] == 7 && $data_spt['luardaerah'] == 2) {
+                if ($data_spt['luardaerah'] == 2) {
                     $this->db->set('status', '11');
                 } else {
                     $nomor = $this->cek_nomor($data_spt);
@@ -1239,7 +1244,7 @@ class SPPDModel extends CI_Model
         } else {
             throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
         }
-
+        // die();
         $this->db->where('id_spt', $data_spt['id_spt']);
         $this->db->update('spt',);
         // echo $this->db->last_query();
