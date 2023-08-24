@@ -1422,7 +1422,7 @@ class Spt extends CI_Controller
         $data_satuan =  $this->GeneralModel->getSatuan(['id_satuan' => $data['id_satuan']])[0];
         // echo json_encode($data_satuan);
         // die();
-        if ($data['level_pegawai'] == 7)
+        if ($data['luardaerah'] == 2)
             $this->kop($pdf, $data_satuan, true);
         else
             $this->kop($pdf, $data_satuan);
