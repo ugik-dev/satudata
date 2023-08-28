@@ -321,7 +321,8 @@ class Spt extends CI_Controller
             ) {
                 // if ($this->session->userdata('id_role') == '1') {
             } else {
-                if ($data['date_berangkat'][0] < date('Y-m-d')) {
+                if ($this->session->userdata('id_bagian') == '4' || $this->session->userdata('id_bagian') == '5') {
+                } else if ($data['date_berangkat'][0] < date('Y-m-d')) {
                     throw new UserException('Tanggal Keberangkatan Terlambat!');
                 }
             }
