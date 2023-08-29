@@ -316,7 +316,7 @@ class Spt extends CI_Controller
             }
             if (
                 $this->session->userdata('id_role') == '1'
-                // or $this->session->userdata('id_satuan') == 23 
+                or $this->session->userdata('id_satuan') == 22
                 // or $this->session->userdata('id_satuan') == 9
             ) {
                 // if ($this->session->userdata('id_role') == '1') {
