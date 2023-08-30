@@ -316,13 +316,14 @@ class Spt extends CI_Controller
             }
             if (
                 $this->session->userdata('id_role') == '1'
-                or $this->session->userdata('id_satuan') == 22
+                or $this->session->userdata('id_satuan') == 22 //KENANGA
                 // or $this->session->userdata('id_satuan') == 9
+                or $this->session->userdata('id_bagian') == '4' //KESMAS
+                or $this->session->userdata('id_bagian') == '5' //P2PL
             ) {
                 // if ($this->session->userdata('id_role') == '1') {
             } else {
-                if ($this->session->userdata('id_bagian') == '4' || $this->session->userdata('id_bagian') == '5') {
-                } else if ($data['date_berangkat'][0] < date('Y-m-d')) {
+                if ($data['date_berangkat'][0] < date('Y-m-d')) {
                     throw new UserException('Tanggal Keberangkatan Terlambat!');
                 }
             }
@@ -387,8 +388,10 @@ class Spt extends CI_Controller
             }
             if (
                 $this->session->userdata('id_role') == '1'
-                // or $this->session->userdata('id_satuan') == 23
+                or $this->session->userdata('id_satuan') == 22 //KENANGA
                 // or $this->session->userdata('id_satuan') == 9
+                or $this->session->userdata('id_bagian') == '4' //KESMAS
+                or $this->session->userdata('id_bagian') == '5' //P2PL
             ) {
                 // if ($this->session->userdata('id_role') == '1') {
             } else {
