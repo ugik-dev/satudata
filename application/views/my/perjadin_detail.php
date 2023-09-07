@@ -102,25 +102,25 @@
                                         <div class="row">
                                             <div class="col-sm-3">Nama : </div>
                                             <div class="col-sm-9">
-                                                <?= $dataContent['return_data']['nama_pegawai'] ?>
+                                                <?= $dataContent['return_data']['pel_nama'] ?>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-3">NIP : </div>
                                             <div class="col-sm-9">
-                                                <?= $dataContent['return_data']['nip_pegawai'] ?>
+                                                <?= $dataContent['return_data']['pel_nip'] ?>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-3">Jabatan : </div>
                                             <div class="col-sm-9">
-                                                <?= $dataContent['return_data']['jabatan_pegawai'] ?>
+                                                <?= $dataContent['return_data']['pel_jabatan'] ?>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-3">Pangkat / Golongan : </div>
                                             <div class="col-sm-9">
-                                                <?= $dataContent['return_data']['pangkat_gol_pegawai'] ?>
+                                                <?= $dataContent['return_data']['pel_pangkat_gol'] ?>
                                             </div>
                                         </div>
                                     </div>

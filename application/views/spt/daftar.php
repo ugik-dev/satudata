@@ -18,7 +18,7 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div class="mb-3 row">
-                                                <input name="sort" value="1">
+                                                <input type="hidden" name="sort" value="1">
                                                 <label class="col-sm-3 col-form-label">Approval </label>
                                                 <div class="col-sm-8">
                                                     <select class="form-control " name="status_rekap" id="status_rekap">
@@ -294,7 +294,7 @@
                 No SPT : ${ spt['no_spt']?spt['no_spt']:''}<br>
                 No SPPD : ${ spt['no_sppd']?spt['no_sppd']:''}
                 `;
-                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], info, spt['nama_pegawai'], tujuan, spt['id_laporan'] == null ? "<i class='fa fa-times text-danger'></i><b class='text-danger'>Belum</b>" : "<i class='fa fa-check text-success'></i><b class='text-success'>Sudah</b>", statusSPT(spt['status'], spt['unapprove_oleh']), button]);
+                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], info, spt['pel_nama'], tujuan, spt['id_laporan'] == null ? "<i class='fa fa-times text-danger'></i><b class='text-danger'>Belum</b>" : "<i class='fa fa-check text-success'></i><b class='text-success'>Sudah</b>", statusSPT(spt['status'], spt['unapprove_oleh']), button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }

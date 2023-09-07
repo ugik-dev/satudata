@@ -333,6 +333,9 @@ class Spt extends CI_Controller
                 }
             }
             foreach ($data['id_tujuan'] as $key => $t) {
+                if (empty($data['date_kembali'][$key])) {
+                    $data['date_kembali'][$key] = $data['date_berangkat'][$key];
+                }
                 if (empty($hari_pertama) && !empty($data['date_berangkat'][$key])) {
                     $hari_pertama = $data['date_berangkat'][$key];
                 }
@@ -821,7 +824,7 @@ class Spt extends CI_Controller
         if ($y6 < $pdf->GetY())
             $y6 = $pdf->GetY();
         $pdf->SetXY(162, $y5 + 30);
-        $pdf->MultiCell(50, 4, !empty($pegawai) ? $pegawai['nama'] : $data['nama_pegawai'], 0, 'C');
+        $pdf->MultiCell(50, 4, !empty($pegawai) ? $pegawai['nama'] : $data['pel_nama'], 0, 'C');
         $pdf->SetX(162);
         $pdf->MultiCell(50, 4, 'NIP. ' . format_nip(!empty($pegawai) ? $pegawai['nip'] : $data['nip_pegawai']), 0, 'C');
         if ($y6 < $pdf->GetY())
@@ -988,7 +991,7 @@ class Spt extends CI_Controller
         $pdf->Cell(100, 5, '', 0, 0, 'L');
         $pdf->Cell(90, 5, 'Yang Melaporkan :', 0, 1, 'C');
         $pdf->Cell(100, 3, '', 0, 1, 'L');
-        $pdf->Cell(120, 10, $data['nama_pegawai'], 0, 0, 'R');
+        $pdf->Cell(120, 10, $data['pel_nama'], 0, 0, 'R');
         $pdf->Cell(70, 10, '(....................................................)', 0, 1, 'C');
         $sign = $this->GeneralModel->getSingnature($data['id_pegawai'])[$data['id_pegawai']];
         if (!empty($sign['signature']))
@@ -1149,9 +1152,9 @@ class Spt extends CI_Controller
             $pdf->RowSPPD('1.', 'Pejabat Pembuat Komitmen', $data['nama_ppk'] . ' / ' . $data['nip_ppk']);
         else
             $pdf->RowSPPD('1.', 'Pimpinan BLUD', $data['nama_ppk'] . ' / ' . $data['nip_ppk']);
-        $pdf->RowSPPD('2.', 'Nama/NIP Pegawai yang melaksanakan perjalanan dinas ', $data['nama_pegawai'] . ' / ' . $data['nip_pegawai']);
-        $pdf->RowSPPD('3.', 'a. Pangkat dan Golongan', 'a. ' . $data['pangkat_gol_pegawai']);
-        $pdf->RowSPPD('', 'b. Jabatan / Instansi', 'b. ' . $data['jabatan_pegawai'] . ' / ' . $data_satuan['nama_satuan']);
+        $pdf->RowSPPD('2.', 'Nama/NIP Pegawai yang melaksanakan perjalanan dinas ', $data['pel_nama'] . ' / ' . $data['pel_nip']);
+        $pdf->RowSPPD('3.', 'a. Pangkat dan Golongan', 'a. ' . $data['pel_pangkat_gol']);
+        $pdf->RowSPPD('', 'b. Jabatan / Instansi', 'b. ' . $data['pel_jabatan'] . ' / ' . $data_satuan['nama_satuan']);
         $pdf->RowSPPD('', 'c. Tingkat Biaya Perjalanan Dinas', 'c. ');
         $pdf->RowSPPD('4.', 'Maksud Perjalanan Dinas', $data['maksud']);
         $pdf->RowSPPD('5.', 'Alat angkut yang dipergunakan ', $data['nama_transport']);
@@ -1473,22 +1476,22 @@ class Spt extends CI_Controller
         $pdf->Cell(10, 5, '1.', 0, 0, 'L', 0);
         $pdf->Cell(30, 5, 'Nama', 0, 0, 'L', 0);
         $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-        $pdf->Cell(160, 5, $data['nama_pegawai'], 0, 1, 'L', 0);
+        $pdf->Cell(160, 5, $data['pel_nama'], 0, 1, 'L', 0);
         $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(30, 5, 'NIP', 0, 0, 'L', 0);
         $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-        $pdf->Cell(160, 5, $data['nip_pegawai'], 0, 1, 'L', 0);
+        $pdf->Cell(160, 5, $data['pel_nip'], 0, 1, 'L', 0);
         $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(30, 5, 'Pangkat/Gol', 0, 0, 'L', 0);
         $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-        $pdf->Cell(160, 5, $data['pangkat_gol_pegawai'], 0, 1, 'L', 0);
+        $pdf->Cell(160, 5, $data['pel_pangkat_gol'], 0, 1, 'L', 0);
         $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
         $pdf->Cell(30, 5, 'Jabatan', 0, 0, 'L', 0);
         $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-        $pdf->MultiCell(145, 5, $data['jabatan_pegawai'], 0,  'L', 0);
+        $pdf->MultiCell(145, 5, $data['pel_jabatan'], 0,  'L', 0);
         $i = 2;
         // echo json_encode($data['pengikut'];
         // die();
@@ -1582,7 +1585,7 @@ class Spt extends CI_Controller
             $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Ditetapkan di', 0, 0, 'L', 0);
             $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
-            if ($data['level_pegawai'] == 7) {
+            if ($data['pel_level'] == 7) {
                 $pdf->Cell(40, 5, 'Sungailiat', 0, 1, 'L', 0);
             } else
                 $pdf->Cell(40, 5, $data_satuan['satuan_tempat'], 0, 1, 'L', 0);

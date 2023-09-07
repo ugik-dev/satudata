@@ -74,7 +74,7 @@
                         <select class="select2 col-sm-12" id="id_pegawai" name="id_pegawai">
                             <?php
                             if (!empty($dataContent['return_data']['id_pegawai'])) {
-                                echo '<option selected value="' . $dataContent['return_data']['id_pegawai'] . '">' . $dataContent['return_data']['nama_pegawai'] . '</option>';
+                                echo '<option selected value="' . $dataContent['return_data']['id_pegawai'] . '">' . $dataContent['return_data']['pel_nama'] . '</option>';
                             }
                             ?>
                         </select>

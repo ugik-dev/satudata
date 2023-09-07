@@ -50,7 +50,7 @@
                             <tbody>
                                 <tr>
                                     <th scope="row">1</th>
-                                    <td><?= $dataContent['return_data']['nama_pegawai'] ?>
+                                    <td><?= $dataContent['return_data']['pel_nama'] ?>
                                     </td>
                                     <td>
 

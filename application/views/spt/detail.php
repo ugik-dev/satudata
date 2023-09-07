@@ -140,25 +140,25 @@
                                         <div class="row">
                                             <div class="col-sm-3">Nama : </div>
                                             <div class="col-sm-9">
-                                                <?= $dataContent['return_data']['nama_pegawai'] ?>
+                                                <?= $dataContent['return_data']['pel_nama'] ?>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-3">NIP : </div>
                                             <div class="col-sm-9">
-                                                <?= $dataContent['return_data']['nip_pegawai'] ?>
+                                                <?= $dataContent['return_data']['pel_nip'] ?>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-3">Jabatan : </div>
                                             <div class="col-sm-9">
-                                                <?= $dataContent['return_data']['jabatan_pegawai'] ?>
+                                                <?= $dataContent['return_data']['pel_jabatan'] ?>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-3">Pangkat / Golongan : </div>
                                             <div class="col-sm-9">
-                                                <?= $dataContent['return_data']['pangkat_gol_pegawai'] ?>
+                                                <?= $dataContent['return_data']['pel_pangkat_gol'] ?>
                                             </div>
                                         </div>
                                     </div>
@@ -186,9 +186,9 @@
                                                 ?>
                                                         <tr>
                                                             <td><?= $p['p_nama'] ?></td>
-                                                            <td><?= $p['nip_pengikut'] ?></td>
-                                                            <td><?= $p['jabatan_pengikut'] ?></td>
-                                                            <td><?= $p['pangkat_gol_pengikut'] ?></td>
+                                                            <td><?= $p['p_nip'] ?></td>
+                                                            <td><?= $p['p_jabatan'] ?></td>
+                                                            <td><?= $p['p_pangkat_gol'] ?></td>
                                                         </tr>
                                                 <?php
                                                     }
@@ -824,7 +824,7 @@
                         </button>
                     </div>
                         `;
-                renderData.push([d['deskripsi'], d['nama_pegawai'], d['waktu'], `<a class="btn btn-primary" target="_blank" href='<?= base_url() ?>uploads/foto_sppd/${d['file_foto']}'><i class="fa fa-eye"></i></a>`, button]);
+                renderData.push([d['deskripsi'], d['pel_nama'], d['waktu'], `<a class="btn btn-primary" target="_blank" href='<?= base_url() ?>uploads/foto_sppd/${d['file_foto']}'><i class="fa fa-eye"></i></a>`, button]);
             });
             FileDataTable.clear().rows.add(renderData).draw('full-hold');
         }

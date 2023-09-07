@@ -647,7 +647,7 @@
                     tmpt = tmpt + '<br>No SPT : ' + (spt['no_spt'] ? spt['no_spt'] : '');
 
                 }
-                pegawai = spt['nama_pegawai'];
+                pegawai = spt['pel_nama'];
                 i = 1;
                 Object.values(spt['pengikut']).forEach((p) => {
                     if (i == 1)
