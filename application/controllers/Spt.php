@@ -32,14 +32,19 @@ class Spt extends CI_Controller
         try {
             $this->SecurityModel->multiRole('SPT / SPPD', 'Daftar Pengajuan');
             $filter = $this->input->get();
-            // die();
 
-            // if ($this->session->userdata('id_role') != 1) {
+            if (!empty($filter['sort'])) {
+                $sort = true;
+            } else {
+                $sort = false;
+            }
+            // echo json_encode($filter);
+            // die();
             $filter['id_bagian'] = $this->session->userdata('id_bagian');
             $filter['id_seksi'] = $this->session->userdata('id_seksi');
             // }
 
-            $data = $this->SPPDModel->getAllSPPD($filter);
+            $data = $this->SPPDModel->getAllSPPD($filter, $sort);
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
@@ -1159,7 +1164,7 @@ class Spt extends CI_Controller
         $pdf->RowSPPD('8.', 'Pengikut', 'Tanggal Lahir', 'Keterangan');
         if (!empty($data['pengikut']))
             foreach ($data['pengikut'] as $pengikut) {
-                $pdf->RowSPPD('', $i . '. ' . $pengikut['nama'], tanggal_indonesia($pengikut['tanggal_lahir']), '-');
+                $pdf->RowSPPD('', $i . '. ' . $pengikut['p_nama'], tanggal_indonesia($pengikut['p_tgl_lahir']), '-');
                 $i++;
             }
         else {
@@ -1495,22 +1500,22 @@ class Spt extends CI_Controller
             $pdf->Cell(10, 5, $i . '.', 0, 0, 'L', 0);
             $pdf->Cell(30, 5, 'Nama', 0, 0, 'L', 0);
             $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-            $pdf->Cell(160, 5, $pengikut['nama'], 0, 1, 'L', 0);
+            $pdf->Cell(160, 5, $pengikut['p_nama'], 0, 1, 'L', 0);
             $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
             $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
             $pdf->Cell(30, 5, 'NIP', 0, 0, 'L', 0);
             $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-            $pdf->Cell(160, 5, $pengikut['nip'], 0, 1, 'L', 0);
+            $pdf->Cell(160, 5, $pengikut['p_nip'], 0, 1, 'L', 0);
             $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
             $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
             $pdf->Cell(30, 5, 'Pangkat/Gol', 0, 0, 'L', 0);
             $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-            $pdf->Cell(160, 5, $pengikut['pangkat_gol'], 0, 1, 'L', 0);
+            $pdf->Cell(160, 5, $pengikut['p_pangkat_gol'], 0, 1, 'L', 0);
             $pdf->Cell(5, 5, '', 0, 0, 'L', 0);
             $pdf->Cell(10, 5, '', 0, 0, 'L', 0);
             $pdf->Cell(30, 5, 'Jabatan', 0, 0, 'L', 0);
             $pdf->Cell(3, 5, ':', 0, 0, 'L', 0);
-            $pdf->MultiCell(145, 5, $pengikut['jabatan'],  0, 'L', 0);
+            $pdf->MultiCell(145, 5, $pengikut['p_jabatan'],  0, 'L', 0);
             $i++;
         }
 
@@ -1524,13 +1529,10 @@ class Spt extends CI_Controller
             foreach ($data['tujuan'] as $tujuan) {
                 if ($i == 1) {
                     $tujuan_text .= $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']);
-                    // $tujuan_text .= $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' ' . 'pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
                 } else if ($count_t == $i) {
                     $tujuan_text .= ' dan ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']);
-                    // $tujuan_text .= ' dan ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
                 } else {
                     $tujuan_text .= ', ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']);
-                    // $tujuan_text .= ', ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']) . ' pukul ' . substr($tujuan['dari'], 0, 5) . ' s.d. ' . substr($tujuan['sampai'], 0, 5);
                 }
                 $t = $tujuan['tempat_tujuan'];
                 $i++;

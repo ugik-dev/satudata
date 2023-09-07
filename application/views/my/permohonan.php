@@ -652,7 +652,7 @@
                 Object.values(spt['pengikut']).forEach((p) => {
                     if (i == 1)
                         pegawai = pegawai + '<br> Pengikut : ';
-                    pegawai = pegawai + '<br>' + i + '. ' + p['nama'];
+                    pegawai = pegawai + '<br>' + i + '. ' + p['p_nama'];
                     // d2 = tj['date_kembali']
                     i++;
                 })

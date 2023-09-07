@@ -363,8 +363,10 @@ class SPPDModel extends CI_Model
     }
     public function getAllSPPD($filter = [], $sort = false, $cross = false)
     {
-        $ses = $this->session->userdata();
 
+        $ses = $this->session->userdata();
+        // echo $sort;
+        // die();
         $this->db->select('rjs.nama_ref_jen_spt');
         $this->db->select('s.nama as nama_pegawai,l.id_laporan,
                             ro.level level_pegawai,
@@ -458,7 +460,7 @@ class SPPDModel extends CI_Model
                         if ($filter['status_permohonan'] == 'menunggu-saya') {
                             $this->db->where("u.unapprove_oleh IS NULL AND (u.status = 11 OR (d.id_ppk2 = {$penilai['id']} AND  u.status = 6))");
                         } else if ($filter['status_permohonan'] == 'my-approv') {
-                            $this->db->where("(u.status > 11 AND d.id_ppk2 = {$penilai['id']}) OR approve_sekdin = {$penilai['id']}");
+                            $this->db->where("((u.status > 11 AND d.id_ppk2 = {$penilai['id']}) OR approve_sekdin = {$penilai['id']})");
                             // } else if ($filter['status_permohonan'] == 'ditolak') {
                             //     $this->db->where('u.status = 98');
                         } else if ($filter['status_permohonan'] == 'selesai') {
@@ -584,25 +586,25 @@ class SPPDModel extends CI_Model
 
         $res = $this->db->get()->result_array();
         $res_id = [];
-        // echo json_encode($sort);
+        // echo $this->db->last_query();
+        // // echo json_encode($sort);
         // die();
 
         foreach ($res as $rid) {
             array_push($res_id, $rid['id_spt']);
         }
         if (!empty($res_id)) {
-            if (!$sort) {
-                $this->db->select('p.*, u.nama, u.nip, u.jabatan,u.pangkat_gol, tanggal_lahir, r.level');
-            } else {
-                $this->db->select('p.id_spt, u.nama, r.level');
-            }
+            // if (!$sort) {
+            //     $this->db->select('p.*, u.nama, u.nip, u.jabatan,u.pangkat_gol, tanggal_lahir, r.level');
+            // } else {
+            //     $this->db->select('p.id_spt, u.nama, r.level');
+            // }
 
             $this->db->from('pengikut p ');
-            $this->db->join('users u', 'u.id = p.id_pegawai');
-            $this->db->join('roles r', 'u.id_role = r.id_role', 'LEFT');
             $this->db->where_in('id_spt', $res_id);
-            $this->db->order_by('level,id_pengikut', 'ASC');
             $pengikut = DataStructure::groupingByParent($this->db->get()->result_array(), 'id_spt');
+            // echo json_encode($pengikut);
+            // die();
             if (!$sort) {
                 $this->db->select('*');
             } else {

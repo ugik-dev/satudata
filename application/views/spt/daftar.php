@@ -18,6 +18,7 @@
                                     <div class="row">
                                         <div class="col-lg-4">
                                             <div class="mb-3 row">
+                                                <input name="sort" value="1">
                                                 <label class="col-sm-3 col-form-label">Approval </label>
                                                 <div class="col-sm-8">
                                                     <select class="form-control " name="status_rekap" id="status_rekap">
@@ -230,7 +231,7 @@
             Swal.showLoading()
             return $.ajax({
                 url: `<?php echo site_url('Spt/getAllSppd/') ?>`,
-                'type': 'POST',
+                'type': 'get',
                 data: toolbar.form.serialize(),
                 success: function(data) {
                     Swal.close();
