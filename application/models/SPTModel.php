@@ -11,48 +11,12 @@ class SPTModel extends CI_Model
         rjs.nama_ref_jen_spt rjs, l.id_laporan, sa.nama_satuan,
         s.nama nama_pelaksana,
         tj.id_tujuan, tj.tempat_tujuan,date_berangkat,date_kembali,
-        pk.id_pegawai id_pegawai,
-        upk.nama nama_pengikut');
+        pk.id_pegawai, pk.p_nama');
         $this->db->select('
-            upk.nip nip_pengikut
+            pk.p_nip
         ');
         // }
         $this->db->select('rjs.nama_ref_jen_spt');
-        // $this->db->select('s.nama as nama_pegawai,l.id_laporan,
-        //                     ro.level level_pegawai,
-        //                     sa.nama_satuan,
-        //                     p2.nama as nama_input,
-        //                     d.id_ppk2, d.id_pptk,
-        //                     sa.jen_satker
-        //                     ');
-        // if (!$sort) {
-        //     $this->db->select('s.jabatan jabatan_pegawai, 
-        //     s.pangkat_gol as pangkat_gol_pegawai,
-        //     s.id_seksi as id_seksi_pegawai,
-        //     s.id_bagian as id_bagian_pegawai, 
-        //     s.nip nip_pegawai');
-
-        //     $this->db->select(' 
-        //     p.nama as nama_ppk,
-        //     p.jabatan jabatan_ppk, 
-        //     p.pangkat_gol as pangkat_gol_ppk, 
-        //     p.nip nip_ppk');
-
-        //     $this->db->select('  
-        //     ptk.nama as nama_pptk, 
-        //     ptk.jabatan jabatan_pptk, 
-        //     ptk.pangkat_gol as pangkat_gol_pptk, 
-        //     ptk.nip nip_pptk');
-        //     $this->db->select('
-        //     d.kode_rekening,
-        //     d.nama_dasar
-        //     ');
-        //     $this->db->select("un.approval_id_user as id_unapproval ,
-        //     t.nama_tr as nama_transport,
-        //     u.*");
-        // } else {
-        //     $this->db->select('u.id_spt,u.maksud, u.tgl_pengajuan,u.status, u.no_spt, u.no_sppd, u.unapprove_oleh, u.id_satuan, u.id_bagian, u.id_seksi');
-        // }
         $this->db->from('spt as u');
         $this->db->join('satuan sa', 'sa.id_satuan = u.id_satuan');
         // $this->db->join('dasar d', 'd.id_dasar = u.id_dasar', 'LEFT');
@@ -68,7 +32,6 @@ class SPTModel extends CI_Model
         $this->db->join('ref_jen_spt rjs', 'u.jenis = rjs.id_ref_jen_spt', 'LEFT');
         $this->db->join('tujuan tj', 'tj.id_spt = u.id_spt', 'LEFT');
         $this->db->join('pengikut pk', 'pk.id_spt = u.id_spt', 'LEFT');
-        $this->db->join('users upk', 'upk.id = pk.id_pegawai', 'LEFT');
         // $this->db->group_by('id_spt');
 
         //Filter
@@ -246,18 +209,20 @@ class SPTModel extends CI_Model
             array_push($res_id, $rid['id_spt']);
         }
         if (!empty($res_id)) {
-            if (!$sort) {
-                $this->db->select('p.*, u.nama, u.nip, u.jabatan,u.pangkat_gol, tanggal_lahir, r.level');
-            } else {
-                $this->db->select('p.id_spt, u.nama, r.level');
-            }
+            // if (!$sort) {
+            $this->db->select('p.*');
+            // } else {
+            //     $this->db->select('p.id_spt, u.nama, r.level');
+            // }
 
             $this->db->from('pengikut p ');
             $this->db->join('users u', 'u.id = p.id_pegawai');
-            $this->db->join('roles r', 'u.id_role = r.id_role', 'LEFT');
+            // $this->db->join('roles r', 'u.id_role = r.id_role', 'LEFT');
             $this->db->where_in('id_spt', $res_id);
-            $this->db->order_by('level,id_pengikut', 'ASC');
+            // $this->db->order_by('level,id_pengikut', 'ASC');
             $pengikut = DataStructure::groupingByParent($this->db->get()->result_array(), 'id_spt');
+            // echo json_encode($pengikut);
+            // die();
             if (!$sort) {
                 $this->db->select('*');
             } else {

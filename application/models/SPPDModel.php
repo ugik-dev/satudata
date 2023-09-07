@@ -757,7 +757,7 @@ class SPPDModel extends CI_Model
 
     public function getPengikut($id)
     {
-        $this->db->select("u.*, s.nama as nama_pengikut, jabatan jabatan_pengikut, pangkat_gol pangkat_gol_pengikut, nip nip_pengikut");
+        $this->db->select("u.*, s.nama as p_nama, jabatan jabatan_pengikut, pangkat_gol pangkat_gol_pengikut, nip nip_pengikut");
         $this->db->from('pengikut as u');
         $this->db->join('users as s', 'u.id_pegawai = s.id');
         $this->db->where('u.id_spt', $id);

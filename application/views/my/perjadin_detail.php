@@ -148,7 +148,7 @@
                                                     foreach ($dataContent['return_data']['pengikut'] as $p) {
                                                 ?>
                                                         <tr>
-                                                            <td><?= $p['nama_pengikut'] ?></td>
+                                                            <td><?= $p['p_nama'] ?></td>
                                                             <td><?= $p['nip_pengikut'] ?></td>
                                                             <td><?= $p['jabatan_pengikut'] ?></td>
                                                             <td><?= $p['pangkat_gol_pengikut'] ?></td>

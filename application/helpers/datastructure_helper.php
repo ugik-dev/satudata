@@ -7,13 +7,13 @@ class DataStructure
     if ($full)
       return [
         'id_pegawai' => $r['id_pegawai'],
-        'nama' => $r['nama_pengikut'],
-        'nip' => $r['nip_pengikut'],
+        'nama' => $r['p_nama'],
+        'nip' => $r['p_nip'],
       ];
     else
       return [
         'id_pegawai' => $r['id_pegawai'],
-        'nama_pengikut' => $r['nama_pengikut'],
+        'p_nama' => $r['p_nama'],
       ];
   }
   public static function SPTStyle($res, $full = false)

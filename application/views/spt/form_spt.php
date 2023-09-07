@@ -84,7 +84,7 @@
                             <?php
                             if (!empty($dataContent['return_data']['pengikut'])) {
                                 foreach ($dataContent['return_data']['pengikut'] as $p) {
-                                    echo '<option selected value="' . $p['id_pegawai'] . '">' . $p['nama_pengikut'] . '</option>';
+                                    echo '<option selected value="' . $p['id_pegawai'] . '">' . $p['p_nama'] . '</option>';
                                 }
                             }
                             ?>
