@@ -850,9 +850,24 @@ class SPPDModel extends CI_Model
             $data['id_bagian'] = $ses['id_bagian'];
             $data['user_input'] = $ses['id'];
         }
+        $this->db->select("r.level, s.id id_pegawai, s.nama as p_nama, jabatan p_jabatan, pangkat_gol p_pangkat_gol, nip p_nip, signature p_sign, tempat_lahir p_tmpt_lahir, tanggal_lahir p_tgl_lahir");
+        $this->db->from('users as s');
+        $this->db->join('roles as r', 'r.id_role = s.id_role');
+        $this->db->where('s.id', $data['id_pegawai']);
+        $pelaksana = $this->db->get()->result_array()[0];
+        $data['pel_nama'] = $pelaksana['p_nama'];
+        $data['pel_jabatan'] = $pelaksana['p_jabatan'];
+        $data['pel_nip'] = $pelaksana['p_nip'];
+        $data['pel_pangkat_gol'] = $pelaksana['p_pangkat_gol'];
+        $data['pel_sign'] = $pelaksana['p_sign'];
+        $data['pel_tgl_lahir'] = $pelaksana['p_tgl_lahir'];
+        $data['pel_tmpt_lahir'] = $pelaksana['p_tmpt_lahir'];
+        $data['pel_level'] = $pelaksana['level'];
+
         $this->db->set(DataStructure::slice($data, [
             'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas', 'luardaerah',
-            'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk', 'berangkat_dari', 'status'
+            'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk', 'berangkat_dari', 'status',
+            'pel_nama', 'pel_nip', 'pel_jabatan', 'pel_pangkat_gol', 'pel_sign', 'pel_tmpt_lahir', 'pel_tgl_lahir', 'pel_level'
         ], FALSE));
 
         $this->db->where('id_spt', $data['id_spt']);
@@ -885,16 +900,23 @@ class SPPDModel extends CI_Model
             }
             $i++;
         }
+
         $this->db->where('id_spt', $id_spt);
         $this->db->delete('pengikut');
-        if (!empty($data['pengikut']))
-            foreach ($data['pengikut'] as $p) {
-                $d_pengikut = array(
-                    'id_spt' => $id_spt,
-                    'id_pegawai' => $p,
-                );
-                $this->db->insert('pengikut', $d_pengikut);
+
+        if (!empty($data['pengikut'])) {
+            $this->db->select("s.id id_pegawai, s.nama as p_nama, jabatan p_jabatan, pangkat_gol p_pangkat_gol, nip p_nip, signature p_sign, tempat_lahir p_tmpt_lahir, tanggal_lahir p_tgl_lahir");
+            $this->db->from('users as s');
+            $this->db->join('roles as r', 'r.id_role = s.id_role');
+            $this->db->where_in('s.id', $data['pengikut']);
+            $this->db->order_by('r.level', 'asc');
+
+            $d_pengikut = $this->db->get()->result_array();
+            foreach ($d_pengikut as $cur_p) {
+                $cur_p['id_spt'] =  $id_spt;
+                $this->db->insert('pengikut', $cur_p);
             }
+        }
         $j = 0;
         if (!empty($data['dasar_tambahan']))
             foreach ($data['dasar_tambahan'] as $p) {

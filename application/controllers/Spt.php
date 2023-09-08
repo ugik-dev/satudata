@@ -325,6 +325,7 @@ class Spt extends CI_Controller
                 // or $this->session->userdata('id_satuan') == 9
                 or $this->session->userdata('id_bagian') == '4' //KESMAS
                 or $this->session->userdata('id_bagian') == '5' //P2PL
+                or $this->session->userdata('id_bagian') == '7' //SDK
             ) {
                 // if ($this->session->userdata('id_role') == '1') {
             } else {
@@ -400,6 +401,7 @@ class Spt extends CI_Controller
                 // or $this->session->userdata('id_satuan') == 9
                 or $this->session->userdata('id_bagian') == '4' //KESMAS
                 or $this->session->userdata('id_bagian') == '5' //P2PL
+                or $this->session->userdata('id_bagian') == '7' //SDK
             ) {
                 // if ($this->session->userdata('id_role') == '1') {
             } else {
