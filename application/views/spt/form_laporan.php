@@ -64,7 +64,7 @@
                                         <th> <?= $i  ?>
                                         </th>
                                         <td>
-                                            <?= $p['nama']  ?>
+                                            <?= $p['p_nama']  ?>
                                             <input type="hidden" name="id_pengikut[]" value="<?= $p['id_pengikut']  ?>" class="form-control">
                                         </td>
                                         <td>
