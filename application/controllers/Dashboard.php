@@ -174,9 +174,7 @@ class Dashboard extends CI_Controller
             );
             // echo json_encode($this->session->userdata());
             // echo json_encode(User_Access(1));
-            // $this->load->view('page', $data);
-            $this->load->view('maintenance');
-
+            $this->load->view('page', $data);
             // $this->load->view('theme/sweet-alert2');
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
