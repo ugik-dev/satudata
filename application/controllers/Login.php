@@ -15,7 +15,8 @@ class Login extends CI_Controller
         try {
             $this->SecurityModel->guestOnlyGuard();
             $filter = $this->input->get();
-            $this->load->view('login');
+            // $this->load->view('login');
+            $this->load->view('maintenance');
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
         }
