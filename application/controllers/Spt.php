@@ -992,33 +992,29 @@ class Spt extends CI_Controller
         $pdf->Cell(90, 5, $data_satuan['satuan_tempat'] . ', ' . tanggal_indonesia($hari_terakhir), 0, 1, 'C');
         $pdf->Cell(100, 5, '', 0, 0, 'L');
         $pdf->Cell(90, 5, 'Yang Melaporkan :', 0, 1, 'C');
-        $pdf->Cell(100, 3, file_exists('.uploads/signature/' . $data['pel_sign']) . base_url('uploads/signature/' . $data['pel_sign']), 0, 1, 'L');
+        $pdf->Cell(100, 3, '', 0, 1, 'L');
         $pdf->Cell(120, 10, $data['pel_nama'], 0, 0, 'R');
         $pdf->Cell(70, 10, '(....................................................)', 0, 1, 'C');
         // $sign = $this->GeneralModel->getSingnature($data['id_pegawai'])[$data['id_pegawai']];
         if (!empty($data['pel_sign']))
-            if (file_exists(base_url('uploads/signature/' . $data['pel_sign'])))
-                $pdf->Image(base_url('uploads/signature/' . $data['pel_sign']), 141, $pdf->getY() - 14, 30, 20);
+            $pdf->Image(base_url('uploads/signature/' . $data['pel_sign']), 141, $pdf->getY() - 14, 30, 20);
         $i = 0;
         foreach ($data['pengikut'] as $p) {
             $pdf->Cell(120, 10, $p['p_nama'], 0, 0, 'R');
             $pdf->Cell(70, 10, '(....................................................)', 0, 1, 'C');
             // $sign = $this->p_->getSingnature($p['id_pegawai'])[$p['id_pegawai']];
             if (!empty($p['p_sign'])) {
-                if (file_exists(base_url('uploads/signature/' . $p['p_sign'])))
-                    if ($i != 0) {
-                        $pdf->Image(base_url('uploads/signature/' . $p['p_sign']), 141, $pdf->getY() - 14, 30, 20);
-                        $i = 0;
-                    } else {
-                        $i = 1;
-                        $pdf->Image(base_url('uploads/signature/' . $p['p_sign']), 161, $pdf->getY() - 14, 30, 20);
-                    }
+                if ($i != 0) {
+                    $pdf->Image(base_url('uploads/signature/' . $p['p_sign']), 141, $pdf->getY() - 14, 30, 20);
+                    $i = 0;
+                } else {
+                    $i = 1;
+                    $pdf->Image(base_url('uploads/signature/' . $p['p_sign']), 161, $pdf->getY() - 14, 30, 20);
+                }
             }
         }
 
         $foto = $this->SPPDModel->getFoto(['id_spt' => $data['id_spt']]);
-        // echo json_encode($foto);
-        // die();
         if (!empty($foto)) {
             $pdf->AddPage();
             $this->kop($pdf,  $data_satuan);
