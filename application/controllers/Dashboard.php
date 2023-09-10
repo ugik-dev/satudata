@@ -124,7 +124,7 @@ class Dashboard extends CI_Controller
                 $to         = date('Y-m-d H:i:s');
                 $total      = strtotime($to) - strtotime($from);
                 $hours      = floor($total / 60 / 60);
-                if ($hours >= 1) {
+                if ($hours >= 6) {
                     $this->DashboardModel->updateInfoSPTPkm();
                     $dataSPT = $this->DashboardModel->getInfoSPTPkm();
                 } else {
@@ -149,7 +149,7 @@ class Dashboard extends CI_Controller
                 $to         = date('Y-m-d H:i:s');
                 $total      = strtotime($to) - strtotime($from);
                 $hours      = floor($total / 60 / 60);
-                if ($hours >= 1) {
+                if ($hours >= 6) {
                     $data_update = $this->SPTModel->getAllSPPD($filter);
                     $this->DashboardModel->updateAktifitasHarian($data_update);
                     $dataAktifitas = $this->DashboardModel->getAktifitasHarian($filter2);
