@@ -34,8 +34,8 @@
     <!-- Bootstrap css-->
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/bootstrap.css" />
     <!-- App css-->
-    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/style.css?v=0.1.2" />
-    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/custom.css?v=0.1.2" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/style.css?v=1.3" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/custom.css?v=1.3" />
     <!-- galeri -->
 
 
