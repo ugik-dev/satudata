@@ -1030,8 +1030,7 @@ class Spt extends CI_Controller
                 $pdf->CheckPageBreak(50);
                 $pdf->Cell(16, 10, $j . '. ', 0, 0, 'L');
                 $pdf->Cell(80, 10, ' ', 0, 0, 'L');
-                if (file_exists(base_url('uploads/foto_sppd/' . $f['file_foto'])))
-                    $pdf->Image(base_url('uploads/foto_sppd/' . $f['file_foto']), 20, $pdf->getY(), 80, 50);
+                $pdf->Image(base_url('uploads/foto_sppd/' . $f['file_foto']), 20, $pdf->getY(), 80, 50);
                 $tmp_y = $pdf->getY() + 52;
 
                 $pdf->MultiCell(100, 10, $f['deskripsi'], 0,  'L');
