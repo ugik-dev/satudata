@@ -52,7 +52,7 @@
                     <h2 class="headline">PEMINDAHAN SERVER</h2>
                 </div>
                 <h4 class="sub-content">
-                    Maaf Alamat dipindahkan ke alamat http://siadum2.dinkes.bangka.go.id/
+                    Maaf Alamat dipindahkan ke alamat <a href="http://siadum2.dinkes.bangka.go.id/">http://siadum2.dinkes.bangka.go.id/</a>
                 </h4>
                 <div>
                     <a class="btn btn-primary-gradien btn-lg text-light" href="http://siadum2.dinkes.bangka.go.id/">KLIK UNTUK MENUJU ALAMAT BARU</a>
