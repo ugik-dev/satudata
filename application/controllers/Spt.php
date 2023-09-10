@@ -995,22 +995,24 @@ class Spt extends CI_Controller
         $pdf->Cell(100, 3, '', 0, 1, 'L');
         $pdf->Cell(120, 10, $data['pel_nama'], 0, 0, 'R');
         $pdf->Cell(70, 10, '(....................................................)', 0, 1, 'C');
-        $sign = $this->GeneralModel->getSingnature($data['id_pegawai'])[$data['id_pegawai']];
-        if (!empty($sign['signature']))
-            $pdf->Image(base_url('uploads/signature/' . $sign['signature']), 141, $pdf->getY() - 14, 30, 20);
+        // $sign = $this->GeneralModel->getSingnature($data['id_pegawai'])[$data['id_pegawai']];
+        if (!empty($data['pel_sign']))
+            if (file_exists(base_url('uploads/signature/' . $data['pel_sign'])))
+                $pdf->Image(base_url('uploads/signature/' . $data['pel_sign']), 141, $pdf->getY() - 14, 30, 20);
         $i = 0;
         foreach ($data['pengikut'] as $p) {
-            $pdf->Cell(120, 10, $p['nama'], 0, 0, 'R');
+            $pdf->Cell(120, 10, $p['p_nama'], 0, 0, 'R');
             $pdf->Cell(70, 10, '(....................................................)', 0, 1, 'C');
-            $sign = $this->GeneralModel->getSingnature($p['id_pegawai'])[$p['id_pegawai']];
-            if (!empty($sign['signature'])) {
-                if ($i != 0) {
-                    $pdf->Image(base_url('uploads/signature/' . $sign['signature']), 141, $pdf->getY() - 14, 30, 20);
-                    $i = 0;
-                } else {
-                    $i = 1;
-                    $pdf->Image(base_url('uploads/signature/' . $sign['signature']), 161, $pdf->getY() - 14, 30, 20);
-                }
+            // $sign = $this->p_->getSingnature($p['id_pegawai'])[$p['id_pegawai']];
+            if (!empty($p['p_sign'])) {
+                if (file_exists(base_url('uploads/signature/' . $p['p_sign'])))
+                    if ($i != 0) {
+                        $pdf->Image(base_url('uploads/signature/' . $p['p_sign']), 141, $pdf->getY() - 14, 30, 20);
+                        $i = 0;
+                    } else {
+                        $i = 1;
+                        $pdf->Image(base_url('uploads/signature/' . $p['p_sign']), 161, $pdf->getY() - 14, 30, 20);
+                    }
             }
         }
 
@@ -1032,7 +1034,8 @@ class Spt extends CI_Controller
                 $pdf->CheckPageBreak(50);
                 $pdf->Cell(16, 10, $j . '. ', 0, 0, 'L');
                 $pdf->Cell(80, 10, ' ', 0, 0, 'L');
-                $pdf->Image(base_url('uploads/foto_sppd/' . $f['file_foto']), 20, $pdf->getY(), 80, 50);
+                if (file_exists(base_url('uploads/foto_sppd/' . $f['file_foto'])))
+                    $pdf->Image(base_url('uploads/foto_sppd/' . $f['file_foto']), 20, $pdf->getY(), 80, 50);
                 $tmp_y = $pdf->getY() + 52;
 
                 $pdf->MultiCell(100, 10, $f['deskripsi'], 0,  'L');
