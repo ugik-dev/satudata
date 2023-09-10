@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/css/vendors/photoswipe.css" />
+
 <div class="container-fluid">
     <div class="card">
         <!-- <ul class="nav nav-tabs border-tab" id="top-tab" role="tablist"> -->

@@ -81,7 +81,7 @@
                                             <div class="mb-3 row">
                                                 <label class="col-sm-3 col-form-label">Sampai</label>
                                                 <div class="col-sm-8">
-                                                    <input class="form-control m-input digits" id="sampai" name="sampai" type="date" value="<?= date('Y-m-d') ?>" data-bs-original-title="" title="">
+                                                    <input class="form-control m-input digits" id="sampai" name="sampai" type="date" value="<?= date("Y-m-d", strtotime("1 months"));  ?>" data-bs-original-title="" title="">
                                                 </div>
                                             </div>
                                         </div>

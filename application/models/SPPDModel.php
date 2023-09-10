@@ -358,8 +358,6 @@ class SPPDModel extends CI_Model
     {
 
         $ses = $this->session->userdata();
-        // echo $sort;
-        // die();
         $this->db->select('rjs.nama_ref_jen_spt');
         $this->db->select('l.id_laporan,
                             sa.nama_satuan,
@@ -585,17 +583,9 @@ class SPPDModel extends CI_Model
             array_push($res_id, $rid['id_spt']);
         }
         if (!empty($res_id)) {
-            // if (!$sort) {
-            //     $this->db->select('p.*, u.nama, u.nip, u.jabatan,u.pangkat_gol, tanggal_lahir, r.level');
-            // } else {
-            //     $this->db->select('p.id_spt, u.nama, r.level');
-            // }
-
             $this->db->from('pengikut p ');
             $this->db->where_in('id_spt', $res_id);
             $pengikut = DataStructure::groupingByParent($this->db->get()->result_array(), 'id_spt');
-            // echo json_encode($pengikut);
-            // die();
             if (!$sort) {
                 $this->db->select('*');
             } else {

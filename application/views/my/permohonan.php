@@ -39,7 +39,7 @@
                                                 ?>
                                                 <label class="col-sm-3 col-form-label">Dari</label>
                                                 <div class="col-sm-8">
-                                                    <input class="form-control m-input digits" id="dari" name="dari" type="date" value="<?= date("Y-m-d", strtotime("-3 months")); ?>" data-bs-original-title="" title="">
+                                                    <input class="form-control m-input digits" id="dari" name="dari" type="date" value="<?= date("Y-m-d", strtotime("-1 months")); ?>" data-bs-original-title="" title="">
                                                 </div>
                                             </div>
                                         </div>
