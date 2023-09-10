@@ -993,7 +993,7 @@ class Spt extends CI_Controller
         $pdf->Cell(100, 5, '', 0, 0, 'L');
         $pdf->Cell(90, 5, 'Yang Melaporkan :', 0, 1, 'C');
         $pdf->Cell(100, 3, '', 0, 1, 'L');
-        $pdf->Cell(120, 10, $data['pel_nama'], 0, 0, 'R');
+        $pdf->Cell(120, 10, $data['pel_nama'] . file_exists(base_url('uploads/signature/' . $data['pel_sign'])) . base_url('uploads/signature/' . $data['pel_sign']), 0, 0, 'R');
         $pdf->Cell(70, 10, '(....................................................)', 0, 1, 'C');
         // $sign = $this->GeneralModel->getSingnature($data['id_pegawai'])[$data['id_pegawai']];
         if (!empty($data['pel_sign']))
