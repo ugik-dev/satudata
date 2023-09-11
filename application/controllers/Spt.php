@@ -1030,7 +1030,7 @@ class Spt extends CI_Controller
                 $pdf->CheckPageBreak(50);
                 $pdf->Cell(16, 10, $j . '. ', 0, 0, 'L');
                 $pdf->Cell(80, 10, ' ', 0, 0, 'L');
-                $pdf->Image(base_url('uploads/foto_sppd/' . $f['file_foto']), 20, $pdf->getY(), 80, 50);
+                $pdf->Image('./uploads/foto_sppd/' . $f['file_foto'], 20, $pdf->getY(), 80, 50);
                 $tmp_y = $pdf->getY() + 52;
 
                 $pdf->MultiCell(100, 10, $f['deskripsi'], 0,  'L');
@@ -1217,16 +1217,16 @@ class Spt extends CI_Controller
             $pdf->MultiCell(45, 5,  $sign_ppk['sign_pangkat'], 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(75, 5,  'NIP. ' . $sign_ppk['sign_nip'], 0, 'L', 0);
-            if (!empty($sign_ppk['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_ppk['sign_signature']), 140, $pdf->getY() - 40, 0, 26);
+            if (!empty($sign_ppk['sign_signature'])) $pdf->Image('./uploads/signature/' . $sign_ppk['sign_signature'], 140, $pdf->getY() - 40, 0, 26);
 
             if ($qr == 2) {
                 if (empty($data['qrcode'])) {
                     $key = md5($data['no_spt'] . time());
                     $this->SPPDModel->addQRCode(['qrcode' => $key, 'id_spt' => $data['id_spt']]);
                     $this->addQRCode($key, 20);
-                    $pdf->Image(base_url('uploads/qrcode/20' .  $key . '.png'), 40, $pdf->getY() - 40.5, 25);
+                    $pdf->Image('./uploads/qrcode/20' .  $key . '.png', 40, $pdf->getY() - 40.5, 25);
                 } else {
-                    $pdf->Image(base_url('uploads/qrcode/20' . $data['qrcode'] . '.png'), 40, $pdf->getY() - 40.5, 25);
+                    $pdf->Image('./uploads/qrcode/20' . $data['qrcode'] . '.png', 40, $pdf->getY() - 40.5, 25);
                 }
             }
         } else {
@@ -1302,7 +1302,7 @@ class Spt extends CI_Controller
             $pdf->Cell(80, 4, 'NIP. ' . format_nip($sign_kadin['sign_nip']), 0, 1);
             // $pdf->Cell(108, 5, "", 0);
             // $pdf->Cell(80, 5, 'NIPs.' . $sign_kadin['sign_nip'], 1);
-            if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 120, $pdf->getY() - 35, 0, 25);
+            if (!empty($sign_kadin['sign_signature'])) $pdf->Image('./uploads/signature/' . $sign_kadin['sign_signature'], 120, $pdf->getY() - 35, 0, 25);
         }
 
 
@@ -1385,7 +1385,7 @@ class Spt extends CI_Controller
             $pdf->Cell(80, 4, 'NIP. ' . format_nip($sign_kadin['sign_nip']), 0, 1);
             // $pdf->Cell(108, 4, "", 0);
             // $pdf->Cell(80, 4, 'NIPs.' . $sign_kadin['sign_nip'], 1);
-            if (!empty($sign_kadin['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 17, $pdf->getY() - 40, 0, 25);
+            if (!empty($sign_kadin['sign_signature'])) $pdf->Image('./uploads/signature/' . $sign_kadin['sign_signature'], 17, $pdf->getY() - 40, 0, 25);
         }
 
         // ppk
@@ -1407,7 +1407,7 @@ class Spt extends CI_Controller
         $pdf->Cell(80, 4, 'NIP. ' .  (!empty($sign_ppk) ? format_nip($sign_ppk['sign_nip']) : ''), 0, 1);
         // $pdf->Cell(108, 4, "", 0);
         // $pdf->Cell(80, 4, 'NIPs.' . $sign_kadin['sign_nip'], 1);
-        if (!empty($sign_ppk['sign_signature'])) $pdf->Image(base_url('uploads/signature/' . $sign_ppk['sign_signature']), 117, $pdf->getY() - 39, 0, 25);
+        if (!empty($sign_ppk['sign_signature'])) $pdf->Image('./uploads/signature/' . $sign_ppk['sign_signature'], 117, $pdf->getY() - 39, 0, 25);
         // }
 
         $pdf->Cell(1, 4, '', 0, 0);
