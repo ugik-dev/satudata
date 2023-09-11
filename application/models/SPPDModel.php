@@ -746,7 +746,7 @@ class SPPDModel extends CI_Model
     public function addSPPD($data)
     {
 
-
+        date_default_timezone_set('Asia/Jakarta');
         // die();
         $ses = $this->session->userdata();
         $data['id_satuan'] = $ses['id_satuan'];
