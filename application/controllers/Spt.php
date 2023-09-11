@@ -1628,9 +1628,9 @@ class Spt extends CI_Controller
                     $key = md5($data['no_spt'] . time());
                     $this->SPPDModel->addQRCode(['qrcode' => $key, 'id_spt' => $data['id_spt']]);
                     $this->addQRCode($key, 20);
-                    $pdf->Image(base_url('uploads/qrcode/20' .  $key . '.png'), 40, $pdf->getY() - 40.5, 25);
+                    $pdf->Image('./uploads/qrcode/20' .  $key . '.png', 40, $pdf->getY() - 40.5, 25);
                 } else {
-                    $pdf->Image(base_url('uploads/qrcode/20' . $data['qrcode'] . '.png'), 40, $pdf->getY() - 40.5, 25);
+                    $pdf->Image('./uploads/qrcode/20' . $data['qrcode'] . '.png', 40, $pdf->getY() - 40.5, 25);
                 }
             }
             if ($cap == 'cap') {
