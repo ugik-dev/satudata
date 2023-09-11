@@ -556,7 +556,7 @@ class Spt extends CI_Controller
     {
         if ($data['jen_satker'] == 1 || $dinkes) {
             // echo json_encode($data);
-            $pdf->Image(base_url('assets/img/kab_bangka.jpg'), 20, 5, 20, 27);
+            $pdf->Image('./assets/img/kab_bangka.jpg', 20, 5, 20, 27);
             $pdf->SetFont('Arial', '', 13);
             $pdf->SetFont('Arial', 'B', 15);
             $pdf->Cell(15, 6, '', 0, 0, 'C');
