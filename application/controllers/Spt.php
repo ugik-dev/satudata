@@ -576,8 +576,8 @@ class Spt extends CI_Controller
             $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
             $pdf->SetLineWidth(0.2);
         } else if ($data['jen_satker'] == 2) {
-            $pdf->Image(base_url('assets/img/kab_bangka.jpg'), 10, 5, 20, 27);
-            $pdf->Image(base_url('assets/img/logo_puskesmas.png'), 180, 5, 27, 27);
+            $pdf->Image('./assets/img/kab_bangka.jpg', 10, 5, 20, 27);
+            $pdf->Image('./assets/img/logo_puskesmas.png', 180, 5, 27, 27);
             $pdf->SetFont('Arial', '', 13);
             $pdf->SetFont('Arial', 'B', 15);
             $pdf->Cell(20, 6, '', 0, 0, 'C');
@@ -601,8 +601,8 @@ class Spt extends CI_Controller
         } else if ($data['jen_satker'] == 3) {
             // echo json_encode($data);
             if ($data['id_satuan'] == 17) {
-                $pdf->Image(base_url('assets/img/kab_bangka.jpg'), 20, 5, 20, 27);
-                $pdf->Image(base_url('assets/img/logo_eko.png'), 180, 0, 27, 35);
+                $pdf->Image('./assets/img/kab_bangka.jpg', 20, 5, 20, 27);
+                $pdf->Image('./assets/img/logo_eko.png', 180, 0, 27, 35);
                 $pdf->SetFont('Arial', '', 13);
                 $pdf->SetFont('Arial', 'B', 15);
                 $pdf->Cell(20, 6, '', 0, 0, 'C');
@@ -624,8 +624,8 @@ class Spt extends CI_Controller
                 $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
                 $pdf->SetLineWidth(0.2);
             } else  if ($data['id_satuan'] == 18) {
-                $pdf->Image(base_url('assets/img/kab_bangka.jpg'), 20, 5, 20, 27);
-                $pdf->Image(base_url('assets/img/logo_sr2.jpg'), 174, 5, 27, 27);
+                $pdf->Image('./assets/img/kab_bangka.jpg', 20, 5, 20, 27);
+                $pdf->Image('./assets/img/logo_sr2.jpg', 174, 5, 27, 27);
                 $pdf->SetFont('Arial', '', 13);
                 $pdf->SetFont('Arial', 'B', 20);
                 $pdf->Cell(20, 6, '', 0, 0, 'C');
@@ -647,7 +647,7 @@ class Spt extends CI_Controller
                 $pdf->Line($pdf->GetX(), $pdf->GetY() + 2.8, $pdf->GetX() + 195, $pdf->GetY() + 2.8);
                 $pdf->SetLineWidth(0.2);
             } else {
-                $pdf->Image(base_url('assets/img/kab_bangka.jpg'), 20, 5, 20, 27);
+                $pdf->Image('./assets/img/kab_bangka.jpg', 20, 5, 20, 27);
                 $pdf->SetFont('Arial', '', 13);
                 $pdf->SetFont('Arial', 'B', 15);
                 $pdf->Cell(15, 6, '', 0, 0, 'C');
@@ -671,8 +671,8 @@ class Spt extends CI_Controller
             }
         } else if ($data['jen_satker'] == 4) {
             if ($data['id_satuan'] == 120) {
-                $pdf->Image(base_url('assets/img/kab_bangka.jpg'), 20, 5, 20, 27);
-                $pdf->Image(base_url('assets/img/logo_kalk.jpg'), 170, 3, 40, 30);
+                $pdf->Image('./assets/img/kab_bangka.jpg', 20, 5, 20, 27);
+                $pdf->Image('./assets/img/logo_kalk.jpg', 170, 3, 40, 30);
                 $pdf->SetFont('Arial', '', 13);
                 $pdf->SetFont('Arial', 'B', 15);
                 $pdf->Cell(20, 6, '', 0, 0, 'C');
@@ -997,7 +997,7 @@ class Spt extends CI_Controller
         $pdf->Cell(70, 10, '(....................................................)', 0, 1, 'C');
         // $sign = $this->GeneralModel->getSingnature($data['id_pegawai'])[$data['id_pegawai']];
         if (!empty($data['pel_sign']))
-            $pdf->Image(base_url('uploads/signature/' . $data['pel_sign']), 141, $pdf->getY() - 14, 30, 20);
+            $pdf->Image('./uploads/signature/' . $data['pel_sign'], 141, $pdf->getY() - 14, 30, 20);
         $i = 0;
         foreach ($data['pengikut'] as $p) {
             $pdf->Cell(120, 10, $p['p_nama'], 0, 0, 'R');
@@ -1005,11 +1005,11 @@ class Spt extends CI_Controller
             // $sign = $this->p_->getSingnature($p['id_pegawai'])[$p['id_pegawai']];
             if (!empty($p['p_sign'])) {
                 if ($i != 0) {
-                    $pdf->Image(base_url('uploads/signature/' . $p['p_sign']), 141, $pdf->getY() - 14, 30, 20);
+                    $pdf->Image('./uploads/signature/' . $p['p_sign'], 141, $pdf->getY() - 14, 30, 20);
                     $i = 0;
                 } else {
                     $i = 1;
-                    $pdf->Image(base_url('uploads/signature/' . $p['p_sign']), 161, $pdf->getY() - 14, 30, 20);
+                    $pdf->Image('./uploads/signature/' . $p['p_sign'], 161, $pdf->getY() - 14, 30, 20);
                 }
             }
         }
@@ -1622,7 +1622,7 @@ class Spt extends CI_Controller
             $pdf->MultiCell(70, 5,  'NIP. ' . $sign_kadin['sign_nip'], 0, 'L', 0);
 
             // sementara
-            $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 120, $pdf->getY() - 40, 0, 25);
+            $pdf->Image('./uploads/signature/' . $sign_kadin['sign_signature'], 120, $pdf->getY() - 40, 0, 25);
             if ($qr == 2) {
                 if (empty($data['qrcode'])) {
                     $key = md5($data['no_spt'] . time());
@@ -1634,7 +1634,7 @@ class Spt extends CI_Controller
                 }
             }
             if ($cap == 'cap') {
-                $pdf->Image(base_url('assets/img/cap-dinkes.png'), 120, $pdf->getY() - 48, 0, 40);
+                $pdf->Image('./assets/img/cap-dinkes.png', 120, $pdf->getY() - 48, 0, 40);
             }
             // if ($qr == 1)
             //     $pdf->Image(base_url('uploads/signature/' . $sign_kadin['sign_signature']), 120, $pdf->getY() - 40, 0, 25);
