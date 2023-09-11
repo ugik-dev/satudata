@@ -33,7 +33,7 @@
 
 <div class="container-fluid">
   <div class="row second-chart-list third-news-update">
-    <div hidden class="col-xl-4 col-lg-12 xl-50 morning-sec box-col-12">
+    <div class="col-xl-4 col-lg-12 xl-50 morning-sec box-col-12">
       <div class="card profile-greeting">
         <div class="card-body pb-0">
           <div class="media">
@@ -50,7 +50,7 @@
             </div>
             <div class="badge-groups">
               <div class="badge f-10">
-                <i class="me-1" data-feather="clock"></i><span id="txt"></span>
+                <i class="me-1" data-feather="clock"></i><span id="txt"><?= date('H:i') ?></span>
               </div>
             </div>
           </div>
@@ -62,7 +62,7 @@
     </div>
 
     <!-- livechat -->
-    <div hidden class="col-xl-4 xl-50 chat-sec box-col-6">
+    <div class="col-xl-4 xl-50 chat-sec box-col-6">
       <div class="card chat-default">
         <div class="card-header card-no-border">
           <div class="media media-dashboard">

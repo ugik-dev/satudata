@@ -54,11 +54,11 @@
   <!-- <script src="<?= base_url() ?>assets/js/chart-widget.js"></script> -->
 
 
-  <script src="<?= base_url() ?>assets/js/typeahead/handlebars.js"></script>
-  <script src="<?= base_url() ?>assets/js/typeahead/typeahead.bundle.js"></script>
-  <script src="<?= base_url() ?>assets/js/typeahead/typeahead.custom.js"></script>
-  <script src="<?= base_url() ?>assets/js/typeahead-search/handlebars.js"></script>
-  <script src="<?= base_url() ?>assets/js/typeahead-search/typeahead-custom.js"></script>
+  <!-- <script src="<?= base_url() ?>assets/js/typeahead/handlebars.js"></script> -->
+  <!-- <script src="<?= base_url() ?>assets/js/typeahead/typeahead.bundle.js"></script> -->
+  <!-- <script src="<?= base_url() ?>assets/js/typeahead/typeahead.custom.js"></script> -->
+  <!-- <script src="<?= base_url() ?>assets/js/typeahead-search/handlebars.js"></script> -->
+  <!-- <script src="<?= base_url() ?>assets/js/typeahead-search/typeahead-custom.js"></script> -->
   <script src="<?= base_url() ?>assets/js/tooltip-init.js"></script>
   <script src="<?= base_url() ?>assets/js/photoswipe/photoswipe.min.js"></script>
   <script src="<?= base_url() ?>assets/js/photoswipe/photoswipe-ui-default.min.js"></script>

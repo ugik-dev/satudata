@@ -32,7 +32,7 @@
                         <a class="sidebar-link sidebar-title link-nav" href="<?= base_url() ?>dashboard"><i data-feather="home"> </i><span>DASHBOARD</span></a>
                     </li>
                     <li class="sidebar-list">
-                        <a style="" class="sidebar-link sidebar-title link-nav" id="sidebar_absensi" href="<?= base_url() ?>absensi"><i data-feather="calendar"> </i><span>Absensi</span></a>
+                        <!-- <a style="" class="sidebar-link sidebar-title link-nav" id="sidebar_absensi" href="<?= base_url() ?>absensi"><i data-feather="calendar"> </i><span>Absensi</span></a> -->
                     </li>
                     <li class="sidebar-list">
                         <a style="" class="sidebar-link sidebar-title link-nav" id="sidebar_surat_izin" href="<?= base_url() ?>surat-izin"><i data-feather="calendar"> </i><span>Surat Izin</span></a>
