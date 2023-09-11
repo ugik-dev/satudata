@@ -66,7 +66,7 @@
   <!-- Plugins JS Ends-->
   <!-- Theme js-->
   <script src="<?= base_url() ?>assets/js/script.js"></script>
-  <script src="<?= base_url() ?>assets/js/theme-customizer/customizer.js"></script>
+  <script src="<?= base_url() ?>assets/js/theme-customizer/customizer.js?v=0.1"></script>
   <!-- login js-->
   <!-- Plugin used-->
   </body>
