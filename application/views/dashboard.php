@@ -42,7 +42,7 @@
                 <h4 class="f-w-600 font-primary" id="greeting">
                   Good Morning
                 </h4>
-                <p>Here whats happing in your account today</p>
+                <!-- <p>Here whats happing in your account today</p> -->
                 <div class="whatsnew-btn">
                   <a class="btn btn-primary">Whats New !</a>
                 </div>
@@ -766,15 +766,15 @@
         timerId = setTimeout(tick, 5000); // (*)
       }, 5000);
     }
-    // setTimeout(
-    //   getLiveChat(false), 10000);
+    setTimeout(
+      getLiveChat(false), 10000);
 
-    // getPengumuman(false)
-    // getMonitorWebsite(false)
-    // getBeritaPkm(false)
+    getPengumuman(false)
+    getMonitorWebsite(false)
+    getBeritaPkm(false)
     // getAktifitasHarian(false)
-    // getInfoSPT(false)
-    // getInfoSPTPkm(false)
+    getInfoSPT(false)
+    getInfoSPTPkm(false)
 
     // toolbar.tahun.trigger('change');
     tahun_monitor_website.on('change', function() {
@@ -1022,32 +1022,32 @@
       });
     }
 
-    // function getInfoSPT(update) {
-    //   if (update) {
-    //     Swal.fire({
-    //       title: 'Loading!',
-    //       allowOutsideClick: false,
-    //     });
-    //     Swal.showLoading()
-    //   }
-    //   return $.ajax({
-    //     url: `<?php echo base_url('dashboard/getInfoSPT') ?>`,
-    //     'type': 'get',
-    //     data: {},
-    //     success: function(data) {
-    //       Swal.close();
-    //       var json = JSON.parse(data);
-    //       if (json['error']) {
-    //         Swal.fire("Error", json['message'], "error");
+    function getInfoSPT(update) {
+      if (update) {
+        Swal.fire({
+          title: 'Loading!',
+          allowOutsideClick: false,
+        });
+        Swal.showLoading()
+      }
+      return $.ajax({
+        url: `<?php echo base_url('dashboard/getInfoSPT') ?>`,
+        'type': 'get',
+        data: {},
+        success: function(data) {
+          Swal.close();
+          var json = JSON.parse(data);
+          if (json['error']) {
+            Swal.fire("Error", json['message'], "error");
 
-    //         return;
-    //       }
-    //       dataSPT = json['data'];
-    //       renderSPT(dataSPT)
-    //     },
-    //     error: function(e) {}
-    //   });
-    // }
+            return;
+          }
+          dataSPT = json['data'];
+          renderSPT(dataSPT)
+        },
+        error: function(e) {}
+      });
+    }
 
     function getInfoSPTPkm(update) {
       if (update) {
