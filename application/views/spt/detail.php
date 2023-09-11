@@ -474,8 +474,8 @@
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="" id="id_spt" name="id_spt" value="<?= $dataContent['return_data']['id_spt'] ?>">
-                    <input type="" id="id_foto" name="id_foto">
+                    <input type="hidden" id="id_spt" name="id_spt" value="<?= $dataContent['return_data']['id_spt'] ?>">
+                    <input type="hidden" id="id_foto" name="id_foto">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group">
