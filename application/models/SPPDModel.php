@@ -746,7 +746,7 @@ class SPPDModel extends CI_Model
     public function addSPPD($data)
     {
 
-        date_default_timezone_set('Asia/Jakarta');
+        // date_default_timezone_set('Asia/Jakarta');
         // die();
         $ses = $this->session->userdata();
         $data['id_satuan'] = $ses['id_satuan'];
@@ -757,7 +757,7 @@ class SPPDModel extends CI_Model
         // die();
         $this->db->select("r.level, s.id id_pegawai, s.nama as p_nama, jabatan p_jabatan, pangkat_gol p_pangkat_gol, nip p_nip, signature p_sign, tempat_lahir p_tmpt_lahir, tanggal_lahir p_tgl_lahir");
         $this->db->from('users as s');
-        $this->db->join('roles as r', 'r.id_role = s.id_role');
+        $this->db->join('roles as r', 'r.id_role = s.id_role', 'LEFT');
         $this->db->where('s.id', $data['id_pegawai']);
         $pelaksana = $this->db->get()->result_array()[0];
         $data['pel_nama'] = $pelaksana['p_nama'];
@@ -767,7 +767,8 @@ class SPPDModel extends CI_Model
         $data['pel_sign'] = $pelaksana['p_sign'];
         $data['pel_tgl_lahir'] = $pelaksana['p_tgl_lahir'];
         $data['pel_tmpt_lahir'] = $pelaksana['p_tmpt_lahir'];
-        $data['pel_level'] = $pelaksana['level'];
+        if (!empty($pelaksana['level'])) $data['pel_level'] = $pelaksana['level'];
+        else $data['pel_level'] = 0;
         // echo json_encode($pelaksana);
         // die();
 
