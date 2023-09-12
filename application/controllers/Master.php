@@ -142,9 +142,9 @@ class Master extends CI_Controller
                 $this->DasarModel->delete_dasar($data);
             } else {
                 $id = $this->DasarModel->action_dasar($data);
+                $data = $this->GeneralModel->getAllDasar(['id_dasar' => $id])[$id];
             }
             // $id = $this->DasarModel->action_dasar($data);
-            $data = $this->GeneralModel->getAllDasar(['id_dasar' => $id])[$id];
             echo json_encode(['error' => false, 'data' => $data]);
         } catch (Exception $e) {
             ExceptionHandler::handle($e);
