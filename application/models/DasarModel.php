@@ -22,4 +22,10 @@ class DasarModel extends CI_Model
             return $this->db->insert_id();
         }
     }
+
+    public function delete_dasar($data)
+    {
+        $this->db->where('id_dasar', $data['id_dasar']);
+        $this->db->delete('dasar');
+    }
 }

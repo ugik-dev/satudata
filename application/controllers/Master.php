@@ -138,7 +138,12 @@ class Master extends CI_Controller
                 if ($tmp['user_dasar'] != $this->session->userdata('id'))
                     throw new UserException('Kamu tidak berhak melakukan aksi ini!!', UNAUTHORIZED_CODE);
             }
-            $id = $this->DasarModel->action_dasar($data);
+            if ($action == 'delete') {
+                $this->DasarModel->delete_dasar($data);
+            } else {
+                $id = $this->DasarModel->action_dasar($data);
+            }
+            // $id = $this->DasarModel->action_dasar($data);
             $data = $this->GeneralModel->getAllDasar(['id_dasar' => $id])[$id];
             echo json_encode(['error' => false, 'data' => $data]);
         } catch (Exception $e) {

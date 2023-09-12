@@ -361,7 +361,7 @@
                     return;
                 }
                 $.ajax({
-                    url: "<?= site_url('DasarController/deleteDasar') ?>",
+                    url: "<?= site_url('Master/action_dasar/delete') ?>",
                     'type': 'POST',
                     data: {
                         'id_dasar': id
