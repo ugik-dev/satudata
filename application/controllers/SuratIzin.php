@@ -671,7 +671,7 @@ class SuratIzin extends CI_Controller
     {
         if ($data['jen_satker'] == 1 || $dinkes) {
             // echo json_encode($data);
-            $pdf->Image(('.assets/img/kab_bangka.png'), 20, 5, 20, 27);
+            $pdf->Image(('./assets/img/kab_bangka.png'), 20, 5, 20, 27);
             $pdf->SetFont('Arial', '', 13);
             $pdf->SetFont('Arial', 'B', 15);
             $pdf->Cell(15, 6, '', 0, 0, 'C');
@@ -692,8 +692,8 @@ class SuratIzin extends CI_Controller
             $pdf->SetLineWidth(0.2);
         } else
         if ($data['jen_satker'] == 2) {
-            $pdf->Image(('.assets/img/kab_bangka.png'), 10, 5, 20, 27);
-            $pdf->Image(('.assets/img/logo_puskesmas.png'), 180, 5, 27, 27);
+            $pdf->Image(('./assets/img/kab_bangka.png'), 10, 5, 20, 27);
+            $pdf->Image(('./assets/img/logo_puskesmas.png'), 180, 5, 27, 27);
             $pdf->SetFont('Arial', '', 13);
             $pdf->SetFont('Arial', 'B', 15);
             $pdf->Cell(20, 6, '', 0, 0, 'C');
@@ -718,8 +718,8 @@ class SuratIzin extends CI_Controller
         if ($data['jen_satker'] == 3) {
             // echo json_encode($data);
             if ($data['id_satuan'] == 17) {
-                $pdf->Image(('.assets/img/kab_bangka.png'), 20, 5, 20, 27);
-                $pdf->Image(('.assets/img/logo_eko.png'), 180, 0, 27, 35);
+                $pdf->Image(('./assets/img/kab_bangka.png'), 20, 5, 20, 27);
+                $pdf->Image(('./assets/img/logo_eko.png'), 180, 0, 27, 35);
                 $pdf->SetFont('Arial', '', 13);
                 $pdf->SetFont('Arial', 'B', 15);
                 $pdf->Cell(20, 6, '', 0, 0, 'C');
@@ -741,8 +741,8 @@ class SuratIzin extends CI_Controller
                 $pdf->Line($pdf->GetX(), $pdf->GetY() + 3.6, $pdf->GetX() + 195, $pdf->GetY() + 3.6);
                 $pdf->SetLineWidth(0.2);
             } else  if ($data['id_satuan'] == 18) {
-                $pdf->Image(('.assets/img/kab_bangka.png'), 20, 5, 20, 27);
-                $pdf->Image(('.assets/img/logo_sr2.jpg'), 174, 5, 27, 27);
+                $pdf->Image(('./assets/img/kab_bangka.png'), 20, 5, 20, 27);
+                $pdf->Image(('./assets/img/logo_sr2.jpg'), 174, 5, 27, 27);
                 $pdf->SetFont('Arial', '', 13);
                 $pdf->SetFont('Arial', 'B', 20);
                 $pdf->Cell(20, 6, '', 0, 0, 'C');
@@ -764,7 +764,7 @@ class SuratIzin extends CI_Controller
                 $pdf->Line($pdf->GetX(), $pdf->GetY() + 2.8, $pdf->GetX() + 195, $pdf->GetY() + 2.8);
                 $pdf->SetLineWidth(0.2);
             } else {
-                $pdf->Image(('.assets/img/kab_bangka.png'), 20, 5, 20, 27);
+                $pdf->Image(('./assets/img/kab_bangka.png'), 20, 5, 20, 27);
                 $pdf->SetFont('Arial', '', 13);
                 $pdf->SetFont('Arial', 'B', 15);
                 $pdf->Cell(15, 6, '', 0, 0, 'C');
@@ -902,9 +902,9 @@ class SuratIzin extends CI_Controller
         $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
 
         if (!empty(!empty($sign_pelimpahan['sign_signature'])))
-            $pdf->Image(('.uploads/signature/' . $sign_pelimpahan['sign_signature']), 40, $pdf->getY() - 45, 0, 25);
+            $pdf->Image(('./uploads/signature/' . $sign_pelimpahan['sign_signature']), 40, $pdf->getY() - 45, 0, 25);
         if (!empty(!empty($data['signature_pegawai'])))
-            $pdf->Image(('.uploads/signature/' . $data['signature_pegawai']), 130, $pdf->getY() - 45, 0, 25);
+            $pdf->Image(('./uploads/signature/' . $data['signature_pegawai']), 130, $pdf->getY() - 45, 0, 25);
 
         $pdf->Cell(169, 5, 'Mengetahui,', 0, 1, 'C', 0);
         $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
@@ -916,7 +916,7 @@ class SuratIzin extends CI_Controller
             $pdf->Cell(15, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(169, 5, 'NIP. ' . $sign_atasan['sign_nip'], 0, 1, 'C', 0);
             if (!empty(!empty($sign_atasan['sign_signature'])))
-                $pdf->Image(('.uploads/signature/' . $sign_atasan['sign_signature']), 85, $pdf->getY() - 39, 0, 31);
+                $pdf->Image(('./uploads/signature/' . $sign_atasan['sign_signature']), 85, $pdf->getY() - 39, 0, 31);
         }
         $filename = 'SPW ' . $data['id_surat_izin'];
 
@@ -1040,7 +1040,7 @@ class SuratIzin extends CI_Controller
             $pdf->MultiCell(70, 5,  $sign_kadin['sign_pangkat'], 0, 'L', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->MultiCell(70, 5,  'NIP. ' . $sign_kadin['sign_nip'], 0, 'L', 0);
-            $pdf->Image(('.uploads/signature/' . $sign_kadin['sign_signature']), 140, $pdf->getY() - 40, 0, 30);
+            $pdf->Image(('./uploads/signature/' . $sign_kadin['sign_signature']), 140, $pdf->getY() - 40, 0, 30);
         }
         $pdf->SetFont('Arial', '', 9);
         $pdf->Cell(10, 15, '', 0, 1, 'L', 0);
@@ -1128,7 +1128,7 @@ class SuratIzin extends CI_Controller
         $p6y = $pdf->getY();
         $pdf->Cell(15, 5, '', 1, 1, 'L');
 
-        $centang = ('.assets/img/centang.png');
+        $centang = ('./assets/img/centang.png');
         // $data['jenis_izin'] = 15;
         if ($data['jenis_izin'] == 11)
             $pdf->Image($centang, $p1x + 5, $p1y + 0, 4);
@@ -1231,7 +1231,7 @@ class SuratIzin extends CI_Controller
         $pdf->Cell(120, 5);
         $pdf->Cell(70, 5, format_nip($data['nip_pegawai']), 0, 1, 'C');
         if (!empty($data['signature_pegawai']))
-            $pdf->Image(('.uploads/signature/' . $data['signature_pegawai']), 149, $pdf->getY() - 30, 40);
+            $pdf->Image(('./uploads/signature/' . $data['signature_pegawai']), 149, $pdf->getY() - 30, 40);
         $c2x = $pdf->getX();
         $c2y = $pdf->getY();
         $pdf->SetXY($c1x + 6, $c1y + 6);
@@ -1267,7 +1267,7 @@ class SuratIzin extends CI_Controller
         $pdf->Cell(70, 5,  $sign_atasan['sign_name'], 0, 1, 'C');
         $pdf->Cell(120, 2);
         $pdf->Cell(70, 2, 'NIP. ' .  format_nip($sign_atasan['sign_nip']), 0, 1, 'C');
-        $pdf->Image(('.uploads/signature/' . $sign_atasan['sign_signature']), 149, $pdf->getY() - 35, 40);
+        $pdf->Image(('./uploads/signature/' . $sign_atasan['sign_signature']), 149, $pdf->getY() - 35, 40);
 
 
         $pdf->SetXY($c1x, $c1y);
@@ -1326,7 +1326,7 @@ class SuratIzin extends CI_Controller
             $pdf->Cell(70, 3, $sign_kadin['sign_pangkat'], 0, 1, 'C');
             $pdf->Cell(120, 5);
             $pdf->Cell(70, 5, "NIP. " . format_nip($sign_kadin['sign_nip']), 0, 1, 'C');
-            $pdf->Image(('.uploads/signature/' . $sign_kadin['sign_signature']), 149, $pdf->getY() - 40, 40);
+            $pdf->Image(('./uploads/signature/' . $sign_kadin['sign_signature']), 149, $pdf->getY() - 40, 40);
         }
         $pdf->SetXY($c1x, $c1y);
 
