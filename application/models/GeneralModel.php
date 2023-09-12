@@ -401,11 +401,11 @@ class GeneralModel extends CI_Model
         $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
         $this->db->where('u.deleted_user', 0);
         if (!empty($filter['searchTerm'])) $this->db->where('CONCAT(u.nama, " " ,s.nama_satuan) like "%' . $filter['searchTerm'] . '%"');
-        if ($this->session->userdata()['id_satuan'] == 1) {
-        } else {
-            $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
-            // $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
-        }
+        // if ($this->session->userdata()['id_satuan'] == 1) {
+        // } else {
+        //     $this->db->where('u.id_satuan', $this->session->userdata()['id_satuan']);
+        //     // $this->db->join('satuan s', 'u.id_satuan = s.id_satuan', 'LEFT');
+        // }
         // }
         // if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
         // $this->db->where('ppk', 1);
