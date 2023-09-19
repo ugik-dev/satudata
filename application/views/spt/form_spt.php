@@ -104,11 +104,11 @@
                         <select class="form-control" id="transport" name="transport" required>
                         </select>
                     </div> -->
-                    <div class="col-lg-6" <?= $this->session->userdata('id_satuan') == 1 ? 'hidden' : '' ?>>
-                        <div class="col-form-label">Jenis</div>
+                    <div class="col-lg-6" <?= $this->session->userdata('id_satuan') == 1 ? ($this->session->userdata('id_role') != 1 ? 'hidden' : '') : '' ?>>
+                        <div class="col-form-label">Permohonan Melalui Dinas Kesehatan / Perjalanan Dinas ke Luar Daerah?</div>
                         <select class="form-control" id="luardaerah" name="luardaerah">
-                            <option value="1" <?= !empty($dataContent['return_data']['luardaerah']) ? ($dataContent['return_data']['luardaerah'] == '1' ? 'selected' : '') : '' ?>>Dalam Daerah Kabupaten Bangka</option>
-                            <option value="2" <?= !empty($dataContent['return_data']['luardaerah']) ? ($dataContent['return_data']['luardaerah'] == '2' ? 'selected' : '') : '' ?>>Luar Daerah Kabupaten Bangka</option>
+                            <option value="1" <?= !empty($dataContent['return_data']['luardaerah']) ? ($dataContent['return_data']['luardaerah'] == '1' ? 'selected' : '') : '' ?>>Tidak </option>
+                            <option value="2" <?= !empty($dataContent['return_data']['luardaerah']) ? ($dataContent['return_data']['luardaerah'] == '2' ? 'selected' : '') : '' ?>>Ya</option>
                         </select>
                     </div>
                 </div>
