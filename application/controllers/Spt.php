@@ -1127,8 +1127,10 @@ class Spt extends CI_Controller
         $i = 1;
         $d1 = '';
         $d2 = 'a. ';
+        $cetak_tgl  = '';
         foreach ($data['tujuan'] as $tujuan) {
             if ($i == 1) {
+                $cetak_tgl  = $tujuan['date_berangkat'];
                 $d1 = $tujuan['date_berangkat'];
                 $tujuan_text .= $tujuan['tempat_tujuan'];
             } else if ($count_t == $i) {
@@ -1206,7 +1208,7 @@ class Spt extends CI_Controller
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Pada Tanggal', 0, 0, 'L', 0);
             $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
-            $pdf->Cell(40, 5, tanggal_indonesia($data['tgl_pengajuan']), 0, 1, 'L', 0);
+            $pdf->Cell(40, 5, tanggal_indonesia($cetak_tgl), 0, 1, 'L', 0);
             $sign_ppk =  $this->GeneralModel->getSign(['id' => $data['sign_ppk']])[0];
             $pdf->Cell(120, 5, '', 0, 1, 'C', 0);
             $pdf->Cell(120, 5, '', 0, 0, 'C', 0);
@@ -1529,10 +1531,13 @@ class Spt extends CI_Controller
         $i = 1;
         $d1 = '';
         $d2 = '';
+        $cetak_tgl = '';
         if ($data['jenis'] == 3) {
             $t = '';
             foreach ($data['tujuan'] as $tujuan) {
                 if ($i == 1) {
+                    $cetak_tgl = tanggal_indonesia($tujuan['date_berangkat']);
+
                     $tujuan_text .= $tujuan['tempat_tujuan'] . ' pada tanggal ' . tanggal_indonesia($tujuan['date_berangkat']);
                 } else if ($count_t == $i) {
                     $tujuan_text .= ' dan ' . ($t != $tujuan['tempat_tujuan'] ? 'di ' . $tujuan['tempat_tujuan'] . ' ' : '') . 'tanggal ' . tanggal_indonesia($tujuan['date_berangkat']);
@@ -1545,6 +1550,7 @@ class Spt extends CI_Controller
         } else {
             foreach ($data['tujuan'] as $tujuan) {
                 if ($i == 1) {
+                    $cetak_tgl = tanggal_indonesia($tujuan['date_berangkat']);
                     $d1 = $tujuan['date_berangkat'];
                     $tujuan_text .= $tujuan['tempat_tujuan'];
                 } else if ($count_t == $i) {
@@ -1595,7 +1601,8 @@ class Spt extends CI_Controller
             $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
             $pdf->Cell(30, 5, 'Pada Tanggal', 0, 0, 'L', 0);
             $pdf->Cell(4, 5, ':', 0, 0, 'C', 0);
-            $pdf->Cell(40, 5, tanggal_indonesia($data['tgl_pengajuan']), 0, 1, 'L', 0);
+            $pdf->Cell(40, 5, $cetak_tgl, 0, 1, 'L', 0);
+            // $pdf->Cell(40, 5, tanggal_indonesia($data['tgl_pengajuan']), 0, 1, 'L', 0);
             $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
             if ($data_satuan['jen_satker'] == 1 or ($data_satuan['jen_satker'] != 1  && $data['luardaerah'] == 2)) {
                 if (!empty($data['sign_kadin2'])) {
