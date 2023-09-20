@@ -801,7 +801,7 @@ class SPPDModel extends CI_Model
         if (!empty($data['pengikut'])) {
             $this->db->select("s.id id_pegawai, s.nama as p_nama, jabatan p_jabatan, pangkat_gol p_pangkat_gol, nip p_nip, signature p_sign, tempat_lahir p_tmpt_lahir, tanggal_lahir p_tgl_lahir");
             $this->db->from('users as s');
-            $this->db->join('roles as r', 'r.id_role = s.id_role');
+            $this->db->join('roles as r', 'r.id_role = s.id_role', 'LEFT');
             $this->db->where_in('s.id', $data['pengikut']);
             $this->db->order_by('r.level', 'asc');
 

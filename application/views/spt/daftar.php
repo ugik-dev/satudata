@@ -290,11 +290,21 @@
                     i++;
 
                 })
+                i = 2;
+                pegawai = '1. ' + spt['pel_nama'];
+                Object.values(spt['pengikut']).forEach((p) => {
+                    // if (i == 1)
+                    //     p += '1. ' + tj['tempat_tujuan'] + ' (' + tj['date_berangkat'] + ')';
+                    // else
+                    pegawai += '<br>' + i + '. ' + p['p_nama'];
+                    i++;
+
+                })
                 info = `Petugas : ${spt['nama_input']}<br>
                 No SPT : ${ spt['no_spt']?spt['no_spt']:''}<br>
                 No SPPD : ${ spt['no_sppd']?spt['no_sppd']:''}
                 `;
-                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], info, spt['pel_nama'], tujuan, spt['id_laporan'] == null ? "<i class='fa fa-times text-danger'></i><b class='text-danger'>Belum</b>" : "<i class='fa fa-check text-success'></i><b class='text-success'>Sudah</b>", statusSPT(spt['status'], spt['unapprove_oleh']), button]);
+                renderData.push([spt['id_spt'], spt['nama_ref_jen_spt'], info, pegawai, tujuan, spt['id_laporan'] == null ? "<i class='fa fa-times text-danger'></i><b class='text-danger'>Belum</b>" : "<i class='fa fa-check text-success'></i><b class='text-success'>Sudah</b>", statusSPT(spt['status'], spt['unapprove_oleh']), button]);
             });
             FDataTable.clear().rows.add(renderData).draw('full-hold');
         }
