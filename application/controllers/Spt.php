@@ -1621,6 +1621,9 @@ class Spt extends CI_Controller
             } else if ($data_satuan['jen_satker'] == 3) {
                 $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
                 $pdf->MultiCell(80, 5,  "Direktur " . $data_satuan['nama_satuan'], 0, 'L', 0);
+            } else if ($data_satuan['jen_satker'] == 4) {
+                $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
+                $pdf->MultiCell(80, 5,  "Kepala " . $data_satuan['nama_satuan'], 0, 'L', 0);
             }
             $pdf->Cell(110, 25, '', 0, 1, 'C', 0);
             $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
