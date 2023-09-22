@@ -671,7 +671,7 @@ class SPPDModel extends CI_Model
         $this->db->where_in('id_pegawai', $data['pengikut']);
         if (!$all) $this->db->where('u.jenis', '2');
         if (!empty($ex_id)) $this->db->where('u.id_spt <>', $ex_id);
-        $this->db->where('u.unapprove_oleh is not null');
+        $this->db->where('u.unapprove_oleh is null');
         // $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
         $this->db->where("(
             r.date_berangkat BETWEEN '$start' AND '$end' OR 
@@ -692,7 +692,7 @@ class SPPDModel extends CI_Model
         $this->db->join('users us', 'p.id_pegawai = us.id');
         $this->db->join('tujuan r', 'u.id_spt = r.id_spt');
         $this->db->where_in('p.id_pegawai', $data['pengikut']);
-        $this->db->where('u.unapprove_oleh is not null');
+        $this->db->where('u.unapprove_oleh is null');
         if (!empty($ex_id)) $this->db->where('u.id_spt <> ', $ex_id);
         if (!$all) $this->db->where('u.jenis', '2');
         // $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
