@@ -1291,11 +1291,12 @@ class Spt extends CI_Controller
         $pdf->Cell(30, 1, "", 0, 1);
         $pdf->SetX($cur_x + 108);
         // if ($data_satuan['jen_satker'] == 1 or ($data_satuan['jen_satker'] != 1 && $data['luardaerah'] == 2))
-        if ($data_satuan['jen_satker'] == 1)
+        if ($data_satuan['jen_satker'] == 1 or $data['luardaerah'] == '2')
             $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
-        else
-            // if ($data_satuan['jen_satker'] == 2)
+        else {
             $pdf->MultiCell(80, 4, "Kepala\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
+        }
+        // if ($data_satuan['jen_satker'] == 2)
         $pdf->Cell(30, 19, "", 0, 1);
         // $pdf->Cell(30, 1, "", 1, 1);
         // $pdf->SetY(50);
@@ -1371,7 +1372,7 @@ class Spt extends CI_Controller
         $pdf->Cell(58, 4, $tanggal_akhir, 0,  1);
         $pdf->Cell(10, 3, '', 0, 1);
         $pdf->Cell(10, 4, '', 0, 0);
-        if ($data_satuan['jen_satker'] == 1)
+        if ($data_satuan['jen_satker'] == 1 or $data['luardaerah'] == '2')
             $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
         else
             // if ($data_satuan['jen_satker'] == 2)
