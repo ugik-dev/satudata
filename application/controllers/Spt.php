@@ -321,8 +321,8 @@ class Spt extends CI_Controller
             }
             if (
                 $this->session->userdata('id_role') == '1'
-                or $this->session->userdata('id_satuan') == 22 //KENANGA
-                or $this->session->userdata('id_satuan') == 20 //Puding Besar
+                // or $this->session->userdata('id_satuan') == 22 //KENANGA
+                // or $this->session->userdata('id_satuan') == 20 //Puding Besar
                 // or $this->session->userdata('id_satuan') == 9
                 // or $this->session->userdata('id_bagian') == '4' //KESMAS
                 // or $this->session->userdata('id_bagian') == '5' //P2PL
@@ -398,8 +398,8 @@ class Spt extends CI_Controller
             }
             if (
                 $this->session->userdata('id_role') == '1'
-                or $this->session->userdata('id_satuan') == 22 //KENANGA
-                or $this->session->userdata('id_satuan') == 20 //Puding Besar
+                // or $this->session->userdata('id_satuan') == 22 //KENANGA
+                // or $this->session->userdata('id_satuan') == 20 //Puding Besar
                 // or $this->session->userdata('id_satuan') == 9
                 // or $this->session->userdata('id_bagian') == '4' //KESMAS
                 // or $this->session->userdata('id_bagian') == '5' //P2PL
@@ -1375,7 +1375,6 @@ class Spt extends CI_Controller
         if ($data_satuan['jen_satker'] == 1 or $data['luardaerah'] == '2')
             $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
         else
-            // if ($data_satuan['jen_satker'] == 2)
             $pdf->MultiCell(80, 4, "Kepala\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
         $pdf->Cell(30, 28, "", 0, 1);
         $pdf->Cell(10, 4, '', 0, 0);
