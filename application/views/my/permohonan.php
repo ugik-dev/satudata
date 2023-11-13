@@ -380,6 +380,12 @@
             var i = 0;
 
             var renderData = [];
+            var plh = false;
+            <?php if (!empty($dataContent['plh'])) { ?>
+                plh = true;
+                plh_user = <?= json_encode($dataContent['plh']['user']) ?>;
+            <?php } ?>
+
             curUser = <?= $this->session->userdata()['id'] ?>;
             curLevel = <?= $this->session->userdata()['level'] ?>;
             curSatuan = <?= $this->session->userdata()['id_satuan'] ?>;
@@ -516,6 +522,20 @@
                         `;
 
                     }
+
+                    <?php if (!empty($dataContent['plh'])) { ?>
+                        if (spt['status'] == 12) {
+                            var aksiBtn = `
+                                <a class="approv dropdown-item"  data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Approv</a>
+                                <a class="deapprov dropdown-item " data-jenis='spt' data-id='${spt['id_spt']}' ><i class='fa fa-times'></i> Tolak Approv</a>
+                                `;
+                        } else if (spt['status'] == 99 || spt['unapprove_oleh'] == '<?= $this->session->userdata()['id'] ?>') {
+                            var aksiBtn = `
+                        <a class="batal_aksi dropdown-item"  data-jenis='spt'  data-id='${spt['id_spt']}' ><i class='fa fa-check'></i> Batal Aksi</a>
+                        `;
+                        }
+                    <?php } ?>
+
                 <?php  } else if ($this->session->userdata()['level'] == 1) { ?>
                     if (spt['status'] == 12) {
                         var aksiBtn = `

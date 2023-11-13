@@ -66,6 +66,27 @@
                         <textarea name="maksud" id="maksud" class="form-control" rows="3"><?= !empty($dataContent['return_data']['maksud']) ? $dataContent['return_data']['maksud'] : '' ?></textarea>
                     </div>
 
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="col-form-label">Buat Pelimpahan Wewenang</div>
+                                <select class="form-control" id="plh" name="plh">
+                                    <option value="1" <?= !empty($dataContent['return_data']['plh']) ? ($dataContent['return_data']['plh'] == 'N' ? 'selected' : '') : '' ?>>Tidak</option>
+                                    <option value="2" <?= !empty($dataContent['return_data']['plh']) ? ($dataContent['return_data']['plh'] == 'Y' ? 'selected' : '') : '' ?>>Ya</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="col-form-label">Penerima PLH</div>
+                                <select class="select2 col-sm-12" id="plh_id" name="plh_id">
+                                    <?php
+                                    if (!empty($dataContent['return_data']['id_pegawai'])) {
+                                        echo '<option selected value="' . $dataContent['return_data']['id_pegawai'] . '">' . $dataContent['return_data']['pel_nama'] . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-lg-6">
                         <div class="col-form-label">Pegawai Pelaksana</div>
@@ -577,7 +598,26 @@
                 cache: true
             }
         });
-
+        $("#plh_id").select2({
+            minimumInputLength: 4,
+            ajax: {
+                url: '<?= base_url() ?>Search/pegawai',
+                type: "get",
+                dataType: 'json',
+                delay: 1500,
+                data: function(params) {
+                    return {
+                        searchTerm: params.term // search term
+                    };
+                },
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+        });
         $("#pengikut").select2({
             minimumInputLength: 4,
             ajax: {

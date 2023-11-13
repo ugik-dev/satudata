@@ -354,10 +354,13 @@ class SPPDModel extends CI_Model
 
         return DataStructure::SPPDStyle2($res, $tujuan, null);
     }
+
+
     public function getAllSPPD($filter = [], $sort = false, $cross = false)
     {
-
+        // die();
         $ses = $this->session->userdata();
+
         $this->db->select('rjs.nama_ref_jen_spt');
         $this->db->select('l.id_laporan,
                             sa.nama_satuan,
@@ -368,7 +371,7 @@ class SPPDModel extends CI_Model
         if (!$sort) {
             $this->db->select('
             s.id_seksi as id_seksi_pegawai,
-            s.id_bagian as id_bagian_pegawai, 
+            s.id_bagian as id_bagian_pegawai,   
             ');
 
             $this->db->select(' 
@@ -410,21 +413,39 @@ class SPPDModel extends CI_Model
         $this->db->join('pengikut pk', 'pk.id_spt = u.id_spt', 'LEFT');
         $this->db->group_by('id_spt');
 
-        if (!empty($filter['dari']) && !empty($filter['sampai'])) $this->db->where(' (
-            (tj.date_berangkat BETWEEN "' . $filter['dari'] . '" AND "' . $filter['sampai'] . '" ) OR
-            (tj.date_berangkat BETWEEN "' . $filter['dari'] . '" AND "' . $filter['sampai'] . '" )
-        )
-        ');
+        // if (!empty($filter['dari']) && !empty($filter['sampai'])) $this->db->where(' (
+        //     (tj.date_berangkat BETWEEN "' . $filter['dari'] . '" AND "' . $filter['sampai'] . '" ) OR
+        //     (tj.date_berangkat BETWEEN "' . $filter['dari'] . '" AND "' . $filter['sampai'] . '" )
+        // )
+        // ');
+
+        if (!empty($filter['dari']) && !empty($filter['sampai'])) {
+            $start = $filter['dari'];
+            $end = $filter['sampai'];
+            $this->db->where("(
+                tj.date_berangkat BETWEEN '$start' AND '$end' OR 
+                tj.date_kembali BETWEEN '$start' AND '$end' OR
+            '$start' BETWEEN  tj.date_berangkat  AND  tj.date_kembali OR
+            '$end' BETWEEN  tj.date_berangkat  AND  tj.date_kembali  
+            )");
+        }
+
         if (!empty($filter['id_spt'])) $this->db->where('u.id_spt', $filter['id_spt']);
         // $this->db->where('u.id_spt', 24);
         if (!empty($filter['id_satuan'])) $this->db->where('u.id_satuan', $filter['id_satuan']);
+        if (!empty($filter['plh'])) {
+            $this->db->where('u.plh', 'Y');
+            $this->db->where('u.status', '99');
+            $this->db->where('u.plh_id', $ses['id']);
+        }
         if (!empty($filter['id_bagian'])) $this->db->where('u.id_bagian', $filter['id_bagian']);
         if (!empty($filter['id_seksi'])) $this->db->where('u.id_seksi', $filter['id_seksi']);
         if (!empty($filter['my_perjadin'])) $this->db->where('( u.id_pegawai =' .  $ses['id'] . ' OR pk.id_pegawai = ' .  $ses['id'] . ' )');
         if (!empty($filter['search_approval']['data_penilai'])) {
             $penilai =  $filter['search_approval']['data_penilai'];
+            // echo json_encode($penilai);
+            // die();
             if ($penilai['jen_satker'] == 1) {
-
                 if ($penilai['level'] == 1) {
                     $this->db->where("(u.status in (12,99,98) OR unapprove_oleh = {$penilai['id']} OR d.id_ppk2 = {$penilai['id']} OR d.id_pptk = {$penilai['id']})");
                     if (!empty($filter['status_permohonan'])) {
@@ -775,7 +796,7 @@ class SPPDModel extends CI_Model
         $this->db->insert('spt', DataStructure::slice($data, [
             'ppk', 'dasar', 'maksud', 'id_pegawai', 'transport', 'lama_dinas', 'jenis', 'luardaerah',
             'id_satuan', 'id_bagian', 'id_seksi', 'id_dasar', 'user_input', 'id_ppk', 'status', 'berangkat_dari',
-            'pel_nama', 'pel_nip', 'pel_jabatan', 'pel_pangkat_gol', 'pel_sign', 'pel_tmpt_lahir', 'pel_tgl_lahir', 'pel_level'
+            'pel_nama', 'pel_nip', 'pel_jabatan', 'pel_pangkat_gol', 'pel_sign', 'pel_tmpt_lahir', 'pel_tgl_lahir', 'pel_level', 'plh', 'plh_id'
         ], FALSE));
         ExceptionHandler::handleDBError($this->db->error(), "Tambah SPT", "SPT");
         $id_spt = $this->db->insert_id();
@@ -1079,7 +1100,7 @@ class SPPDModel extends CI_Model
         return $num;
     }
 
-    function sign($id, $field, $user, $title, $status = '')
+    function sign($id, $field, $user, $title, $status = '', $plh = null)
     {
         if (empty($user['signature']))
             throw new UserException('Kamu belum upload tanda tangan!');
@@ -1092,6 +1113,9 @@ class SPPDModel extends CI_Model
             'sign_signature	' => $user['signature'],
             'aksi	' => 'approv',
         );
+        if (!empty($plh)) {
+            $sign['sign_plh'] = $plh['nama_role'];
+        }
         $this->db->insert('sign', $sign);
         ExceptionHandler::handleDBError($this->db->error(), "Approv Gagal", "Approv");
         $sign_id =  $this->db->insert_id();
@@ -1107,7 +1131,7 @@ class SPPDModel extends CI_Model
         // die();
         return $sign_id;
     }
-    public function approv($data_spt)
+    public function approv($data_spt, $plh)
     {
         // echo json_encode($data_spt);
         // die();
@@ -1122,7 +1146,7 @@ class SPPDModel extends CI_Model
             $ap_pptk = true;
         }
         // if ($data_spt['id_ppk2'] == $ses['id'] && empty($data_spt['sign_ppk'])) {
-        if ($data_spt['id_ppk2'] == $ses['id']) {
+        if ($data_spt['id_ppk2'] == $ses['id'] && empty($data_spt['sign_ppk'])) {
             $data_spt['sign_ppk'] =  $this->sign($data_spt['id_spt'], 'sign_ppk', $ses, 'Pejabat Pembuat Komitmen');
             $continue = true;
             $ap_ppk = true;
@@ -1254,6 +1278,7 @@ class SPPDModel extends CI_Model
                 $this->db->set('status', 6);
             }
         } else if ($ap_ppk && $data_spt['jen_satker'] == 1) {
+            // die();
             if ($ses['level'] == 2) {
                 $this->db->set('approve_sekdin', $ses['id']);
                 $this->db->set('status', '12');
@@ -1262,6 +1287,34 @@ class SPPDModel extends CI_Model
             }
         } else if ($continue) {
             $this->db->set('id_spt', $data_spt['id_spt']);
+        } else if (!empty($plh)) {
+            if ($data_spt['status'] == '12' && $plh['level'] == 1) {
+                if ($data_spt['pel_level'] == 7) {
+                    $nomor = $this->cek_nomor($data_spt, true, true);
+                    $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin2', $ses, $ses['jabatan'], '', $plh);
+                    if (!empty($nomor['spt'])) {
+                        $this->db->set('no_spt', $nomor['spt']);
+                    }
+                    if (!empty($nomor['sppd'])) {
+                        $this->db->set('no_sppd', $nomor['sppd']);
+                    }
+                    $this->db->set('sign_kadin2', $id_sign_kadin);
+                    $this->db->set('approve_kadin', $ses['id']);
+                    $this->db->set('status', '99');
+                } else {
+                    $nomor = $this->cek_nomor($data_spt);
+                    $id_sign_kadin =  $this->sign($data_spt['id_spt'], 'sign_kadin', $ses, $ses['jabatan'], '', $plh);
+                    if (!empty($nomor['spt'])) {
+                        $this->db->set('no_spt', $nomor['spt']);
+                    }
+                    if (!empty($nomor['sppd'])) {
+                        $this->db->set('no_sppd', $nomor['sppd']);
+                    }
+                    $this->db->set('sign_kadin', $id_sign_kadin);
+                    $this->db->set('approve_kadin', $ses['id']);
+                    $this->db->set('status', '99');
+                }
+            }
         } else {
             throw new UserException('Kamu tidak berhak mengakses resource ini', UNAUTHORIZED_CODE);
         }

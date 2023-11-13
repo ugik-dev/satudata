@@ -82,17 +82,49 @@ class Permohonan extends CI_Controller
     {
         try {
             $filter = $this->input->get();
-            $filter['search_approval']['data_penilai'] = $data_penilai = $this->session->userdata();
-            $filter['id_penilai'] = $data_penilai['id'];
-            if (!empty($filter['chk-surat-izin']) or !empty($filter['chk-surat-cuti']))
-                $data['surat_izin'] = $this->SuratIzinModel->getAll($filter);
-            else
+            $data_penilai1 = $this->session->userdata();
+            $filter['id_penilai'] = $data_penilai1['id'];
+
+            $plh = $this->SPPDModel->getAllSPPD(['status' => 99, 'plh' => 'Y', 'dari' => date('Y-m-d'), 'sampai' => date('Y-m-d')]);
+            if (!empty($plh)) {
+                $this->load->model('UserModel');
+                $filter['plh_search'] = $plh[array_key_first($plh)];
+                $data_penilai2 = $filter['plh_search']['user'] = $this->UserModel->getAllUser(['id_user' => $filter['plh_search']['id_pegawai']])[$filter['plh_search']['id_pegawai']];
+            }
+            // echo json_encode($filter);
+            // die();
+
+            if (!empty($filter['chk-surat-izin']) or !empty($filter['chk-surat-cuti'])) {
+                $filter['search_approval']['data_penilai'] = $data_penilai1;
+                $filter['id_penilai'] = $data_penilai1['id'];
+                $si1 = $this->SuratIzinModel->getAll($filter);
+                $si2 = [];
+                if (!empty($data_penilai2)) {
+                    $filter['search_approval']['data_penilai'] = $data_penilai2;
+                    $filter['id_penilai'] = $data_penilai2['id'];
+                    $si2 = $this->SuratIzinModel->getAll($filter);
+                }
+                $data['surat_izin'] = array_merge($si1, $si2);
+            } else
                 $data['surat_izin'] = [];
-            if (in_array($data_penilai['level'], [1, 2, 3, 4, 5, 7, 8, 6])) {
+
+            if (in_array($data_penilai1['level'], [1, 2, 3, 4, 5, 7, 8, 6])) {
                 // $data['laporan_spt'] = $this->SPPDModel->getLaporan($filter, true);
-                if (!empty($filter['chk-spt']) or !empty($filter['chk-sppd']) or !empty($filter['chk-lembur']))
-                    $data['spt'] = $this->SPPDModel->getAllSPPD($filter, true);
-                else $data['spt'] = [];
+                if (!empty($filter['chk-spt']) or !empty($filter['chk-sppd']) or !empty($filter['chk-lembur'])) {
+                    $spt2 = [];
+                    if (!empty($data_penilai2)) {
+                        $filter['search_approval']['data_penilai'] = $data_penilai2;
+                        $filter['id_penilai'] = $data_penilai2['id'];
+                        $spt2 = $this->SPPDModel->getAllSPPD($filter);
+                        // echo json_encode($spt2);
+                        // die();
+                    }
+                    $filter['search_approval']['data_penilai'] = $data_penilai1;
+                    $filter['id_penilai'] = $data_penilai1['id'];
+                    $spt1 = $this->SPPDModel->getAllSPPD($filter, true);
+
+                    $data['spt'] = $spt1 + $spt2;
+                } else $data['spt'] = [];
             } else {
                 $data['spt'] = [];
                 $data['laporan_spt'] = [];
@@ -110,11 +142,19 @@ class Permohonan extends CI_Controller
     {
         try {
             // $this->SecurityModel->userOnlyGuard();
-
+            $plh = [];
+            $plh = $this->SPPDModel->getAllSPPD(['status' => 99, 'plh' => 'Y', 'dari' => date('Y-m-d'), 'sampai' => date('Y-m-d')]);
+            if (!empty($plh)) {
+                $this->load->model('UserModel');
+                $plh = $plh[array_key_first($plh)];
+                $plh['user'] = $this->UserModel->getAllUser(['id_user' => $plh['id_pegawai']])[$plh['id_pegawai']];
+            }
+            // echo json_encode($plh);
+            // die();
             $data = array(
                 'page' => 'my/permohonan',
                 'title' => 'SPPD',
-                // 'dataContent' => $res_data
+                'dataContent' => ['plh' => $plh]
 
             );
             $this->load->view('page', $data);
