@@ -79,24 +79,27 @@
 
                                         <?php
                                         if (!empty($dataContent['return_data']['id_dasar'])) {
-                                            echo $dataContent['return_data']['nama_dasar'];
+                                            echo $dataContent['return_data']['nama_dasar'] . ' | Kode Rekening ' .
+                                                $dataContent['return_data']['kode_rekening'];
                                         } else  if (!empty($dataContent['return_data']['dasar'])) {
                                             echo $dataContent['return_data']['dasar'];
                                         }
                                         ?>
+                                        <?php if (!empty($dataContent['return_data']['id_dasar'])) { ?>
+                                            <div class="row mb-2">
+                                                <div class="col-lg-6">
+                                                    <div class="col-form-label"><strong>PPK</strong></div>
+                                                    <?= $dataContent['return_data']['nama_ppk'] ?>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="col-form-label"><strong>PPTK</strong></div>
+                                                    <?= $dataContent['return_data']['nama_pptk'] ?>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
-                                <div class="row">
 
-                                    <div class="col-lg-6">
-                                        <div class="col-form-label"><strong>PPK</strong></div>
-                                        <?= $dataContent['return_data']['nama_ppk'] ?>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="col-form-label"><strong>PPTK</strong></div>
-                                        <?= $dataContent['return_data']['nama_pptk'] ?>
-                                    </div>
-                                </div>
                                 <?php
                                 $last_dasar = 1;
                                 if (!empty($dataContent['return_data']['dasar_tambahan'])) {

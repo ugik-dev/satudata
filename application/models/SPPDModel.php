@@ -692,7 +692,7 @@ class SPPDModel extends CI_Model
         $this->db->where_in('id_pegawai', $data['pengikut']);
         if (!$all) $this->db->where('u.jenis', '2');
         if (!empty($ex_id)) $this->db->where('u.id_spt <>', $ex_id);
-        $this->db->where('u.status <> 98');
+        $this->db->where('u.unapprove_oleh is null');
         // $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
         $this->db->where("(
             r.date_berangkat BETWEEN '$start' AND '$end' OR 
@@ -713,7 +713,7 @@ class SPPDModel extends CI_Model
         $this->db->join('users us', 'p.id_pegawai = us.id');
         $this->db->join('tujuan r', 'u.id_spt = r.id_spt');
         $this->db->where_in('p.id_pegawai', $data['pengikut']);
-        $this->db->where('u.status <> 98');
+        $this->db->where('u.unapprove_oleh is null');
         if (!empty($ex_id)) $this->db->where('u.id_spt <> ', $ex_id);
         if (!$all) $this->db->where('u.jenis', '2');
         // $this->db->where("(r.date_kembali >='$start' AND r.date_berangkat <= '$end')");
@@ -822,7 +822,7 @@ class SPPDModel extends CI_Model
         if (!empty($data['pengikut'])) {
             $this->db->select("s.id id_pegawai, s.nama as p_nama, jabatan p_jabatan, pangkat_gol p_pangkat_gol, nip p_nip, signature p_sign, tempat_lahir p_tmpt_lahir, tanggal_lahir p_tgl_lahir");
             $this->db->from('users as s');
-            $this->db->join('roles as r', 'r.id_role = s.id_role');
+            $this->db->join('roles as r', 'r.id_role = s.id_role', 'LEFT');
             $this->db->where_in('s.id', $data['pengikut']);
             $this->db->order_by('r.level', 'asc');
 

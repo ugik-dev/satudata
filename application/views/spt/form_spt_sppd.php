@@ -111,11 +111,11 @@
                         <select class="form-control" id="transport" name="transport" required>
                         </select>
                     </div>
-                    <div class="col-lg-6" <?= $this->session->userdata('id_satuan') == 1 ? 'hidden' : '' ?>>
-                        <div class="col-form-label">Jenis</div>
+                    <div class="col-lg-6" <?= $this->session->userdata('id_satuan') == 1 ? ($this->session->userdata('id_role') != 1 ? 'hidden' : '') : '' ?>>
+                        <div class="col-form-label">Permohonan Melalui Dinas Kesehatan / Perjalanan Dinas ke Luar Daerah?</div>
                         <select class="form-control" id="luardaerah" name="luardaerah">
-                            <option value="1">Dalam Daerah Kabupaten Bangka</option>
-                            <option value="2">Luar Daerah Kabupaten Bangka</option>
+                            <option value="1">Tidak</option>
+                            <option value="2">Ya</option>
                         </select>
                     </div>
                 </div>
