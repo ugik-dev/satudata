@@ -204,10 +204,10 @@ class Spt extends CI_Controller
     public function action($action, $id)
     {
         try {
-            $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
+            $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id), false, true)[$id];
             $cur_user = $this->session->userdata();
             $plh = [];
-            $plh = $this->SPPDModel->getAllSPPD(['status' => 99, 'plh' => 'Y', 'dari' => date('Y-m-d'), 'sampai' => date('Y-m-d')]);
+            $plh = $this->SPPDModel->getAllSPPD(['status' => 99, 'plh' => 'Y', 'dari' => date('Y-m-d'), 'sampai' => date('Y-m-d')], false, true);
             if (!empty($plh)) {
                 $this->load->model('UserModel');
                 $plh = $plh[array_key_first($plh)];
@@ -240,7 +240,7 @@ class Spt extends CI_Controller
 
 
 
-            $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id))[$id];
+            $data = $this->SPPDModel->getAllSPPD(array('id_spt' => $id), false, true)[$id];
             echo json_encode(array('error' => false, 'data' => $data));
         } catch (Exception $e) {
             ExceptionHandler::handle($e);

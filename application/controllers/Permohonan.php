@@ -85,14 +85,12 @@ class Permohonan extends CI_Controller
             $data_penilai1 = $this->session->userdata();
             $filter['id_penilai'] = $data_penilai1['id'];
 
-            $plh = $this->SPPDModel->getAllSPPD(['status' => 99, 'plh' => 'Y', 'dari' => date('Y-m-d'), 'sampai' => date('Y-m-d')]);
+            $plh = $this->SPPDModel->getAllSPPD(['status' => 99, 'plh' => 'Y', 'dari' => date('Y-m-d'), 'sampai' => date('Y-m-d')], false, true);
             if (!empty($plh)) {
                 $this->load->model('UserModel');
                 $filter['plh_search'] = $plh[array_key_first($plh)];
                 $data_penilai2 = $filter['plh_search']['user'] = $this->UserModel->getAllUser(['id_user' => $filter['plh_search']['id_pegawai']])[$filter['plh_search']['id_pegawai']];
             }
-            // echo json_encode($filter);
-            // die();
 
             if (!empty($filter['chk-surat-izin']) or !empty($filter['chk-surat-cuti'])) {
                 $filter['search_approval']['data_penilai'] = $data_penilai1;
@@ -115,9 +113,11 @@ class Permohonan extends CI_Controller
                     if (!empty($data_penilai2)) {
                         $filter['search_approval']['data_penilai'] = $data_penilai2;
                         $filter['id_penilai'] = $data_penilai2['id'];
-                        $spt2 = $this->SPPDModel->getAllSPPD($filter);
+                        $spt2 = $this->SPPDModel->getAllSPPD($filter, false, true);
                         // echo json_encode($spt2);
                         // die();
+                        echo json_encode($spt2);
+                        die();
                     }
                     $filter['search_approval']['data_penilai'] = $data_penilai1;
                     $filter['id_penilai'] = $data_penilai1['id'];
@@ -143,7 +143,9 @@ class Permohonan extends CI_Controller
         try {
             // $this->SecurityModel->userOnlyGuard();
             $plh = [];
-            $plh = $this->SPPDModel->getAllSPPD(['status' => 99, 'plh' => 'Y', 'dari' => date('Y-m-d'), 'sampai' => date('Y-m-d')]);
+            $plh = $this->SPPDModel->getAllSPPD(['status' => 99, 'plh' => 'Y', 'dari' => date('Y-m-d'), 'sampai' => date('Y-m-d')], false, true);
+            // echo json_encode($plh);
+            // die();
             if (!empty($plh)) {
                 $this->load->model('UserModel');
                 $plh = $plh[array_key_first($plh)];
