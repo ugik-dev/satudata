@@ -76,7 +76,7 @@
                                 </select>
                             </div>
                             <div class="col-lg-6">
-                                <div class="col-form-label">Penerima PLH</div>
+                                <div class="col-form-label">Penerima Pelimpahan Wewenang</div>
                                 <select class="select2 col-sm-12" id="plh_id" name="plh_id">
                                     <?php
                                     if (!empty($dataContent['return_data']['id_pegawai'])) {
