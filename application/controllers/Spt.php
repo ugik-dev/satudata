@@ -1300,17 +1300,36 @@ class Spt extends CI_Controller
 
 
         // if ($data_satuan['jen_satker'] == 1 or ($data_satuan['jen_satker'] != 1 && $data['luardaerah'] == 2))
+        // $pdf->Cell(30, 1, "", 0, 1);
+        // $pdf->SetX($cur_x + 108);
+        // // if ($data_satuan['jen_satker'] == 1 or ($data_satuan['jen_satker'] != 1 && $data['luardaerah'] == 2))
+        // if ($data_satuan['jen_satker'] == 1)
+        //     $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
+        // else
+        //     // if ($data_satuan['jen_satker'] == 2)
+        //     $pdf->MultiCell(80, 4, "Kepala\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
+        // $pdf->Cell(30, 19, "", 0, 1);
+        // // $pdf->Cell(30, 1, "", 1, 1);
+        // // $pdf->SetY(50);
+
         $pdf->Cell(30, 1, "", 0, 1);
-        $pdf->SetX($cur_x + 108);
-        // if ($data_satuan['jen_satker'] == 1 or ($data_satuan['jen_satker'] != 1 && $data['luardaerah'] == 2))
-        if ($data_satuan['jen_satker'] == 1)
-            $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
-        else
-            // if ($data_satuan['jen_satker'] == 2)
+        if ($data_satuan['jen_satker'] == 1 or $data['luardaerah'] == '2') {
+            if (!empty($sign_kadin['sign_plh'])) {
+                $pdf->SetX($cur_x + 104);
+                $pdf->Cell(8, 4, "Plt.", 0, 0);
+                // echo json_encode($sign_kadin['sign_title']);
+                // die();
+                $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka, \n" . $sign_kadin['sign_title'], 0, 'L');
+            } else {
+                $pdf->SetX($cur_x + 108);
+                $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
+            }
+        } else {
+            $pdf->Cell(30, 1, "", 0, 1);
+            $pdf->SetX($cur_x + 108);
             $pdf->MultiCell(80, 4, "Kepala\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
-        $pdf->Cell(30, 19, "", 0, 1);
-        // $pdf->Cell(30, 1, "", 1, 1);
-        // $pdf->SetY(50);
+        }
+
         $pdf->SetXY($cur_x + 108, 62);
         if (!empty($sign_kadin)) {
             $pdf->Cell(80, 4, $sign_kadin['sign_name'], 0, 1);
@@ -1382,12 +1401,33 @@ class Spt extends CI_Controller
         $pdf->Cell(3, 4, ':', 0, 0);
         $pdf->Cell(58, 4, $tanggal_akhir, 0,  1);
         $pdf->Cell(10, 3, '', 0, 1);
-        $pdf->Cell(10, 4, '', 0, 0);
-        if ($data_satuan['jen_satker'] == 1)
+        // $pdf->Cell(10, 4, '', 0, 0);
+        // if ($data_satuan['jen_satker'] == 1)
+        //     $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
+        // else
+        //     // if ($data_satuan['jen_satker'] == 2)
+        //     $pdf->MultiCell(80, 4, "Kepala\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
+
+        // $pdf->Cell(10, 4, '', 0, 0);
+        if (!empty($sign_kadin['sign_plh'])) {
+            $pdf->Cell(2, 4, '', 0, 0);
+            // $pdf->SetX($cur_x + 104);
+            $pdf->Cell(8, 4, "Plt.", 0, 0);
+            // echo json_encode($sign_kadin['sign_title']);
+            // die();
+            $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka, \n" . $sign_kadin['sign_title'], 0, 'L');
+        } else {
+            $pdf->Cell(10, 4, '', 0, 0);
+            // $pdf->SetX($cur_x + 108);
             $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
-        else
-            // if ($data_satuan['jen_satker'] == 2)
-            $pdf->MultiCell(80, 4, "Kepala\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
+        }
+
+        // if ($data_satuan['jen_satker'] == 1)
+        //     $pdf->MultiCell(80, 4, "Kepala Dinas Kesehatan\nKabupaten Bangka", 0, 'L');
+        // else
+        //     // if ($data_satuan['jen_satker'] == 2)
+        //     $pdf->MultiCell(80, 4, "Kepala\n" . ucwords(strtolower($data_satuan['nama_satuan'])), 0, 'L');
+
         $pdf->Cell(30, 28, "", 0, 1);
         $pdf->Cell(10, 4, '', 0, 0);
 
@@ -1620,7 +1660,7 @@ class Spt extends CI_Controller
                     $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin2']])[0];
                     if (!empty($sign_kadin['sign_plh'])) {
                         $pdf->Cell(102, 5, '', 0, 0, 'C', 0);
-                        $pdf->Cell(8, 5, 'Plh.', 0, 0, 'C', 0);
+                        $pdf->Cell(8, 5, 'Plt.', 0, 0, 'C', 0);
                         $pdf->MultiCell(50, 5,  "Kepala Dinas Kesehatan\nKabupaten Bangka,\n" . $sign_kadin['sign_title'], 0, 'L', 0);
                     }
                     $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
@@ -1629,7 +1669,7 @@ class Spt extends CI_Controller
                     $sign_kadin =  $this->GeneralModel->getSign(['id' => $data['sign_kadin']])[0];
                     if (!empty($sign_kadin['sign_plh'])) {
                         $pdf->Cell(102, 5, '', 0, 0, 'C', 0);
-                        $pdf->Cell(8, 5, 'Plh.', 0, 0, 'C', 0);
+                        $pdf->Cell(8, 5, 'Plt.', 0, 0, 'C', 0);
                         $pdf->MultiCell(50, 5,  "Kepala Dinas Kesehatan\nKabupaten Bangka,\n" . $sign_kadin['sign_title'], 0, 'L', 0);
                     } else {
                         $pdf->Cell(110, 5, '', 0, 0, 'C', 0);
