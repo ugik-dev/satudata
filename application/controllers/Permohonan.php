@@ -116,8 +116,8 @@ class Permohonan extends CI_Controller
                         $spt2 = $this->SPPDModel->getAllSPPD($filter, false, true);
                         // echo json_encode($spt2);
                         // die();
-                        echo json_encode($spt2);
-                        die();
+                        // echo json_encode($spt2);
+                        // die();
                     }
                     $filter['search_approval']['data_penilai'] = $data_penilai1;
                     $filter['id_penilai'] = $data_penilai1['id'];

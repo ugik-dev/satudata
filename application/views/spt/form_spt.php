@@ -71,8 +71,8 @@
                             <div class="col-lg-6">
                                 <div class="col-form-label">Buat Pelimpahan Wewenang</div>
                                 <select class="form-control" id="plh" name="plh">
-                                    <option value="1" <?= !empty($dataContent['return_data']['plh']) ? ($dataContent['return_data']['plh'] == 'N' ? 'selected' : '') : '' ?>>Tidak</option>
-                                    <option value="2" <?= !empty($dataContent['return_data']['plh']) ? ($dataContent['return_data']['plh'] == 'Y' ? 'selected' : '') : '' ?>>Ya</option>
+                                    <option value="N" <?= !empty($dataContent['return_data']['plh']) ? ($dataContent['return_data']['plh'] == 'N' ? 'selected' : '') : '' ?>>Tidak</option>
+                                    <option value="Y" <?= !empty($dataContent['return_data']['plh']) ? ($dataContent['return_data']['plh'] == 'Y' ? 'selected' : '') : '' ?>>Ya</option>
                                 </select>
                             </div>
                             <div class="col-lg-6">
